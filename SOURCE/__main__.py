@@ -1,15 +1,17 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 #
-# Scope:  Programma per la cercare di rendere leggibile un libro pdf
-#           da cui è stato prelevato tutto il testo con copy/paste
+# Scope:  ............
 #                                               by Loreto Notarantonio 2013, February
 # ######################################################################################
 import sys, os
 import platform
-import ConfigParser
 
 class myClass():    pass
+
+
+
+
 
 
 # #############################################################################
@@ -75,6 +77,7 @@ def preparePATHs(gv, fDEBUG=False):
     gv.TAB          = ' '*5 # Spazio inizio riga per il print
 
 
+    # fDEBUG = True
     if fDEBUG:
         print
         print 'scriptDir        = %s' % (gv.scriptDir)
@@ -95,86 +98,39 @@ def preparePATHs(gv, fDEBUG=False):
 
 
 
-
-# #############################################################################
-# # global Vars()
-# #############################################################################
-gv              = myClass()                   # Global variable di progetto
-gv.OpSys        = platform.system()
-
-
-
 ################################################################################
 # - M A I N
 ################################################################################
 if __name__ == "__main__":
+    gv              = myClass()                   # Global variable di progetto
+    gv.OpSys        = platform.system()
     gv.packageName  = 'MP3Catalog'               # directory del sorgente
     gv.projectID    = 'MP3Catalog'
     gv.scriptName    = gv.projectID
 
-
-    thisModuleDIR   = os.path.dirname(os.path.realpath(__file__))
-    if thisModuleDIR.endswith('.zip'): packageDir = gv.projectID
-
-
-        # --------------------------------------------------------------------------------------
-        # - determina tutte le path necessarie al buon funzionamento
-        # --------------------------------------------------------------------------------------
     preparePATHs(gv, fDEBUG=False)
 
+
         # --------------------------------------------------------------------------------------
-        # - Possiamo fare l'import del LNPackage (se serve) nel percorso ed importiamo il package
+        # - inseriamo il path del LNPackage (se serve) nel percorso ed importiamo il package
         # --------------------------------------------------------------------------------------
-    import ProjectPackage as Prj
-    import LnFunctions as LN
+    import      ProjectPackage as Prj
+    import      LnFunctions as LN
     gv.LN       = LN
     gv.Prj      = Prj
+    calledBy    = LN.sys.calledBy
 
+    logger      = gv.LN.logger          #  Ancora non lo abbiamo impostato
+    logger.setConsoleAnyway(True)
 
-        # --------------------------------------------------------
-        # - Leggiamo il file di configurazione di base
-        # - Qui troviamo:
-        # - 1. le caratteristiche del file di log
-        # - 2. Eventual uteriori variabili utili per il progetto
-        #  - ritorna le variabili nelle classi:
-        #  -    gv.INI_LOG  = log
-        #  -    gv.INI_MAIN = iniMAIN
-        # --------------------------------------------------------
-    iniFileName = gv.scriptName + '.ini' if gv.OpSys.upper() != 'WINDOWS' else gv.scriptName + 'Win.ini'
-    Prj.setup.readIniConfigFile(gv, os.path.join(gv.mainConfigDIR, iniFileName))    # imposta le variabili del fine.ini in gv.INI_LOG e gv.INI_MAIN
+    # LN.dict.printDictionaryTree(gv, gv, header="Main variables [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
+    # sys.exit()
 
-        # --------------------------------------------------------
-        # SetUp del log
-        # --------------------------------------------------------
-    Prj.setup.initLog(gv, gv.INI_LOG)
+    import MP3Catalog as MP3Catalog
 
+    MP3Catalog.Main(gv, sys.argv)
 
-        # --------------------------------------------------------
-        # Impostazione di alcune variabili statiche per il progetto
-        # --------------------------------------------------------
-    Prj.setup.setVariables(gv)                                               # Imposta i valori JBStatus
+    choice = LN.sys.getKeyboardInput(gv, "Procedura completata con successo - Press ENTER to exit.", validKeys='ENTER', exitKey='X')
 
-        # --------------------------------------------------------------------------
-        # - Controllo dei parametri passati a riga di comando
-        # - da qui ricavo info sul nome del file di configurazione applicativo
-        #  - ritorna le variabili nella classe:
-        #  -    gv.args
-        # --------------------------------------------------------------------------
-    Prj.setup.parseInput(gv)        # return to gv.args
-
-
-
-
-    if gv.OpSys.upper() == 'WINDOWS':
-        pass
-        # gv.PVEXE = LN.file.getFullPath(gv, 'pv.exe', 'PATH', exitOnError=True)
-
-
-    # LN.dict.printDictionaryTree(gv, gv, retCols='TV', lTAB=' '*4, console=True)
-        # --------------------------------------------------------
-        # Impoort del Main module e lancio
-        # --------------------------------------------------------
-    import MP3Catalog as mainPrj
-    mainPrj.Main(gv, sys.argv)
-
+    Prj.exit(gv, 9000, "Procedura completata con successo - [called by: %s] " % (calledBy(0)))
 

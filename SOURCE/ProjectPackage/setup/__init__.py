@@ -5,10 +5,11 @@
 
 # init_type_1
 # from prepareEnv     import prepareEnv           as Env
-from readIniConfigFile     import readIniConfigFile
-from initLog            import initLog
-from parseInput         import parseInput
-from setVariables       import setVariables
+from readIniConfigFile import readIniConfigFile    as readIniConfig
+from readProjectConfig import readProjectConfig
+from initLog        import initLog
+from initVariables        import initVariables
+from ParseInput        import parseInput
 
 # init_type_2
 # import  prepareEnv

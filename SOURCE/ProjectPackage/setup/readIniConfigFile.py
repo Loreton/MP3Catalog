@@ -37,10 +37,8 @@ def readIniConfigFile(gv, iniFileName):
 
     OpSys   = platform.system()
     tempDir = os.getenv('TEMP', 'c:\\temp') if OpSys == 'Windows' else os.getenv('tmp', '/tmp')
-
         # con l'utente come suffix per evitare eventuali conflitti
     outFname    = os.path.join(tempDir, 'LnTemp_%s.ini' % (getpass.getuser()))
-
 
         # -----------------------------------------
         # - copiamo file.ini to temp.ini
@@ -59,26 +57,22 @@ def readIniConfigFile(gv, iniFileName):
     config = ConfigParser.ConfigParser()
     config.read(outFname)
 
-
-    # Otteniamo il nome del file di Log e relativi livelli di debug
-    log  = myClass()
-    iniMAIN = myClass()
-
     try:
-        # iniMAIN.JBossURLs   = config.get('MAIN', 'JBossURLs').split(',')
+        gv.LOG.logDir          = config.get('LOG', 'logDir')
 
-        log.logDir          = config.get('LOG', 'logDir')
-
-        log.fileName        = config.get('LOG', 'logFileName')
-        log.levelFile       = config.get('LOG', 'LogLEVEL_file')
-        log.levelConsole    = config.get('LOG', 'LogLEVEL_console')
-        log.loggerID        = config.get('LOG', 'loggerID')
-        log.maxBytes        = config.getint('LOG', 'maxBytes')
-        log.nFiles          = config.getint('LOG', 'nFiles')
+        gv.LOG.fileName        = config.get('LOG', 'logFileName')
+        gv.LOG.levelFile       = config.get('LOG', 'LogLEVEL_file')
+        gv.LOG.levelConsole    = config.get('LOG', 'LogLEVEL_console')
+        gv.LOG.loggerID        = config.get('LOG', 'loggerID')
+        gv.LOG.maxBytes        = config.getint('LOG', 'maxBytes')
+        gv.LOG.nFiles          = config.getint('LOG', 'nFiles')
 
         savedPath = os.getcwd()
-        os.chdir(log.logDir)
+        os.chdir(gv.LOG.logDir)
         os.chdir(savedPath)
+
+        newPATH                  = config.get('MAIN',  'ADDPATH')
+        gv.INI.TEMPDIR           = config.get('MAIN',  'TempDir')
 
     except (ConfigParser.Error), why:
         Prj.exit(gv, 1, "ERROR reading %s file - %s" % (iniFileName, str(why) ) )
@@ -86,12 +80,16 @@ def readIniConfigFile(gv, iniFileName):
     except (StandardError, IOError), why:
         Prj.exit(gv, 2, str(why))
 
+
+    if newPATH:
+        # print "Adding:", newPATH
+        currPath = os.getenv('PATH')
+        os.environ['PATH'] = newPATH + ';' + currPath
+
+
         # Creazione nome del log file con l'utente come suffix per evitare conflitti
-    (fname, fext) = os.path.splitext(log.fileName)
-    log.fileName  = "%s_%s%s" % (fname, getpass.getuser(), fext)
+    (fname, fext) = os.path.splitext(gv.LOG.fileName)
+    gv.LOG.fileName  = "%s_%s%s" % (fname, getpass.getuser(), fext)
 
-    gv.INI_LOG  = log
-    gv.INI_MAIN = iniMAIN
-
-    return log, config
+    return gv.LOG
 

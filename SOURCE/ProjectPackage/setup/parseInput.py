@@ -6,10 +6,9 @@
 
 import os, sys
 import  textwrap
-import optparse
 
 
-def mainUsage(exit=True): # senza gv altrimenti non funziona usage per la --version
+def usage(exit=True):
     LN = gv.LN
 
     print LN.cCYAN + textwrap.dedent("""\
@@ -18,6 +17,7 @@ def mainUsage(exit=True): # senza gv altrimenti non funziona usage per la --vers
         --------------- ACTION - You may indicate: ----------------
         -v --version -  Display version level
         -c --config  -  configuration file containing the flows to be executed
+        -s --section -  section name, in the configuration file, to be processed
         -d --debug   -  start debug trace
         -a --action  -  STEP      to just display rSync command to be executed
                         DRY-RUN   run rSync command in DRY-RUN mode
@@ -30,60 +30,72 @@ def mainUsage(exit=True): # senza gv altrimenti non funziona usage per la --vers
 
     if exit: sys.exit()
 
-
-
-
 # ######################################################################################
 # # ParseInput()
 # ######################################################################################
-def parseInput(gVars):
-    global parser, gv
-    gv = gVars
-    usage = "\n\nUsage: %prog -C cfgFile -D Debug"
+def parseInput(GlobalVars):
+    global gv
+    gv = GlobalVars
 
-    parser = optparse.OptionParser(usage, version="ProjectName Version 0.01 - 2013-10-30") # --version
-    cfgFile = None
+    usageMsg = "\n\nUsage: %prog ACTION [-d Debug]"
+    # parser = optparse.OptionParser(usageMsg, version="%prog 1.0")
 
+    import argparse
+    parser = argparse.ArgumentParser(description='Process rsync operations.')
 
-    parser.add_option( "-a", "--action",
-                       type="string",
+    parser.add_argument( "-a", "--action",
                        dest="ACTION",
-                       default='TEST',
-                       help="You may indicate the ACTION with the -a option. Default is: [light]")
+                       default='step',
+                       help="You may indicate the ACTION with the -a option. Default is: [step]")
+
+
+    group = parser.add_argument_group("\n --------------- Optional parameters----------------",
+                                        "Use these options to set debug or other values.")
+
+    group.add_argument( "-c", "--configFile",
+                       dest="CONFIG_FILE",
+                       default=gv.projectID + '.cfg',
+                       help="You may indicate the configuration file to be used")
 
 
 
-    group = optparse.OptionGroup(parser,
-                        "\n --------------- Optional parameters----------------",
-                        "Use these options to set debug or other values.")
-
-    group.add_option( "-c", "--cfgFile",
-                       type="string",
-                       dest="CFGFILENAME",
-                       default=cfgFile,
-                       help="You may indicate a cfgFile with the -c option. Default is one of the following (in the order): [%s]" % (cfgFile))
-
-
-    group.add_option( "-D", "--debug",
+    group.add_argument( "-d", "--debug",
                        action="store_true",
                        dest="DEBUG",
                        default=False,
                        help="You may indicate a debug status with the -d option. Default is: [False]")
 
-    parser.add_option_group(group)
+    group.add_argument( "-v", "--version",
+                       action="store_true",
+                       dest="currVERSION",
+                       default=False,
+                       help="You may indicate a version status with the -v option.")
 
 
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
 
-    validActions =  ["GO", "TEST"]
-    if options.ACTION:
-        actionUPP = options.ACTION.upper()
+
+
+    validActions =  ["GO", "DRY-RUN", "STEP"]
+    if args.ACTION:
+        actionUPP = ' ' + args.ACTION.upper() + ' '
+        actionUPP = args.ACTION.upper()
         if not actionUPP in validActions:
-            mainUsage()
+            usage()
     else:
-        mainUsage()
+        usage()
 
-    gv.args = options
+    if args.currVERSION:
+        print "MP3Catalog Version 1.0 - 2013-12-27"
+        sys.exit()
+
+    gv.INP_PARAM.fDEBUG           = args.DEBUG
+    gv.INP_PARAM.action           = args.ACTION
+    gv.INP_PARAM.actionUPP        = args.ACTION.upper()
+    gv.INP_PARAM.mainCfgFile      = args.CONFIG_FILE
+
+    if not os.path.isfile(gv.INP_PARAM.mainCfgFile):
+        gv.INP_PARAM.mainCfgFile = os.path.join(gv.mainConfigDIR, gv.INP_PARAM.mainCfgFile)
 
 
-
+    return args

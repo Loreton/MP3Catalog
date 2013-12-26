@@ -18,9 +18,9 @@ import logging
 # #####################################
 # # Init LOG
 # #####################################
-def initLog(gv, log):
-    myLogger  = gv.LN.logger
-
+def initLog(gv):
+    myLogger    = gv.LN.logger
+    log         = gv.LOG
 
     OpSys  = platform.system()
     logger = myLogger.init(log.loggerID, log.logDir, log.fileName, maxBytes=log.maxBytes, nFiles=log.nFiles)
@@ -38,5 +38,8 @@ def initLog(gv, log):
     myLogger.info("Program started")
 
     os.environ['LoggerID'] = log.loggerID # per gli altri moduli
+    gv.LOG.logger          = logger
 
-    return logger
+    myLogger.setConsoleAnyway(False)              # flag to display error messages before logfile is opened
+
+    return
