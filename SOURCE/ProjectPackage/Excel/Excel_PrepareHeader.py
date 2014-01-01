@@ -70,8 +70,9 @@ def prepareHeader(gv, rowValue=None):
 
 
     strSongAttrName = ''
-    gv.EXCEL.columnName = LN.sys.enumerateClass(sTotalCols.upper())
-    gv.EXCEL.songAttr   = LN.sys.enumerateClass(strSongAttrName.upper())
-
+    gv.EXCEL.columnName     = LN.sys.enumerateClass(sTotalCols.upper())
+    gv.EXCEL.songAttr       = LN.sys.enumerateClass(strSongAttrName.upper())
+    gv.EXCEL.maxCols        = len(totalCols)                                        # Numero di colonne di una canzone
+    gv.EXCEL.startAttrIndex = len(gv.CONFIG.NOMI_COLONNE_PRIMARIE)                  # indice di partenza degli attributi della canzone
     return gv.EXCEL.columnName
 

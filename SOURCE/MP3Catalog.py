@@ -46,7 +46,8 @@ def Main(gv, args):
         MP3Dict = Prj.excel.readCatalog(gv)
         # if fDEBUG:
         # LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="Main Configuration File data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
-        pass
+        LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="Main Configuration File data [%s]" % calledBy(0), retCols='T', lTAB=' '*4, console=True)
+        # pass
         # Mp3Merge()
 
     elif gv.CONFIG.ACTION == 'EXTRACT':
