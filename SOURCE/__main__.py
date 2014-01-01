@@ -126,6 +126,29 @@ if __name__ == "__main__":
     # LN.dict.printDictionaryTree(gv, gv, header="Main variables [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
     # sys.exit()
 
+
+        # ------------------------------------------------------------------------------------
+        # - Inizializzazione di variabili globali
+        # ------------------------------------------------------------------------------------
+    Prj.setup.initVariables(gv)                                               # Imposta i valori JBStatus
+
+        # ------------------------------------------------------------------------------------
+        # - Leggiamo il file di configurazione di base per inizializzare il file di LOG
+        # ------------------------------------------------------------------------------------
+    iniFileName = gv.scriptName + '.ini' if gv.OpSys.upper() != 'WINDOWS' else gv.scriptName + 'Win.ini'
+    logInfo     = Prj.setup.readIniConfig(gv, os.path.join(gv.mainConfigDIR, iniFileName))
+
+
+        # --------------------------------------------------------
+        # - SetUp del log
+        # --------------------------------------------------------
+    Prj.setup.initLog(gv)
+
+
+
+        # --------------------------------------------------------
+        # - CALL Project MAIN Program
+        # --------------------------------------------------------
     import MP3Catalog as MP3Catalog
 
     MP3Catalog.Main(gv, sys.argv)

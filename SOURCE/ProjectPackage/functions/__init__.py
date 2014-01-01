@@ -6,5 +6,5 @@
 # from ParserInput    import ParserInput    as PI
 # from ParserInput    import ParserInput    as usage
 # from getJBossInstances      import getJBossInstances
-# from printCheckMKLine       import printCheckMKLine
+# from ReadExcelCatalog       import readExcelCatalog
 

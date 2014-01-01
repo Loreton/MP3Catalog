@@ -1,12 +1,8 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 #
-# Scope:  Programma per la gestione start/stop di un'istanza di JBoss EAP 6.x
+# Scope:  Programma per ...........
 #                                               by Loreto Notarantonio 2013, February
-# Comando per eseguire uno script all'interno di uno ZIP file:
-#        SET PYTHONPATH=JBossStart_LNf.zip python -m JBossStart [parameters]
-#     oppure creare un file che si chiama __main__.py e lanciare il comando:
-#        python JBossStart_LNf.zip [parameters]
 # ######################################################################################
 
 
@@ -17,10 +13,7 @@ import os, sys
 ################################################################################
 # - M A I N
 # - Prevede:
-# -  1 - Impostazioni dei path per il corretto import dei moduli personali
-# -  3 - Lettura del file di configurazione applicazione (per logFile)
-# -  4 - Inizializzazione del logger
-# -  2 - Controllo parametri di input per capire il file di config da utilizzare
+# -  2 - Controllo parametri di input
 # -  5 - Chiamata al programma principale del progetto
 ################################################################################
 def Main(gv, args):
@@ -28,40 +21,59 @@ def Main(gv, args):
     Prj         = gv.Prj
     calledBy    = gv.LN.sys.calledBy
 
-
-        # ------------------------------------------------------------------------------------
-        # - Inizializzazione di variabili globali
-        # ------------------------------------------------------------------------------------
-    Prj.setup.initVariables(gv)                                               # Imposta i valori JBStatus
-
-        # ------------------------------------------------------------------------------------
-        # - Leggiamo il file di configurazione di base per inizializzare il file di LOG
-        # ------------------------------------------------------------------------------------
-    iniFileName = gv.scriptName + '.ini' if gv.OpSys.upper() != 'WINDOWS' else gv.scriptName + 'Win.ini'
-    logInfo     = Prj.setup.readIniConfig(gv, os.path.join(gv.mainConfigDIR, iniFileName))
-
-
-        # --------------------------------------------------------
-        # SetUp del log
-        # --------------------------------------------------------
-    Prj.setup.initLog(gv)
-
         # --------------------------------------------------------------------------
         # - lettura degli Input parameters
         # --------------------------------------------------------------------------
     options = Prj.setup.parseInput(gv)
     fDEBUG = gv.INP_PARAM.fDEBUG
-    if fDEBUG:
-        LN.dict.printDictionaryTree(gv, gv, header="INPUT Parameters [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
-        print
+    # if fDEBUG: LN.dict.printDictionaryTree(gv, gv, header="INPUT Parameters [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
+
 
 
 
         # =======================================
         # - Lettura del file di configurazione
         # =======================================
-    MainDICT    = Prj.setup.readProjectConfig(gv, cfgFileName=gv.INP_PARAM.mainCfgFile)
-    if fDEBUG: LN.dict.printDictionaryTree(gv, MainDICT, header="Main Configuration File data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
+    cfgDICT    = Prj.setup.readProjectConfig(gv, cfgFileName=gv.INP_PARAM.mainCfgFile)
+    if fDEBUG: LN.dict.printDictionaryTree(gv, cfgDICT, header="Main Configuration File data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
+
+
+        # --------------------------------------------------------------------
+        # - Leggiamo il file Excel di Input (se richiesto) e creimao il DB
+        # - Altrimenti lo creiamo nuovo
+        # --------------------------------------------------------------------
+    if gv.CONFIG.ACTION == 'MERGE':
+        MP3Dict = Prj.excel.readCatalog(gv)
+        # if fDEBUG:
+        # LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="Main Configuration File data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
+        pass
+        # Mp3Merge()
+
+    elif gv.CONFIG.ACTION == 'EXTRACT':
+        pass
+        # extractedFile = Mp3Extract()
+
+    elif gv.CONFIG.ACTION == 'RANDOM':
+        pass
+        # extractedDict = Mp3Extract()
+        # RandomExtract(extractedDict)
+
+    # ---------------
+        # choice = LN.sys.getKeyboardInput("******* STOP Temporaneo *******", keyLIST='ENTER', exitKey='QX', AnswerForDEBUG=None)
+    # ---------------
+
+    elif gv.CONFIG.ACTION == 'DISPLAY':
+        pass
+        # MP3Catalog.Mp3Display(iniDB, dir2Scan=globalARGs[INPUT_ARG_INPDIR ], excelInputFile=globalARGs[EXCEL_OUTPUT_FILE])
+
+    else:
+        print gv.CONFIG.ACTION
+        Msg1 = "Should NOT Occur.\n"
+        print Msg1
+        Prj.exit(gv, 10, Msg1, stackLevel=2)
+
+    print "Process completed."
+
 
     return
     Prj.exit(gv, 9999, "Uscita Temporanea - [called by: %s] " % (calledBy(1)))

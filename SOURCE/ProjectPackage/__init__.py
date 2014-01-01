@@ -3,9 +3,12 @@
 
 
 # init_Type1                - nel folder della funzione scrivo: from <function> import *
-# import functions        as funcs
-import setup            as setup
-# import readData         as data
+import Functions            as funcs
+import Setup                as setup
+import processData          as data
+import Excel                as excel
+import MP3                  as mp3
+import Format               as fmt
 
-from functions.exit                         import exit                             # exit(gv, rcode, text)
+from Functions.exit                         import exit                             # exit(gv, rcode, text)
 
