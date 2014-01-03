@@ -5,5 +5,5 @@
 # from setVariables import setVariables   as setVars
 
 
-from VerifyColContent               import verifyColContent
+from PrepareRow               import prepareRow
 

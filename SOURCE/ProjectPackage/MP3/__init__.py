@@ -6,4 +6,5 @@
 
 
 from InsertSong                     import insertSong
+from AddFiles                     import addFiles
 

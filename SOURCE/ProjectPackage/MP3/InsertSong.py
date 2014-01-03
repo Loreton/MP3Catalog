@@ -19,6 +19,7 @@ def insertSong(gv, myDict, rowValue=[]):
     logger.info('entry   - [called by:%s]' % (calledBy(1)))
 
     fld         = gv.EXCEL.columnName
+    songAttrib  = gv.EXCEL.songAttrName
     typeName    = rowValue[fld.TYPE]
     authorName  = rowValue[fld.AUTHOR_NAME]
     albumName   = rowValue[fld.ALBUM_NAME]
@@ -44,18 +45,18 @@ def insertSong(gv, myDict, rowValue=[]):
         # - Aggiungiamo la canzone
         # ---------------------------------------------------------------
     newFile = None
+    INDENT = 4*' '
     if typeName != 'Titles':
         FullSongPath = "%s\\%s\\%s\\%s\\%s.mp3" % (gv.CONFIG.MP3_BASE_DIR, typeName, authorName, albumName, songName)
         logger.debug("searching song: [%s]" % (FullSongPath))
 
-        indent = 4
 
             # -----------------------------------------------------------------------------------
             # - Se il file non esiste piu' sul filesystem allora cerchiamo qualcosa di simile
             # -----------------------------------------------------------------------------------
         if not os.path.isfile(FullSongPath):
-            logger.debug("%s :NOT FOUND [%d] [%s]" % (indent*' ',rowValue[fld.SONG_SIZE], FullSongPath))
-                # partendo dal type
+            logger.debug("%15s: NOT FOUND [%d] [%s]" % (INDENT,rowValue[fld.SONG_SIZE], FullSongPath))
+                # partendo dall'autore e dal type
             authorPaths = ["%s\\%s\\%s" % (gv.CONFIG.MP3_BASE_DIR, typeName, authorName), "%s\\%s" % (gv.CONFIG.MP3_BASE_DIR, typeName)]
                 # partendo dall'autore
             authorPaths = ["%s\\%s\\%s" % (gv.CONFIG.MP3_BASE_DIR, typeName, authorName)]
@@ -65,7 +66,7 @@ def insertSong(gv, myDict, rowValue=[]):
                 # ---------------------------------------------
             for authorPath in authorPaths:
                 searchPattern = songName + '.mp3'
-                logger.info("%s :Searching: [%s\\%s\\]" % (indent*' ', authorPath, searchPattern))
+                logger.info("%15s: [%s\\%s]" % ("Searching", authorPath, searchPattern))
 
                 (rCode, fileList) = LN.file.dirList(gv, authorPath, pattern=searchPattern, what='FS', getFullPath=True)
                 if rCode:
@@ -75,19 +76,19 @@ def insertSong(gv, myDict, rowValue=[]):
                     break
 
             if len(fileList) == 0:              # non sono stati trovati file alternativi
-                logger.debug("%s :Non sono state trovate canzoni con il nome: %s" % (indent*' ', FullSongPath))
+                logger.debug("%15s: Non sono state trovate canzoni con il nome: %s" % (INDENT, FullSongPath))
                 songName = songName + '__NO_MATCH_ON_DISK___'
 
             elif len(fileList) == 1:              # e' stato trovato un solo file alternativo
-                msg1 = "%s -Canzone.........: %s" % (indent*' ', FullSongPath)
-                msg2 = "%s -sostituita con..: %s" % (indent*' ', fileList[0])
-                logger.debug("%s La canzone:%s e' stata sostituita da:%s" % (indent*' ', FullSongPath, fileList[0]))
+                msg1 = "%15s: -Canzone.........: %s" % (INDENT, FullSongPath)
+                msg2 = "%15s: -sostituita con..: %s" % (INDENT, fileList[0])
+                logger.debug("%15s: La canzone:%s e' stata sostituita da:%s" % (INDENT, FullSongPath, fileList[0]))
                 print msg1
                 print msg2
                 newFile = fileList[0]
 
-            else:
-                logger.debug("%s :cerchiamo un file con lo stesso size: [%s]" % (indent*' ', FullSongPath))
+            else:                               # sono stati trovati diversi file alternativi
+                logger.debug("%15s: cerchiamo un file con lo stesso size: [%s]" % (INDENT, FullSongPath))
                 chkKeys = 'K'
                 outMsg = "    [%4s] [%4d] - %s  (NO MORE EXISTS)\n" % ('K', rowValue[fld.SONG_SIZE], FullSongPath)
 
@@ -98,7 +99,7 @@ def insertSong(gv, myDict, rowValue=[]):
                     size = os.path.getsize(fileList[i])
                     outMsg += "    [%4d] [%4d] - %s\n" % (i, size, fileList[i])
                     if size == rowValue[fld.SONG_SIZE]:
-                        logger.debug("%s :Found:     [%s]" % (indent*' ', fileList[i]))
+                        logger.debug("%15s: Found:     [%s]" % (INDENT, fileList[i]))
                         newFile = fileList[i]
                         break
                     chkKeys = "%s%d" % (chkKeys, i)
@@ -108,7 +109,7 @@ def insertSong(gv, myDict, rowValue=[]):
                     # - Chiediamo a console per una scelta.
                     # ------------------------------------------------------------
                 if newFile == None:
-                    msg     = "%s :Sono state trovate le canzoni sopra con lo stesso nome" % (indent*' ')
+                    msg     = "%15s: :Sono state trovate le canzoni sopra con lo stesso nome" % (INDENT)
                     msg     = msg + '\n' + outMsg
                     msg     = msg + "\nSelezionare quella che desideri inserire:"
                     logger.info(msg)
@@ -117,25 +118,30 @@ def insertSong(gv, myDict, rowValue=[]):
                         choice = int(choice)
                         newFile = fileList[choice]
         else:
-            logger.debug("%s :FOUND: [%s]" % (indent*' ', FullSongPath))
+            logger.debug("         FOUND: [%s]" % (FullSongPath))
 
-    if newFile == None: # inserisci l'entrata corrente nel DB
-        logger.debug("%s :updating with: [%10d] [%-20s] - [%-20s] %-20s - %s" % (indent*' ', rowValue[fld.SONG_SIZE], typeName, authorName, albumName, songName))
-    else:               # la vecchia entrata viene rimpiazzata
+    if newFile:
             # - Eliminiamo la baseDir ed estraiamo i vari token
-        # (Drive, Dir, typeName, authorName, albumName, songName) = newFile.split(os.sep)
         baseDirLen = len(gv.CONFIG.MP3_BASE_DIR) + 1    # +1 per il '\' divisorio
         (typeName, authorName, albumName, songName) = newFile[baseDirLen:].split(os.sep)
         songName = os.path.splitext(songName)[0]
         rowValue[fld.SONG_SIZE] = os.path.getsize(newFile)
-        logger.debug("%s :adding New : [%10d] [%-20s] - [%-20s] %-20s - %s" % (indent*' ', rowValue[fld.SONG_SIZE], typeName, authorName, albumName, songName))
+        logger.debug("%15s: [%10d] [%-20s] - [%-20s] %-20s - %s" % ("adding New", rowValue[fld.SONG_SIZE], typeName, authorName, albumName, songName))
+
+    else:               # la vecchia entrata viene rimpiazzata
+        logger.debug("%15s: [%10d] [%-20s] - [%-20s] %-20s - %s" % ("updating with", rowValue[fld.SONG_SIZE], typeName, authorName, albumName, songName))
+
+
+
+
+        # Aggiornamento del DB
 
     currAlbumPtr = LN.dict.getDictPtr(gv, myDict, keyList=[typeName, authorName, albumName], fCREATE=True)
-    currAlbumPtr[songName] = rowValue[gv.EXCEL.startAttrIndex:]
-
-    # ###################################
-    # choice=LN.sys.getKeyboardInput(gv, "******* STOP Temporaneo *******", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
-    # ###################################
-
+    ptrSong = currAlbumPtr.get(songName)
+    if ptrSong:     # esiste ... modifichiamo solo il size (magari è uguale)
+        # ptrSong[-1] = rowValue[fld.SONG_SIZE]
+        ptrSong[songAttrib.SONG_SIZE] = rowValue[fld.SONG_SIZE]
+    else:           # creiamo la canzone
+        currAlbumPtr[songName] = rowValue[gv.EXCEL.startAttrIndex:]
 
     logger.info('exiting - [called by:%s]' % (calledBy(1)))

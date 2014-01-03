@@ -9,12 +9,12 @@ import os, sys, logging
 class myClass():
     pass
 
+
+
 def initVariables(gv):
-
-
     logger   = gv.LN.logger
     calledBy = gv.LN.sys.calledBy
-    logger.info('entered - [called by:%s]' % (calledBy(1)))
+    logger.debug('entered - [called by:%s]' % (calledBy(1)))
 
     gv.STATUS                       = myClass()               # lo aggangiamo come sotto-insieme del gv
     gv.STATUS.DIR_NOT_FOUND         = 'DIR NOT FOUND'
@@ -57,6 +57,8 @@ def initVariables(gv):
 
     # Specific Project Variables
     gv.CONFIG                       = myClass()                     # Dati relativi alla configurazione del file project.cfg
+    gv.EXCEL                       = myClass()                     # Dati relativi alla configurazione del file project.cfg
+    gv.MP3Dict                      = {}                            # Catalogo delle canzoni
 
     # ---------------------------------------------------------------------------
     # - variabili GLOBALI
@@ -135,5 +137,5 @@ def initVariables(gv):
 
 
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))
 

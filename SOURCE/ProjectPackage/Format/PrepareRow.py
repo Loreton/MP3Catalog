@@ -10,12 +10,25 @@ import types
 # ################################################################
 # - Verifichiamo che non ci siano colonne vuote
 # ################################################################
-def verifyColContent(gv, rowValue):
-    Prj         = gv.Prj
-    LN          = gv.LN
+def prepareRow(gv, rowValue=None):
+    # Prj         = gv.Prj
+    # LN          = gv.LN
     logger      = gv.LN.logger
     calledBy    = gv.LN.sys.calledBy
-    logger.info('entry   - [called by:%s]' % (calledBy(1)))
+    logger.debug('entry   - [called by:%s]' % (calledBy(1)))
+
+    fld = gv.EXCEL.columnName
+
+    if rowValue == None:
+        rowValue = []
+        for i in range(gv.EXCEL.maxCols):
+            rowValue.append(u'.')
+
+        rowValue[fld.AUTHOR_NAME] = 'EMPTY'
+        rowValue[fld.ALBUM_NAME]  = 'EMPTY'
+        rowValue[fld.TYPE]        = 'EMPTY'
+        rowValue[fld.PUNTEGGIO]   = 0
+        rowValue[fld.SONG_SIZE]   = 0
 
 
     # baseAttribValue = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '0']
@@ -24,12 +37,11 @@ def verifyColContent(gv, rowValue):
         if attribCols[i] == '':
             attribCols[i] = u'.'
 
-    fld = gv.EXCEL.columnName
     if rowValue[fld.AUTHOR_NAME] == '': rowValue[fld.AUTHOR_NAME] = 'UNKNOWN'
     if rowValue[fld.ALBUM_NAME]  == '': rowValue[fld.ALBUM_NAME]  = 'UNKNOWN'
     if rowValue[fld.TYPE]        == '': rowValue[fld.TYPE]        = 'UNKNOWN'
 
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
-
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))
+    return rowValue
 

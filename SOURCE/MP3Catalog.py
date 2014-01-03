@@ -38,17 +38,17 @@ def Main(gv, args):
     if fDEBUG: LN.dict.printDictionaryTree(gv, cfgDICT, header="Main Configuration File data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
 
 
-        # --------------------------------------------------------------------
-        # - Leggiamo il file Excel di Input (se richiesto) e creimao il DB
-        # - Altrimenti lo creiamo nuovo
-        # --------------------------------------------------------------------
+        # -------------------------------------------------------------------------------
+        # - Leggiamo il file Excel di Input  e creiamo il DB gv.MP3Dict
+        # -------------------------------------------------------------------------------
+    Prj.excel.readCatalog(gv)
+    LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="Excel File data [%s]" % calledBy(0), retCols='T', lTAB=' '*4, console=True)
+
+
     if gv.CONFIG.ACTION == 'MERGE':
-        MP3Dict = Prj.excel.readCatalog(gv)
-        # if fDEBUG:
-        # LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="Main Configuration File data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
-        LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="Main Configuration File data [%s]" % calledBy(0), retCols='T', lTAB=' '*4, console=True)
-        # pass
-        # Mp3Merge()
+        Prj.mp3.addFiles(gv)
+        LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="After FileSystem data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
+        Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE)
 
     elif gv.CONFIG.ACTION == 'EXTRACT':
         pass
@@ -81,50 +81,3 @@ def Main(gv, args):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # cfgFile     = gv.INP_PARAM.mainCfgFile
-    cfgDICT = Prj.readConfig(gv, gv.INP_PARAM.mainCfgFile, gv.INP_PARAM.SECTION_NAME)
-
-    # (cfgMODULE, cfgDICT, cfgPATH, cfgFULLPATH) =  LN.dict.loadDictFile(gv, cfgFile, moduleName=None, fDEBUG=False)
-    if not cfgDICT:
-        Prj.exit(gv, 11, "[%-12s] - file %s NOT Found. It's mandatory." % (gv.projectID, cfgFile) )
-
-
-    if gv.INP_PARAM.SECTION_NAME == None:
-        Prj.exit(gv, 12, "[%-12s] - Immettere il nome della sezione. It's mandatory." )
-    else:
-        sectionID = cfgDICT.get(gv.INP_PARAM.SECTION_NAME, {})
-
-    # for section in cfgDICT.sections():        print section
-
-    if gv.INP_PARAM.fDEBUG:
-        print "ciao"
-        LN.dict.printDictionaryTree(gv, vars(sectionID), retCols='TV', lTAB=' '*4, console=True)
-
-    print sectionID
-    if not hasattr(cfgDICT, "Main"):
-        Prj.exit(gv, 11, "Main{} section NOT present in file"  )
-
-
-if __name__ == "__main__":
-    Main(sys.argv)

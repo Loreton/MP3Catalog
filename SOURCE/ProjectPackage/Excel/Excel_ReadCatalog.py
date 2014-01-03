@@ -6,7 +6,7 @@
 import sys, os
 import types
 
-class myClass():    pass
+# class myClass():    pass
 
 # =======================================================================
 # ReadExcelCatalog()
@@ -31,16 +31,16 @@ def readCatalog(gv):
 
         # Ritorna il WorkBook
     wb = LN.excel.open(gv, excelFileName)
-    gv.EXCEL = myClass()
-    gv.MP3Dict = {}
+    # gv.EXCEL = myClass()
+
         # Esaminiamo tutti gli sheet (in teroia è solo il primo)
     for sheet in wb.sheets():
         gv.EXCEL.sheetName = sheet.name
         logger.info('Analizzo sheetName: %s' % (sheet.name))
         ColNames_ROW    =   mainSectID.get('COLUMNS_NAME_ROW') -1               # considerare che Excel parte da Row=0
         START_ROW       =   mainSectID.get('FIRST_SONG_ROW') -1                 # considerare che Excel parte da Row=0
-        LAST_ROW        =   60                 # per DEBUG
         LAST_ROW        =   9999999
+        LAST_ROW        =   60                 # per DEBUG
         startExcelCol = gv.CONFIG.START_EXCEL_COLUMN.upper()   # Colonna di partenza dati
 
         for row in range(sheet.nrows):
@@ -107,7 +107,7 @@ def readCatalog(gv):
                 prevAuth = rowValue[fld.AUTHOR_NAME]
                 logger.info("reading author: [%s]" % (rowValue[fld.AUTHOR_NAME]) )
 
-            Prj.fmt.verifyColContent(gv, rowValue)
+            rowValue = Prj.fmt.prepareRow(gv, rowValue)
 
             if len(songName) >= 2 and rowValue[fld.TYPE] != 'Titles':
                 Prj.mp3.insertSong(gv, gv.MP3Dict, rowValue)

@@ -6,7 +6,7 @@
 # import sys
 # import types
 
-def prepareHeader(gv, rowValue=None):
+def prepareHeader(gv, rowValue):
     Prj         = gv.Prj
     LN          = gv.LN
     logger      = gv.LN.logger
@@ -19,11 +19,11 @@ def prepareHeader(gv, rowValue=None):
         # - Valori base degli attributi delle canzoni
         # -------------------------------------------
     # baseAttribValue = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '0']
-    baseAttribValue = []
-    for name in gv.CONFIG.NOMI_COLONNE_ATTRIBUTI:
-        baseAttribValue.append('.')
-    baseAttribValue[-1] = 0                 # L'ultimo dovrebbe essere SongSize e lo impostiamo a 0 come default
-    logger.debug("\n%-20s = [%s]\n" % ('baseAttribValue', baseAttribValue))
+    # baseAttribValue = []
+    # for name in gv.CONFIG.NOMI_COLONNE_ATTRIBUTI:
+    #     baseAttribValue.append('.')
+    # baseAttribValue[-1] = 0                 # L'ultimo dovrebbe essere SongSize e lo impostiamo a 0 come default
+    # logger.debug("\n%-20s = [%s]\n" % ('baseAttribValue', baseAttribValue))
 
 
     # ---------------------------------------------------------
@@ -45,15 +45,14 @@ def prepareHeader(gv, rowValue=None):
         Msg += "Colonne file Configurazione:  [%d]\n" % (len(totalCols))
         Prj.exit(gv, 2001, Msg)
 
-    if rowValue != None:
-        for i in range(len(rowValue)-1):
-            valoreExcel = rowValue[i].encode('utf-8')
-            logger.debug("[%s] - [%s]" % (valoreExcel, totalCols[i]))
-            if rowValue[i].upper() != totalCols[i].upper():
-                Msg = "Il nome colonna definito nel file.ini e' diverso da quanto trovato nel file Excel\n"
-                Msg += "Si prega di correggere l'uno oppure l'altro valore\n"
-                Msg += "Colonne interessate:    [%s] != [%s]" % (valoreExcel, totalCols[i])
-                Prj.exit(gv, 2002, Msg)
+    for i in range(len(rowValue)-1):
+        valoreExcel = rowValue[i].encode('utf-8')
+        logger.debug("[%s] - [%s]" % (valoreExcel, totalCols[i]))
+        if rowValue[i].upper() != totalCols[i].upper():
+            Msg = "Il nome colonna definito nel file.ini e' diverso da quanto trovato nel file Excel\n"
+            Msg += "Si prega di correggere l'uno oppure l'altro valore\n"
+            Msg += "Colonne interessate:    [%s] != [%s]" % (valoreExcel, totalCols[i])
+            Prj.exit(gv, 2002, Msg)
 
     logger.info("Columns names check has been completed")
 
@@ -66,13 +65,24 @@ def prepareHeader(gv, rowValue=None):
     for name in totalCols:
         sTotalCols += ' ' + name.replace(' ', '_')
 
+    songAttribCols = ''
+    for name in gv.CONFIG.NOMI_COLONNE_ATTRIBUTI:
+        songAttribCols += ' ' + name.replace(' ', '_')
+
+
     logger.debug("%-20s = [%s]" % ('sTotalCols', sTotalCols.upper()))
 
 
-    strSongAttrName = ''
+    # emptyRow = []
+    # for i in range(len(rowValue)-1):
+    #     emptyRow.append('.')
+
     gv.EXCEL.columnName     = LN.sys.enumerateClass(sTotalCols.upper())
-    gv.EXCEL.songAttr       = LN.sys.enumerateClass(strSongAttrName.upper())
+    gv.EXCEL.songAttrName   = LN.sys.enumerateClass(songAttribCols.upper())
     gv.EXCEL.maxCols        = len(totalCols)                                        # Numero di colonne di una canzone
     gv.EXCEL.startAttrIndex = len(gv.CONFIG.NOMI_COLONNE_PRIMARIE)                  # indice di partenza degli attributi della canzone
+    # gv.EXCEL.emptyRow       = emptyRow                                              # comoda per avere una riga di base
+
+
     return gv.EXCEL.columnName
 
