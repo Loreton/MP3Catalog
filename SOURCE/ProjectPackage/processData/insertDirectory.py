@@ -98,4 +98,4 @@ def insertDirectory(dirName, dict=None, fDEBUG=False):
     # ###################################
 
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))

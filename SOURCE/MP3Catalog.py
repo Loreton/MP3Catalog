@@ -42,12 +42,16 @@ def Main(gv, args):
         # - Leggiamo il file Excel di Input  e creiamo il DB gv.MP3Dict
         # -------------------------------------------------------------------------------
     Prj.excel.readCatalog(gv)
-    LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="Excel File data [%s]" % calledBy(0), retCols='T', lTAB=' '*4, console=True)
+    linee = LN.dict.dictionaryToList(gv, gv.MP3Dict, MaxDeepLevel=99)
+    SongNumberExcel = len(linee)
+    # LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="Excel File data [%s]" % calledBy(0), retCols='T', lTAB=' '*4, console=True)
 
 
     if gv.CONFIG.ACTION == 'MERGE':
         Prj.mp3.addFiles(gv)
-        LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="After FileSystem data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
+        linee = LN.dict.dictionaryToList(gv, gv.MP3Dict, MaxDeepLevel=99)
+        SongNumberAfterAdd = len(linee)
+        # LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="After FileSystem data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
         Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE)
 
     elif gv.CONFIG.ACTION == 'EXTRACT':
@@ -74,6 +78,8 @@ def Main(gv, args):
         Prj.exit(gv, 10, Msg1, stackLevel=2)
 
     print "Process completed."
+    print "Numero canzoni su foglio Excel...........: %6d" % (SongNumberExcel)
+    print "Numero canzoni dopo ADD dal fileSystem...: %6d" % (SongNumberAfterAdd)
 
 
     return

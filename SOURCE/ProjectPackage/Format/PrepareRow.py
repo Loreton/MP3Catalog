@@ -16,7 +16,6 @@ def prepareRow(gv, rowValue=None):
     logger      = gv.LN.logger
     calledBy    = gv.LN.sys.calledBy
     logger.debug('entry   - [called by:%s]' % (calledBy(1)))
-
     fld = gv.EXCEL.columnName
 
     if rowValue == None:
@@ -30,18 +29,18 @@ def prepareRow(gv, rowValue=None):
         rowValue[fld.PUNTEGGIO]   = 0
         rowValue[fld.SONG_SIZE]   = 0
 
-
-    # baseAttribValue = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '0']
-    attribCols = rowValue[gv.EXCEL.startAttrIndex:] # prendiamo solo i campi Attributi
-    for i in range(len(attribCols)-1):
-        if attribCols[i] == '':
-            attribCols[i] = u'.'
+    for i in range(gv.EXCEL.startAttrIndex, gv.EXCEL.maxCols):
+        if rowValue[i] == '':
+            rowValue[i] = u'.'
 
     if rowValue[fld.AUTHOR_NAME] == '': rowValue[fld.AUTHOR_NAME] = 'UNKNOWN'
     if rowValue[fld.ALBUM_NAME]  == '': rowValue[fld.ALBUM_NAME]  = 'UNKNOWN'
     if rowValue[fld.TYPE]        == '': rowValue[fld.TYPE]        = 'UNKNOWN'
+    rowValue[fld.PUNTEGGIO]   = int(rowValue[fld.PUNTEGGIO])
+    rowValue[fld.SONG_SIZE]   = int(rowValue[fld.SONG_SIZE])
 
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
+
     return rowValue
 

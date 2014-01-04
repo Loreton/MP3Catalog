@@ -103,4 +103,4 @@ def Songs_Analyze(workingTYPES, RandomDict, outFileList, fPUNTEGGIO=-999):
     # ###################################
 
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))

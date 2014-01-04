@@ -174,4 +174,4 @@ def CopySongToDest(dict, typeName, songIndex, outFileList):
     # ###################################
 
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))

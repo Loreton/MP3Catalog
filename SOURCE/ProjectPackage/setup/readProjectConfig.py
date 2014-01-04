@@ -15,7 +15,7 @@ def readProjectConfig(gv, cfgFileName=None):
     Prj         = gv.Prj
     logger      = gv.LN.logger
     calledBy    = gv.LN.sys.calledBy
-    logger.info('entered - [called by:%s]' % (calledBy(1)))
+    logger.debug('entered - [called by:%s]' % (calledBy(1)))
 
 
     if not cfgFileName:
@@ -52,7 +52,12 @@ def readProjectConfig(gv, cfgFileName=None):
         mainSectID                          = configDB.MainSection
         gv.CONFIG.NOMI_COLONNE_ATTRIBUTI    = mainSectID.get('Nomi Colonne Attributi')
         gv.CONFIG.NOMI_COLONNE_PRIMARIE     = mainSectID.get('Nomi Colonne Primarie')
-        gv.CONFIG.START_EXCEL_COLUMN        = mainSectID.get('START EXCEL COLUMN')
+
+        gv.CONFIG.START_EXCEL_COLUMN        = mainSectID.get('START EXCEL COLUMN')          # Prima colonna valida
+        gv.CONFIG.COLUMNS_NAME_ROW          = mainSectID.get('COLUMNS NAME ROW')-1            # riga che contiene i nomi delle colonne (considerare che Excel parte da Row=0)
+        gv.CONFIG.FIRST_SONG_ROW            = mainSectID.get('FIRST SONG ROW')-1              # riga dove iniziano i dati (considerare che Excel parte da Row=0)
+        gv.CONFIG.LAST_SONG_ROW             = mainSectID.get('LAST SONG ROW')               # riga dove finiscono i dati
+
         gv.CONFIG.ACTION                    = mainSectID.get('ACTION').upper()
 
         gv.CONFIG.EXCEL_INPUT_FILE          = mainSectID.get("excelInputFile",  '')
@@ -64,5 +69,5 @@ def readProjectConfig(gv, cfgFileName=None):
         Prj.exit(gv, 2001, "%s  %s" % (cfgFileName, why) )
 
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))
     return gv.CONFIG.FILE_DICT

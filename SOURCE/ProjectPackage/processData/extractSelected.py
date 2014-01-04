@@ -54,4 +54,4 @@ def extractSelected(dict, Punteggi=[], attribToExtract=[], attribToAvoid=[]):
     # ###################################
 
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))

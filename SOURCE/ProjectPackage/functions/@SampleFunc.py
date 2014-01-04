@@ -23,4 +23,4 @@ def sample(gv):
     # ###################################
 
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))

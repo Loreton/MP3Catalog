@@ -73,4 +73,4 @@ def Songs_GetNext(dict, typeName, fPUNTEGGIO=-999):
     # ###################################
 
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))

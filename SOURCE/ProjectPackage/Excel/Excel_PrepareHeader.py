@@ -15,17 +15,6 @@ def prepareHeader(gv, rowValue):
     logger.info('entry   - [called by:%s]' % (calledBy(1)))
 
 
-        # -------------------------------------------
-        # - Valori base degli attributi delle canzoni
-        # -------------------------------------------
-    # baseAttribValue = ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '0']
-    # baseAttribValue = []
-    # for name in gv.CONFIG.NOMI_COLONNE_ATTRIBUTI:
-    #     baseAttribValue.append('.')
-    # baseAttribValue[-1] = 0                 # L'ultimo dovrebbe essere SongSize e lo impostiamo a 0 come default
-    # logger.debug("\n%-20s = [%s]\n" % ('baseAttribValue', baseAttribValue))
-
-
     # ---------------------------------------------------------
     # - Unisci i nomi delle colonne e verifichiamo
     # - che sono uguali a quelle del foglio excel
@@ -71,17 +60,12 @@ def prepareHeader(gv, rowValue):
 
 
     logger.debug("%-20s = [%s]" % ('sTotalCols', sTotalCols.upper()))
-
-
-    # emptyRow = []
-    # for i in range(len(rowValue)-1):
-    #     emptyRow.append('.')
+    logger.debug("%-20s = [%s]" % ('songAttribCols', songAttribCols.upper()))
 
     gv.EXCEL.columnName     = LN.sys.enumerateClass(sTotalCols.upper())
     gv.EXCEL.songAttrName   = LN.sys.enumerateClass(songAttribCols.upper())
     gv.EXCEL.maxCols        = len(totalCols)                                        # Numero di colonne di una canzone
     gv.EXCEL.startAttrIndex = len(gv.CONFIG.NOMI_COLONNE_PRIMARIE)                  # indice di partenza degli attributi della canzone
-    # gv.EXCEL.emptyRow       = emptyRow                                              # comoda per avere una riga di base
 
 
     return gv.EXCEL.columnName

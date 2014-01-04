@@ -16,7 +16,8 @@ def insertSong(gv, myDict, rowValue=[]):
     LN          = gv.LN
     logger      = gv.LN.logger
     calledBy    = gv.LN.sys.calledBy
-    logger.info('entry   - [called by:%s]' % (calledBy(1)))
+    logger.debug('entered - [called by:%s]' % (calledBy(1)))
+
 
     fld         = gv.EXCEL.columnName
     songAttrib  = gv.EXCEL.songAttrName
@@ -144,4 +145,4 @@ def insertSong(gv, myDict, rowValue=[]):
     else:           # creiamo la canzone
         currAlbumPtr[songName] = rowValue[gv.EXCEL.startAttrIndex:]
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))

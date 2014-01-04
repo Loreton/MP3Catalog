@@ -101,4 +101,4 @@ def WriteCatalogToExcel(outFileName, dict):
     # ###################################
 
 
-    logger.info('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:%s]' % (calledBy(1)))
