@@ -246,7 +246,7 @@ ClassName=TProjectRunConfiguationNode
 Name=Simple
 
 [Project\ChildNodes\Node1\ChildNodes\Node0\RunConfig]
-ScriptName=L:\Loreto\GIT-REPO-CLONE\MP3Catalog\SOURCE\__main__.py
+ScriptName=L:\Loreto\GITHUB-REPO-CLONE\MP3Catalog\SOURCE\__main__.py
 EngineType=peRemote
 ReinitializeBeforeRun=TRUE
 WorkingDir=$[ActiveScript-Dir]

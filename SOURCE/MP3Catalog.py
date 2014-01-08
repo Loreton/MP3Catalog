@@ -9,6 +9,7 @@
 # RSync log interpretation: http://stackoverflow.com/questions/4493525/rsync-what-means-the-f-on-rsync-logs
 
 import os, sys
+from functools import partial
 
 ################################################################################
 # - M A I N
@@ -43,33 +44,49 @@ def Main(gv, args):
         # -------------------------------------------------------------------------------
     Prj.excel.readCatalog(gv)
     linee = LN.dict.dictionaryToList(gv, gv.MP3Dict, MaxDeepLevel=99)
-    SongNumberExcel = len(linee)
+    SongNumberExcel     = len(linee)
+    SongNumberAfterMerge  = 0
     # LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="Excel File data [%s]" % calledBy(0), retCols='T', lTAB=' '*4, console=True)
 
 
+
+        # -----------------------------------------------------------------------------------------
+        # - Legge il fileSystem ed integra gv.MP3Dict con eventuali modifiche/aggiunte trovate.
+        # - Crea infine il file di Output in formato excel.
+        # -----------------------------------------------------------------------------------------
     if gv.CONFIG.ACTION == 'MERGE':
         Prj.mp3.addFiles(gv)
         linee = LN.dict.dictionaryToList(gv, gv.MP3Dict, MaxDeepLevel=99)
-        SongNumberAfterAdd = len(linee)
+        SongNumberAfterMerge = len(linee)
         # LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="After FileSystem data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
         Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE)
+        print "Numero canzoni su foglio Excel...........: %6d" % (SongNumberExcel)
+        print "Numero canzoni dopo Merge dal fileSystem.: %6d" % (SongNumberAfterMerge)
 
+
+        # -----------------------------------------------------------------------------------------
+        # - Estrae da gv.MP3Dict i file con i criteri impostati nella ExtractSEction del file.cfg
+        # - I file estratti verranno copiati nella directory specificata.
+        # -----------------------------------------------------------------------------------------
     elif gv.CONFIG.ACTION == 'EXTRACT':
-        pass
-        # extractedFile = Mp3Extract()
+        LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv, linee), fPRINT=True )
+        # linee = Prj.mp3.extractSong(gv, linee)
+        for line in linee:
+            print '...1', line
+        print
+        LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv), fPRINT=True )
+        # linee = Prj.mp3.extractSong(gv)
+        for line in linee:
+            print '...2', line
 
-    elif gv.CONFIG.ACTION == 'RANDOM':
-        pass
-        # extractedDict = Mp3Extract()
-        # RandomExtract(extractedDict)
+        # print "Numero canzoni su foglio Excel...........: %6d" % (SongNumberExcel)
+        # print "Numero canzoni dopo ADD dal fileSystem...: %6d" % (SongNumberAfterMerge)
+
+
 
     # ---------------
         # choice = LN.sys.getKeyboardInput("******* STOP Temporaneo *******", keyLIST='ENTER', exitKey='QX', AnswerForDEBUG=None)
     # ---------------
-
-    elif gv.CONFIG.ACTION == 'DISPLAY':
-        pass
-        # MP3Catalog.Mp3Display(iniDB, dir2Scan=globalARGs[INPUT_ARG_INPDIR ], excelInputFile=globalARGs[EXCEL_OUTPUT_FILE])
 
     else:
         print gv.CONFIG.ACTION
@@ -78,8 +95,6 @@ def Main(gv, args):
         Prj.exit(gv, 10, Msg1, stackLevel=2)
 
     print "Process completed."
-    print "Numero canzoni su foglio Excel...........: %6d" % (SongNumberExcel)
-    print "Numero canzoni dopo ADD dal fileSystem...: %6d" % (SongNumberAfterAdd)
 
 
     return

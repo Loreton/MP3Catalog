@@ -7,4 +7,5 @@
 
 from InsertSong                     import insertSong
 from AddFiles                     import addFiles
+from ExtractSong                     import extractSong
 

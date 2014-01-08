@@ -7,6 +7,8 @@
 import sys, os
 import platform
 
+sys.dont_write_bytecode = True
+
 class myClass():    pass
 
 
