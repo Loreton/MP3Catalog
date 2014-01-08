@@ -69,18 +69,19 @@ def Main(gv, args):
         # - I file estratti verranno copiati nella directory specificata.
         # -----------------------------------------------------------------------------------------
     elif gv.CONFIG.ACTION == 'EXTRACT':
-        LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv, linee), fPRINT=True )
+        print "Numero canzoni su foglio Excel...........: %6d" % (SongNumberExcel)
+        linee = LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv, linee), fPRINT=True )
+        SongExtracted = len(linee)
+        print "Numero canzoni estracted...: %6d" % (SongExtracted)
         # linee = Prj.mp3.extractSong(gv, linee)
-        for line in linee:
-            print '...1', line
+        # for line in linee:            print '...1', line
         print
-        LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv), fPRINT=True )
+        linee = LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv), fPRINT=True )
+        SongExtracted = len(linee)
+        print "Numero canzoni estracted...: %6d" % (SongExtracted)
         # linee = Prj.mp3.extractSong(gv)
-        for line in linee:
-            print '...2', line
+        # for line in linee:            print '...2', line
 
-        # print "Numero canzoni su foglio Excel...........: %6d" % (SongNumberExcel)
-        # print "Numero canzoni dopo ADD dal fileSystem...: %6d" % (SongNumberAfterMerge)
 
 
 
