@@ -73,6 +73,13 @@ def Main(gv, args):
         print "Numero canzoni mandatory extracted.......: %6d" % (len(gv.MP3.mandatorySONGS))
 
 
+        # -----------------------------------------------------------
+        # - TEST del FREE Disk SPACE e lo salviamo per verificarlo
+        # -----------------------------------------------------------
+        gv.MP3.driveFreeSpace = LN.file.driveFreeSpace(destFilePath, 'Bytes')
+        if gv.MP3.driveFreeSpace < gv.CONFIG.EXTRACT_SECTION['MAX_OUT_DIR_SIZE']+5*1024*1024:
+            Prj.exit(gv, 999, "Non c'è spazio sufficiente per copiare i file richiesti")
+
         # sMP3DestDir         =  gv.CONFIG.EXTRACT_SECTION['MP3 Destination Directory']
         # sExtractOrder       =  gv.CONFIG.EXTRACT_SECTION['Extraction Order']
         # lPunteggioRange     =  gv.CONFIG.EXTRACT_SECTION['Punteggi']

@@ -23,38 +23,47 @@ def copySongs(gv, inpList=[]):
 
     sMP3DestDir         =  gv.CONFIG.EXTRACT_SECTION['MP3 Destination Directory']
     sExtractOrder       =  gv.CONFIG.EXTRACT_SECTION['Extraction Order']
-    lPunteggioRange     =  gv.CONFIG.EXTRACT_SECTION['Punteggi']
     bPrefixSong         =  gv.CONFIG.EXTRACT_SECTION['PrefixSong']     # Mette <N.Cognome-> dell'autore prima del titolo della canzone All'interno del folder Type
     bRecomended         =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
-    prefixStatic        =  gv.CONFIG.EXTRACT_SECTION['Prefissi particolari']
+    fillDISK            =  gv.CONFIG.EXTRACT_SECTION['FILL_DISK']
 
 
     fld = gv.EXCEL.columnName
 
-
+    nSongs = 0
     for song in inpList:
+        nSongs += 1
+
+        # -------------------------------------------------------------------------------------------------------------
+        # DEVO fare tutte le verifiche preliminari per capire se devo copiare o meno la canzone sulla destinazione
+        # -------------------------------------------------------------------------------------------------------------
         typeName    = song[fld.TYPE]
         authorName  = song[fld.AUTHOR_NAME]
-        albumName   = song[fld.ALBUM_NAME]
-        songName    = song[fld.SONG_NAME]
+        # albumName   = song[fld.ALBUM_NAME]
+        # songName    = song[fld.SONG_NAME]
+        songSize    = song[fld.SONG_SIZE]
 
-        if bPrefixSong:
-            authorPrefix = Prj.mp3.getAuthorName(gv, song[fld.TYPE], song[fld.AUTHOR_NAME])
-            fName = "%s-%s" % (authorPrefix, songName)
-            filePath    = os.sep.join([MP3baseDir, typeName, fName])
-        else:
-            filePath    = os.sep.join([MP3baseDir, typeName, authorName, albumName, songName])
+        # fileSize                    = os.path.getsize(sourceFullPathName)
+        # gv.MP3.TYPE.BYTES[typeName] = LN.file.getFolderSize(destFilePath)
+
+        driveFreeSpace              = gv.MP3.driveFreeSpace
 
 
-            # --------------------------------------------
-            # - Creazione dei vari path dei file in/out
-            # --------------------------------------------
-        print filePath
-        # fileName    = "%s\\%s" % (filePath, songName)
-        # fName       = "%s.mp3" % (songName)
 
-        # outTypeDIR   = "%s\\%s" % (destDIR, typeName)
-        # outAuthorDIR = "%s\\%s" % (outTypeDIR, authorName)
+        # --------------------------------------------
+        # - TEST del FREE Disk SPACE
+        # - Lo facciamo a fronte di
+        # --------------------------------------------
+        # E' stato inserito con un IF  altrimenti rallentava molto su USB drive
+        if nSongs%100 == 0: gv.MP3.driveFreeSpace = LN.file.driveFreeSpace(destFilePath, 'Bytes')
+
+        if gv.CONFIG.EXTRACT_SECTION['FILL_DISK'] and gv.MP3.driveFreeSpace < (songSize+1000):
+            Prj.exit(gv, 4444,  "No more FreeSPACE [%d] is available" % (gv.MP3.driveFreeSpace))
+
+
+        if gv.MP3.TYPE.BYTES[typeName] > gv.CONFIG.EXTRACT_SECTION['PERCENT'][typeName]:
+            print "MAX_SIZE [%d] reached for TYPE=" % (gv.MP3.TYPE.BYTES[typeName], typeName)
+
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
     # return outLines

@@ -6,8 +6,7 @@
 
 import os, sys, logging
 
-class myClass():
-    pass
+class myClass():    pass
 
 
 
@@ -56,15 +55,19 @@ def initVariables(gv):
 
 
     # Specific Project Variables
-    gv.CONFIG                      = myClass()                     # Dati relativi alla configurazione del file project.cfg
+    gv.CONFIG                       = myClass()                     # Dati relativi alla configurazione del file project.cfg
 
-    gv.EXCEL                       = myClass()                     # Dati relativi alla configurazione del file project.cfg
-    gv.EXCEL.ROWS                  = []                            # Righe del foglio Excel
+    gv.EXCEL                        = myClass()                     # Dati relativi alla configurazione del file project.cfg
+    gv.EXCEL.ROWS                   = []                            # Righe del foglio Excel
 
-    gv.MP3                         = myClass()                     # Base per il Catalogo
-    gv.MP3.Dict                    = {}                          # Catalogo delle canzoni
-    gv.MP3.randomSONGS             = []                               # Catalogo delle canzoni estratte
-    gv.MP3.mandatorySONGS          = []                               # Catalogo delle canzoni estratte di tipo Recomended/Mandatory
+    gv.MP3                          = myClass()                     # Base per il Catalogo
+    gv.MP3.Dict                     = {}                          # Catalogo delle canzoni
+    gv.MP3.randomSONGS              = []                               # Catalogo delle canzoni estratte
+    gv.MP3.mandatorySONGS           = []                               # Catalogo delle canzoni estratte di tipo Recomended/Mandatory
+
+    gv.MP3.TYPE                     = myClass()
+    gv.MP3.TYPE.BYTES               = {}                            # bytes copiati per tipologia di canzoni (ITALIANI, STRANIERI, ...)
+
 
 
     # logger.debug('exiting - [called by:%s]' % (calledBy(1)))
