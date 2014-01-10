@@ -7,5 +7,7 @@
 
 from InsertSong                     import insertSong
 from AddFiles                     import addFiles
-from ExtractSong                     import extractSong
+from ExtractSongs                     import extractSongs
+from CopySongs                     import copySongs
+from GetAuthorName                     import getAuthorName
 

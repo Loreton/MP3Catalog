@@ -135,14 +135,23 @@ def insertSong(gv, myDict, rowValue=[]):
 
 
 
-        # Aggiornamento del DB
 
+        # ---------------------------------
+        # - Aggiornamento del DB
+        # ---------------------------------
     currAlbumPtr = LN.dict.getDictPtr(gv, myDict, keyList=[typeName, authorName, albumName], fCREATE=True)
     ptrSong = currAlbumPtr.get(songName)
     if ptrSong:     # esiste ... modifichiamo solo il size (magari è uguale)
-        # ptrSong[-1] = rowValue[fld.SONG_SIZE]
         ptrSong[songAttrib.SONG_SIZE] = rowValue[fld.SONG_SIZE]
     else:           # creiamo la canzone
         currAlbumPtr[songName] = rowValue[gv.EXCEL.startAttrIndex:]
+
+        # ---------------------------------
+        # - Aggiornamento delle Rows Excel
+        # ---------------------------------
+    songLine = [typeName, authorName, albumName, songName]
+    songLine.extend(rowValue[gv.EXCEL.startAttrIndex:])
+    gv.EXCEL.ROWS.append(songLine)
+
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))

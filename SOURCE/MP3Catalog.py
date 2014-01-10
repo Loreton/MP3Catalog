@@ -36,51 +36,54 @@ def Main(gv, args):
         # - Lettura del file di configurazione
         # =======================================
     cfgDICT    = Prj.setup.readProjectConfig(gv, cfgFileName=gv.INP_PARAM.mainCfgFile)
-    if fDEBUG: LN.dict.printDictionaryTree(gv, cfgDICT, header="Main Configuration File data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
-
 
         # -------------------------------------------------------------------------------
-        # - Leggiamo il file Excel di Input  e creiamo il DB gv.MP3Dict
+        # - Leggiamo il file Excel di Input  e creiamo:
+        #      il DB gv.MP3.Dict
+        #      la LIST gv.EXCEL.ROWS[]
         # -------------------------------------------------------------------------------
-    Prj.excel.readCatalog(gv)
-    linee = LN.dict.dictionaryToList(gv, gv.MP3Dict, MaxDeepLevel=99)
-    SongNumberExcel     = len(linee)
-    SongNumberAfterMerge  = 0
-    # LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="Excel File data [%s]" % calledBy(0), retCols='T', lTAB=' '*4, console=True)
-
+    Prj.excel.readCatalog(gv, gv.MP3.Dict)
+    excelInitialLines = len(gv.EXCEL.ROWS)
 
 
         # -----------------------------------------------------------------------------------------
-        # - Legge il fileSystem ed integra gv.MP3Dict con eventuali modifiche/aggiunte trovate.
+        # - Legge il fileSystem ed integra gv.MP3.Dict con eventuali modifiche/aggiunte trovate.
         # - Crea infine il file di Output in formato excel.
         # -----------------------------------------------------------------------------------------
     if gv.CONFIG.ACTION == 'MERGE':
         Prj.mp3.addFiles(gv)
-        linee = LN.dict.dictionaryToList(gv, gv.MP3Dict, MaxDeepLevel=99)
-        SongNumberAfterMerge = len(linee)
-        # LN.dict.printDictionaryTree(gv, gv.MP3Dict, header="After FileSystem data [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
-        Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE)
-        print "Numero canzoni su foglio Excel...........: %6d" % (SongNumberExcel)
-        print "Numero canzoni dopo Merge dal fileSystem.: %6d" % (SongNumberAfterMerge)
+        Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE, outLines)
+
+        print "Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines)
+        print "Numero canzoni dopo Merge dal fileSystem.: %6d" % (totalSongs)
 
 
         # -----------------------------------------------------------------------------------------
-        # - Estrae da gv.MP3Dict i file con i criteri impostati nella ExtractSEction del file.cfg
+        # - Estrae da gv.MP3.Dict i file con i criteri impostati nella ExtractSEction del file.cfg
         # - I file estratti verranno copiati nella directory specificata.
+        # linee = LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv, linee), fPRINT=True )
         # -----------------------------------------------------------------------------------------
     elif gv.CONFIG.ACTION == 'EXTRACT':
-        print "Numero canzoni su foglio Excel...........: %6d" % (SongNumberExcel)
-        linee = LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv, linee), fPRINT=True )
-        SongExtracted = len(linee)
-        print "Numero canzoni estracted...: %6d" % (SongExtracted)
-        # linee = Prj.mp3.extractSong(gv, linee)
-        # for line in linee:            print '...1', line
-        print
-        linee = LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv), fPRINT=True )
-        SongExtracted = len(linee)
-        print "Numero canzoni estracted...: %6d" % (SongExtracted)
-        # linee = Prj.mp3.extractSong(gv)
-        # for line in linee:            print '...2', line
+        songLIST = None
+        songLIST = gv.EXCEL.ROWS
+        (gv.MP3.mandatorySONGS, gv.MP3.randomSONGS) = Prj.mp3.extractSongs(gv, inpList=songLIST)
+
+        print "Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines)
+        print "Numero canzoni random    extracted.......: %6d" % (len(gv.MP3.randomSONGS))
+        print "Numero canzoni mandatory extracted.......: %6d" % (len(gv.MP3.mandatorySONGS))
+
+
+        # sMP3DestDir         =  gv.CONFIG.EXTRACT_SECTION['MP3 Destination Directory']
+        # sExtractOrder       =  gv.CONFIG.EXTRACT_SECTION['Extraction Order']
+        # lPunteggioRange     =  gv.CONFIG.EXTRACT_SECTION['Punteggi']
+        # bPrefixSong         =  gv.CONFIG.EXTRACT_SECTION['PrefixSong']     # Mette <N.Cognome-> dell'autore prima del titolo della canzone All'interno del folder Type
+        bRecomended         =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
+        if bRecomended:
+            Prj.mp3.copySongs(gv, gv.MP3.mandatorySONGS)
+
+
+        Prj.mp3.copySongs(gv, gv.MP3.randomSONGS)
+
 
 
 
@@ -103,3 +106,7 @@ def Main(gv, args):
 
 
 
+    # ###################################
+    # choice=LN.sys.getKeyboardInput(gv, "******* STOP Temporaneo *******", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
+    # LN.dict.printDictionaryTree(gv, gv.MP3.Dict, header="Excel File data [%s]" % calledBy(0), retCols='T', lTAB=' '*4, console=True)
+    # ###################################

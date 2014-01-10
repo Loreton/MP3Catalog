@@ -56,9 +56,15 @@ def initVariables(gv):
 
 
     # Specific Project Variables
-    gv.CONFIG                       = myClass()                     # Dati relativi alla configurazione del file project.cfg
+    gv.CONFIG                      = myClass()                     # Dati relativi alla configurazione del file project.cfg
+
     gv.EXCEL                       = myClass()                     # Dati relativi alla configurazione del file project.cfg
-    gv.MP3Dict                      = {}                            # Catalogo delle canzoni
+    gv.EXCEL.ROWS                  = []                            # Righe del foglio Excel
+
+    gv.MP3                         = myClass()                     # Base per il Catalogo
+    gv.MP3.Dict                    = {}                          # Catalogo delle canzoni
+    gv.MP3.randomSONGS             = []                               # Catalogo delle canzoni estratte
+    gv.MP3.mandatorySONGS          = []                               # Catalogo delle canzoni estratte di tipo Recomended/Mandatory
 
 
     # logger.debug('exiting - [called by:%s]' % (calledBy(1)))

@@ -10,14 +10,12 @@ import xlwt
 # =========================================================================
 # - Si aspetta una lista dove oni riga è a sua volta una lista
 # =========================================================================
-def writeCatalog(gv, outFileName):
+def writeCatalog(gv, outFileName, outLines):
     # Prj         = gv.Prj
     LN          = gv.LN
     logger      = gv.LN.logger
     calledBy    = gv.LN.sys.calledBy
     logger.debug('entry   - [called by:%s]' % (calledBy(1)))
-
-    linee = LN.dict.dictionaryToList(gv, gv.MP3Dict, MaxDeepLevel=99)
 
         # --------------------------------------------
         # - Creazione del file Excel di Output (in memoria)
@@ -32,7 +30,7 @@ def writeCatalog(gv, outFileName):
     startExcelCol = gv.CONFIG.START_EXCEL_COLUMN.upper()   # Colonna di partenza dati
     fld = gv.EXCEL.columnName
 
-    for row in linee:
+    for row in outLines:
         try:
                 # Assicurati che il SongSIZE sia INTEGER
             row[fld.SONG_SIZE]   = int(row[fld.SONG_SIZE])      # convert unicode to integer
@@ -73,11 +71,12 @@ def writeCatalog(gv, outFileName):
 
 
     WkBook.save(outFileName)
-    msg = "File: %s has been written!" % (outFileName)
+    msg = "File: %s has been written. Totla Songs = %d" % (outFileName, currRow)
     logger.info(msg)
     print msg
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
+
 
 
 

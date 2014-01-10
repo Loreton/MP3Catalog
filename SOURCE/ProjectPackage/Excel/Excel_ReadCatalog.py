@@ -11,7 +11,7 @@ import types
 # =======================================================================
 # ReadExcelCatalog()
 # =======================================================================
-def readCatalog(gv):
+def readCatalog(gv, MP3Dict):
     Prj         = gv.Prj
     LN          = gv.LN
     logger      = gv.LN.logger
@@ -100,7 +100,7 @@ def readCatalog(gv):
             rowValue = Prj.fmt.prepareRow(gv, rowValue)
 
             if len(songName) >= 2 and rowValue[fld.TYPE] != 'Titles':
-                Prj.mp3.insertSong(gv, gv.MP3Dict, rowValue)
+                Prj.mp3.insertSong(gv, MP3Dict, rowValue)
                 if rowValue[fld.TYPE] == 'UNKNOWN':
                     choice=LN.sys.getKeyboardInput(gv, "Vuoi continuare???", validKeys="Y", exitKey='XQ')
 
@@ -113,5 +113,4 @@ def readCatalog(gv):
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
 
-    return gv.MP3Dict
 

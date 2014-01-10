@@ -47,7 +47,7 @@ def readProjectConfig(gv, cfgFileName=None):
         gv.CONFIG.MAIN_SECTION              = configDB.MainSection
         gv.CONFIG.MERGE_SECTION             = configDB.MergeSection
         gv.CONFIG.EXTRACT_SECTION           = configDB.ExtractSection
-        gv.CONFIG.RANDOM_SECTION            = configDB.RandomSection
+        # gv.CONFIG.RANDOM_SECTION            = configDB.RandomSection
 
         mainSectID                          = configDB.MainSection
         gv.CONFIG.NOMI_COLONNE_ATTRIBUTI    = mainSectID.get('Nomi Colonne Attributi')

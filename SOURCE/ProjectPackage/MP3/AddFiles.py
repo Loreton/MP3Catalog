@@ -58,7 +58,7 @@ def addFiles(gv):
             row[fld.SONG_NAME] = os.path.splitext(row[fld.SONG_NAME])[0]
             row[fld.SONG_SIZE] = os.path.getsize(fName)
 
-            Prj.mp3.insertSong(gv, gv.MP3Dict, row)
+            Prj.mp3.insertSong(gv, gv.MP3.Dict, row)
             if row[fld.TYPE] in 'UNKNOWN EMPTY':
                 choice=LN.sys.getKeyboardInput(gv, "Vuoi continuare???", validKeys="Y", exitKey='XQ')
 
