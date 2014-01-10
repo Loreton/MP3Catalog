@@ -7,8 +7,7 @@ import sys, os
 
 
 # ############################################################################################
-# = Copia le canzoni con il FLAG di Mandatory
-# = RETURN: LIST[] delle canzoni rimaste.
+# = cerca di costruire il prefisso del nome della canzone utilizzando il nome Autore.
 # ############################################################################################
 def getAuthorName(gv, typeName, authorName):
     Prj         = gv.Prj
