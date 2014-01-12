@@ -35,6 +35,8 @@ def writeCatalog(gv, outFileName, outLines):
                 # Assicurati che il SongSIZE sia INTEGER
             row[fld.SONG_SIZE]   = int(row[fld.SONG_SIZE])      # convert unicode to integer
             row[fld.PUNTEGGIO]   = int(row[fld.PUNTEGGIO])      # convert unicode to integer
+            # row[fld.PUNTEGGIO]   = "=MP3_SommaSE(RC[2]:RC[11],RC[12]:RC[20],R4C8:R4C17)"
+            # row[fld.PUNTEGGIO]   = "=MP3_SommaSE(H8:Q8;R8:Z8;$H$4:$Q$4)"
 
         except:
             print "row[fld.SONG_SIZE]", type(row[fld.SONG_SIZE]), row[fld.SONG_SIZE]

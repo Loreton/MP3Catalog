@@ -10,6 +10,8 @@
 
 import os, sys
 from functools import partial
+import random
+
 
 ################################################################################
 # - M A I N
@@ -40,15 +42,15 @@ def Main(gv, args):
         # -------------------------------------------------------------------------------
         # - Leggiamo il file Excel di Input  e creiamo:
         #      il DB gv.MP3.Dict
-        #      la LIST gv.EXCEL.ROWS[]
         # -------------------------------------------------------------------------------
     Prj.excel.readCatalog(gv, gv.MP3.Dict)
-    gv.EXCEL.ROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
-    excelInitialLines = len(gv.EXCEL.ROWS)
+    # sec0 = LN.time.now()
+    songROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
+    excelInitialLines = len(songROWS)
+    # sec1 = LN.time.now()
+    # print "impiegato: %d secondi" % (sec1-sec0)
 
-# Numero canzoni su foglio Excel...........:     34
-# Numero canzoni random    extracted.......:     16
-# Numero canzoni mandatory extracted.......:     16
+
 
         # -----------------------------------------------------------------------------------------
         # - Legge il fileSystem ed integra gv.MP3.Dict con eventuali modifiche/aggiunte trovate.
@@ -57,11 +59,11 @@ def Main(gv, args):
     if gv.CONFIG.ACTION == 'MERGE':
         Prj.mp3.addFiles(gv)
         print "Converting dictionary to LIST..."
-        gv.EXCEL.ROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
+        songROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
         print "Adding filesystem song to Dictionary"
-        songsAfterAdd = len(gv.EXCEL.ROWS)
+        songsAfterAdd = len(songROWS)
         print "Writing Dictionary to excel file: %s" % (gv.CONFIG.EXCEL_OUTPUT_FILE)
-        Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE, gv.EXCEL.ROWS)
+        Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE, songROWS)
 
         print "Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines)
         print "Numero canzoni dopo Merge dal fileSystem.: %6d" % (songsAfterAdd)
@@ -73,30 +75,32 @@ def Main(gv, args):
         # linee = LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv, linee), fPRINT=True )
         # -----------------------------------------------------------------------------------------
     elif gv.CONFIG.ACTION == 'EXTRACT':
-        songLIST = None
-        gv.EXCEL.ROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
-        songLIST = gv.EXCEL.ROWS
-        (gv.MP3.mandatorySONGS, gv.MP3.randomSONGS) = Prj.mp3.extractSongs(gv, inpList=songLIST)
+        songROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
+        (gv.MP3.mandatorySONGS, gv.MP3.randomSONGS) = Prj.mp3.extractSongs(gv, inpList=songROWS)
 
         print "Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines)
         print "Numero canzoni mandatory extracted.......: %6d" % (len(gv.MP3.mandatorySONGS))
         print "Numero canzoni random    extracted.......: %6d" % (len(gv.MP3.randomSONGS))
 
 
-
-        # sMP3DestDir         =  gv.CONFIG.EXTRACT_SECTION['MP3 Destination Directory']
-        # sExtractOrder       =  gv.CONFIG.EXTRACT_SECTION['Extraction Order']
-        # lPunteggioRange     =  gv.CONFIG.EXTRACT_SECTION['Punteggi']
-        # bPrefixSong         =  gv.CONFIG.EXTRACT_SECTION['PrefixSong']     # Mette <N.Cognome-> dell'autore prima del titolo della canzone All'interno del folder Type
-        bRecomended         =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
+        bRecomended  =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
         if bRecomended:
-            writtenSongs = Prj.mp3.processSongs(gv, gv.MP3.mandatorySONGS)
-            print "[songs:%d] Mandatory songs have been written" % (writtenSongs)
+            writtenMandatorySongs = Prj.mp3.processSongs(gv, gv.MP3.mandatorySONGS)
+            print "[songs:%d] Mandatory songs have been written" % (writtenMandatorySongs)
             # ###################################
             choice=LN.sys.getKeyboardInput(gv, "* Mandatory songs have been written. Vuoi continuare? *", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
             # ###################################
 
-        Prj.mp3.processSongs(gv, gv.MP3.randomSONGS)
+        writtenRandomSongs = Prj.mp3.processSongs(gv, gv.MP3.randomSONGS)
+        print "[songs:%d] Mandatory songs have been written" % (writtenMandatorySongs)
+        print "[songs:%d] Random songs have been written" % (writtenRandomSongs)
+
+
+        # --- DEBUG
+        # if fPERCENT_DEBUG:
+            # percentDict = gv.CONFIG.EXTRACT_SECTION['PERCENT']
+            # LN.dict.printDictionaryTree(gv, percentDict, header="PERCENT dict data [%s]" % calledBy(0), retCols='TVL', lTAB=' '*4, console=True)
+
         xx = gv.CONFIG.FILE_MODULE
         xx.verifica()
 

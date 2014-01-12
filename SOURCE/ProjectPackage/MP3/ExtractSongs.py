@@ -29,6 +29,10 @@ def extractSongs(gv, inpList=None):
     randomSONGS     = []
     mandatorySONGS  = []
 
+
+            # verifichiamo che il TYPE sia uno di quelli richiesto
+    percCalcField = gv.CONFIG.EXTRACT_SECTION['FIELD_PERCENT_CALC_PERC']
+
         # - Estrazione da una LIST
     if inpList:
         nSongs = len(inpList)
@@ -37,16 +41,21 @@ def extractSongs(gv, inpList=None):
 
             isRECOMENDED    = True if line[fld.RECOMENDED] != '.' else False
             valore          = int(line[fld.PUNTEGGIO])
+            typeName        = line[fld.TYPE]
+            isValidTypeName = gv.CONFIG.EXTRACT_SECTION['PERCENT'][typeName][percCalcField]
 
-            if bRecomended and isRECOMENDED:
+            if isValidTypeName < 1:
+                continue
+
+            elif bRecomended and isRECOMENDED:
                 mandatorySONGS.append(line)
 
             elif (valore >= minPunteggio and valore <= maxPunteggio):
                 randomSONGS.append(line)
 
             else:
+                print "skipped....", line[:4]
                 pass
-                # print "skipped....", line
 
 
         # - Estrazione da un DICT
@@ -54,6 +63,11 @@ def extractSongs(gv, inpList=None):
         nSongs = 0          # counter
         fld = gv.EXCEL.songAttrName
         for typeName in gv.MP3.Dict.keys():
+                # verifichiamo che il TYPE sia uno di quelli richiesto
+            isValidTypeName = gv.CONFIG.EXTRACT_SECTION['PERCENT'][typeName][percCalcField]
+            if isValidTypeName < 1:
+                continue
+
             authorDICT = gv.MP3.Dict.get(typeName)
             for authorName in authorDICT.keys():
                 albumDICT = authorDICT.get(authorName)

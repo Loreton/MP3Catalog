@@ -16,7 +16,7 @@ def insertSong(gv, myDict, rowValue=[]):
     LN          = gv.LN
     logger      = gv.LN.logger
     calledBy    = gv.LN.sys.calledBy
-    logger.info('entered - [called by:%s]' % (calledBy(1)))
+    logger.debug('Entered - [called by:%s]' % (calledBy(1))) # non metterlo ad info
 
 
     fld         = gv.EXCEL.columnName

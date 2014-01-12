@@ -4,7 +4,7 @@
 #                                               by Loreto Notarantonio 2013, February
 # ######################################################################################
 import sys, os
-import unicodedata
+import unicodedata, random
 
 
 # ############################################################################################
@@ -18,20 +18,28 @@ def processSongs(gv, inpList=[]):
     calledBy    = gv.LN.sys.calledBy
     logger.debug('entry   - [called by:%s]' % (calledBy(1)))
 
-    configID            = gv.CONFIG.EXTRACT_SECTION
-    MP3baseDir          = gv.CONFIG.MP3_BASE_DIR
-    MP3baseDirLen       = len(MP3baseDir) + 1
 
     destMP3Dir         =  gv.CONFIG.EXTRACT_SECTION['MP3 Destination Directory']
     sExtractOrder       =  gv.CONFIG.EXTRACT_SECTION['Extraction Order']
-    bPrefixSong         =  gv.CONFIG.EXTRACT_SECTION['PrefixSong']     # Mette <N.Cognome-> dell'autore prima del titolo della canzone All'interno del folder Type
-    bRecomended         =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
-    fillDISK            =  gv.CONFIG.EXTRACT_SECTION['FILL_DISK']
+    # bPrefixSong         =  gv.CONFIG.EXTRACT_SECTION['PrefixSong']     # Mette <N.Cognome-> dell'autore prima del titolo della canzone All'interno del folder Type
+    # bRecomended         =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
+    # fillDISK            =  gv.CONFIG.EXTRACT_SECTION['FILL_DISK']
 
 
     fld = gv.EXCEL.columnName
     nSongs = 0
     writtenSongs = 0
+
+    # -----------------------------------------------
+    # - Shuffling
+    # -----------------------------------------------
+    # LN.file.writeListToFile(gv, destMP3Dir+os.sep+'1_beforeShuffle.txt', inpList, append=False)
+    # for line in inpList: print line
+    for xx in range(1,21):
+        random.shuffle( inpList )                             # Crea range-shuffled
+    # for line in inpList: print line
+    # LN.file.writeFile(gv, destMP3Dir+os.sep+'2_afterShuffle.txt', inpList, append=False)
+
     for index, song in enumerate(inpList):
         nSongs += 1
         if song == '': continue
@@ -43,14 +51,9 @@ def processSongs(gv, inpList=[]):
         authorName  = unicodedata.normalize('NFKD', song[fld.AUTHOR_NAME]).encode('ascii', 'ignore')
         songSize    = int(song[fld.SONG_SIZE])
 
-        # (typeName, authorName, albumName, songName) = LnSys.splitUnicode(file[baseDirLen:], os.sep)
         if not hasattr(gv.MP3.COPIED_BYTES, typeName):      gv.MP3.COPIED_BYTES[typeName]   = 0
         if not hasattr(gv.MP3.AUTHOR_SONGS, authorName):    gv.MP3.AUTHOR_SONGS[authorName] = 0
-        # try:
-        # except UnicodeEncodeError, why:
-        #     print song
-        #     print why
-        #     sys.exit()
+
 
         maxAuthorSongs = gv.CONFIG.EXTRACT_SECTION['MAX_AUTHORS_SONGS'].get(authorName, gv.CONFIG.EXTRACT_SECTION['MAX_AUTHORS_SONGS']['DEFAULT'])
 
@@ -66,9 +69,6 @@ def processSongs(gv, inpList=[]):
         if gv.CONFIG.EXTRACT_SECTION['FILL_DISK'] and gv.MP3.driveFreeSpace < (songSize+5*1024*1024):
             Prj.exit(gv, 4444,  "No more FreeSPACE [%d] is available on output drive." % (gv.MP3.driveFreeSpace))
 
-
-
-
             # ------------------------------------------------------------------------------
             # - TEST delle canzoni copiate per ogni Autore
             # ------------------------------------------------------------------------------
@@ -78,15 +78,10 @@ def processSongs(gv, inpList=[]):
 
 
             # ------------------------------------------------------------------------------
-            # - TEST dei numero di bytes da copiare
-            # ------------------------------------------------------------------------------
-        if bytesMaxForType < 1:
-            continue
-
-            # ------------------------------------------------------------------------------
             # - TEST dei bytes copiati per ogni TYPE
             # ------------------------------------------------------------------------------
-        # elif gv.MP3.COPIED_BYTES[typeName] > gv.CONFIG.EXTRACT_SECTION['PERCENT'][typeName][2]:
+        elif bytesMaxForType < 1:
+            continue
         elif bytesCopiedForType > bytesMaxForType:
             print "MAX BYTES [%d] has been reached for TYPE=%s" % (bytesMaxForType, typeName)
 
@@ -101,10 +96,12 @@ def processSongs(gv, inpList=[]):
                 gv.MP3.AUTHOR_SONGS[authorName]                     += 1
                 gv.MP3.driveFreeSpace                               -= songSize
                 writtenSongs                                        += 1
+                inpList[index] = ''
 
 
-        inpList[index] = ''
 
+    # LN.file.writeFile(gv, destMP3Dir+os.sep+'3_completed.txt', inpList, append=False)
+    for line in inpList: print line
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
     return writtenSongs
 

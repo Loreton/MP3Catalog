@@ -32,20 +32,20 @@ def addFiles(gv):
         dirName = dirName.strip()
         indent = 0
         searchPattern = '*.mp3'
-        logger.info("%s :Searching: [%s\\%s]" % (indent*' ', dirName, searchPattern))
-        print("%s :Searching: [%s\\%s]" % (indent*' ', dirName, searchPattern))
+        logger.console("%s :Searching: [%s\\%s]" % (indent*' ', dirName, searchPattern))
 
         (rCode, fileList) = LN.file.dirList(gv, dirName, pattern=searchPattern, what='FS', getFullPath=True)
-        if rCode: choice = LN.sys.getKeyboardInput(gv, "ERROR Reading directory %s (see LOG file)" % (dirName), validKeys='ENTER', exitKey='XQ', deepLevel=3, fDEBUG=False)
+        if rCode: 
+            choice = LN.sys.getKeyboardInput(gv, "ERROR Reading directory %s (see LOG file)" % (dirName), validKeys='ENTER', exitKey='XQ', deepLevel=3, fDEBUG=False)
 
         counter = 0
         nFiles = len(fileList)
         for fName in fileList:
             counter += 1
-            if counter%100 == 0: print "     %6d/%6d file has been processed" % (counter, nFiles)
+            if counter%100 == 0: logger.console("     %6d/%6d file has been processed" % (counter, nFiles) )
             indent = 4                                                 # per il display/log
             row = Prj.fmt.prepareRow(gv)
-            logger.debug("adding file: [%s]" % (fName))
+            logger.info("adding file: [%s]" % (fName))
 
             try:
                     # Estrazione dei campi del nome file
@@ -60,7 +60,7 @@ def addFiles(gv):
 
             Prj.mp3.insertSong(gv, gv.MP3.Dict, row)
             if row[fld.TYPE] in 'UNKNOWN EMPTY':
-                choice=LN.sys.getKeyboardInput(gv, "Vuoi continuare???", validKeys="Y", exitKey='XQ')
+                choice=LN.sys.getKeyboardInput(gv, "Field TYPE is EMPTY or UNKNOWN, Vuoi continuare???", validKeys="Y", exitKey='XQ')
 
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))

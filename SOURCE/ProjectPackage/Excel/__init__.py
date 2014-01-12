@@ -4,7 +4,7 @@
 # metodo 1
 # from setVariables import setVariables   as setVars
 
-from Excel_ReadCatalog              import readCatalog
-from Excel_WriteCatalog             import writeCatalog
-from Excel_PrepareHeader            import prepareHeader
+from ReadCatalog              import readCatalog
+from WriteCatalog             import writeCatalog
+from PrepareHeader            import prepareHeader
 

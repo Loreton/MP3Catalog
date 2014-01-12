@@ -28,7 +28,7 @@ def copySongToDest(gv, song):
     typeName    = song[fld.TYPE]
     authorName  = song[fld.AUTHOR_NAME]
     albumName   = song[fld.ALBUM_NAME]
-    songName    = song[fld.SONG_NAME]
+    songName    = song[fld.SONG_NAME].strip()
     songSize    = song[fld.SONG_SIZE]
 
         # --------------------------------------------
