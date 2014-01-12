@@ -147,11 +147,11 @@ def insertSong(gv, myDict, rowValue=[]):
         currAlbumPtr[songName] = rowValue[gv.EXCEL.startAttrIndex:]
 
         # ---------------------------------
-        # - Aggiornamento delle Rows Excel
+        # - Aggiornamento delle Rows Excel - NON VA BENE
         # ---------------------------------
-    songLine = [typeName, authorName, albumName, songName]
-    songLine.extend(rowValue[gv.EXCEL.startAttrIndex:])
-    gv.EXCEL.ROWS.append(songLine)
+    # songLine = [typeName, authorName, albumName, songName]
+    # songLine.extend(rowValue[gv.EXCEL.startAttrIndex:])
+    # gv.EXCEL.ROWS.append(songLine)
 
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))

@@ -8,6 +8,7 @@
 from InsertSong                     import insertSong
 from AddFiles                     import addFiles
 from ExtractSongs                     import extractSongs
-from CopySongs                     import copySongs
 from GetAuthorName                     import getAuthorName
+from ProcessSongs                     import processSongs
+from CopySongToDest                     import copySongToDest
 

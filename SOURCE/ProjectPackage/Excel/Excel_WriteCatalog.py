@@ -56,24 +56,24 @@ def writeCatalog(gv, outFileName, outLines):
 
 
         excelRrow = WkSheet.row(currRow)    # pointer alla riga
+
             # Inseriamo le colonne vuote per allineare il foglio
         dummyCols = ord(startExcelCol) - ord('A')
         while dummyCols:
             row.insert(0, '')               # inseriamo la colonna 0 - Vuota
             dummyCols -= 1
+
         col = 0
         for value in row:
             WkSheet.write(currRow, col, value)
             col += 1
-            # WkSheet.write(currRow, col, "Ciao sono Loreto")
-            # WkSheet.col(col).width = colsWidth
-            # excelRrow.write(col, value, style)
+
+        logger.console(row[:5])
 
 
     WkBook.save(outFileName)
     msg = "File: %s has been written. Totla Songs = %d" % (outFileName, currRow)
-    logger.info(msg)
-    print msg
+    logger.console(msg)
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
 

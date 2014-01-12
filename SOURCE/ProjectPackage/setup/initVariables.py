@@ -54,7 +54,9 @@ def initVariables(gv):
 
 
 
-    # Specific Project Variables
+        # ==================================================
+        # Specific Project Variables
+        # ==================================================
     gv.CONFIG                       = myClass()                     # Dati relativi alla configurazione del file project.cfg
 
     gv.EXCEL                        = myClass()                     # Dati relativi alla configurazione del file project.cfg
@@ -64,10 +66,16 @@ def initVariables(gv):
     gv.MP3.Dict                     = {}                          # Catalogo delle canzoni
     gv.MP3.randomSONGS              = []                               # Catalogo delle canzoni estratte
     gv.MP3.mandatorySONGS           = []                               # Catalogo delle canzoni estratte di tipo Recomended/Mandatory
+    gv.MP3.driveFreeSpace           = None                               # Numero di bytes disponibili sul drive di destinazione
 
     gv.MP3.TYPE                     = myClass()
-    gv.MP3.TYPE.BYTES               = {}                            # bytes copiati per tipologia di canzoni (ITALIANI, STRANIERI, ...)
+    gv.MP3.COPIED_BYTES             = {}                            # bytes copiati per tipologia di canzoni (ITALIANI, STRANIERI, ...)
+    gv.MP3.AUTHOR_SONGS             = {}                            # canzoni copiate per singolo autore
 
+    gv.EXCEL.columnName             = None
+    gv.EXCEL.songAttrName           = None
+    gv.EXCEL.maxCols                = 0                                       # Numero di colonne di una canzone
+    gv.EXCEL.startAttrIndex         = 0                  # indice di partenza degli attributi della canzone
 
 
     # logger.debug('exiting - [called by:%s]' % (calledBy(1)))

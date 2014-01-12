@@ -39,12 +39,11 @@ def readCatalog(gv, MP3Dict):
 
         for row in range(sheet.nrows):
             rowValue = LN.excel.getRow(gv, sheet, row, wb, wantTupleDate=False)
-
             dummyCols = ord(startExcelCol) - ord('A')                # Eliminiamo le colonne vuote da A fino allo startExcelCol
             while dummyCols:
                 del rowValue[0]
                 dummyCols -= 1
-                # print '^^^^ removing item', rowValue[0]
+
             logger.debug("rowValue: [%s]" % (rowValue))
 
                 # ------------------------------------------
@@ -95,7 +94,7 @@ def readCatalog(gv, MP3Dict):
 
             if prevAuth != rowValue[fld.AUTHOR_NAME]:
                 prevAuth = rowValue[fld.AUTHOR_NAME]
-                logger.info("reading author: [%s]" % (rowValue[fld.AUTHOR_NAME]) )
+                logger.console("reading author: [%s]" % (rowValue[fld.AUTHOR_NAME]) )
 
             rowValue = Prj.fmt.prepareRow(gv, rowValue)
 

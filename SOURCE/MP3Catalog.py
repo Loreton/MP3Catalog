@@ -43,8 +43,12 @@ def Main(gv, args):
         #      la LIST gv.EXCEL.ROWS[]
         # -------------------------------------------------------------------------------
     Prj.excel.readCatalog(gv, gv.MP3.Dict)
+    gv.EXCEL.ROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
     excelInitialLines = len(gv.EXCEL.ROWS)
 
+# Numero canzoni su foglio Excel...........:     34
+# Numero canzoni random    extracted.......:     16
+# Numero canzoni mandatory extracted.......:     16
 
         # -----------------------------------------------------------------------------------------
         # - Legge il fileSystem ed integra gv.MP3.Dict con eventuali modifiche/aggiunte trovate.
@@ -52,10 +56,15 @@ def Main(gv, args):
         # -----------------------------------------------------------------------------------------
     if gv.CONFIG.ACTION == 'MERGE':
         Prj.mp3.addFiles(gv)
-        Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE, outLines)
+        print "Converting dictionary to LIST..."
+        gv.EXCEL.ROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
+        print "Adding filesystem song to Dictionary"
+        songsAfterAdd = len(gv.EXCEL.ROWS)
+        print "Writing Dictionary to excel file: %s" % (gv.CONFIG.EXCEL_OUTPUT_FILE)
+        Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE, gv.EXCEL.ROWS)
 
         print "Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines)
-        print "Numero canzoni dopo Merge dal fileSystem.: %6d" % (totalSongs)
+        print "Numero canzoni dopo Merge dal fileSystem.: %6d" % (songsAfterAdd)
 
 
         # -----------------------------------------------------------------------------------------
@@ -65,20 +74,15 @@ def Main(gv, args):
         # -----------------------------------------------------------------------------------------
     elif gv.CONFIG.ACTION == 'EXTRACT':
         songLIST = None
+        gv.EXCEL.ROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
         songLIST = gv.EXCEL.ROWS
         (gv.MP3.mandatorySONGS, gv.MP3.randomSONGS) = Prj.mp3.extractSongs(gv, inpList=songLIST)
 
         print "Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines)
-        print "Numero canzoni random    extracted.......: %6d" % (len(gv.MP3.randomSONGS))
         print "Numero canzoni mandatory extracted.......: %6d" % (len(gv.MP3.mandatorySONGS))
+        print "Numero canzoni random    extracted.......: %6d" % (len(gv.MP3.randomSONGS))
 
 
-        # -----------------------------------------------------------
-        # - TEST del FREE Disk SPACE e lo salviamo per verificarlo
-        # -----------------------------------------------------------
-        gv.MP3.driveFreeSpace = LN.file.driveFreeSpace(destFilePath, 'Bytes')
-        if gv.MP3.driveFreeSpace < gv.CONFIG.EXTRACT_SECTION['MAX_OUT_DIR_SIZE']+5*1024*1024:
-            Prj.exit(gv, 999, "Non c'è spazio sufficiente per copiare i file richiesti")
 
         # sMP3DestDir         =  gv.CONFIG.EXTRACT_SECTION['MP3 Destination Directory']
         # sExtractOrder       =  gv.CONFIG.EXTRACT_SECTION['Extraction Order']
@@ -86,10 +90,15 @@ def Main(gv, args):
         # bPrefixSong         =  gv.CONFIG.EXTRACT_SECTION['PrefixSong']     # Mette <N.Cognome-> dell'autore prima del titolo della canzone All'interno del folder Type
         bRecomended         =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
         if bRecomended:
-            Prj.mp3.copySongs(gv, gv.MP3.mandatorySONGS)
+            writtenSongs = Prj.mp3.processSongs(gv, gv.MP3.mandatorySONGS)
+            print "[songs:%d] Mandatory songs have been written" % (writtenSongs)
+            # ###################################
+            choice=LN.sys.getKeyboardInput(gv, "* Mandatory songs have been written. Vuoi continuare? *", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
+            # ###################################
 
-
-        Prj.mp3.copySongs(gv, gv.MP3.randomSONGS)
+        Prj.mp3.processSongs(gv, gv.MP3.randomSONGS)
+        xx = gv.CONFIG.FILE_MODULE
+        xx.verifica()
 
 
 
@@ -109,7 +118,7 @@ def Main(gv, args):
 
 
     return
-    Prj.exit(gv, 9999, "Uscita Temporanea - [called by: %s] " % (calledBy(1)))
+    Prj.exit(gv, 0, "Uscita Temporanea - [called by: %s] " % (calledBy(1)))
 
 
 
