@@ -13,7 +13,7 @@ class myClass():    pass
 def initVariables(gv):
     # logger   = gv.LN.logger
     # calledBy = gv.LN.sys.calledBy
-    # logger.debug('entered - [called by:%s]' % (calledBy(1)))
+    # logger.info('entered - [called by:%s]' % (calledBy(1)))
 
     gv.STATUS                       = myClass()               # lo aggangiamo come sotto-insieme del gv
     gv.STATUS.DIR_NOT_FOUND         = 'DIR NOT FOUND'
