@@ -22,6 +22,7 @@ import random
 def Main(gv, args):
     LN          = gv.LN
     Prj         = gv.Prj
+    logger      = gv.LN.logger
     calledBy    = gv.LN.sys.calledBy
 
         # --------------------------------------------------------------------------
@@ -29,15 +30,12 @@ def Main(gv, args):
         # --------------------------------------------------------------------------
     options = Prj.setup.parseInput(gv)
     fDEBUG = gv.INP_PARAM.fDEBUG
-    # if fDEBUG: LN.dict.printDictionaryTree(gv, gv, header="INPUT Parameters [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
-
-
-
 
         # =======================================
         # - Lettura del file di configurazione
         # =======================================
     cfgDICT    = Prj.setup.readProjectConfig(gv, cfgFileName=gv.INP_PARAM.mainCfgFile)
+    cfgModule  = gv.CONFIG.FILE_MODULE
 
         # -------------------------------------------------------------------------------
         # - Leggiamo il file Excel di Input  e creiamo:
@@ -45,8 +43,8 @@ def Main(gv, args):
         # -------------------------------------------------------------------------------
     Prj.excel.readCatalog(gv, gv.MP3.Dict)
     # sec0 = LN.time.now()
-    songROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
-    excelInitialLines = len(songROWS)
+    songLIST = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
+    excelInitialLines = len(songLIST)
     # sec1 = LN.time.now()
     # print "impiegato: %d secondi" % (sec1-sec0)
 
@@ -57,16 +55,17 @@ def Main(gv, args):
         # - Crea infine il file di Output in formato excel.
         # -----------------------------------------------------------------------------------------
     if gv.CONFIG.ACTION == 'MERGE':
+        logger.console("Adding filesystem song to Dictionary")
         Prj.mp3.addFiles(gv)
-        print "Converting dictionary to LIST..."
-        songROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
-        print "Adding filesystem song to Dictionary"
-        songsAfterAdd = len(songROWS)
-        print "Writing Dictionary to excel file: %s" % (gv.CONFIG.EXCEL_OUTPUT_FILE)
-        Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE, songROWS)
 
-        print "Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines)
-        print "Numero canzoni dopo Merge dal fileSystem.: %6d" % (songsAfterAdd)
+        logger.console("Converting dictionary to LIST...")
+        songLIST = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
+
+        logger.console("Writing Dictionary to excel file: %s" % (gv.CONFIG.EXCEL_OUTPUT_FILE))
+        nLines = Prj.excel.writeCatalog(gv, gv.CONFIG.EXCEL_OUTPUT_FILE, songLIST)
+
+        logger.console("Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines))
+        logger.console("Numero canzoni dopo Merge dal fileSystem.: %6d" % (nLines))
 
 
         # -----------------------------------------------------------------------------------------
@@ -75,25 +74,36 @@ def Main(gv, args):
         # linee = LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv, linee), fPRINT=True )
         # -----------------------------------------------------------------------------------------
     elif gv.CONFIG.ACTION == 'EXTRACT':
-        songROWS = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
-        (gv.MP3.mandatorySONGS, gv.MP3.randomSONGS) = Prj.mp3.extractSongs(gv, inpList=songROWS)
+        songLIST = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
+        (gv.MP3.mandatorySONGS, gv.MP3.randomSONGS) = Prj.mp3.extractSongs(gv, inpList=songLIST)
 
-        print "Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines)
-        print "Numero canzoni mandatory extracted.......: %6d" % (len(gv.MP3.mandatorySONGS))
-        print "Numero canzoni random    extracted.......: %6d" % (len(gv.MP3.randomSONGS))
+        logger.console("Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines))
+        logger.console("Numero canzoni mandatory extracted.......: %6d" % (len(gv.MP3.mandatorySONGS)))
+        logger.console("Numero canzoni random    extracted.......: %6d" % (len(gv.MP3.randomSONGS)))
 
 
         bRecomended  =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
         if bRecomended:
-            writtenMandatorySongs = Prj.mp3.processSongs(gv, gv.MP3.mandatorySONGS)
-            print "[songs:%d] Mandatory songs have been written" % (writtenMandatorySongs)
-            # ###################################
+            writtenMandatorySongs, restLines = Prj.mp3.processSongs(gv, gv.MP3.mandatorySONGS)
+            logger.console("[%d] mandatory songs have been written" % (writtenMandatorySongs))
             choice=LN.sys.getKeyboardInput(gv, "* Mandatory songs have been written. Vuoi continuare? *", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
-            # ###################################
 
-        writtenRandomSongs = Prj.mp3.processSongs(gv, gv.MP3.randomSONGS)
-        print "[songs:%d] Mandatory songs have been written" % (writtenMandatorySongs)
-        print "[songs:%d] Random songs have been written" % (writtenRandomSongs)
+
+
+        writtenRandomSongs, restLines = Prj.mp3.processSongs(gv, gv.MP3.randomSONGS)
+        logger.console("[%5d] Mandatory songs have been written"   % (writtenMandatorySongs))
+        logger.console("[%5d] Random    songs have been written"   % (writtenRandomSongs))
+
+
+        if restLines > 0:
+            cfgModule.verifica()
+            logger.console("Sono rimaste %d canzoni") % (restLines)
+            choice=LN.sys.getKeyboardInput(gv, "* Vuoi continuare? *", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
+        else:
+            logger.console("NON sono presenti ulteriori canzoni. Processo completato.")
+
+
+        cfgModule.verifica()
 
 
         # --- DEBUG
@@ -101,8 +111,8 @@ def Main(gv, args):
             # percentDict = gv.CONFIG.EXTRACT_SECTION['PERCENT']
             # LN.dict.printDictionaryTree(gv, percentDict, header="PERCENT dict data [%s]" % calledBy(0), retCols='TVL', lTAB=' '*4, console=True)
 
-        xx = gv.CONFIG.FILE_MODULE
-        xx.verifica()
+
+
 
 
 

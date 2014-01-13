@@ -18,7 +18,6 @@ def extractSongs(gv, inpList=None):
     calledBy    = gv.LN.sys.calledBy
     logger.debug('entry   - [called by:%s]' % (calledBy(1)))
 
-
     lPunteggioRange     =  gv.CONFIG.EXTRACT_SECTION['Punteggi']
     bRecomended         =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
 
@@ -54,7 +53,7 @@ def extractSongs(gv, inpList=None):
                 randomSONGS.append(line)
 
             else:
-                print "skipped....", line[:4]
+                print "[%s] - skipped.... %s" % (calledBy(1), line[:4])
                 pass
 
 

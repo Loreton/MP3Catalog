@@ -19,6 +19,13 @@ def processSongs(gv, inpList=[]):
     logger.debug('entry   - [called by:%s]' % (calledBy(1)))
 
 
+    percentREQ          = gv.CONFIG.EXTRACT_SECTION['FIELD_PERCENT_REQ_PERC']
+    percentCALC         = gv.CONFIG.EXTRACT_SECTION['FIELD_PERCENT_CALC_PERC']
+    percentMAXBYTES     = gv.CONFIG.EXTRACT_SECTION['FIELD_PERCENT_MAXBYTES']
+    percentCOPIEDBYTES  = gv.CONFIG.EXTRACT_SECTION['FIELD_PERCENT_COPIEDBYTES']
+    percentREAL         = gv.CONFIG.EXTRACT_SECTION['FIELD_PERCENT_REAL_PERC']
+
+
     destMP3Dir         =  gv.CONFIG.EXTRACT_SECTION['MP3 Destination Directory']
     sExtractOrder       =  gv.CONFIG.EXTRACT_SECTION['Extraction Order']
     # bPrefixSong         =  gv.CONFIG.EXTRACT_SECTION['PrefixSong']     # Mette <N.Cognome-> dell'autore prima del titolo della canzone All'interno del folder Type
@@ -51,29 +58,29 @@ def processSongs(gv, inpList=[]):
         authorName  = unicodedata.normalize('NFKD', song[fld.AUTHOR_NAME]).encode('ascii', 'ignore')
         songSize    = int(song[fld.SONG_SIZE])
 
-        if not hasattr(gv.MP3.COPIED_BYTES, typeName):      gv.MP3.COPIED_BYTES[typeName]   = 0
-        if not hasattr(gv.MP3.AUTHOR_SONGS, authorName):    gv.MP3.AUTHOR_SONGS[authorName] = 0
+        if not hasattr(gv.COPY.COPIED_BYTES, typeName):      gv.COPY.COPIED_BYTES[typeName]   = 0
+        if not hasattr(gv.COPY.AUTHOR_SONGS, authorName):    gv.COPY.AUTHOR_SONGS[authorName] = 0
 
-
+        percentDICT = gv.CONFIG.EXTRACT_SECTION['PERCENT']
         maxAuthorSongs = gv.CONFIG.EXTRACT_SECTION['MAX_AUTHORS_SONGS'].get(authorName, gv.CONFIG.EXTRACT_SECTION['MAX_AUTHORS_SONGS']['DEFAULT'])
 
-        bytesMaxForType     = gv.CONFIG.EXTRACT_SECTION['PERCENT'][typeName][2]
-        bytesCopiedForType  = gv.CONFIG.EXTRACT_SECTION['PERCENT'][typeName][3]
+        bytesMaxForType     = percentDICT[typeName][percentMAXBYTES]
+        bytesCopiedForType  = percentDICT[typeName][percentCOPIEDBYTES]
 
             # ------------------------------------------------------------------------------
             # - TEST del FREE Disk SPACE
             # - E' stato inserito con un IF  altrimenti rallentava molto su USB drive
             # - Consideriamo uno spazio libero = SongSize + 5MB
             # ------------------------------------------------------------------------------
-        if nSongs%100 == 0 or gv.MP3.driveFreeSpace==None: gv.MP3.driveFreeSpace = LN.file.driveSpace(gv, destMP3Dir, 'Bytes')
-        if gv.CONFIG.EXTRACT_SECTION['FILL_DISK'] and gv.MP3.driveFreeSpace < (songSize+5*1024*1024):
-            Prj.exit(gv, 4444,  "No more FreeSPACE [%d] is available on output drive." % (gv.MP3.driveFreeSpace))
+        if nSongs%100 == 0 or gv.COPY.driveFreeSpace==None: gv.COPY.driveFreeSpace = LN.file.driveSpace(gv, destMP3Dir, 'Bytes')
+        if gv.CONFIG.EXTRACT_SECTION['FILL_DISK'] and gv.COPY.driveFreeSpace < (songSize+5*1024*1024):
+            Prj.exit(gv, 4444,  "No more FreeSPACE [%d] is available on output drive." % (gv.COPY.driveFreeSpace))
 
             # ------------------------------------------------------------------------------
             # - TEST delle canzoni copiate per ogni Autore
             # ------------------------------------------------------------------------------
-        elif gv.MP3.AUTHOR_SONGS[authorName] > maxAuthorSongs:
-            print "MAX SONGs [%d] has been reached for Author=" % (gv.MP3.AUTHOR_SONGS[authorName], authorName)
+        elif gv.COPY.AUTHOR_SONGS[authorName] > maxAuthorSongs:
+            logger.console("MAX SONGs [%d] has been reached for Author=" % (gv.COPY.AUTHOR_SONGS[authorName], authorName))
             continue
 
 
@@ -83,7 +90,7 @@ def processSongs(gv, inpList=[]):
         elif bytesMaxForType < 1:
             continue
         elif bytesCopiedForType > bytesMaxForType:
-            print "MAX BYTES [%d] has been reached for TYPE=%s" % (bytesMaxForType, typeName)
+            logger.console("MAX BYTES [%d] has been reached for TYPE=%s" % (bytesMaxForType, typeName))
 
             # ------------------------------------------------------------------------------
             # - Copiamo la canzone
@@ -91,18 +98,21 @@ def processSongs(gv, inpList=[]):
         else:
             rCode = Prj.mp3.copySongToDest(gv, song)
             if rCode:
-                gv.MP3.COPIED_BYTES[typeName]                       += songSize
-                gv.CONFIG.EXTRACT_SECTION['PERCENT'][typeName][3]   += songSize
-                gv.MP3.AUTHOR_SONGS[authorName]                     += 1
-                gv.MP3.driveFreeSpace                               -= songSize
-                writtenSongs                                        += 1
-                inpList[index] = ''
+                gv.COPY.COPIED_BYTES[typeName]              += songSize
+                percentDICT[typeName][percentCOPIEDBYTES]   += songSize
+                gv.COPY.AUTHOR_SONGS[authorName]            += 1
+                gv.COPY.driveFreeSpace                      -= songSize
+                writtenSongs                                += 1
+                inpList[index]                              = ''
 
 
 
+    # Compressione della LIST
+    inpList = [item for item in inpList if item != '']
     # LN.file.writeFile(gv, destMP3Dir+os.sep+'3_completed.txt', inpList, append=False)
-    for line in inpList: print line
+    for line in inpList: print "AVANZI____:", os.path.sep.join(line[:4])
+
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
-    return writtenSongs
+    return writtenSongs, len(inpList)
 
 

@@ -28,7 +28,7 @@ def copySongToDest(gv, song):
     typeName    = song[fld.TYPE]
     authorName  = song[fld.AUTHOR_NAME]
     albumName   = song[fld.ALBUM_NAME]
-    songName    = song[fld.SONG_NAME].strip()
+    songName    = song[fld.SONG_NAME]
     songSize    = song[fld.SONG_SIZE]
 
         # --------------------------------------------
@@ -39,7 +39,7 @@ def copySongToDest(gv, song):
     sourceFullPathName  = os.sep.join([sourceFilePath, sourceFileName])
 
     if not os.path.isfile(sourceFullPathName):
-        print "File NOT FOUND: %s" % (sourceFullPathName)
+        logger.console("File NOT FOUND: %s" % (sourceFullPathName))
         return False
 
         # --------------------------------------------
@@ -54,9 +54,10 @@ def copySongToDest(gv, song):
         destFileName  = "%s.mp3" % (songName)
 
     destFullPathName = os.sep.join([destFilePath, destFileName])
-    print "\ncopying file:"
-    print "     %s" % (sourceFullPathName)
-    print "     %s" % (destFullPathName)
+    logger.console("")
+    logger.console("copying file:")
+    logger.console("     %s" % (sourceFullPathName))
+    logger.console("     %s" % (destFullPathName))
 
     rCode = LN.file.copyFile(gv, srcPATH=sourceFilePath, dstPATH=destFilePath, srcFile=sourceFileName,  dstFile=destFileName, createDir=True, exitOnError=True)
 

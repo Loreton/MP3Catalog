@@ -28,8 +28,8 @@ def readProjectConfig(gv, cfgFileName=None):
     (cfgMODULE, cfgDICT, cfgPATH, cfgFULLPATH) =  LN.dict.loadDictFile(gv, cfgFileName, moduleName=None, fDEBUG=False)
 
 
-    gv.CONFIG.FILE_MODULE = cfgMODULE    # SAVE module pointer
-    gv.CONFIG.FILE_DICT = cfgDICT       # SAVE module pointer
+    gv.CONFIG.FILE_MODULE   = cfgMODULE    # SAVE module pointer
+    gv.CONFIG.FILE_DICT     = cfgDICT       # SAVE module pointer
 
         # --------------------------------------------------------
         # - Pointers delle sezioni di interesse

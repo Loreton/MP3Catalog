@@ -35,7 +35,7 @@ def addFiles(gv):
         logger.console("%s :Searching: [%s\\%s]" % (indent*' ', dirName, searchPattern))
 
         (rCode, fileList) = LN.file.dirList(gv, dirName, pattern=searchPattern, what='FS', getFullPath=True)
-        if rCode: 
+        if rCode:
             choice = LN.sys.getKeyboardInput(gv, "ERROR Reading directory %s (see LOG file)" % (dirName), validKeys='ENTER', exitKey='XQ', deepLevel=3, fDEBUG=False)
 
         counter = 0

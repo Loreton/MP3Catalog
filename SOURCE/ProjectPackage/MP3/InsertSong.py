@@ -78,14 +78,14 @@ def insertSong(gv, myDict, rowValue=[]):
 
             if len(fileList) == 0:              # non sono stati trovati file alternativi
                 logger.debug("%15s: Non sono state trovate canzoni con il nome: %s" % (INDENT, FullSongPath))
-                songName = songName + '__NO_MATCH_ON_DISK___'
+                songName = songName + '__NO_MATCH_ON_DISK___%s' % (calledBy(1))
 
             elif len(fileList) == 1:              # e' stato trovato un solo file alternativo
                 msg1 = "%15s: -Canzone.........: %s" % (INDENT, FullSongPath)
                 msg2 = "%15s: -sostituita con..: %s" % (INDENT, fileList[0])
-                logger.debug("%15s: La canzone:%s e' stata sostituita da:%s" % (INDENT, FullSongPath, fileList[0]))
-                print msg1
-                print msg2
+                # logger.debug("%15s: La canzone:%s e' stata sostituita da:%s" % (INDENT, FullSongPath, fileList[0]))
+                logger.console( msg1)
+                logger.console( msg2)
                 newFile = fileList[0]
 
             else:                               # sono stati trovati diversi file alternativi

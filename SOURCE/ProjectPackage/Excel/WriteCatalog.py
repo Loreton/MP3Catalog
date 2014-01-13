@@ -74,11 +74,10 @@ def writeCatalog(gv, outFileName, outLines):
 
 
     WkBook.save(outFileName)
-    msg = "File: %s has been written. Totla Songs = %d" % (outFileName, currRow)
-    logger.console(msg)
+    logger.console("File: %s has been written. Totla Songs = %d" % (outFileName, currRow))
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
-
+    return currRow
 
 
 

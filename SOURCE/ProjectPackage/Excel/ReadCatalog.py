@@ -74,6 +74,11 @@ def readCatalog(gv, MP3Dict):
                 print rowValue
                 Prj.exit(gv, 11, "Il numero di colonne del file non puo' essere inferiore alle colonne previste. [nCols:%d]<[fld.SONG_SIZE:%d]" % (nCols, fld.SONG_SIZE) )
 
+                # Per essere certi di non avere sorprese
+            rowValue[fld.TYPE]           = rowValue[fld.TYPE].strip()
+            rowValue[fld.AUTHOR_NAME]    = rowValue[fld.AUTHOR_NAME].strip()
+            rowValue[fld.ALBUM_NAME]     = rowValue[fld.ALBUM_NAME].strip()
+            rowValue[fld.SONG_NAME]      = rowValue[fld.SONG_NAME].strip()
 
             songName    = rowValue[fld.SONG_NAME]
 
