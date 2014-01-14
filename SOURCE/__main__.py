@@ -155,7 +155,7 @@ if __name__ == "__main__":
 
     MP3Catalog.Main(gv, sys.argv)
 
-    choice = LN.sys.getKeyboardInput(gv, "Procedura completata con successo - Press ENTER to exit.", validKeys='ENTER', exitKey='X')
+    # choice = LN.sys.getKeyboardInput(gv, "Procedura completata con successo - Press ENTER to exit.", validKeys='ENTER', exitKey='X')
 
-    Prj.exit(gv, 9000, "Procedura completata con successo - [called by: %s] " % (calledBy(0)))
+    # Prj.exit(gv, 9000, "Procedura completata con successo - [called by: %s] " % (calledBy(0)))
 

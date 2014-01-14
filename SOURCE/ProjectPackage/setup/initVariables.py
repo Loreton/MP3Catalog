@@ -62,6 +62,7 @@ def initVariables(gv):
     gv.COPY.driveFreeSpace           = None                         # Numero di bytes disponibili sul drive di destinazione
     gv.COPY.COPIED_BYTES             = {}                            # bytes copiati per tipologia di canzoni (ITALIANI, STRANIERI, ...)
     gv.COPY.AUTHOR_SONGS             = {}                            # canzoni copiate per singolo autore --> authorName = [True/False, nSongs]
+    gv.COPY.IGNORE_CRITERIA          = False                         # True: ne caso si deve ignorare i criteria di Target. Utile se avanzano canzoni
 
     gv.COPY.randomSONGS              = 0                            # Numero di canzoni Random disponibili
     gv.COPY.randomSONGS_remaining    = 0                            # Numero di canzoni Random disponibili

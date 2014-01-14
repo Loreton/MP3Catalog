@@ -53,10 +53,10 @@ def readProjectConfig(gv, cfgFileName=None):
         gv.CONFIG.NOMI_COLONNE_ATTRIBUTI    = mainSectID.get('Nomi Colonne Attributi')
         gv.CONFIG.NOMI_COLONNE_PRIMARIE     = mainSectID.get('Nomi Colonne Primarie')
 
-        gv.CONFIG.START_EXCEL_COLUMN        = mainSectID.get('START EXCEL COLUMN')          # Prima colonna valida
-        gv.CONFIG.COLUMNS_NAME_ROW          = mainSectID.get('COLUMNS NAME ROW')-1            # riga che contiene i nomi delle colonne (considerare che Excel parte da Row=0)
-        gv.CONFIG.FIRST_SONG_ROW            = mainSectID.get('FIRST SONG ROW')-1              # riga dove iniziano i dati (considerare che Excel parte da Row=0)
-        gv.CONFIG.LAST_SONG_ROW             = mainSectID.get('LAST SONG ROW')               # riga dove finiscono i dati
+        gv.CONFIG.START_EXCEL_COLUMN        = mainSectID.get('EXCEL_START_COLUMN')          # Prima colonna valida
+        gv.CONFIG.COLUMNS_NAME_ROW          = mainSectID.get('EXCEL_COLUMNS_NAMES_ROW')-1            # riga che contiene i nomi delle colonne (considerare che Excel parte da Row=0)
+        gv.CONFIG.FIRST_SONG_ROW            = mainSectID.get('EXCEL_FIRST_SONG_ROW')-1              # riga dove iniziano i dati (considerare che Excel parte da Row=0)
+        gv.CONFIG.LAST_SONG_ROW             = mainSectID.get('EXCEL_LAST_SONG_ROW')               # riga dove finiscono i dati
 
         gv.CONFIG.ACTION                    = mainSectID.get('ACTION').upper()
 

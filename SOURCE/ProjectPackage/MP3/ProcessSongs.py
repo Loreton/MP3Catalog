@@ -40,13 +40,13 @@ def processSongs(gv, inpList=[]):
     # -----------------------------------------------
     # - Shuffling
     # -----------------------------------------------
-    # LN.file.writeListToFile(gv, destMP3Dir+os.sep+'1_beforeShuffle.txt', inpList, append=False)
-    # for line in inpList: print line
     for xx in range(1,21):
         random.shuffle( inpList )                             # Crea range-shuffled
-    # for line in inpList: print line
-    # LN.file.writeFile(gv, destMP3Dir+os.sep+'2_afterShuffle.txt', inpList, append=False)
 
+
+    # -----------------------------------------------
+    # - Processing
+    # -----------------------------------------------
     for index, song in enumerate(inpList):
         nSongs += 1
         if song == '': continue
@@ -79,52 +79,56 @@ def processSongs(gv, inpList=[]):
         if gv.CONFIG.EXTRACT_SECTION['FILL_DISK'] and gv.COPY.driveFreeSpace < (songSize+5*1024*1024):
             Prj.exit(gv, 4444,  "No more FreeSPACE [%d] is available on output drive." % (gv.COPY.driveFreeSpace))
 
-            # ------------------------------------------------------------------------------
-            # - TEST delle canzoni copiate per ogni Autore
-            # - gv.COPY.AUTHOR_SONGS[authorName][0] - True indica che è stato raggiunto il massimo
-            # - gv.COPY.AUTHOR_SONGS[authorName][1] - Numero di canzoni copiate
-            # ------------------------------------------------------------------------------
-        elif gv.COPY.AUTHOR_SONGS[authorName][0]: # E' già stato raggiunto il massimo?
-            continue
-        elif gv.COPY.AUTHOR_SONGS[authorName][1] >= maxAuthorSongs:
-            gv.COPY.AUTHOR_SONGS[authorName][0] = True
-            logger.console(LN.cRED + "MAX SONGs [%d] has been reached for Author:[%s]" % (gv.COPY.AUTHOR_SONGS[authorName][1], authorName))
-            continue
 
 
-            # ------------------------------------------------------------------------------
-            # - TEST dei bytes copiati per ogni TYPE
-            # ------------------------------------------------------------------------------
-        elif bytesMaxForType < 1:
-            continue
+        if gv.COPY.IGNORE_CRITERIA == False:
+                # ------------------------------------------------------------------------------
+                # - TEST delle canzoni copiate per ogni Autore
+                # - gv.COPY.AUTHOR_SONGS[authorName][0] - True indica che è stato raggiunto il massimo
+                # - gv.COPY.AUTHOR_SONGS[authorName][1] - Numero di canzoni copiate
+                # ------------------------------------------------------------------------------
+            if gv.COPY.AUTHOR_SONGS[authorName][0]: # E' già stato raggiunto il massimo?
+                continue
+            elif gv.COPY.AUTHOR_SONGS[authorName][1] >= maxAuthorSongs:
+                gv.COPY.AUTHOR_SONGS[authorName][0] = True
+                logger.console(LN.cRED + "MAX SONGs [%d] has been reached for Author:[%s]" % (gv.COPY.AUTHOR_SONGS[authorName][1], authorName))
+                continue
 
-        elif bytesCopiedForType >= bytesMaxForType:
-            percentDICT[typeName][percentMAXBYTES] = 0
-            logger.console(LN.cRED + "MAX BYTES [%d] has been reached for TYPE=%s" % (bytesMaxForType, typeName))
-            continue
 
-            # ------------------------------------------------------------------------------
-            # - Copiamo la canzone
-            # ------------------------------------------------------------------------------
-        else:
-            rCode = Prj.mp3.copySongToDest(gv, song)
-            if rCode:
-                gv.COPY.COPIED_BYTES[typeName]              += songSize
-                percentDICT[typeName][percentCOPIEDBYTES]   += songSize
-                gv.COPY.AUTHOR_SONGS[authorName][1]         += 1
-                gv.COPY.driveFreeSpace                      -= songSize
-                writtenSongs                                += 1
-                inpList[index]                              = ''
+                # ------------------------------------------------------------------------------
+                # - TEST dei bytes copiati per ogni TYPE
+                # ------------------------------------------------------------------------------
+            elif bytesMaxForType < 1:
+                continue
+
+            elif bytesCopiedForType >= bytesMaxForType:
+                percentDICT[typeName][percentMAXBYTES] = 0
+                logger.console(LN.cRED + "MAX BYTES [%d] has been reached for TYPE=%s" % (bytesMaxForType, typeName))
+                continue
 
 
 
-    # Compressione della LIST
+
+        # ------------------------------------------------------------------------------
+        # - Copiamo la canzone
+        # ------------------------------------------------------------------------------
+        rCode = Prj.mp3.copySongToDest(gv, song)
+        if rCode:
+            gv.COPY.COPIED_BYTES[typeName]              += songSize
+            percentDICT[typeName][percentCOPIEDBYTES]   += songSize
+            gv.COPY.AUTHOR_SONGS[authorName][1]         += 1
+            gv.COPY.driveFreeSpace                      -= songSize
+            writtenSongs                                += 1
+            inpList[index]                              = ''
+
+
+
+        # Compressione della LIST
     inpList = [item for item in inpList if item != '']
+
     # LN.file.writeFile(gv, destMP3Dir+os.sep+'3_completed.txt', inpList, append=False)
-    # for line in inpList: print "AVANZI____: %-90s %5d %s" % (os.path.sep.join(line[:4]), int(line[4]), line[5])
     for line in inpList: print "AVANZI____: %-90s" % (os.path.sep.join(line[:4])), line[4], line[5]
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
     return writtenSongs, len(inpList)
-
 
