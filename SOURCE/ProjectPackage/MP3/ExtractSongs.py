@@ -53,7 +53,7 @@ def extractSongs(gv, inpList=None):
                 randomSONGS.append(line)
 
             else:
-                print "[%s] - skipped.... %s" % (calledBy(1), line[:4])
+                print "[%s] - out of scope - skipped.... %s" % (calledBy(0), line[:4])
                 pass
 
 

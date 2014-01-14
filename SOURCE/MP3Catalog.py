@@ -74,37 +74,67 @@ def Main(gv, args):
         # linee = LN.time.funcElapsed(partial(Prj.mp3.extractSong, gv, linee), fPRINT=True )
         # -----------------------------------------------------------------------------------------
     elif gv.CONFIG.ACTION == 'EXTRACT':
+
+            # -------------------------------
+            # - Estrazione Canzoni
+            # -------------------------------
         songLIST = LN.dict.dictionaryToList(gv, gv.MP3.Dict, MaxDeepLevel=99)
-        (gv.MP3.mandatorySONGS, gv.MP3.randomSONGS) = Prj.mp3.extractSongs(gv, inpList=songLIST)
+        (mandatorySongsLIST, randomSongsLIST) = Prj.mp3.extractSongs(gv, inpList=songLIST)
+        gv.COPY.mandatorySONGS  = len(mandatorySongsLIST)
+        gv.COPY.randomSONGS     = len(randomSongsLIST)
 
-        logger.console("Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines))
-        logger.console("Numero canzoni mandatory extracted.......: %6d" % (len(gv.MP3.mandatorySONGS)))
-        logger.console("Numero canzoni random    extracted.......: %6d" % (len(gv.MP3.randomSONGS)))
+        print '\n'*2
+        logger.console(LN.cGREEN + "Numero canzoni su foglio Excel...........: %6d" % (excelInitialLines))
+        logger.console(LN.cGREEN + "Numero canzoni mandatory extracted.......: %6d" % (gv.COPY.mandatorySONGS))
+        logger.console(LN.cGREEN + "Numero canzoni random    extracted.......: %6d" % (gv.COPY.randomSONGS))
 
 
+        processMandatorySongs(gv, mandatorySongsLIST)
+        processRandomSongs(gv, randomSongsLIST)
+
+        '''
+            # -------------------------------
+            # - Write MANDATORY Songs
+            # -------------------------------
         bRecomended  =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
-        if bRecomended:
-            writtenMandatorySongs, restLines = Prj.mp3.processSongs(gv, gv.MP3.mandatorySONGS)
-            logger.console("[%d] mandatory songs have been written" % (writtenMandatorySongs))
-            choice=LN.sys.getKeyboardInput(gv, "* Mandatory songs have been written. Vuoi continuare? *", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
+        if bRecomended and gv.COPY.mandatorySONGS:
+            (gv.COPY.mandatorySONGS_written, gv.COPY.mandatorySONGS_remaining) = Prj.mp3.processSongs(gv, mandatorySongsLIST)
+            print '\n'*2
+            logger.console(LN.cGREEN + "mandatory songs have been written.....:%5d" % (gv.COPY.mandatorySONGS_written))
+            logger.console(LN.cGREEN + "mandatory songs remainings............:%5d" % (gv.COPY.mandatorySONGS_remaining))
+            if gv.COPY.mandatorySONGS_remaining:
+                logger.console(LN.cYELLOW + "Ci sono ancora canzoni Mandatory da scrivere. Vuoi scriverle comunque?")
+                LN.sys.getKeyboardInput(gv, "* Vuoi continuare? *", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
 
-
-
-        writtenRandomSongs, restLines = Prj.mp3.processSongs(gv, gv.MP3.randomSONGS)
-        logger.console("[%5d] Mandatory songs have been written"   % (writtenMandatorySongs))
-        logger.console("[%5d] Random    songs have been written"   % (writtenRandomSongs))
-
-
-        if restLines > 0:
-            cfgModule.verifica()
-            logger.console("Sono rimaste %d canzoni") % (restLines)
-            choice=LN.sys.getKeyboardInput(gv, "* Vuoi continuare? *", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
+            # -------------------------------
+            # - Write RANDOM Songs
+            # -------------------------------
+        if gv.COPY.randomSONGS:
+            gv.COPY.randomSONGS_written, gv.COPY.randomSONGS_remaining = Prj.mp3.processSongs(gv, randomSongsLIST)
+            print '\n'*2
+            logger.console(LN.cGREEN + "Mandatory songs have been written..: %5d"   % (gv.COPY.randomSONGS_written))
+            logger.console(LN.cGREEN + "Random    songs remaining..........: %5d"   % (gv.COPY.randomSONGS_remaining))
         else:
-            logger.console("NON sono presenti ulteriori canzoni. Processo completato.")
+            logger.console(LN.cRED + "Non ci sono canzoni risultanti dalla selezione richiesta.")
 
+
+        if gv.COPY.randomSONGS_remaining > 0:
+            cfgModule.verifica()
+            print '\n'*2
+
+            LN.dict.printDictionaryTree(gv, gv.COPY, header="COPY dict data [%s]" % calledBy(0), retCols='TVL', lTAB=' '*4, console=True)
+            logger.console(LN.cYELLOW + "Sono rimaste altre canzoni da copiare e non abbiamo ancora raggiunto il TARGET.")
+            choice=LN.sys.getKeyboardInput(gv, "* Vuoi continuare? *", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
+            print " qui dobbiamo ricalcolare le proporzioni"
+        else:
+            print '\n'*2
+            logger.console(LN.cRED + "NON sono presenti ulteriori canzoni. Processo completato.")
+
+        '''
 
         cfgModule.verifica()
 
+        LN.dict.printDictionaryTree(gv, gv.COPY, header="COPY dict data [%s]" % calledBy(0), retCols='TVL', lTAB=' '*4, console=True)
 
         # --- DEBUG
         # if fPERCENT_DEBUG:
@@ -140,3 +170,64 @@ def Main(gv, args):
     # choice=LN.sys.getKeyboardInput(gv, "******* STOP Temporaneo *******", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
     # LN.dict.printDictionaryTree(gv, gv.MP3.Dict, header="Excel File data [%s]" % calledBy(0), retCols='T', lTAB=' '*4, console=True)
     # ###################################
+
+
+
+# ############################################
+# # Write MANDATORY Songs
+# ############################################
+def processMandatorySongs(gv, mandatorySongsLIST):
+    LN          = gv.LN
+    Prj         = gv.Prj
+    logger      = gv.LN.logger
+
+    print "%s # ############################################" % (' '*15)
+    print "%s # # Write MANDATORY Songs" % (' '*15)
+    print "%s # ############################################" % (' '*15)
+    print
+
+    bRecomended  =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
+    if bRecomended and gv.COPY.mandatorySONGS:
+        (gv.COPY.mandatorySONGS_written, gv.COPY.mandatorySONGS_remaining) = Prj.mp3.processSongs(gv, mandatorySongsLIST)
+        print '\n'*2
+        logger.console(LN.cGREEN + "mandatory songs have been written.....:%5d" % (gv.COPY.mandatorySONGS_written))
+        logger.console(LN.cGREEN + "mandatory songs remainings............:%5d" % (gv.COPY.mandatorySONGS_remaining))
+        if gv.COPY.mandatorySONGS_remaining:
+            logger.console(LN.cYELLOW + "Ci sono ancora canzoni Mandatory da scrivere. Vuoi scriverle comunque?")
+            LN.sys.getKeyboardInput(gv, "* Vuoi continuare? *", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
+
+
+# ############################################
+# # Write RANDOM Songs
+# ############################################
+def processRandomSongs(gv, randomSongsLIST):
+    LN          = gv.LN
+    Prj         = gv.Prj
+    logger      = gv.LN.logger
+
+    print "%s # ############################################" % (' '*15)
+    print "%s # # Write RANDOM Songs" % (' '*15)
+    print "%s # ############################################" % (' '*15)
+    print
+
+
+    if gv.COPY.randomSONGS:
+        gv.COPY.randomSONGS_written, gv.COPY.randomSONGS_remaining = Prj.mp3.processSongs(gv, randomSongsLIST)
+        print '\n'*2
+        logger.console(LN.cGREEN + "Mandatory songs have been written..: %5d"   % (gv.COPY.randomSONGS_written))
+        logger.console(LN.cGREEN + "Random    songs remaining..........: %5d"   % (gv.COPY.randomSONGS_remaining))
+    else:
+        logger.console(LN.cRED + "Non ci sono canzoni risultanti dalla selezione richiesta.")
+
+
+    if gv.COPY.randomSONGS_remaining > 0:
+        cfgModule.verifica()
+        print '\n'*2
+
+        LN.dict.printDictionaryTree(gv, gv.COPY, header="COPY dict data [%s]" % calledBy(0), retCols='TVL', lTAB=' '*4, console=True)
+        logger.console(LN.cYELLOW + "Sono rimaste altre canzoni da copiare e non abbiamo ancora raggiunto il TARGET.")
+        choice=LN.sys.getKeyboardInput(gv, "* Vuoi continuare? *", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
+        print " qui dobbiamo ricalcolare le proporzioni"
+    else:
+        print '\n'*2
+        logger.console(LN.cRED + "NON sono presenti ulteriori canzoni. Processo completato.")
