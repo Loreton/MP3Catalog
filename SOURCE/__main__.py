@@ -151,9 +151,10 @@ if __name__ == "__main__":
         # --------------------------------------------------------
         # - CALL Project MAIN Program
         # --------------------------------------------------------
-    import MP3Catalog as MP3Catalog
+    # import MP3Catalog as MP3Catalog
 
-    MP3Catalog.Main(gv, sys.argv)
+    # Prj.main.MP3Catalog.Main(gv, sys.argv)
+    Prj.Main(gv, sys.argv)
 
     # choice = LN.sys.getKeyboardInput(gv, "Procedura completata con successo - Press ENTER to exit.", validKeys='ENTER', exitKey='X')
 

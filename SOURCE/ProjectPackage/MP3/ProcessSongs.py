@@ -27,7 +27,7 @@ def processSongs(gv, inpList=[]):
 
 
     destMP3Dir         =  gv.CONFIG.EXTRACT_SECTION['MP3 Destination Directory']
-    sExtractOrder       =  gv.CONFIG.EXTRACT_SECTION['Extraction Order']
+    # sExtractOrder       =  gv.CONFIG.EXTRACT_SECTION['Extraction Order']
     # bPrefixSong         =  gv.CONFIG.EXTRACT_SECTION['PrefixSong']     # Mette <N.Cognome-> dell'autore prima del titolo della canzone All'interno del folder Type
     # bRecomended         =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
     # fillDISK            =  gv.CONFIG.EXTRACT_SECTION['FILL_DISK']
@@ -43,7 +43,7 @@ def processSongs(gv, inpList=[]):
     for xx in range(1,21):
         random.shuffle( inpList )                             # Crea range-shuffled
 
-
+    returnERROR = ''
     # -----------------------------------------------
     # - Processing
     # -----------------------------------------------
@@ -70,16 +70,21 @@ def processSongs(gv, inpList=[]):
         bytesCopiedForType  = percentDICT[typeName][percentCOPIEDBYTES]
 
             # ------------------------------------------------------------------------------
-            # - TEST del FREE Disk SPACE
+            # - TEST del FREE Disk SPACE (Controlli sempre attivi)
             # - E' stato inserito con un IF  altrimenti rallentava molto su USB drive
             # - Consideriamo uno spazio libero = SongSize + 5MB
             # ------------------------------------------------------------------------------
         if nSongs%100 == 0 or gv.COPY.driveFreeSpace==None:
             gv.COPY.driveFreeSpace = LN.file.driveSpace(gv, destMP3Dir, 'Bytes')
+
         if gv.CONFIG.EXTRACT_SECTION['FILL_DISK'] and gv.COPY.driveFreeSpace < (songSize+5*1024*1024):
-            Prj.exit(gv, 4444,  "No more FreeSPACE [%d] is available on output drive." % (gv.COPY.driveFreeSpace))
+            returnERROR = "No more FreeSPACE [%d] is available on output drive." % (gv.COPY.driveFreeSpace)
+            break
 
-
+        if gv.COPY.COPIED_BYTES['TOTAL'] >= gv.CONFIG.EXTRACT_SECTION['MAX_OUT_DIR_SIZE']:
+            gv.COPY.MAXBYTES_REACHED = True
+            returnERROR = "MAX COPIED BYTES have been reached. Process completed."
+            break
 
         if gv.COPY.IGNORE_CRITERIA == False:
                 # ------------------------------------------------------------------------------
@@ -114,12 +119,15 @@ def processSongs(gv, inpList=[]):
         # ------------------------------------------------------------------------------
         rCode = Prj.mp3.copySongToDest(gv, song)
         if rCode:
-            gv.COPY.COPIED_BYTES[typeName]              += songSize
+            gv.COPY.COPIED_BYTES[typeName]              += songSize     # TOTALE per TYPE
+            gv.COPY.COPIED_BYTES['TOTAL']               += songSize     # TOTALE COPIATI
             percentDICT[typeName][percentCOPIEDBYTES]   += songSize
             gv.COPY.AUTHOR_SONGS[authorName][1]         += 1
             gv.COPY.driveFreeSpace                      -= songSize
             writtenSongs                                += 1
-            inpList[index]                              = ''
+
+        # Comunque cancelliamo il file dalla lista (False: destFileExists, sourceFile NOT FOUND, ....
+        inpList[index]                              = ''
 
 
 
@@ -130,5 +138,5 @@ def processSongs(gv, inpList=[]):
     for line in inpList: print "AVANZI____: %-90s" % (os.path.sep.join(line[:4])), line[4], line[5]
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
-    return writtenSongs, len(inpList)
+    return returnERROR, writtenSongs, len(inpList)
 

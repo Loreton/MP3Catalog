@@ -6,11 +6,8 @@
 # ######################################################################################
 
 
-# RSync log interpretation: http://stackoverflow.com/questions/4493525/rsync-what-means-the-f-on-rsync-logs
-
 import os, sys
 from functools import partial
-import random
 
 
 ################################################################################
@@ -89,8 +86,8 @@ def Main(gv, args):
         logger.console(LN.cGREEN + "Numero canzoni random    extracted.......: %6d" % (gv.COPY.randomSONGS))
 
 
-        processMandatorySongs(gv, mandatorySongsLIST)
-        processRandomSongs(gv, randomSongsLIST)
+        Prj.main.processMandatorySongs(gv, mandatorySongsLIST)
+        Prj.main.processRandomSongs(gv, randomSongsLIST)
 
         LN.sys.getKeyboardInput(gv, LN.cYELLOW + "* Presse ENTER ver visualizzare il report", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
         cfgModule.verifica()
@@ -114,84 +111,4 @@ def Main(gv, args):
     # choice=LN.sys.getKeyboardInput(gv, "******* STOP Temporaneo *******", validKeys="ENTER", exitKey='XQ', deepLevel=3, fDEBUG=False)
     # LN.dict.printDictionaryTree(gv, gv.MP3.Dict, header="Excel File data [%s]" % calledBy(0), retCols='T', lTAB=' '*4, console=True)
     # ###################################
-
-
-
-# ############################################
-# # Write MANDATORY Songs
-# ############################################
-def processMandatorySongs(gv, mandatorySongsLIST):
-    LN          = gv.LN
-    Prj         = gv.Prj
-    logger      = gv.LN.logger
-
-    print
-    print
-    print "%s # ############################################" % (' '*15)
-    print "%s # # Write MANDATORY Songs" % (' '*15)
-    print "%s # ############################################" % (' '*15)
-    print
-
-    bRecomended  =  gv.CONFIG.EXTRACT_SECTION['Recomended - Mandatory']
-    if not bRecomended or gv.COPY.mandatorySONGS <= 0:
-        return
-
-    LOOP = True
-    while LOOP:
-        (gv.COPY.mandatorySONGS_written, gv.COPY.mandatorySONGS_remaining) = Prj.mp3.processSongs(gv, mandatorySongsLIST)
-        print '\n'*2
-        logger.console(LN.cGREEN + "mandatory songs have been written.....:%5d" % (gv.COPY.mandatorySONGS_written))
-        logger.console(LN.cGREEN + "mandatory songs remainings............:%5d" % (gv.COPY.mandatorySONGS_remaining))
-
-            # prepariamoci ad uscire
-        gv.COPY.IGNORE_CRITERIA = False
-        LOOP                    = False
-
-        if gv.COPY.mandatorySONGS_remaining:
-            logger.console(LN.cYELLOW + "Ci sono ancora canzoni Mandatory da scrivere.")
-            choice = LN.sys.getKeyboardInput(gv, LN.cYELLOW + "      - Vuoi copiarle comunque ignorando i criteri richiesti?", validKeys=['yes', 'no'], exitKey='XQ', deepLevel=3, fDEBUG=False)
-            if choice.upper() == 'YES':
-                gv.COPY.IGNORE_CRITERIA = True
-                LOOP                    = True
-
-
-
-# ############################################
-# # Write RANDOM Songs
-# ############################################
-def processRandomSongs(gv, randomSongsLIST):
-    LN          = gv.LN
-    Prj         = gv.Prj
-    logger      = gv.LN.logger
-
-    print
-    print
-    print "%s # ############################################" % (' '*15)
-    print "%s # # Write RANDOM Songs" % (' '*15)
-    print "%s # ############################################" % (' '*15)
-    print
-
-
-
-    if gv.COPY.randomSONGS <= 0:
-        logger.console(LN.cRED + "Non ci sono canzoni risultanti dalla selezione richiesta.")
-        return
-
-    LOOP = True
-    while LOOP:
-        gv.COPY.randomSONGS_written, gv.COPY.randomSONGS_remaining = Prj.mp3.processSongs(gv, randomSongsLIST)
-        print '\n'*2
-        logger.console(LN.cGREEN + "Mandatory songs have been written..: %5d"   % (gv.COPY.randomSONGS_written))
-        logger.console(LN.cGREEN + "Random    songs remaining..........: %5d"   % (gv.COPY.randomSONGS_remaining))
-
-            # prepariamoci ad uscire
-        gv.COPY.IGNORE_CRITERIA = False
-        LOOP                    = False
-
-        if gv.COPY.randomSONGS_remaining:
-            logger.console(LN.cYELLOW + "Ci sono ancora canzoni valide da copiare.")
-            choice = LN.sys.getKeyboardInput(gv, LN.cYELLOW + "      - Vuoi copiarle comunque ignorando i criteri richiesti?", validKeys=['yes', 'no'], exitKey='XQ', deepLevel=3, fDEBUG=False)
-            if choice.upper() == 'YES':
-                gv.COPY.IGNORE_CRITERIA = True
-                LOOP                    = True
 

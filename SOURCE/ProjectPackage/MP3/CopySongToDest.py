@@ -59,7 +59,13 @@ def copySongToDest(gv, song):
     logger.console("     %s" % (sourceFullPathName))
     logger.console("     %s" % (destFullPathName))
 
-    rCode = LN.file.copyFile(gv, srcPATH=sourceFilePath, dstPATH=destFilePath, srcFile=sourceFileName,  dstFile=destFileName, createDir=True, exitOnError=True)
+    if not os.path.isfile(destFullPathName):
+        rCode = LN.file.copyFile(gv, srcPATH=sourceFilePath, dstPATH=destFilePath, srcFile=sourceFileName,  dstFile=destFileName, createDir=True, exitOnError=True)
+    else:
+        logger.console("File alreay exists: %s" % (destFullPathName))
+        rCode = False
+
+
 
     logger.debug('exiting - [called by:%s]' % (calledBy(1)))
 

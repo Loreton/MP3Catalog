@@ -64,7 +64,7 @@ def readCatalog(gv, MP3Dict):
                 logger.warning("."*60)
                 break
 
-            if row%100 == 0: print "%6d/%6d rows has been processed" % (row, sheet.nrows)
+            if row%100 == 0: print "%6d/%6d [LimitedTo:%d] rows has been processed" % (row, sheet.nrows, gv.CONFIG.LAST_SONG_ROW)
             nCols     = len(rowValue)
 
             if nCols > gv.EXCEL.maxCols:               # ultima colonna valida
