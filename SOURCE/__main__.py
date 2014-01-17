@@ -4,10 +4,9 @@
 # Scope:  ............
 #                                               by Loreto Notarantonio 2013, February
 # ######################################################################################
-import sys, os
-import platform
+import sys, os; sys.dont_write_bytecode = True
 
-sys.dont_write_bytecode = True
+import platform
 
 class myClass():    pass
 
