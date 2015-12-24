@@ -1,18 +1,17 @@
 # outer __init__.py
 # -*- coding: iso-8859-1 -*-
 
+# fullPackageName = __name__
+# fullPackageName = __name__.split('.')
+# baseLoggerName  = ('.'.join(fullPackageName[-1:]))
+# baseLoggerName  = 'Setup'
+# print (baseLoggerName)
+
+# from .ParseInput            import parseInput
+# from .InitVariables         import initVariables
+# from .ProcessIniConfigFile  import processIniConfigFile
+from .CheckUserID           import checkUserID
+# from .SetLogger           import initLogger
+# from .SetLogger           import setLogger
 
 
-# init_type_1
-# from prepareEnv     import prepareEnv           as Env
-from readIniConfigFile import readIniConfigFile    as readIniConfig
-from readProjectConfig import readProjectConfig
-from initLog        import initLog
-from initVariables        import initVariables
-from ParseInput        import parseInput
-
-# init_type_2
-# import  prepareEnv
-
-
-# init_type_3 (può essere vuoto)

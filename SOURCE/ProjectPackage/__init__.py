@@ -2,15 +2,16 @@
 # -*- coding: iso-8859-1 -*-
 
 
-# init_Type1                - nel folder della funzione scrivo: from <function> import *
-import Functions                    as funcs
-import Setup                        as setup
-# import processData                   as data
-import Excel                        as excel
-import MP3                          as mp3
-import Format                       as fmt
+class LnClass(): pass       # accedibile via Prj.LnClass()  <class 'ProjectPackage.LnClass'>
 
-import Main                         as main                         # richiamato Prj.main.MP3Catalog()
-from Main.MP3Catalog                import Main                     # richiamato Prj.Main()
-from Main.exit                      import exit                     # richiamato Prj.exit(gv, rcode, text)
+# init_Type1                - nel folder della funzione scrivo: from <function> import *
+from . import Functions              as funcs
+from . import Setup                  as setup
+from . import Extract                as extract
+from . import Excel                  as excel
+from . import Main                   as main                         # richiamato Prj.main.MP3Catalog()
+
+from .Main.MainProject              import Main                     # richiamato Prj.Main()
+from .Setup.SetUpEnv               import setUpEnv          # richiamato Prj.globalVariables()
+
 

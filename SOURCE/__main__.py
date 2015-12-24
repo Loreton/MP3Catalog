@@ -1,161 +1,45 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: iso-8859-1 -*-
 #
 # Scope:  ............
 #                                               by Loreto Notarantonio 2013, February
 # ######################################################################################
-import sys, os; sys.dont_write_bytecode = True
-
-import platform
-
-class myClass():    pass
-
-
-
-
-
-
-# #############################################################################
-# # preparePATHs()
-# # Impostazione delle PATHs
-# # La scriptDir è la current dir a meno che:
-# # non finisce con .zip - nel qual caso saliamo di un livello.
-# # non finisce con /bin - nel qual caso saliamo di una subDir.
-# #############################################################################
-def preparePATHs(gv, fDEBUG=False):
-
-    thisModuleDIR   = os.path.dirname(os.path.realpath(__file__))
-    scriptBase      = thisModuleDIR
-    subDirs         = thisModuleDIR.split(os.sep)
-
-    if thisModuleDIR.endswith('.zip'):
-        ZIP = True
-        (MAINDIR, PRJBASEDIR, PRJBINDIR ) = ( -2, -2, -1)
-        packageName = gv.packageName
-    else:
-        ZIP = False
-        packageName = gv.packageName + '_Source'
-        (MAINDIR, PRJBASEDIR) = ( -2, -1)
-
-    PrjBaseDir      = os.sep.join(subDirs[:PRJBASEDIR])
-    PrjBinDir      = os.path.join(PrjBaseDir, 'bin')    # dovrebbe essere la BIN
-    PrjPackageDir   = thisModuleDIR
-    LnPackageDir    = os.sep.join(subDirs[:MAINDIR])
-    mainConfigDIR   = os.path.join(PrjBaseDir, 'conf' )
-
-
-
-    myPaths = [
-            # os.path.normpath('%s/conf'                   % (PrjBinDir) ),
-        ]
-
-    if ZIP:
-        myPaths.extend([
-            os.path.normpath('%s'                   % (PrjBinDir) ),
-            os.path.normpath('%s'                   % (PrjBaseDir) ),
-            os.path.normpath('%s'                   % (PrjPackageDir)),
-        ])
-    else:
-        myPaths.extend([
-            os.path.normpath('%s'                   % (PrjBinDir) ),
-            os.path.normpath('%s/LnFunctions'       % (LnPackageDir)), # In caso di ZIP non serve
-            os.path.normpath('%s'                   % (LnPackageDir)),
-            os.path.normpath('%s'                   % (PrjPackageDir)),
-        ])
-
-    myPaths.reverse()
-    for path in myPaths:  sys.path.insert(0, path)
-
-    os.environ['PYTHONPATH']    = os.pathsep.join(myPaths)
-
-    gv.scriptDir        = scriptBase
-    gv.pythonPATH       = myPaths
-    gv.mainConfigDIR    = mainConfigDIR
-    gv.LnPackageDir     = LnPackageDir
-    gv.PrjPackageDir     = PrjPackageDir
-    gv.PrjBinDir     = PrjBinDir
-    gv.PrjBaseDir     = PrjBaseDir
-    gv.TAB          = ' '*5 # Spazio inizio riga per il print
-
-
-    # fDEBUG = True
-    if fDEBUG:
-        print
-        print 'scriptDir        = %s' % (gv.scriptDir)
-        print
-        print 'LnPackageDir     = %s' % (gv.LnPackageDir)
-        print 'PrjBaseDir       = %s' % (PrjBaseDir)
-        print 'PrjBinDir        = %s' % (PrjBinDir)
-        print 'PrjPackageDir    = %s' % (PrjPackageDir)
-        print 'mainConfigDIR    = %s' % (gv.mainConfigDIR)
-        print
-        print 'scriptName.....', gv.scriptName
-        print 'projectID......', gv.projectID
-        print 'PYTHONPATH......'
-        print
-        for path in os.getenv('PYTHONPATH').split(os.pathsep):
-            print "     ", path
-        print
-
+import sys; sys.dont_write_bytecode = True
+import os
 
 
 ################################################################################
 # - M A I N
+# - Imposta le variabili per fare l'import delle funzioni
+# - Preleva alcuni parametri di input
+# - Legge il file.ini
+# - Chiama il vero main applicativo
 ################################################################################
+import ProjectPackage   as Prj
 if __name__ == "__main__":
-    gv              = myClass()                   # Global variable di progetto
-    gv.OpSys        = platform.system()
-    gv.packageName  = 'MP3Catalog'               # directory del sorgente
-    gv.projectID    = 'MP3Catalog'
-    gv.scriptName    = gv.projectID
+    projectName='MP3Catalog'
 
-    preparePATHs(gv, fDEBUG=False)
+    gv = Prj.setUpEnv(Prj, __file__, projectName=projectName, fDEBUG=False)
+    calledBy = gv.LN.sys.calledBy
 
 
-        # --------------------------------------------------------------------------------------
-        # - inseriamo il path del LNPackage (se serve) nel percorso ed importiamo il package
-        # --------------------------------------------------------------------------------------
-    import      ProjectPackage as Prj
-    import      LnFunctions as LN
-    gv.LN       = LN
-    gv.Prj      = Prj
-    calledBy    = LN.sys.calledBy
-
-    logger      = gv.LN.logger          #  Ancora non lo abbiamo impostato
-    logger.setConsoleAnyway(False)
-
-    # LN.dict.printDictionaryTree(gv, gv, header="Main variables [%s]" % calledBy(0), retCols='TV', lTAB=' '*4, console=True)
-    # sys.exit()
-
-
-        # ------------------------------------------------------------------------------------
-        # - Inizializzazione di variabili globali
-        # ------------------------------------------------------------------------------------
-    Prj.setup.initVariables(gv)                                               # Imposta i valori JBStatus
-
-        # ------------------------------------------------------------------------------------
-        # - Leggiamo il file di configurazione di base per inizializzare il file di LOG
-        # ------------------------------------------------------------------------------------
-    iniFileName = gv.scriptName + '.ini' if gv.OpSys.upper() != 'WINDOWS' else gv.scriptName + 'Win.ini'
-    logInfo     = Prj.setup.readIniConfig(gv, os.path.join(gv.mainConfigDIR, iniFileName))
-
-
-        # --------------------------------------------------------
+        # ---------------------------------------------------------
         # - SetUp del log
-        # --------------------------------------------------------
-    Prj.setup.initLog(gv)
+        # ---------------------------------------------------------
+    gv.MAIN.DEBUG    = True
+    logConfigFileName = os.path.join(gv.MAIN.mainConfigDIR, 'LoggerConfig.ini')
+    if gv.MAIN.DEBUG:
+        print ("    {0:<32}: {1}".format('Reading LOG configuration file', logConfigFileName))
+    gv.MAIN.logFileName = gv.LN.logger.initLogger(loggerFile=logConfigFileName, package='LN-Protocol', packageQualifiers=2)
+    logger              = gv.LN.logger.setLogger(gv, package="Main")
+    if gv.MAIN.DEBUG:
+        print ("    {0:<32}: {1}".format('using LOG file', gv.MAIN.logFileName))
+    gv.MAIN.DEBUG    = False
 
 
 
-        # --------------------------------------------------------
-        # - CALL Project MAIN Program
-        # --------------------------------------------------------
-    # import MP3Catalog as MP3Catalog
+    iniFileName = os.path.abspath(os.path.join(gv.MAIN.mainConfigDIR, projectName + '.ini'))
+    gv.INI.configParser, gv.INI.dict = gv.LN.dict.readIniFile(gv, iniFileName, RAW=False, exitOnError=True)
 
-    # Prj.main.MP3Catalog.Main(gv, sys.argv)
-    Prj.Main(gv, sys.argv)
-
-    # choice = LN.sys.getKeyboardInput(gv, "Procedura completata con successo - Press ENTER to exit.", validKeys='ENTER', exitKey='X')
-
-    # Prj.exit(gv, 9000, "Procedura completata con successo - [called by: %s] " % (calledBy(0)))
-
+    Prj.Main(gv)
+    # gv.LN.dict.printDictionaryTree(gv, gv, header="Global Vars [{0}]".format(calledBy(0), console=True, exit=True, retCols='TV', lTAB=' '*4, listInLine=2))
