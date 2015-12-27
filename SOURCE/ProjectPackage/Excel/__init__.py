@@ -5,6 +5,6 @@
 # from setVariables import setVariables   as setVars
 
 from .ReadCatalog              import readCatalog
-from .WriteCatalog             import writeCatalog
-from .PrepareHeader            import prepareHeader
+# from .WriteCatalog             import writeCatalog
+# from .PrepareHeader            import prepareHeader
 

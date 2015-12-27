@@ -42,9 +42,10 @@ def setUpEnv(Prj, callerFileName, projectName=None, fDEBUG=False):
 
     calledBy = gv.LN.sys.calledBy
     if fDEBUG:
-        gv.LN.dict.printDictionaryTree(gv, gv, header="Global Vars [%s]" % calledBy(0), console=True, exit=True, retCols='TV', lTAB=' '*4, listInLine=2)
+        gv.LN.dict.printDictionaryTree(gv, gv, header="Global Vars [%s]" % calledBy(0), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2)
 
     return gv
+
 
 
 
@@ -89,8 +90,7 @@ def prepareMainEnv(gv, projectName=None):
 
         # Classi che servono per il printDictionary
     # gv.myDictTYPES          = [LnClass, argparse.Namespace]
-    gv.myDictTYPES          = [gv.Prj.LnClass, gv.LN.LnClass]
-    # gv.myDictTYPES          = [gv.LnClass]
+    # gv.myDictTYPES          = [gv.Prj.LnClass, gv.LN.LnClass]
 
         # Calcolo dello scriptDir
     gv.MAIN.scriptDir = os.path.dirname(os.path.abspath(sys.argv[0]))

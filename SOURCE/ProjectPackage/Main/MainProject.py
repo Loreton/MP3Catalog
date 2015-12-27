@@ -29,7 +29,7 @@ def Main(gv):
     logger.info('entered - [called by:{0}]'.format(calledBy(1)))
 
 
-    # gv.LN.dict.printDictionaryTree(gv, gv.INI, header="Global Vars [{0}]".format(calledBy(0), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2))
+    gv.LN.dict.printDictionaryTree(gv, gv.INI, header="Global Vars [{0}]".format(calledBy(0), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2))
 
         # =========================================================
         # * Prelievo delle informazioni di base dalla "MAIN" Section

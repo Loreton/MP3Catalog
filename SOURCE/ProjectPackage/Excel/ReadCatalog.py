@@ -6,35 +6,35 @@
 import sys, os
 import types
 
-# class myClass():    pass
-
 # =======================================================================
 # ReadExcelCatalog()
 # =======================================================================
 def readCatalog(gv, MP3Dict):
-    Prj         = gv.Prj
-    LN          = gv.LN
-    logger      = gv.LN.logger
+    logger      = gv.LN.logger.setLogger(gv, package=__name__)
     calledBy    = gv.LN.sys.calledBy
-    logger.info('entered   - [called by:%s]' % (calledBy(1)))
+    logger.info('entered   - [called by:{0}]'.format(calledBy(1)))
+
 
     fDEBUG = False
-    excelFileName = gv.CONFIG.EXCEL_INPUT_FILE
+    gv.LN.dict.printDictionaryTree(gv, gv, header="Extract Vars [{0}]".format(calledBy(0), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2, MaxDeepLevel=99))
 
+    excelFileName = gv.MainVars.excelInputFile
+
+    '''
 
     if not os.path.isfile(excelFileName):
-        Prj.exit(gv, 10, "File doesn't exists: [%s]" % (excelFileName))
+        gv.Ln.exit(gv, 10, "File doesn't exists: [{0}]".format(excelFileName))
 
-    logger.info("Reading excelFileName: [%s]."  % (excelFileName))
+    logger.info("Reading excelFileName: [{0}]." .format(excelFileName))
     prevAuth = '...'
 
         # Ritorna il WorkBook
-    wb = LN.excel.open(gv, excelFileName)
+    wb = gv.LN.excel.open(gv, excelFileName)
 
         # Esaminiamo tutti gli sheet (in teroia è solo il primo)
     for sheet in wb.sheets():
         gv.EXCEL.sheetName = sheet.name
-        logger.info('Analizzo sheetName: %s' % (sheet.name))
+        logger.info('Analizzo sheetName: {0}'.format(sheet.name))
         startExcelCol = gv.CONFIG.START_EXCEL_COLUMN.upper()   # Colonna di partenza dati
 
         for row in range(sheet.nrows):
@@ -45,14 +45,14 @@ def readCatalog(gv, MP3Dict):
                 del rowValue[0]
                 dummyCols -= 1
 
-            logger.info('working on row - %s' % (rowValue[:5]) )
+            logger.info('working on row - {0}'.format(rowValue[:5]) )
                 # ------------------------------------------
                 # - calcoliamo i nomi delle colonne
                 # ------------------------------------------
                     # - Verifica che i campi siano corretti ed enumera gli stessi
             if row == gv.CONFIG.COLUMNS_NAME_ROW:
                 fld = Prj.excel.prepareHeader(gv, rowValue)
-                # LN.dict.printDictionaryTree(gv, gv.EXCEL, header="Column Names [%s]" % calledBy(0), retCols='LTV', lTAB=' '*4, console=True)
+                # LN.dict.printDictionaryTree(gv, gv.EXCEL, header="Column Names [{0}]".formatcalledBy(0), retCols='LTV', lTAB=' '*4, console=True)
                 continue
 
             elif row<gv.CONFIG.FIRST_SONG_ROW:
@@ -64,7 +64,7 @@ def readCatalog(gv, MP3Dict):
                 logger.warning("."*60)
                 break
 
-            if row%100 == 0: print "%6d/%6d [LimitedTo:%d] rows has been processed" % (row, sheet.nrows, gv.CONFIG.LAST_SONG_ROW)
+            if row%100 == 0: print "%6d/%6d [LimitedTo:%d] rows has been processed".format(row, sheet.nrows, gv.CONFIG.LAST_SONG_ROW)
             nCols     = len(rowValue)
 
             if nCols > gv.EXCEL.maxCols:               # ultima colonna valida
@@ -72,7 +72,7 @@ def readCatalog(gv, MP3Dict):
             elif nCols < gv.EXCEL.maxCols:               # NON PREVISTO
                 print "riga numero:", row
                 print rowValue
-                Prj.exit(gv, 11, "Il numero di colonne del file non puo' essere inferiore alle colonne previste. [nCols:%d]<[fld.SONG_SIZE:%d]" % (nCols, fld.SONG_SIZE) )
+                Prj.exit(gv, 11, "Il numero di colonne del file non puo' essere inferiore alle colonne previste. [nCols:%d]<[fld.SONG_SIZE:%d]".format(nCols, fld.SONG_SIZE) )
 
                 # Per essere certi di non avere sorprese
             rowValue[fld.TYPE]           = rowValue[fld.TYPE].strip()
@@ -84,22 +84,22 @@ def readCatalog(gv, MP3Dict):
 
                  # riga vuota
             if rowValue[fld.TYPE] == '' or rowValue[fld.TYPE] == '#':
-                logger.debug("SKIPPING - empty or commented(#) row: [%s]" % (rowValue))
+                logger.debug("SKIPPING - empty or commented(#) row: [{0}]".format(rowValue))
                 continue
 
-            if fDEBUG: print "^^^^^ %s/%s/%s/%s" % (rowValue[fld.TYPE], rowValue[fld.AUTHOR_NAME], rowValue[fld.ALBUM_NAME], songName), type(songName)
+            if fDEBUG: print "^^^^^ {0}/{0}/{0}/{0}".format(rowValue[fld.TYPE], rowValue[fld.AUTHOR_NAME], rowValue[fld.ALBUM_NAME], songName), type(songName)
 
             if type(songName) == types.IntType or len(songName) < 2:
-                logger.warning("SKIPPING - invalid songName: [%s]" % (songName))
+                logger.warning("SKIPPING - invalid songName: [{0}]".format(songName))
                 continue
 
             if songName.find('_NO_MATCH_ON_DISK_') > 0:
-                logger.warning("SKIPPING - _NO_MATCH_ON_DISK_ song: [%s]" % (songName))
+                logger.warning("SKIPPING - _NO_MATCH_ON_DISK_ song: [{0}]".format(songName))
                 continue
 
             if prevAuth != rowValue[fld.AUTHOR_NAME]:
                 prevAuth = rowValue[fld.AUTHOR_NAME]
-                logger.console("reading author: [%s:%s]" % (rowValue[fld.TYPE], rowValue[fld.AUTHOR_NAME]) )
+                logger.console("reading author: [{0}:{0}]".format(rowValue[fld.TYPE], rowValue[fld.AUTHOR_NAME]) )
 
             rowValue = Prj.fmt.prepareRow(gv, rowValue)
 
@@ -115,6 +115,7 @@ def readCatalog(gv, MP3Dict):
     # ###################################
 
 
-    logger.debug('exiting - [called by:%s]' % (calledBy(1)))
+    logger.debug('exiting - [called by:{0}]'.format(calledBy(1)))
 
+    '''
 
