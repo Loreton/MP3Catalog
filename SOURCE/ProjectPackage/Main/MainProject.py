@@ -73,7 +73,7 @@ def Main(gv):
     if gv.MainVars.action == 'EXTRACT':
         extractID = Prj.extract.ReadIniData(gv)
         Prj.extract.PercentNormalization(gv, extractID)
-        gv.LN.dict.printDictionaryTree(gv, gv.extract, header="Extract Vars [{0}]".format(calledBy(0), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2))
+        # gv.LN.dict.printDictionaryTree(gv, gv.extract, header="Extract Vars [{0}]".format(calledBy(0), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2))
 
 
 

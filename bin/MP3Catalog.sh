@@ -11,11 +11,11 @@
     if [ -d "$sourceDir"  ]; then
         mainProgram="$sourceDir/__main__.py"
     else
-        mainProgram="$baseDir/projectTemplate.zip"
+        mainProgram="$baseDir/MP3Catalog.zip"
     fi
 
     # source /opt/rh/python33/enable
     # python3 $mainProgram $*
-    python $mainProgram $*
+    python3 $mainProgram $*
 
     exit 0

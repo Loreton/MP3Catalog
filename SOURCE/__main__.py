@@ -41,6 +41,5 @@ if __name__ == "__main__":
     iniFileName = os.path.abspath(os.path.join(gv.MAIN.mainConfigDIR, projectName + '.ini'))
     gv.INI.configParser, gv.INI.dict = gv.LN.dict.readIniFile(gv, iniFileName, RAW=False, exitOnError=True)
 
-    gv.LN.dict.printDictionaryTree(gv, gv, header="Global Vars [{0}]".format(calledBy(0), console=False, fEXIT13333=True, retCols='TV', lTAB=' '*4, listInLine=2, pippo=5))
-    sys.exit()
     Prj.Main(gv)
+    # gv.LN.dict.printDictionaryTree(gv, gv, header="Global Vars [{0}]".format(calledBy(0)), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2)

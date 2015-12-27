@@ -16,9 +16,8 @@ def readCatalog(gv, MP3Dict):
 
 
     fDEBUG = False
-    gv.LN.dict.printDictionaryTree(gv, gv, header="Extract Vars [{0}]".format(calledBy(0), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2, MaxDeepLevel=99))
-
     excelFileName = gv.MainVars.excelInputFile
+
 
     '''
 
@@ -27,9 +26,12 @@ def readCatalog(gv, MP3Dict):
 
     logger.info("Reading excelFileName: [{0}]." .format(excelFileName))
     prevAuth = '...'
-
+    '''
         # Ritorna il WorkBook
     wb = gv.LN.excel.open(gv, excelFileName)
+    gv.LN.dict.printDictionaryTree(gv, gv.MainVars, header="MainVars [{0}]".format(calledBy(0)), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2, MaxDeepLevel=99)
+
+    '''
 
         # Esaminiamo tutti gli sheet (in teroia è solo il primo)
     for sheet in wb.sheets():
