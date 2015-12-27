@@ -6,5 +6,5 @@
 
 from .ReadCatalog              import readCatalog
 # from .WriteCatalog             import writeCatalog
-# from .PrepareHeader            import prepareHeader
+from .PrepareHeader            import prepareHeader
 

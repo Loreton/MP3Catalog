@@ -5,7 +5,7 @@
     @SET SCRIPT_NAME=%~n0
     @SET SOURCE_DIR=%SCRIPT_PATH%..\SOURCE
 
-    @CALL %Ln.FreeDir%\PythonPATH.cmd 3.4
+    @CALL %Ln.FreeDir%\PythonPATH.cmd 3.3
     @SETLOCAL
 
     if EXIST "%SOURCE_DIR%\__main__.py" (

@@ -6,15 +6,19 @@
 # import sys
 # import types
 
-def prepareHeader(gv, rowValue):
-    Prj         = gv.Prj
-    LN          = gv.LN
-    logger      = gv.LN.logger
+def prepareHeader(gv, ws):
+    logger      = gv.LN.logger.setLogger(gv, package=__name__)
     calledBy    = gv.LN.sys.calledBy
-    xls         = gv.EXCEL
-    logger.info('entry   - [called by:%s]' % (calledBy(1)))
+
+    logger.info('entered - [called by:{0}]'.format(calledBy(1)))
+
+    colNamesTuple = ws.rows[gv.MainVars.ExcelColNamesRow-1]
+    for cell in colNamesTuple:
+        val = cell.value
+        print (val)
 
 
+    '''
     # ---------------------------------------------------------
     # - Unisci i nomi delle colonne e verifichiamo
     # - che sono uguali a quelle del foglio excel
@@ -70,3 +74,4 @@ def prepareHeader(gv, rowValue):
 
     return gv.EXCEL.columnName
 
+    '''

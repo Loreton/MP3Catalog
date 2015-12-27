@@ -38,13 +38,14 @@ def Main(gv):
 
     try:
         MainSectID = gv.INI.configParser['MAIN']
-        gv.MainVars.excelInputFile      = MainSectID['excelInputFile']
-        gv.MainVars.excelOutputFile     = MainSectID['excelOutputFile']
+        gv.MainVars.excelInputFile      = os.path.abspath(os.path.join(MainSectID['excelInputFile']))
+        gv.MainVars.excelOutputFile     = os.path.abspath(os.path.join(MainSectID['excelOutputFile']))
+        gv.MainVars.sheetName           = MainSectID['sheetName']
         gv.MainVars.action              = MainSectID['ACTION']
         # gv.MainVars.MaxOutDirSize       = MainSectID['MaxOutDirSize']
-        gv.MainVars.ExcelLastRowToRead  = MainSectID['ExcelLastRowToRead']
+        gv.MainVars.MaxRowsToRead       = int(MainSectID['MaxRowsToRead'])
         gv.MainVars.ExcelStartCol       = MainSectID['EXCEL_START_COLUMN']
-        gv.MainVars.ExcelColNamesRow    = MainSectID['EXCEL_COLUMNS_NAMES_ROW']
+        gv.MainVars.ExcelColNamesRow    = int(MainSectID['EXCEL_COLUMNS_NAMES_ROW'])
         gv.MainVars.ExcelfirstSongRow   = MainSectID['EXCEL_FIRST_SONG_ROW']
         gv.MainVars.ExcelLastSongRow    = MainSectID['EXCEL_LAST_SONG_ROW']
 

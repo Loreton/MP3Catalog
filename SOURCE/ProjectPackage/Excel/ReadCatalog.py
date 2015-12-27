@@ -16,36 +16,43 @@ def readCatalog(gv, MP3Dict):
 
 
     fDEBUG = False
-    excelFileName = gv.MainVars.excelInputFile
+    # excelFileName   = gv.MainVars.excelInputFile
 
-
-    '''
-
-    if not os.path.isfile(excelFileName):
-        gv.Ln.exit(gv, 10, "File doesn't exists: [{0}]".format(excelFileName))
-
-    logger.info("Reading excelFileName: [{0}]." .format(excelFileName))
-    prevAuth = '...'
-    '''
         # Ritorna il WorkBook
-    wb = gv.LN.excel.open(gv, excelFileName)
-    gv.LN.dict.printDictionaryTree(gv, gv.MainVars, header="MainVars [{0}]".format(calledBy(0)), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2, MaxDeepLevel=99)
+    wb = gv.LN.excel.read(gv, gv.MainVars.excelInputFile, read_only=False, keep_vba=True, maxrows=gv.MainVars.MaxRowsToRead)
+    sheetNames = wb.get_sheet_names()
+
+    logger.info('Analisi del foglio: {0}'.format(gv.MainVars.sheetName))
+    ws = wb.get_sheet_by_name(gv.MainVars.sheetName)
+
+    prevAuth = '...'
+
+    # gv.LN.dict.printDictionaryTree(gv, gv.MainVars, header="MainVars [{0}]".format(calledBy(0)), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2, MaxDeepLevel=99)
+
+    # startExcelCol = gv.MainVars.ExcelStartCol   # Colonna di partenza dati
+
+    # fullRange = openpyxl.cell.get_column_letter(1) + str(1) + ':' + openpyxl.cell.get_column_letter(nCols) + str(nRows)
+
+    fld = gv.Prj.excel.prepareHeader(gv, ws)
+    choice=gv.LN.sys.getKeyboardInput(gv, "Uscita Temporanea", validKeys="X", exitKey='XQ')
+    # gv.LN.exit(gv, 9999, "Uscita Temporanea")
+
+
+    colNames = ws.rows[gv.MainVars.ExcelColNamesRow-1]
+
+    print ('creating /tmp/sample.xlsm file')
+    wb.save("/tmp/sample.xlsm")
+
 
     '''
+    for row in range(sheet.nrows):
+        rowValue = LN.excel.getRow(gv, sheet, row, wb, wantTupleDate=False)
 
-        # Esaminiamo tutti gli sheet (in teroia è solo il primo)
-    for sheet in wb.sheets():
-        gv.EXCEL.sheetName = sheet.name
-        logger.info('Analizzo sheetName: {0}'.format(sheet.name))
-        startExcelCol = gv.CONFIG.START_EXCEL_COLUMN.upper()   # Colonna di partenza dati
+        dummyCols = ord(gv.MainVars.ExcelStartCol) - ord('A')                # Eliminiamo le colonne vuote da A fino allo startExcelCol
+        while dummyCols:
+            del rowValue[0]
+            dummyCols -= 1
 
-        for row in range(sheet.nrows):
-            rowValue = LN.excel.getRow(gv, sheet, row, wb, wantTupleDate=False)
-
-            dummyCols = ord(startExcelCol) - ord('A')                # Eliminiamo le colonne vuote da A fino allo startExcelCol
-            while dummyCols:
-                del rowValue[0]
-                dummyCols -= 1
 
             logger.info('working on row - {0}'.format(rowValue[:5]) )
                 # ------------------------------------------
