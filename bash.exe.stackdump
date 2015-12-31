@@ -1,0 +1,129 @@
+MSYS-1.0.12 Build:2012-07-05 14:56
+Exception: STATUS_IN_PAGE_ERROR at eip=6800FAA4
+eax=003E0000 ebx=0000000B ecx=0000000A edx=003E034C esi=0000002C edi=00000000
+ebp=0263FF2C esp=0263FEB0 program=J:\LnFree\Pgm\GIT\PortableGit-1.8.4\bin\bash.exe
+cs=0023 ds=002B es=002B fs=0053 gs=002B ss=002B
+Stack trace:
+Frame     Function  Args
+0263FF2C  6800FAA4  (00000000, 0263FF88, 680054D7, 0263FF80)
+0263FF88  680054FC  (680A4E5C, 0263FFD4, 77DD9882, 680A4E5C)
+0263FF94  756B336A  (680A4E5C, 758FC00E, 00000000, 00000000)
+0263FFD4  77DD9882  (680054A8, 680A4E5C, 00000000, 00000000)
+5865399 [sig] bash 5468 handle_exceptions: Exception: STATUS_ACCESS_VIOLATION
+6670226 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+7088413 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+7181361 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+7288770 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+7590902 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+7727237 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+7837906 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+7974183 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8012305 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8019148 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8024280 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8029207 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8033896 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8050290 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8055418 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8064917 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8074064 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8092020 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8100545 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8109252 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8118639 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8127670 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8140423 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8160356 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8168863 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8177518 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8185838 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8202029 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8211228 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8223054 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8237697 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8246204 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8254705 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8263431 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8271431 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8281558 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8290034 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8306799 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8324829 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8334781 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8343215 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8395580 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8400528 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8419236 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8426029 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8431061 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8435696 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8441139 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8453792 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8462662 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8475805 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8493569 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8499651 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8504667 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8509400 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8525259 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8530679 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8540784 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8555174 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8561397 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8566388 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8571281 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8576395 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8583618 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8592810 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8601774 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8618163 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8631040 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8645093 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8663544 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8669052 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8674649 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8679903 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8692919 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8701414 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8714288 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8725146 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8738444 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8753034 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8762951 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8770690 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8781079 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8787508 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8801347 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8820514 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8835081 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8843591 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8853329 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8861715 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8867057 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8875907 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8887556 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8897171 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8911655 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8924523 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8934043 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8942007 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8955047 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8963809 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+8980232 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+8992268 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+9001082 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+9009506 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+9018231 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+9034172 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+9042684 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+9090085 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+9194691 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+9337074 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+9419331 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+9977693 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+10135255 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+10777256 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+11323555 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+11926994 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)
+12286637 [sig] bash 5468 handle_exceptions: Exception: STATUS_IN_PAGE_ERROR
+12465851 [sig] bash 5468 handle_exceptions: Error while dumping state (probably corrupted stack)

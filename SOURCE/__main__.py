@@ -37,7 +37,6 @@ if __name__ == "__main__":
     gv.MAIN.DEBUG    = False
 
 
-
     iniFileName = os.path.abspath(os.path.join(gv.MAIN.mainConfigDIR, projectName + '.ini'))
     gv.INI.configParser, gv.INI.dict = gv.LN.dict.readIniFile(gv, iniFileName, RAW=False, exitOnError=True)
 

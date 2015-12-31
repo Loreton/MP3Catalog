@@ -6,27 +6,36 @@
 # import sys
 # import types
 
-def prepareHeader(gv, ws):
+
+#############################################################
+# - INPUT: una LIST di LIST
+# -        ROW[x] = ['', '', ..]
+#############################################################
+def prepareHeader(gv, ROW):
     logger      = gv.LN.logger.setLogger(gv, package=__name__)
     calledBy    = gv.LN.sys.calledBy
 
     logger.info('entered - [called by:{0}]'.format(calledBy(1)))
-
-    colNamesTuple = ws.rows[gv.MainVars.ExcelColNamesRow-1]
+    colNamesTuple = ROW[gv.MainVars.ExcelColNamesRow-1]
     for cell in colNamesTuple:
-        val = cell.value
-        print (val)
+        print (cell)
 
 
-    '''
+
     # ---------------------------------------------------------
+    #   print (type(gv.MainVars.PrimaryColName), gv.MainVars.PrimaryColName)
+    #   print (type(gv.MainVars.AttributeColName), gv.MainVars.AttributeColName)
     # - Unisci i nomi delle colonne e verifichiamo
     # - che sono uguali a quelle del foglio excel
     # - La verifica viene fatta solo se viene passato rowValue
     # ---------------------------------------------------------
-    totalCols = gv.CONFIG.NOMI_COLONNE_PRIMARIE[:]              # create a new copy of LIST
-    totalCols.extend(gv.CONFIG.NOMI_COLONNE_ATTRIBUTI)
+    totalCols = gv.MainVars.PrimaryColName[:]              # create a new copy of LIST
+    totalCols.extend(gv.MainVars.AttributeColName)
+    print (type(totalCols), totalCols)
 
+
+
+    '''
 
     # ###################################
     # - Controllo nomi colonne

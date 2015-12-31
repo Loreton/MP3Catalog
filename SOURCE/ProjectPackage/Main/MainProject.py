@@ -21,15 +21,13 @@ import xml
 # -  5 - Chiamata al programma principale del progetto
 ################################################################################
 def Main(gv):
-    LN          = gv.LN
-    Prj         = gv.Prj
     logger      = gv.LN.logger.setLogger(gv, package=__name__)
     calledBy    = gv.LN.sys.calledBy
 
     logger.info('entered - [called by:{0}]'.format(calledBy(1)))
 
 
-    gv.LN.dict.printDictionaryTree(gv, gv.INI, header="Global Vars [{0}]".format(calledBy(0), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2))
+    # gv.LN.dict.printDictionaryTree(gv, gv.INI, header="Global Vars [{0}]".format(calledBy(0), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2))
 
         # =========================================================
         # * Prelievo delle informazioni di base dalla "MAIN" Section
@@ -50,15 +48,35 @@ def Main(gv):
         gv.MainVars.ExcelLastSongRow    = MainSectID['EXCEL_LAST_SONG_ROW']
 
         appo                            = MainSectID['Nomi Colonne Primarie']
-        gv.MainVars.PrimaryColName      = [x.strip('\n').strip() for x in appo.split(',') if x]
+        gv.MainVars.PrimaryColName      = [x.strip('\n').strip() for x in appo.split('\n') if x]
+        # gv.MainVars.PrimaryColName      = [x.strip('\n').strip() for x in appo.split('FIELD=') if x]
+        # gv.MainVars.PrimaryColName      = appo.split('),')
+        # print (type(gv.MainVars.PrimaryColName))
+        # choice=gv.LN.sys.getKeyboardInput(gv, "Uscita Temporanea", validKeys="X", exitKey='XQ')
+
 
         appo                            = MainSectID['Nomi Colonne Attributi']
-        gv.MainVars.AttributeColName    = [x.strip('\n').strip() for x in appo.split(',') if x]
-        gv.LN.dict.printDictionaryTree(gv, gv.MainVars, header="MainVars Vars [{0}]".format(calledBy(0), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2))
+        gv.MainVars.AttributeColName    = [x.strip('\n').strip() for x in appo.split('\n') if x]
+        # gv.MainVars.AttributeColName    = appo
+        gv.LN.dict.printDictionaryTree(gv, gv.MainVars, header="MainVars Vars [{0}]".format(calledBy(0)), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2)
+
+
 
     except Exception as why:
         msg = "Chiave non trovata: {0} nel file.ini".format(str(why))
         gv.LN.sys.exit(gv, 1001, "Chiave non trovata: {0} nel file.ini".format(str(why)))
+
+
+    gv.MainVars.ColumnNames = gv.MainVars.PrimaryColName[:]              # create a new copy of LIST
+    gv.MainVars.ColumnNames.extend(gv.MainVars.AttributeColName)
+
+
+        # -------------------------------------------------------------------------------
+        # - Accesso al DB
+        # -------------------------------------------------------------------------------
+    gv.Prj.sql.createTable(gv, "d:/tmp/LnSQLit3.db", 'Tabella01', gv.MainVars.ColumnNames)
+
+    choice=gv.LN.sys.getKeyboardInput(gv, "Uscita Temporanea", validKeys="X", exitKey='XQ')
 
 
 
@@ -67,8 +85,6 @@ def Main(gv):
         #      il DB gv.MP3.Dict
         # -------------------------------------------------------------------------------
     gv.Prj.excel.readCatalog(gv, gv.MP3.Dict)
-
-
 
 
     if gv.MainVars.action == 'EXTRACT':

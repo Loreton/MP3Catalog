@@ -10,6 +10,7 @@ from . import Setup                  as setup
 from . import Extract                as extract
 from . import Excel                  as excel
 from . import Main                   as main                         # richiamato Prj.main.MP3Catalog()
+from . import LnSqlite               as sql
 
 from .Main.MainProject              import Main                     # richiamato Prj.Main()
 from .Setup.SetUpEnv               import setUpEnv          # richiamato Prj.globalVariables()
