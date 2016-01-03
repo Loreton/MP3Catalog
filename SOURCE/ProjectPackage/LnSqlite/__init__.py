@@ -3,3 +3,4 @@
 
 
 from .CreateDB           import createTable
+from .CreateDB           import insertRow

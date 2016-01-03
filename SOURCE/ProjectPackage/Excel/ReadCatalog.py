@@ -24,19 +24,22 @@ def readCatalog(gv, MP3Dict):
     wb = gv.LN.excel.read(gv, gv.MainVars.excelInputFile, keep_vba=True)
     logger.info('Analisi del foglio: {0}'.format(gv.MainVars.sheetName))
 
-    range.rowLow
-    range.rowHigh
-    range.colLow
-    range.colHigh
+    # range.rowLow
+    # range.rowHigh
+    # range.colLow
+    # range.colHigh
 
         # -------------------------------------------------------
         # - Acquisizione del folgio richiesto in formato CSV
         # -------------------------------------------------------
     if not gv.MainVars.sheetName in wb.get_sheet_names():
         gv.LN.exit(gv, 1001, "Il nome del foglio richiesto {0} non e' presente nel file {1}".format(gv.MainVars.sheetName, gv.MainVars.excelInputFile))
-    outFname = '/tmp/excelToCSV_{0}.csv'.format(gv.MainVars.sheetName)
+    outFname = 'd:/tmp/excelToCSV_{0}.csv'.format(gv.MainVars.sheetName)
     gv.ExcelCSV = gv.LN.excel.exportToCSV(gv, wb, gv.MainVars.sheetName, outFname=outFname, maxrows=gv.MainVars.MaxRowsToRead, fPRINT=False)
     # for line in gv.ExcelCSV: print (line)
+    return  gv.ExcelCSV
+
+    choice=gv.LN.sys.getKeyboardInput(gv, "Uscita Temporanea", validKeys="X", exitKey='XQ')
 
 
 
