@@ -11,7 +11,7 @@ import sqlite3, pandas
 def open(gv, DBFile, create=False, printVersion=False):
     logger      = gv.LN.logger.setLogger(gv, package=__name__)
     calledBy    = gv.LN.sys.calledBy
-    logger.info('entered - [called by:%s]' % (calledBy(1)))
+    logger.info('entered - [called by:{CALLER}]'.format(CALLER=calledBy(1)))
 
     if create:
         if os.path.isfile(DBFile):
@@ -32,14 +32,5 @@ def open(gv, DBFile, create=False, printVersion=False):
         data = cur.fetchone()
         print ("SQLite version: {0}".format(data))
 
+    logger.info('exiting - [called by:{CALLER}]'.format(CALLER=calledBy(1)))
     return conn
-
-
-def readTable(gv, cur, TblName):
-    RECs = []
-    for row in cur.execute('SELECT * FROM {TABLE};'.format(TABLE=TblName)):
-        # print (row)
-        RECs.append(row)
-
-    # print (len(RECs))
-    return RECs
