@@ -4,7 +4,7 @@
 # metodo 1
 # from setVariables import setVariables   as setVars
 
-from .ReadCatalog              import readCatalog
+from .ReadExcelData              import readExcelData
 # from .WriteCatalog             import writeCatalog
-from .PrepareHeader            import prepareHeader
+# from .PrepareHeader            import prepareHeader
 

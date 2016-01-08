@@ -18,8 +18,8 @@ def createTable(gv, DBFile, TblName=None, create=False, ColNames=None, script=No
         # -----------------------------------
         # - Connecting to the database file
         # -----------------------------------
-    conn = sqlite3.connect(DBFile)
-    c = conn.cursor()
+    conn    = sqlite3.connect(DBFile)
+    c       = conn.cursor()
 
         # -----------------------------------
         # - Creating/Connecting SQLite table

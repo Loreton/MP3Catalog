@@ -4,3 +4,5 @@
 
 from .CreateDB           import createTable
 from .CreateDB           import insertRow
+from .OpenDB             import open
+from .OpenDB             import readTable
