@@ -14,7 +14,7 @@ import types
 def readExcelData(gv):
 
     try:
-        ExcelSectID                 = gv.INI.dict['EXCEL']
+        ExcelSectID              = gv.INI.dict['EXCEL']
         Excel                    = gv.LnClass()
         Excel.fileName           = os.path.abspath(os.path.join(gv.MAIN.mainDataDIR, ExcelSectID['EXCEL_File']))
         Excel.csvFull            = ExcelSectID['CSV_File_fullData']

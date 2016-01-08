@@ -33,12 +33,13 @@ def Main(gv):
         MainSectID       = gv.INI.configParser['MAIN']
         DBSectID         = gv.INI.dict['DB_Data']
 
-        gv.ImportExcel   = MainSectID['IMPORT_FROM_EXCEL']
+        gv.ImportExcel   = True if MainSectID['IMPORT_FROM_EXCEL'] == 'True' else False
+
 
         gv.DB            = gv.LnClass()
         gv.DB.File       = os.path.abspath(os.path.join(gv.MAIN.mainDataDIR, DBSectID['DBFile']))
 
-        # gv.LN.dict.printDictionaryTree(gv, gv.DB, header="MainVars Vars [{0}]".format(calledBy(0)), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2)
+        # gv.LN.dict.printDictionaryTree(gv, gv, header="MainVars Vars [{0}]".format(calledBy(0)), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2)
 
     except Exception as why:
         gv.LN.sys.exit(gv, 1001, "Chiave non trovata: {0} nel file.ini".format(str(why)))
@@ -48,7 +49,8 @@ def Main(gv):
 
         print (len(csvData))
 
-    sys.exit()
+    gv.LN.sys.exit(gv, 9999, "Uscita temporanes", printStack=True)
+
 
     createTables(gv, csvData)
 
