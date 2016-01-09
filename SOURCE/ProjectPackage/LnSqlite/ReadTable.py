@@ -15,5 +15,5 @@ def readTable(gv, cur, TblName):
         RECs.append(row)
 
 
-    logger.info('exiting - [called by:{CALLER}]'.format(CALLER=calledBy(1)))
+    logger.debug('exiting - [called by:{CALLER}]'.format(CALLER=calledBy(1)))
     return RECs

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# -*- coding: iso-8859-1 -*-
 #
+#-*- coding: iso-8859-1 -*-
 # Scope:  ............
 #                                               by Loreto Notarantonio 2013, February
 # ######################################################################################
@@ -21,6 +21,20 @@ if __name__ == "__main__":
 
     gv = Prj.setUpEnv(Prj, __file__, projectName=projectName, fDEBUG=False)
     calledBy = gv.LN.sys.calledBy
+
+
+    # midName = 'MP3'
+    # setattr(gv.Table, midName, gv.LnClass())
+    # setattr("{0}.{1}".format(gv.Table, midName), 'name', 'TableName')
+    # setattr(gv.Table[midName], 'name', 'TableName')
+    # gv.Table()[midName] = gv.LnClass()
+    # gv.Table.__dict__[midName] = gv.LnClass()
+    # gv.Table.__dict__[midName].name = 'Ciao'
+    # gv.Table()[midName], 'name', 'TableName')
+
+    # gv.LN.dict.printDictionaryTree(gv, gv.Table, header="Global Vars [{0}]".format(calledBy(0)), console=True, fEXIT=True, retCols='TV', lTAB=' '*4, listInLine=2)
+
+
 
 
         # ---------------------------------------------------------

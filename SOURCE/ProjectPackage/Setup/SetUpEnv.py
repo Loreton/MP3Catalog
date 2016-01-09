@@ -9,6 +9,7 @@ import platform
 import os
 import tempfile
 import socket
+# import dotmap
 
 # ####################################################################
 # # setUpEnv()
@@ -20,6 +21,7 @@ def setUpEnv(Prj, callerFileName, projectName=None, fDEBUG=False):
     import LnFunctions as Ln
 
 
+    # gv      = dotmap.DotMap()
     gv      = Prj.LnClass()
     gv.Prj  = Prj
     gv.LN   = Ln
@@ -153,5 +155,6 @@ def preparePrjEnv(gv):
     gv.MP3.Dict             = {}                            # Catalogo delle canzoni
     gv.MP3.TYPE             = gv.LnClass()
 
+    gv.Table                = gv.LnClass()
 
 

@@ -26,16 +26,16 @@ def insertRow(gv, DB, TblName=None, record=""):
         print ("\n\nAttesa LIST per i vari campi\n\n")
         return 1
 
-    logger.info('nFields: {NFIELDS}'.format(NFIELDS=nFields))
+    logger.debug('nFields: {NFIELDS}'.format(NFIELDS=nFields))
     fields = '?'
     for inx in range(1, nFields):
         fields += ',?'
 
 
-    logger.info('Fields:       {FIELDS}'.format(FIELDS=fields))
-    logger.info('EXECUTE_MANY: {FLAG}'.format(FLAG=EXECUTE_MANY))
+    logger.debug('Fields:       {FIELDS}'.format(FIELDS=fields))
+    logger.debug('EXECUTE_MANY: {FLAG}'.format(FLAG=EXECUTE_MANY))
     InsertCommand = 'INSERT  OR IGNORE INTO {TABLE} VALUES ({FIELDS})'.format(TABLE=TblName, FIELDS=fields)
-    logger.info (InsertCommand)
+    logger.debug (InsertCommand)
 
     try:
         cursor = DB.cursor()
@@ -49,4 +49,4 @@ def insertRow(gv, DB, TblName=None, record=""):
 
 
     DB.commit()
-    logger.info('exiting - [called by:{CALLER}]'.format(CALLER=calledBy(1)))
+    logger.debug('exiting - [called by:{CALLER}]'.format(CALLER=calledBy(1)))

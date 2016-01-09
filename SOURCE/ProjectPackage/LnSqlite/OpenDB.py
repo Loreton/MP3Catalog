@@ -18,19 +18,22 @@ def open(gv, DBFile, create=False, printVersion=False):
             msg = "\n   DBFile already exists: {DBFILE}\n   Press 'd' top destroy".format(DBFILE=DBFile)
             choice=gv.LN.sys.getKeyboardInput(gv, msg, validKeys="dD", exitKey='XQ')
             if choice in 'dD':
+                logger.info('removing DBFile {DBFILE}]'.format(DBFILE=DBFile))
                 os.remove(DBFile)
+
 
         # -----------------------------------
         # - Connecting to the database file
         # - Il file viene creato se non esiste
         # -----------------------------------
     conn = sqlite3.connect(DBFile)
+    cur = conn.cursor()
+    cur.execute('SELECT SQLITE_VERSION()')
+    version = cur.fetchone()
+    logger.info ("SQLite version: {VERSION}".format(VERSION=version))
 
     if printVersion:
-        cur = conn.cursor()
-        cur.execute('SELECT SQLITE_VERSION()')
-        data = cur.fetchone()
-        print ("SQLite version: {0}".format(data))
+        print ("SQLite version: {VERSION}".format(VERSION=version))
 
-    logger.info('exiting - [called by:{CALLER}]'.format(CALLER=calledBy(1)))
+    logger.debug('exiting - [called by:{CALLER}]'.format(CALLER=calledBy(1)))
     return conn
