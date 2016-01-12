@@ -9,7 +9,7 @@ import sqlite3
 # - Inserisce una riga in una tabella.
 # - Se record=LIST di LIST allora fa una massInsert/executeMany
 ###########################################################
-def insertRow(gv, DB, TblName=None, record=""):
+def insertRow(gv, DB, TblName=None, record="", commit=False):
     logger      = gv.LN.logger.setLogger(gv, package=__name__)
     calledBy    = gv.LN.sys.calledBy
     logger.info('entered - [called by:{CALLER}]'.format(CALLER=calledBy(1)))
@@ -47,6 +47,10 @@ def insertRow(gv, DB, TblName=None, record=""):
     except (sqlite3.OperationalError) as why:
         gv.LN.exit(gv, 1002, str(why), printStack=True)
 
+    logger.info('Adding record was successful!')
 
-    DB.commit()
+    if commit:
+        logger.info('Commiting modifications!')
+        DB.commit()
+
     logger.debug('exiting - [called by:{CALLER}]'.format(CALLER=calledBy(1)))

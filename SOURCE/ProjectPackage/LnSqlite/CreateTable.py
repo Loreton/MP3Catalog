@@ -10,7 +10,7 @@
 import sqlite3
 
     # choice=gv.LN.sys.getKeyboardInput(gv, ColNames, validKeys="c", exitKey='XQ')
-def createTable(gv, DB, TblName, forceCreate=False, ColNames=None, struct=None, script=None):
+def createTable(gv, DB, TblName, forceCreate=False, ColNames=None, struct=None, script=None, commit=False):
     logger      = gv.LN.logger.setLogger(gv, package=__name__)
     calledBy    = gv.LN.sys.calledBy
     logger.info('entered - [called by:{CALLER}]'.format(CALLER=calledBy(1)))
@@ -27,6 +27,8 @@ def createTable(gv, DB, TblName, forceCreate=False, ColNames=None, struct=None, 
             comando = 'DROP TABLE if exists     {TABLE}'.format(TABLE=TblName)
             logger.debug(comando)
             cursor.execute(comando)
+            rcode = cursor.fetchone()
+            logger.debug("Return Code: {RCODE}".format(RCODE=rcode))
 
         if struct:
             comando = 'CREATE TABLE if not exists {TABLE} {STRUCT}'.format(TABLE=TblName, STRUCT=struct)
@@ -50,6 +52,10 @@ def createTable(gv, DB, TblName, forceCreate=False, ColNames=None, struct=None, 
     except Exception as why:
         gv.LN.exit(gv, 1001, str(why), printStack=True)
 
-    DB.commit()
     logger.info('Table: {TABLE} - successful created.'.format(TABLE=TblName))
+
+    if commit:
+        logger.info('Commiting modifications!')
+        DB.commit()
+
     logger.debug('exiting - [called by:{CALLER}]'.format(CALLER=calledBy(1)))

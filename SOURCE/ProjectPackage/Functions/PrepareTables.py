@@ -54,11 +54,14 @@ def prepareTables(gv, DB, DBSectID, csvData):
                     preLoadTables(gv, DB, tableName, data, recordSep)
 
                 # inseriamo i nomi delle tabelle
-            # etattr(gv.Table, midName, gv.LnCalss())
-            # gv.Table.__dict__[midName] = gv.LnClass()
-            if not hasattr(gv.Table, midName):
-                setattr(gv.Table, midName, gv.LnClass())
-            gv.Table.__dict__[midName].name = tableName
+
+            if gv.DOTMAP:
+                gv.Table[midName] = gv.LnClass()
+                gv.Table[midName].name = tableName
+            else:
+                if not hasattr(gv.Table, midName):
+                    setattr(gv.Table, midName, gv.LnClass())
+                gv.Table.__dict__[midName].name = tableName
 
 
 #####################################################################

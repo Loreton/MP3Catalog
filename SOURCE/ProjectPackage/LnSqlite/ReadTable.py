@@ -8,7 +8,7 @@ def readTable(gv, cur, TblName):
     calledBy    = gv.LN.sys.calledBy
     logger.info('entered - [called by:{CALLER}]'.format(CALLER=calledBy(1)))
 
-    logger.info('reading Table: [{TABLE}]'.format(TblName))
+    logger.info('reading Table: [{TABLE}]'.format(TABLE=TblName))
 
     RECs = []
     for row in cur.execute('SELECT * FROM {TABLE};'.format(TABLE=TblName)):

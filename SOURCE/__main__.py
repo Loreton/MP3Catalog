@@ -40,7 +40,7 @@ if __name__ == "__main__":
         # ---------------------------------------------------------
         # - SetUp del log
         # ---------------------------------------------------------
-    gv.MAIN.DEBUG    = True
+    gv.MAIN.DEBUG    = False
     logConfigFileName = os.path.join(gv.MAIN.mainConfigDIR, 'LoggerConfig.ini')
     if gv.MAIN.DEBUG:
         print ("    {0:<32}: {1}".format('Reading LOG configuration file', logConfigFileName))

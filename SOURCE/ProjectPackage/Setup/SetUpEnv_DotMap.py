@@ -9,7 +9,6 @@ import platform
 import os
 import tempfile
 import socket
-# import dotmap
 
 # ####################################################################
 # # setUpEnv()
@@ -20,19 +19,18 @@ def setUpEnv(Prj, callerFileName, projectName=None, fDEBUG=False):
     (mainModuleDIR, mainModuleName, mainModuleExt) = preparePaths(mainModule,    fDEBUG=fDEBUG)
     import LnFunctions as Ln
 
-
-    # gv      = dotmap.DotMap()
-    gv      = Ln.LnClass()
-    gv.Prj  = Prj
-    gv.LN   = Ln
+    print ('DOTMAP:', Ln.DOTMAP )
+    gv          = Ln.dotMap()
+    gv.dotMap   = Ln.dotMap
+    gv.Prj      = Prj
+    gv.LN       = Ln
 
         # ================================================================================
-        # gv.LN.LnClass() e gv.Prj.LnClass() sono al momento intercambiabili e definite nei file:
+        # gv.LN.dotMap() e gv.Prj.dotMap() sono al momento intercambiabili e definite nei file:
         #      LnFunctions/__init__.py
         #      ProjectPackage/__init__.py
         # ================================================================================
-    gv.LnClass = gv.LN.LnClass
-    gv.MAIN     = gv.LnClass()  # definita nel file ProjectPackage/__init__.py
+    gv.MAIN     = gv.dotMap()  # definita nel file ProjectPackage/__init__.py
 
     gv.projectName          = projectName
     gv.MAIN.mainModuleDIR   = mainModuleDIR
@@ -58,7 +56,6 @@ def setUpEnv(Prj, callerFileName, projectName=None, fDEBUG=False):
 # - vale anche per quando siamo all'interno del .zip
 ################################################################################
 def preparePaths(mainModule, fDEBUG=False):
-    # global gv
     # mainModule                      = os.path.abspath(os.path.realpath(__file__))
     mainModuleDIR                   = os.path.dirname(mainModule)
     mainModuleName, mainModuleExt   = os.path.basename(mainModule).split('.')
@@ -91,10 +88,7 @@ def preparePaths(mainModule, fDEBUG=False):
 def prepareMainEnv(gv, projectName=None):
 
         # Classi che servono per il printDictionary
-    # gv.myDictTYPES          = [LnClass, argparse.Namespace]
-    # gv.myDictTYPES          = [gv.LnClass]
-    # gv.myDictTYPES          = [gv.Prj.LnClass]
-    gv.myDictTYPES          = [gv.Prj.LnClass, gv.LN.LnClass]
+    gv.myDictTYPES          = [gv.dotMap]
 
         # Calcolo dello scriptDir
     gv.MAIN.scriptDir = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -136,11 +130,11 @@ def prepareMainEnv(gv, projectName=None):
 
 
         # Conterrà i valori dei parametri di input
-    gv.InpParam             = gv.LnClass()
+    # gv.InpParam             = gv.dotMap()
 
         # Conterrà i valori dei parametri del file INI
-    gv.INI                  = gv.LnClass()
-    gv.INI_RAW              = gv.LnClass()
+    # gv.INI                  = gv.dotMap()
+    # gv.INI_RAW              = gv.dotMap()
 
 
 
@@ -150,13 +144,14 @@ def prepareMainEnv(gv, projectName=None):
 # preparePrjEnv(gv)
 #######################################################
 def preparePrjEnv(gv):
-    gv.MainVars             = gv.LnClass()
-    gv.extract              = gv.LnClass()
+    pass
+    # gv.MainVars             = gv.dotMap()
+    # gv.extract              = gv.dotMap()
 
-    gv.MP3                  = gv.LnClass()                     # Base per il Catalogo
-    gv.MP3.Dict             = {}                            # Catalogo delle canzoni
-    gv.MP3.TYPE             = gv.LnClass()
+    # gv.MP3                  = gv.dotMap()                     # Base per il Catalogo
+    # gv.MP3.Dict             = {}                            # Catalogo delle canzoni
+    # gv.MP3.TYPE             = gv.dotMap()
 
-    gv.Table                = gv.LnClass()
+    # gv.Table                = gv.dotMap()
 
 

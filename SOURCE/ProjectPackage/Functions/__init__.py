@@ -3,4 +3,5 @@
 
 from .PrepareTables     import prepareTables
 from .PrepareTables     import preLoadTables
+from .CreatePercentTable import createPercentTable
 
