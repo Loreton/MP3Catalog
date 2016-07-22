@@ -6,7 +6,7 @@
     @SET SOURCE_DIR=%SCRIPT_PATH%..\SOURCE
 
     rem 'without rowid' richiede almeno la versione sqlite3  3.8.2 or later. Presente a partire da python 3.4
-    @CALL %Ln.FreeDir%\PythonPATH.cmd 3.3
+    @CALL %Ln.FreeDir%\PythonPATH.cmd 344
     @SETLOCAL
 
     if EXIST "%SOURCE_DIR%\__main__.py" (
