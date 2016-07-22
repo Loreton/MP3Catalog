@@ -9,6 +9,7 @@
 import os, sys
 
 
+
     # print ('.......readFile.....')
 def readFile(csvFile):
     row = []
@@ -32,60 +33,107 @@ def writeFile(outFile, data=[]):
     f.close()
 
 
-
-
-def extract(gv, csvFile):
-    # RECs una lista di liste/canzoni
-    rowList = readFile(csvFile)
-    RECs = []
-    for row in rowList:
-        # print(row.strip('\n').strip())
-        tokens = [token.strip() for token in row.split(';') if token]
-        RECs.append(tokens) # se il primo è vuoto
-
-    #  -------------------------------------------------
-    # RECs[0] = Type
-    #            Author Name
-    #            Album Name
-    #            Song Name
-    #            Punteggio
-    #            Analizzata
-    #            Recomended
-    #            Loreto
-    #            Buona
-    #            Soft
-    #            Vivace
-    #            Molto Viv
-    #            Camera
-    #            Car
-    #            Lenta
-    #            Country
-    #            Strumentale
-    #            Classica
-    #            Lirica
-    #            Live
-    #            Discreta
-    #            Undefined
-    #            Avoid it
-    #            Confusionaria
-    #            Song Size
-    #  -------------------------------------------------
-
+def enumCols(gv, record):
         # Creiamo una enum con i nomi delle colonne
     col = gv.Ln.LnDict()
-    for index, name in enumerate(RECs[0]):
+
+    """
+      -------------------------------------------------
+     record =   Type;Author Name;Album Name;....
+     record =   Type
+                Author Name
+                Album Name
+                Song Name
+                Punteggio
+                Analizzata
+                Recomended
+                Loreto
+                Buona
+                Soft
+                Vivace
+                Molto Viv
+                Camera
+                Car
+                Lenta
+                Country
+                Strumentale
+                Classica
+                Lirica
+                Live
+                Discreta
+                Undefined
+                Avoid it
+                Confusionaria
+                Song Size
+      -------------------------------------------------
+    """
+
+    for index, name in enumerate(record):
         colName = name.replace(' ', '')
         col[colName] = index
-        print (index, colName)
-    nCols = index+1
-    print(nCols)
+        # print (index, colName)
+    return col
 
+
+def copySongs(gv, RECs):
+    TAByel      = gv.Ln.cYELLOW + ' '*8
+    TABerr      = gv.Ln.cERROR + ' '*8
+    TABcyan     = gv.Ln.cCYAN + ' '*8
+    cYEL        = gv.Ln.cYELLOW
+    cCYAN       = gv.Ln.cCYAN
+    cGREEN      = gv.Ln.cGREEN
+    cRESET      = gv.Ln.cRESET
+
+
+    col = enumCols(gv, RECs[0])
+    nCols = len(col)
+
+    # gv.INPUT_PARAM.printDict(gv)
+    # sourceDir   = gv.INPUT_PARAM.sourceDIR
+    # destDir     = gv.INPUT_PARAM.destDIR
+    for index, song in enumerate(RECs[1:]):
+        if len(song) != nCols: continue
+        if index > 10: break
+        # sourceName = '{BASEDIR}/{}'.format()
+        sourceName = os.path.join(  gv.INPUT_PARAM.sourceDIR,
+                                    song[col.Type],
+                                    song[col.AuthorName],
+                                    song[col.AlbumName],
+                                    song[col.SongName] + '.mp3')
+        # print (sourceName)
+        if gv.INPUT_PARAM.oneDirPerAuthor:
+            destName = os.path.join(  gv.INPUT_PARAM.destDIR,
+                                        song[col.Type],
+                                        song[col.AuthorName],
+                                        song[col.SongName] + '.mp3')
+            pass
+        else:
+            destName = os.path.join(  gv.INPUT_PARAM.destDIR,
+                                        song[col.Type],
+                                        song[col.AuthorName],
+                                        song[col.AlbumName],
+                                        song[col.SongName] + '.mp3')
+        print (cGREEN + 'song: {FILE}'.format(FILE=sourceName), end=' ')
+        if os.path.isfile(sourceName):
+            pass
+        else:
+            print (TABerr + ' - not FOUND'.format(FILE=sourceName))
+
+
+
+
+
+
+
+def songFilter(gv, RECs):
+    col = enumCols(gv, RECs[0])
+    nCols = len(col)
         # ----------------------------------------------
         # - Preleviamo tutte le canzoni analizzate
         # ----------------------------------------------
-    extracted  = []
-    analizzate = []
-    scartate   = []
+    extracted  = [RECs[0]]  # init con il nome delle colonne
+    analizzate = [RECs[0]]  # init con il nome delle colonne
+    scartate   = [RECs[0]]  # init con il nome delle colonne
     TotSize     = 0
     excludeType     = ['Bambini', 'Natale', 'Popolari', 'Themes']
     excludeAuthor   = ['Bambini', 'Chitarra', 'Classica']
@@ -125,7 +173,6 @@ def extract(gv, csvFile):
 
 
 
-
 def type02(csvFile):
     row = []
     # with open(csvFile, encoding='ascii', errors="surrogateescape") as f:
@@ -141,7 +188,7 @@ def type02(csvFile):
 # -  2 - Controllo parametri di input
 # -  5 - Chiamata al programma principale del progetto
 ################################################################################
-def mainLite(gv):
+def mainLite(gv, action):
     # gv.data = gv.Ln.LnDict(_dynamic=True)
     gv.data = gv.Ln.LnDict()
 
@@ -150,4 +197,20 @@ def mainLite(gv):
     gv.data.fileAnalizzate  = gv.Prj.dataDIR + '/_Analizzate.csv'
     gv.data.fileEstratte    = gv.Prj.dataDIR + '/_Estratte.csv'
 
-    extract(gv, csvFile)
+    if action == 'filter':
+        rowList = readFile(csvFile)
+        RECs = []       # RECs una lista di liste/canzoni
+        for row in rowList:
+            tokens = [token.strip() for token in row.split(';') if token]
+            RECs.append(tokens)
+        songFilter(gv, RECs)
+
+
+    elif action == 'extract':
+        rowList = readFile(gv.data.fileEstratte)
+        RECs = []
+        for row in rowList:
+            tokens = [token.strip() for token in row.split(';') if token]
+            RECs.append(tokens)
+
+        copySongs(gv, RECs)

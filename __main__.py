@@ -35,7 +35,7 @@ if __name__ == "__main__":
         # ----------------------------------------------------
         # - lettura dei parametri di input in un dictionary
         # ----------------------------------------------------
-    Input           = Prj.setup.parseInput(gv)
+    Input           = Prj.setup.parseInput(gv, sys.argv[1:])
     gv.INPUT_PARAM  = Ln.LnDict(Input)
     if gv.INPUT_PARAM.fDEBUG: gv.printDict(gv)
 
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     # import MP3Catalog as MP3Catalog
 
     # Prj.main.MP3Catalog.Main(gv, sys.argv)
-    Prj.mainLite(gv)
+    Prj.mainLite(gv, gv.INPUT_PARAM.action)
 
     gv.Ln.exit(gv, 0, "completed", printStack=False, stackLevel=9, console=True)
 

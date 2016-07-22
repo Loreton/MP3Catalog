@@ -38,5 +38,6 @@ nosetests.xml
 # Excel data
 *.xls
 *.xls?
+_*.csv
 
 *.sublime-*

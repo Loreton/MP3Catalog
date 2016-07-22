@@ -10,7 +10,7 @@ this_mod = sys.modules[__name__]
 #############################################################
 # - parseInput()
 #############################################################
-def parseInput(gv, programVersion=None):
+def parseInput(gv, args, programVersion=None):
     global TAByel, TABerr, TABcyan, cYEL, cCYAN, cRESET
     if not programVersion: programVersion = gv.Prj.Version
 
@@ -23,16 +23,16 @@ def parseInput(gv, programVersion=None):
     cRESET      = gv.Ln.cRESET
 
     positionalActionsDict  =  dict (
-            export  = "export delle canzoni...",
-            ciao    = "sdfadsf"
+            filter      = "filtra le canzoni e crea i file con le selezioni...",
+            extract     = "le canzoni risultate 'extracted' le copia sulla dir di destinazione"
         )
 
 
 
         # se non ci sono parametri... forziamo l'help
     if len(sys.argv) == 1: sys.argv.append('-h')
-    mainArgs   = prepareArgParse(positionalActionsDict)
-    InputPARAM = commonParsing(mainArgs.action, programVersion=programVersion)
+    mainArgs   = prepareArgParse(positionalActionsDict, programVersion)
+    InputPARAM = commonParsing(mainArgs.action)
 
         # aggiungiamo manualmente valori alla struttura
     InputPARAM.action       = mainArgs.action
@@ -71,7 +71,7 @@ def parseInput(gv, programVersion=None):
 #############################################################
 # - prepareArgParse()
 #############################################################
-def prepareArgParse(positionalActionsDict):
+def prepareArgParse(positionalActionsDict, programVersion):
     mainHelp    = "default help"
     description = "MP3Catalog"
 
@@ -96,6 +96,11 @@ def prepareArgParse(positionalActionsDict):
         epilog=cYEL+mainHelp+cRESET,
         conflict_handler='resolve',
     )
+
+
+    myParser.add_argument('--version',
+                            action='version',
+                            version='%(prog)s {VER}'.format(VER=programVersion))
 
     myParser.add_argument('action', help='Command/Action to run')
 
@@ -123,7 +128,7 @@ def prepareArgParse(positionalActionsDict):
 ###################################################
 # - commonParsing
 ###################################################
-def commonParsing(actionName, programVersion, DESCR='CIAO DESCR'):
+def commonParsing(actionName, DESCR='CIAO DESCR'):
     usageMsg = "\n          {COLOR}   {ACTION} {COLRESET}[options]".format(COLOR=cYEL, ACTION=actionName, COLRESET=cRESET)
     myParser = argparse.ArgumentParser( description=actionName + ' Command',
                                         add_help=True, usage=usageMsg,
@@ -134,7 +139,7 @@ def commonParsing(actionName, programVersion, DESCR='CIAO DESCR'):
 
 
 
-    _commonOptions(myParser, programVersion)
+    _commonOptions(myParser)
 
     # --------------------------------------------------
     # - forzare l'help solo se sappiamo che il comando
@@ -155,10 +160,8 @@ def commonParsing(actionName, programVersion, DESCR='CIAO DESCR'):
 
 
         # ------------------------------------------------
-        # - skip first/action parameter and
-        # - insert -h if no other parameter are passed
+        # - skip first/action parameter
         # ------------------------------------------------
-
     args = myParser.parse_args(sys.argv[2:])
 
     return args
@@ -168,11 +171,17 @@ def commonParsing(actionName, programVersion, DESCR='CIAO DESCR'):
 # ---------------------------
 # - A C T I O N s
 # ---------------------------
-def EXPORT(myParser):
-    pass
-    # _commonOptions(myParser)
+def EXTRACT(myParser):
+    if len(sys.argv[1:]) == 1: sys.argv.append('-h')
+    _songDirs(myParser)
     _executeOptions(myParser)
     # _ddnsOptions(myParser)
+
+def FILTER(myParser):
+    _executeOptions(myParser)
+    # pass
+
+
 
 
 
@@ -191,31 +200,38 @@ def _executeOptions(myParser):
 # ---------------------------
 # - DDNS
 # ---------------------------
-def _ddnsOptions(myParser):
-    myParser.add_argument( "-i", "--interface",
+def _songDirs(myParser):
+    myParser.add_argument( "-s", "--source-dir",
                             type=str,
-                            required=False,
-                            dest="IFCNAME",
-                            default='all',
-                            help=cYEL+"""Act the command for the specified interface (eth0 or wlan0 or ...
-    [DEFAULT: all]
+                            required=True,
+                            dest="sourceDIR",
+                            help=cYEL+"""Nome della directory da cui prelevare le canzoni ...
     """+cRESET)
 
-    myParser.add_argument( "-f", "--force",
+    myParser.add_argument( "-d", "--dest-dir",
+                            type=str,
+                            required=True,
+                            dest="destDIR",
+                            help=cYEL+"""Nome della directory dove copiare le canzoni selezionate ...
+    """+cRESET)
+
+    myParser.add_argument( "-1", "--one-dir-x-author",
                             action="store_true",
                             required=False,
-                            dest="FORCE",
                             default=False,
-                            help=cYEL+"""FORCE hostname update.
-    [DEFAULT: None]
+                            dest="oneDirPerAuthor",
+                            help=cYEL+"""viene creata una directory per autore (quindi senza le dir di Album)
+    [DEFAULT: False]
     """+cRESET)
+
+
 
 
 
 # ---------------------------
 # - COMMON
 # ---------------------------
-def _commonOptions(myParser, programVersion):
+def _commonOptions(myParser):
     myParser.add_argument( "-D", "--debug",
                             required=False,
                             action="store_true",
@@ -234,9 +250,5 @@ def _commonOptions(myParser, programVersion):
                             help=cYEL+"""display log to console.
     [DEFAULT: False]
     """+cRESET)
-
-    myParser.add_argument('--version',
-                            action='version',
-                            version='%(prog)s {VER}'.format(VER=programVersion))
 
 
