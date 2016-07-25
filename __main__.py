@@ -65,7 +65,7 @@ if __name__ == "__main__":
     iniFileName = os.path.relpath(iniFileName)
 
 
-    print (iniFileName)
+    # print (iniFileName)
 
         # --------------------------------------------------------
         # - CALL Project MAIN Program

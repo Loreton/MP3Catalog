@@ -175,7 +175,7 @@ def EXTRACT(myParser):
     if len(sys.argv[1:]) == 1: sys.argv.append('-h')
     _songDirs(myParser)
     _executeOptions(myParser)
-    # _ddnsOptions(myParser)
+    # _testOptions(myParser)
 
 def FILTER(myParser):
     _executeOptions(myParser)
@@ -197,8 +197,16 @@ def _executeOptions(myParser):
     [DEFAULT: False, run in DRY-RUN mode]
     """+cRESET)
 
+    myParser.add_argument( "--check-source",
+                            action="store_true",
+                            dest="fCHECK_SOURCE",
+                            default=False,
+                            help=cYEL+"""Verify that all the sources song are present.
+    [DEFAULT: False]
+    """+cRESET)
+
 # ---------------------------
-# - DDNS
+# - Directrory
 # ---------------------------
 def _songDirs(myParser):
     myParser.add_argument( "-s", "--source-dir",

@@ -13,7 +13,15 @@ from . import Setup     as setup
 from . import Functions as func
 
 
-from . Main.MP3Catalog import  mainLite
+from . Main.MP3Catalog              import  mainLite
+from . Functions.LnEnum             import  enumCols
+from . Functions.SongFilter         import  songFilter
+from . Functions.SongFilter         import  songFilter
+from . Functions.ReadWriteFile      import  readFile
+from . Functions.ReadWriteFile      import  writeFile
+from . Functions.CopySongs          import  copySongs
+from . Functions.CheckSourceSongs   import  checkSourceSongs
+
 
 
 
