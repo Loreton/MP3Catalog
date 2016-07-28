@@ -23,8 +23,8 @@ def parseInput(gv, args, programVersion=None):
     cRESET      = gv.Ln.cRESET
 
     positionalActionsDict  =  dict (
-            filter      = "filtra le canzoni e crea i file con le selezioni...",
-            extract     = "le canzoni risultate 'extracted' le copia sulla dir di destinazione"
+            extract     = "filtra le canzoni e crea i file con le selezioni...",
+            copySongs   = "le canzoni risultate 'extracted' le copia sulla dir di destinazione"
         )
 
 
@@ -171,25 +171,49 @@ def commonParsing(actionName, DESCR='CIAO DESCR'):
 # ---------------------------
 # - A C T I O N s
 # ---------------------------
-def EXTRACT(myParser):
+def COPYSONGS(myParser):
     if len(sys.argv[1:]) == 1: sys.argv.append('-h')
     _songDirs(myParser)
     _executeOptions(myParser)
+    _copySongsOptions(myParser)
     # _testOptions(myParser)
 
-def FILTER(myParser):
+def EXTRACT(myParser):
     _executeOptions(myParser)
     # pass
 
 
 
 
+# ---------------------------
+# - COPYSONGS
+# ---------------------------
+def _copySongsOptions(myParser):
+    myParser.add_argument( "--max-output-bytes",
+                            type=int,
+                            default=0,
+                            required=False,
+                            dest="maxBytes",
+                            help=cYEL+"""Numero massimo di bytes che deve avere l'output
+    [DEFAULT: 0 (no limits)]
+    """+cRESET)
+
+    myParser.add_argument( "--num-out-dirs",
+                            type=int,
+                            default=1,
+                            required=False,
+                            dest="numDirs",
+                            help=cYEL+"""Numero di directory da creare.
+    Verranno create tante subDirs sotto la dest-dir con un size <= --max-output-bytes.
+    [DEFAULT: 1]
+    """+cRESET)
+
 
 # ---------------------------
 # - EXECUTE
 # ---------------------------
 def _executeOptions(myParser):
-    myParser.add_argument( "-go", "--go",
+    myParser.add_argument( "--go",
                             action="store_true",
                             dest="fEXECUTE",
                             default=False,
@@ -257,6 +281,15 @@ def _commonOptions(myParser):
                             default=False,
                             help=cYEL+"""display log to console.
     [DEFAULT: False]
+    """+cRESET)
+
+    myParser.add_argument( "--max-songs",
+                            type=int,
+                            default=0,
+                            required=False,
+                            dest="maxSongs",
+                            help=cYEL+"""Numero massimo di canzoni da processare... comodo per DEBUG
+    [DEFAULT: 0 (all songs)]
     """+cRESET)
 
 

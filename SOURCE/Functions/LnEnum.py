@@ -6,6 +6,7 @@
 # ######################################################################################
 
 def enumCols(gv, record):
+    logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
         # Creiamo una enum con i nomi delle colonne
     col = gv.Ln.LnDict()
 

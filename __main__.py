@@ -31,7 +31,6 @@ if __name__ == "__main__":
 
     if TEST: prefix =  prefix + '_TEST'
 
-
         # ----------------------------------------------------
         # - lettura dei parametri di input in un dictionary
         # ----------------------------------------------------

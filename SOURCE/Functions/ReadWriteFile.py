@@ -11,14 +11,17 @@ import os, sys
 
 
     # print ('.......readFile.....')
-def readFile(csvFile):
+def readFile(gv, csvFile):
+    logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
     row = []
     # f = codecs.open(csvFile, "r", "utf-8")
     # f = open(csvFile, 'r', encoding="ascii", errors="surrogateescape")
+    logger.debug('reading file: {0}'.format(csvFile))
     f = open(csvFile, "r", encoding="latin-1")
     for line in f:
         row.append(line.strip())
     f.close()
+    logger.debug('number of lines found: {0}'.format(len(row)))
     return row
 
 def readType02(csvFile):
@@ -31,10 +34,13 @@ def readType02(csvFile):
     return row
 
 
-def writeFile(outFile, data=[]):
+def writeFile(gv, outFile, data=[]):
+    logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
     row = []
     # f = codecs.open(csvFile, "r", "utf-8")
     # f = open(csvFile, 'r', encoding="ascii", errors="surrogateescape")
+    logger.debug('writing file: {0}'.format(outFile))
+    logger.debug('number of lines to write: {0}'.format(len(data)))
     f = open(outFile, "w", encoding="latin-1")
     for line in data:
         f.write(';'.join(line))

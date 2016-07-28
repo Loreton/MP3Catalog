@@ -9,9 +9,10 @@ import sys
 class BreakIt(Exception): pass
 
 def songFilter(gv, RECs):
+    logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
     # ricerca della riga con i nomi
     for index, song in enumerate(RECs):
-        print (len(song), song)
+        # print (len(song), song)
         if len(song) > 1 and song[0] == 'Type':
             col = gv.Prj.enumCols(gv, RECs[index])
             nCols = len(col)
@@ -31,7 +32,7 @@ def songFilter(gv, RECs):
 
     for index, song in enumerate(RECs[1:]):
         if len(song) != nCols: continue
-        # if index > 10: break
+        if gv.INPUT_PARAM.maxSongs and index > gv.INPUT_PARAM.maxSongs: break
         if not song[col.Analizzata] == '.':
             if song[col.Type]       in excludeType:     continue
             if song[col.AuthorName] in excludeAuthor:   continue
@@ -54,13 +55,13 @@ def songFilter(gv, RECs):
     print()
 
     print('writing file:', gv.data.fileScartate)
-    gv.Prj.writeFile(gv.data.fileScartate,   data=scartate)
+    gv.Prj.writeFile(gv, gv.data.fileScartate,   data=scartate)
 
     print('writing file:', gv.data.fileEstratte)
-    gv.Prj.writeFile(gv.data.fileEstratte,   data=extracted)
+    gv.Prj.writeFile(gv, gv.data.fileEstratte,   data=extracted)
 
     print('writing file:', gv.data.fileAnalizzate)
-    gv.Prj.writeFile(gv.data.fileAnalizzate, data=analizzate)
+    gv.Prj.writeFile(gv, gv.data.fileAnalizzate, data=analizzate)
 
 
 

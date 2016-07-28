@@ -1,36 +1,36 @@
-@ECHO OFF
+@echo OFF
 
-    @SET SCRIPT_DRIVE=%~d0
-    @SET SCRIPT_PATH=%~dp0
-    @SET SCRIPT_NAME=%~n0
-    @SET SOURCE_DIR=%SCRIPT_PATH%..\SOURCE
+    @set "SCRIPT_DRIVE=%~d0"
+    @set "SCRIPT_PATH=%~dp0"
+    @set "SCRIPT_NAME=%~n0"
+    @set "SOURCE_DIR=%SCRIPT_PATH%..\SOURCE"
 
     rem 'without rowid' richiede almeno la versione sqlite3  3.8.2 or later. Presente a partire da python 3.4
-    @CALL %Ln.FreeDir%\PythonPATH.cmd 344
-    @SETLOCAL
+    @call %Ln.FreeDir%\PythonPATH.cmd 344
+    @setlocal
 
-    if EXIST "%SOURCE_DIR%\__main__.py" (
-        SET mainProgram="%SOURCE_DIR%\__main__.py"
-    ) else (
-        SET mainProgram="%SOURCE_DIR%\%SCRIPT_NAME%.zip"
-    )
+    cd /D %SCRIPT_PATH%
+    set "mainProgram=%SOURCE_DIR%\%SCRIPT_NAME%.zip"
+    set "mainProgram=..\__main__.py"
 
-    IF /I "%1"=="DEBUG" (
-        @SET PARAMS=%2 %3 %4 %4 %6 %7 %8 %9
-        @SET DEBUG=-c "import winpdb;winpdb.main()" && SET START=start
+    @set "extPARAMS=%*"
 
-    ) ELSE (
-        @SET PARAMS=%*
-    )
-
-    @GOTO :PROCESS
-
-:PROCESS
-    @echo %PARAMS%
-    %START% python.exe %DEBUG% %mainProgram% %PARAMS%
+    @goto :EXTRACT
+    @goto :COPYSONGS
 
 
+:EXTRACT
+    set "params=extract"
+    :: %START% python.exe %mainProgram% %params% %extPARAMS%
+    python.exe %mainProgram% %params% %extPARAMS%
+    goto :EOF
+
+:COPYSONGS
+    set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3 --check-source"
+    python.exe %mainProgram% %params% %extPARAMS%
+    goto :EOF
 
 
+:EOF
 :: @pause
     rem start python -c "import winpdb;winpdb.main()" %mainProgram% %PARAMS%

@@ -15,6 +15,6 @@ def setupLog(gv, prefix='PREFIX'):
     # logConfigFileName   = os.path.relpath(os.path.relpath(logConfigFileName))
 
     gv.Ln.initLogger(iniLogFile=logConfigFileName, logFileName=logFileName, package='MP3', packageQualifiers=2)
-    logger = gv.Ln.setLogger(package="Main", CONSOLE='DEBUG')
+    logger = gv.Ln.setLogger(package="Main", CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
 
     return logger
