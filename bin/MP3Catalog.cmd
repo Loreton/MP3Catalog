@@ -27,6 +27,7 @@
 
 :COPYSONGS
     set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3 --check-source"
+    set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3  --max-output-bytes=4G --num-out-dirs=6"
     python.exe %mainProgram% %params% %extPARAMS%
     goto :EOF
 

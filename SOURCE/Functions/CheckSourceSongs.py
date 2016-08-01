@@ -12,15 +12,17 @@ def checkSourceSongs(gv, RECs):
     logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
     color  = gv.Ln.Colors()
 
+    print (len(RECs))
+    print (len(RECs[1:]))
     col = gv.Prj.enumCols(gv, RECs[0])
     nCols = len(col)
     logger.info('numero colonne trovate: {0}'.format(nCols))
 
     NOTFOUND = []
-    # logger.info('numero record : {0}'.format(len(RECs[1:])))
+    FOUND = []
+
 
     for index, song in enumerate(RECs[1:]):
-        if len(song) != nCols: continue
         if gv.INPUT_PARAM.maxSongs and index > gv.INPUT_PARAM.maxSongs: break
         sourceSongName = os.path.join(gv.INPUT_PARAM.sourceDIR,
                                     song[col.Type],
@@ -28,18 +30,18 @@ def checkSourceSongs(gv, RECs):
                                     song[col.AlbumName],
                                     song[col.SongName] + '.mp3')
 
-        sourceSongName = sourceSongName.replace('Rondó', 'Rondò')
-        if not os.path.isfile(sourceSongName):
+        if os.path.isfile(sourceSongName):
+            FOUND.append(sourceSongName)
+        else:
             NOTFOUND.append(sourceSongName)
 
-    # The following songs are not found
     print ()
     if NOTFOUND:
         nSongs = len(NOTFOUND)
-        msg = color.RED08 + 'The following songs [{nSONGS}] are not found in the source directory'.format(nSONGS=nSongs)
+        msg = color.getRedH('The following songs [{nSONGS}] are not found in the source directory'.format(nSONGS=nSongs), tab=8)
     else:
-        nSongs = index -1
-        msg = color.YELLOW08 + 'ALL the songs [{nSONGS}] were found in the source directory'.format(nSONGS=nSongs)
+        nSongs = len(FOUND)
+        msg = color.getYellow('ALL the songs [{nSONGS}] were found in the source directory'.format(nSONGS=nSongs), tab=8)
 
     print (msg)
     for index, song in enumerate(NOTFOUND):

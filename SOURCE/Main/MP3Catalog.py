@@ -19,32 +19,45 @@ import os, sys
 ################################################################################
 def mainLite(gv, action):
     logger  = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
-    color   = gv.Ln.Colors()
+    C       = gv.Ln.Colors()
     gv.data = gv.Ln.LnDict()
 
     # csvFile                 = gv.Prj.dataDIR + '/MP3_Master_2015-08-10.csv'
     csvFile                 = gv.Prj.dataDIR + '/MP3_Master_2016-07-25.csv'
     gv.data.fileScartate    = gv.Prj.dataDIR + '/_Scartate.csv'
     gv.data.fileAnalizzate  = gv.Prj.dataDIR + '/_Analizzate.csv'
-    gv.data.fileEstratte    = gv.Prj.dataDIR + '/_Estratte.csv'
+    gv.data.fileValidSongs  = gv.Prj.dataDIR + '/_ValidSongs.csv'
 
-    if action == 'extract':
-        rowList = gv.Prj.readFile(gv, csvFile)
-        RECs = []       # RECs una lista di liste/canzoni
-        for row in rowList:
-            tokens = [token.strip() for token in row.split(';') if token]
-            RECs.append(tokens)
-        gv.Prj.songFilter(gv, RECs)
+    # if action == 'extract' or action == 'copySongs':
+    rowList = gv.Prj.readFile(gv, csvFile)
+    RECs = []       # RECs una lista di liste/canzoni
+    for row in rowList:
+        tokens = [token.strip() for token in row.split(';') if token]
+        RECs.append(tokens)
+    sf = gv.Prj.songFilter(gv, RECs)
+
+    choice = gv.Ln.getKeyboardInput(gv, "    Vuoi salvare i dati su file?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
+    if choice.lower() in ['x']:
+        sys.exit()
+
+    elif choice.lower() in ['yes']:
+        C.printYellow('writing file: {0}'.format(gv.data.fileScartate), tab=4)
+        gv.Prj.writeFile(gv, gv.data.fileScartate,   data=sf.scartate)
+
+        C.printYellow('writing file: {0}'.format(gv.data.fileValidSongs), tab=4)
+        gv.Prj.writeFile(gv, gv.data.fileValidSongs,   data=sf.validSongs)
+
+        C.printYellow('writing file: {0}'.format(gv.data.fileAnalizzate), tab=4)
+        gv.Prj.writeFile(gv, gv.data.fileAnalizzate, data=sf.analizzate)
 
 
-    elif action == 'copySongs':
-        rowList = gv.Prj.readFile(gv, gv.data.fileEstratte)
-        # print (len(rowList))
-        RECs = []
-        for row in rowList:
-            tokens = [token.strip() for token in row.split(';') if token]
-            RECs.append(tokens)
 
+    if action == 'copySongs':
+        choice = gv.Ln.getKeyboardInput(gv, "    Continuare per copiare le canzoni sulla destinazione?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
+        if choice.lower() in ['x', 'no']:
+            sys.exit()
+
+        RECs = sf.validSongs[:]
         logger.info('trovate {0} canzoni da copiare'.format(len(RECs)))
         if gv.INPUT_PARAM.fCHECK_SOURCE:
             gv.Prj.checkSourceSongs(gv, RECs)
@@ -52,5 +65,5 @@ def mainLite(gv, action):
             gv.Prj.copySongs(gv, RECs)
 
     else:
-        print (color.RED08 + 'Action {0} not yet implemente...!'.format(action))
+        C.printRed('Action {0} not yet implemented...!'.format(action), tab=8)
         sys.exit()

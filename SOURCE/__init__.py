@@ -14,7 +14,6 @@ from . import Functions as func
 
 
 from . Main.MP3Catalog              import  mainLite
-from . Functions.LnEnum             import  enumCols
 from . Functions.SongFilter         import  songFilter
 from . Functions.SongFilter         import  songFilter
 from . Functions.ReadWriteFile      import  readFile
@@ -23,6 +22,8 @@ from . Functions.CopySongs          import  copySongs
 from . Functions.CheckSourceSongs   import  checkSourceSongs
 
 
+from . Functions.LnEnum             import  enumCols
+from . Functions.LnEnum             import  enumColsKeyVal
 
 
 # from . DDNS_Update                  import updateDDNS

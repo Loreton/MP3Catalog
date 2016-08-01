@@ -6,7 +6,6 @@
 # ######################################################################################
 
 def enumCols(gv, record):
-    logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
         # Creiamo una enum con i nomi delle colonne
     col = gv.Ln.LnDict()
 
@@ -25,5 +24,26 @@ def enumCols(gv, record):
         colName = name.replace(' ', '')
         col[colName] = index
         # print (index, colName)
+    return col
+
+
+def enumColsKeyVal(gv, records):
+        # Creiamo una enum con i nomi delle colonne
+    col = gv.Ln.LnDict()
+    """
+      -------------------------------------------------
+     sampleRecord =   ['Name01 = 1', 'Name 02 = 54',... ]"
+     output:
+        col.Name01      = 1
+        col.Name02      = 54
+        ....
+      -------------------------------------------------
+    """
+
+    for item in records:
+        if item:
+          colName, index = item.split('=')
+          colName = colName.strip().replace(' ', '')
+          col[colName] = int(index)
     return col
 

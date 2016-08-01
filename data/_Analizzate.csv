@@ -1,4 +1,393 @@
 Type;Author Name;Album Name;Song Name;Punteggio;Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Country;Strumentale;Classica;Lirica;Live;Discreta;Undefined;Avoid it;Confusionaria;Song Size
+Bambini;Canzoni sotto l'albero;Varie;Alla scoperta di Babbo NATALE;384;x;.;.;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.010.560
+Bambini;Canzoni sotto l'albero;Varie;Ci vuole un fiore;384;x;.;.;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.514.368
+Bambini;Canzoni sotto l'albero;Varie;Dolce cara mammina;384;x;.;.;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.757.184
+Bambini;Canzoni sotto l'albero;Varie;Il ballo del qua qua;384;x;.;.;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.006.464
+Bambini;Canzoni sotto l'albero;Varie;Il mio grande papà;384;x;.;.;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.887.680
+Bambini;Canzoni sotto l'albero;Varie;Nella vecchia fattoria;384;x;.;.;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.547.712
+Bambini;Canzoni sotto l'albero;Varie;Noi VORREMMO;384;x;.;.;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.698.688
+Bambini;Canzoni sotto l'albero;Varie;Nonna superman;384;x;.;.;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.567.616
+Bambini;Canzoni sotto l'albero;Varie;Tu scendi dalle stelle;384;x;.;.;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.809.856
+Bambini;Canzoni sotto l'albero;Varie;W la pappa col pomodoro;384;x;.;.;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.925.120
+Bambini;Cartoni;The best of;Anna Dai Capelli Rossi;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.722.880
+Bambini;Cartoni;The best of;Arale Avventura Nello Spazio Another Dream;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.824.036
+Bambini;Cartoni;The best of;Arrivano I Superboys;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.723.428
+Bambini;Cartoni;The best of;Astro Robot;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.730.560
+Bambini;Cartoni;The best of;Astro Robot-Quattro Supereroi;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.023.056
+Bambini;Cartoni;The best of;Astroganga;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.337.417
+Bambini;Cartoni;The best of;Babil Junior;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.667.657
+Bambini;Cartoni;The best of;Babil Junior Cover;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.405.510
+Bambini;Cartoni;The best of;Baldios;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.878.344
+Bambini;Cartoni;The best of;Belfy E Lillibit;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.586.024
+Bambini;Cartoni;The best of;Belle E Sebastien;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.987.632
+Bambini;Cartoni;The best of;Bem;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.103.128
+Bambini;Cartoni;The best of;Bia La Sfida Della Magia;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.113.051
+Bambini;Cartoni;The best of;Bialasfidadellamagia;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.113.051
+Bambini;Cartoni;The best of;Blue Noah Mare Spaziale;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.313.097
+Bambini;Cartoni;The best of;Calendar Man;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.527.575
+Bambini;Cartoni;The best of;Candy Candy;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.334.125
+Bambini;Cartoni;The best of;Candycandy;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.334.125
+Bambini;Cartoni;The best of;Capitan Futuro;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.526.048
+Bambini;Cartoni;The best of;Capitan Futuro-Gran Capitano;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.351.131
+Bambini;Cartoni;The best of;Capitan Harlock;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.820.098
+Bambini;Cartoni;The best of;Capitan Harlock-I Corsari Delle Stelle;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.153.280
+Bambini;Cartoni;The best of;Capitan Jet;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.078.352
+Bambini;Cartoni;The best of;Capitanharlock;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.239.954
+Bambini;Cartoni;The best of;Capitanharlock-Icorsaridellestelle;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.153.280
+Bambini;Cartoni;The best of;Cara Dolce Kyoko-Kanashimi Yo Konnichi Wa;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.752.855
+Bambini;Cartoni;The best of;Carletto Principe Dei Mostri-Carletto E I Mostri;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.652.616
+Bambini;Cartoni;The best of;Carletto Principe Dei Mostri-Che Paura Mi Fa;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.702.448
+Bambini;Cartoni;The best of;Carlettoeimostri;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.652.616
+Bambini;Cartoni;The best of;Ceraunavoltapollon;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.798.872
+Bambini;Cartoni;The best of;Chepauramifa;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.702.448
+Bambini;Cartoni;The best of;Chobin;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.513.952
+Bambini;Cartoni;The best of;Conan;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.976.914
+Bambini;Cartoni;The best of;Cuore;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.865.142
+Bambini;Cartoni;The best of;Cybernella;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.096.241
+Bambini;Cartoni;The best of;Cyborg 009;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.317.851
+Bambini;Cartoni;The best of;Daitarn 3;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.190.410
+Bambini;Cartoni;The best of;Daitarniii;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.378.194
+Bambini;Cartoni;The best of;Daltanious;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.579.904
+Bambini;Cartoni;The best of;Danguard-Al Decimo Pianeta;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.481.737
+Bambini;Cartoni;The best of;Danguard-Contatto E Va;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.174.256
+Bambini;Cartoni;The best of;Dastardly And Muttley;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.211.245
+Bambini;Cartoni;The best of;Don Chuck Story;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.950.416
+Bambini;Cartoni;The best of;Donchuckilcastoro;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.458.017
+Bambini;Cartoni;The best of;Doraemon;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.143.584
+Bambini;Cartoni;The best of;Dragon Ball-Maka Fushigi Adventure;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 864.548
+Bambini;Cartoni;The best of;Dragon Ball-Romantic Ageruyo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 768.626
+Bambini;Cartoni;The best of;E Quasi Magia Johnny;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.217.448
+Bambini;Cartoni;The best of;Evelyn E La Magia Di Un Sogno D Amore;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.729.596
+Bambini;Cartoni;The best of;Fan Bernardo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.530.656
+Bambini;Cartoni;The best of;Fantaman;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.351.471
+Bambini;Cartoni;The best of;Fantaman Cover;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.015.280
+Bambini;Cartoni;The best of;Fiorellino Giramondo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.488.685
+Bambini;Cartoni;The best of;Fogus - Jeeg Robot;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.441.013
+Bambini;Cartoni;The best of;Forza-Sugar;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.303.634
+Bambini;Cartoni;The best of;Gakeen Magnetico Robot;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.931.472
+Bambini;Cartoni;The best of;Gatchaman La Battaglia Dei Pianeti;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.195.383
+Bambini;Cartoni;The best of;Gatchaman La Battaglia Dei Pianeti Cover;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.195.383
+Bambini;Cartoni;The best of;George Della Giungla;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.012.318
+Bambini;Cartoni;The best of;Georgie;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.006.262
+Bambini;Cartoni;The best of;Gigi La Trottola;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.851.192
+Bambini;Cartoni;The best of;Godam;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.972.525
+Bambini;Cartoni;The best of;Godsigma;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.248.653
+Bambini;Cartoni;The best of;Goldrake;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.202.086
+Bambini;Cartoni;The best of;Goldrake-Alcor;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.806.698
+Bambini;Cartoni;The best of;Goldrake-Goldrake;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.432.592
+Bambini;Cartoni;The best of;Goldrake-Pianeta Terra;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.119.830
+Bambini;Cartoni;The best of;Goldrake-Shooting Star;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.293.531
+Bambini;Cartoni;The best of;Goldrake-Ufo Robot;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.778.720
+Bambini;Cartoni;The best of;Goldrake-Vega;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.025.296
+Bambini;Cartoni;The best of;Goldrake-Venusia;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.644.450
+Bambini;Cartoni;The best of;Gordian;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.884.754
+Bambini;Cartoni;The best of;Gran Prix Il Supercampionissimo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.496.052
+Bambini;Cartoni;The best of;Gundam;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.067.530
+Bambini;Cartoni;The best of;Heidi;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.192.411
+Bambini;Cartoni;The best of;Hello Sandybell;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.045.168
+Bambini;Cartoni;The best of;Holly E Benji;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.150.064
+Bambini;Cartoni;The best of;Huck E Jim;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.093.790
+Bambini;Cartoni;The best of;Hurricane Polimar;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.544.832
+Bambini;Cartoni;The best of;I Bon Bon Magici Di Lilly;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.727.648
+Bambini;Cartoni;The best of;I Cavalieri Dello Zodiaco;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 758.857
+Bambini;Cartoni;The best of;I Cavalieri Dello Zodiaco-Il Ritorno;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.793.462
+Bambini;Cartoni;The best of;Il Dottor Slump Ed Arale;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.465.782
+Bambini;Cartoni;The best of;Il Fantastico Mondo Di Paul;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.050.958
+Bambini;Cartoni;The best of;Il Grande Mazinga;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.275.546
+Bambini;Cartoni;The best of;Ilgrandemazinger;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.413.120
+Bambini;Cartoni;The best of;Incantevole Creamy;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.095.314
+Bambini;Cartoni;The best of;Izenborg;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.504.880
+Bambini;Cartoni;The best of;Jeeg Robot;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.616.715
+Bambini;Cartoni;The best of;Jeeg Robot Tv;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.432.512
+Bambini;Cartoni;The best of;Jeeg Robot-Tv;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.912.709
+Bambini;Cartoni;The best of;Jet Robot;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.163.024
+Bambini;Cartoni;The best of;John Lennon - Imagine;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.943.137
+Bambini;Cartoni;The best of;Josie And The Pussicats;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 993.489
+Bambini;Cartoni;The best of;Judo Boy;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.383.497
+Bambini;Cartoni;The best of;Ken Falco;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.073.554
+Bambini;Cartoni;The best of;Ken Il Guerriero;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.315.848
+Bambini;Cartoni;The best of;Ken Il Guerriero-I Dont Like Love;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.922.651
+Bambini;Cartoni;The best of;Ken Il Guerriero-Tough Boy;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.163.794
+Bambini;Cartoni;The best of;Kimba Il Leone Bianco;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.946.740
+Bambini;Cartoni;The best of;Kimbailleonebianco;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.946.740
+Bambini;Cartoni;The best of;Koseidon;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.836.114
+Bambini;Cartoni;The best of;Kyashan;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.607.904
+Bambini;Cartoni;The best of;Kyashan-Sigla Finale;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.048.241
+Bambini;Cartoni;The best of;Kyashan-Sigla Iniziale;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.245.518
+Bambini;Cartoni;The best of;L Ape Maga;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.724.937
+Bambini;Cartoni;The best of;L Ape Maia;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.495.520
+Bambini;Cartoni;The best of;L Isola Dei Robinson;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.696.189
+Bambini;Cartoni;The best of;L Isola Del Tesoro;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.808.748
+Bambini;Cartoni;The best of;L Uomo Tigre;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.352.032
+Bambini;Cartoni;The best of;La Banda Dei Ranocchi;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.565.805
+Bambini;Cartoni;The best of;La Famiglia Mezil;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.067.344
+Bambini;Cartoni;The best of;La Fantastica Mimi;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.475.291
+Bambini;Cartoni;The best of;La Maga Chappy;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.178.728
+Bambini;Cartoni;The best of;La Principessa Sapphire;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.311.634
+Bambini;Cartoni;The best of;La Regina Dei Mille Anni;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.207.088
+Bambini;Cartoni;The best of;La Spada Di King Arthur;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.488.640
+Bambini;Cartoni;The best of;Lady Oscar;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.327.542
+Bambini;Cartoni;The best of;Lalabel;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.904.552
+Bambini;Cartoni;The best of;Lamu;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.408.940
+Bambini;Cartoni;The best of;Lamu'1;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.549.623
+Bambini;Cartoni;The best of;Lamu1;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.792.731
+Bambini;Cartoni;The best of;Lamu'4;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.288.920
+Bambini;Cartoni;The best of;Lapemaga;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.724.937
+Bambini;Cartoni;The best of;Lapemaia;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.495.520
+Bambini;Cartoni;The best of;Laprincipessasapphire;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.311.634
+Bambini;Cartoni;The best of;Le Nuove Avventure Di Pinocchio;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.030.400
+Bambini;Cartoni;The best of;Lulu Angelo Tra I Fiori;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.231.817
+Bambini;Cartoni;The best of;Lululangelotraifiori;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.231.817
+Bambini;Cartoni;The best of;Luomotigre;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.352.032
+Bambini;Cartoni;The best of;Lupin Iii-Fisarmonica;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.641.084
+Bambini;Cartoni;The best of;Lupin Iii-Planet-O;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.712.313
+Bambini;Cartoni;The best of;Lupin Iii-Planet-O Lato-B;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.905.234
+Bambini;Cartoni;The best of;Lupin Iii-Planet-O Lato-B[1];0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.905.234
+Bambini;Cartoni;The best of;Lupin Iii-Planet-O[1];0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.712.313
+Bambini;Cartoni;The best of;Lupinlincorreggibilelupin;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.570.912
+Bambini;Cartoni;The best of;Macross Plus;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.189.897
+Bambini;Cartoni;The best of;Madamoiselle Anne;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.477.302
+Bambini;Cartoni;The best of;Mago Pancione Etcci;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.070.746
+Bambini;Cartoni;The best of;Marco Polo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.867.650
+Bambini;Cartoni;The best of;Mazinga Z;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 931.291
+Bambini;Cartoni;The best of;Megaloman;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.305.221
+Bambini;Cartoni;The best of;Mila E Shiro Due Cuori Nella Pallavolo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.778.174
+Bambini;Cartoni;The best of;Mimi E Le Ragazze Della Pallavolo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.770.605
+Bambini;Cartoni;The best of;Muteking;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.970.078
+Bambini;Cartoni;The best of;Nana Supergirl;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.490.514
+Bambini;Cartoni;The best of;Nills Holgerrson;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.663.895
+Bambini;Cartoni;The best of;Nills Holgersson;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 527.542
+Bambini;Cartoni;The best of;Ninja Kamui;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.318.022
+Bambini;Cartoni;The best of;Occhi Di Gatto;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.580.303
+Bambini;Cartoni;The best of;Pat La Ragazza Del Baseball;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.209.965
+Bambini;Cartoni;The best of;Peline Story;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.513.691
+Bambini;Cartoni;The best of;Pinocchiopercheno;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.370.070
+Bambini;Cartoni;The best of;Pollon;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.798.872
+Bambini;Cartoni;The best of;Prendi Il Mondo E Vai;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.269.648
+Bambini;Cartoni;The best of;Ranma-Finale;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 644.937
+Bambini;Cartoni;The best of;Ranma-Iniziale;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 638.902
+Bambini;Cartoni;The best of;Ransie La Strega;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.400.933
+Bambini;Cartoni;The best of;Remi;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.274.331
+Bambini;Cartoni;The best of;Robotech;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.016.504
+Bambini;Cartoni;The best of;Rocky Joe;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.202.322
+Bambini;Cartoni;The best of;Ruy Il Piccolo Cid;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.837.520
+Bambini;Cartoni;The best of;Ryu Il Ragazzo Delle Caverne;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.085.074
+Bambini;Cartoni;The best of;Ryu Il Ragazzo Delle Caverne-Un Milione Di Anni Fa;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 979.696
+Bambini;Cartoni;The best of;Ryu-Unmilionediannifa;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 938.880
+Bambini;Cartoni;The best of;Ryu-Unmilionediannifa[1];0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 938.880
+Bambini;Cartoni;The best of;Sailor Moon E Il Cristallo Del Cuore;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.203.762
+Bambini;Cartoni;The best of;Sailor Moon La Luna Splende;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.004.442
+Bambini;Cartoni;The best of;Sam Ragazzo Del West;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.338.697
+Bambini;Cartoni;The best of;Sampei;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.250.296
+Bambini;Cartoni;The best of;Sasuke Il Piccolo Ninja;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.668.754
+Bambini;Cartoni;The best of;Space Robot;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.324.448
+Bambini;Cartoni;The best of;Spiderman;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.640.386
+Bambini;Cartoni;The best of;Spiderman-Sigla Americana;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 960.166
+Bambini;Cartoni;The best of;Star Blazers;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.589.048
+Bambini;Cartoni;The best of;Starzinger;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.681.208
+Bambini;Cartoni;The best of;Street Fighter Ii Victory;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.574.386
+Bambini;Cartoni;The best of;Superauto Mach 5;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.110.184
+Bambini;Cartoni;The best of;Supercar Gattiger;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.794.176
+Bambini;Cartoni;The best of;Tamagon;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.355.696
+Bambini;Cartoni;The best of;Tekkaman-Sigla Italiana;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.075.657
+Bambini;Cartoni;The best of;Tekkaman-Siglagiapponese;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.195.120
+Bambini;Cartoni;The best of;Tekkamen;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.616.112
+Bambini;Cartoni;The best of;The Beatles - Here Comes The Sun;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.597.152
+Bambini;Cartoni;The best of;The Flinstones;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 630.700
+Bambini;Cartoni;The best of;The Monkey;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.364.845
+Bambini;Cartoni;The best of;The Yardbirds - Questa Volta;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.408.656
+Bambini;Cartoni;The best of;Theflinstones;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 630.700
+Bambini;Cartoni;The best of;Time Machine;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.444.968
+Bambini;Cartoni;The best of;Too Much Of Heaven;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.903.447
+Bambini;Cartoni;The best of;Topcat;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 690.050
+Bambini;Cartoni;The best of;Toriton;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.478.672
+Bambini;Cartoni;The best of;Trider G7;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.316.571
+Bambini;Cartoni;The best of;Tyltyl Mytil E L Uccellino Azzurro;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.411.108
+Bambini;Cartoni;The best of;Ufo Diapolon;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.308.982
+Bambini;Cartoni;The best of;Ulisse 31;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.702.952
+Bambini;Cartoni;The best of;Un Incantesimo Dischiuso Tra I Petali Del Tempo Per Rina;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.555.312
+Bambini;Cartoni;The best of;Yattaman;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.349.668
+Bambini;Cristina d'Avena;Varie;Bibbidi - bobbidi - bu (Cenerentola);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.793.472
+Bambini;Cristina d'Avena;Varie;Ehi ho! (Biancaneve ed i sette nani);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.506.752
+Bambini;Cristina d'Avena;Varie;I sogni son desideri (Cenerentola);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.768.896
+Bambini;Cristina d'Avena;Varie;I tre porcellini ( I tre porcellini);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.072.000
+Bambini;Cristina d'Avena;Varie;Il mondo è mio (Aladdin);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.719.168
+Bambini;Cristina d'Avena;Varie;Impara a fischiettar (Biancaneve ed i sette nani);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.305.472
+Bambini;Cristina d'Avena;Varie;LA - LA LU (Lilly ed il vagabondo);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.145.728
+Bambini;Cristina d'Avena;Varie;Supercalifragilistic-espiralidoso (Mary Poppins);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.658.304
+Bambini;Cristina d'Avena;Varie;Un poco di zucchero (Mary Poppins);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.957.312
+Bambini;Cristina d'Avena;Varie;Una stella cade (Pinocchio);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.198.976
+Bambini;Disney;Cartoni;Bruno;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.964.928
+Bambini;Disney;Cartoni;Crock, shock,brock,clock;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.858.432
+Bambini;Disney;Cartoni;Il cielo di Beirut;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.276.224
+Bambini;Disney;Cartoni;Il mio fratellino a distanza;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.190.208
+Bambini;Disney;Cartoni;Il tempo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.251.648
+Bambini;Disney;Cartoni;Il tip tap del millepiedi;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.718.592
+Bambini;Disney;Cartoni;La guerra dei mutandoni;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.788.800
+Bambini;Disney;Cartoni;Le tagliatelle di nonna Pina;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.100.096
+Bambini;Disney;Cartoni;Ma va là;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.997.696
+Bambini;Disney;Cartoni;Magico;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.661.248
+Bambini;Disney;Cartoni;Olga, la tata del Volga;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.993.600
+Bambini;Disney;Cartoni;Rockhopper Hop;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.022.272
+Bambini;Disney;Cartoni;Ti canterò (Per la gioia che mi dai);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.513.792
+Bambini;Disney;Cartoni;Un'amica colombiana;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.182.016
+Bambini;Disney Forever;Themes;Alleluja, tutti jazzisti!;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 7.086.080
+Bambini;Disney Forever;Themes;Bambino mio;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.337.664
+Bambini;Disney Forever;Themes;Bella notte (Lilli e il vagabondo);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.092.480
+Bambini;Disney Forever;Themes;Bibbidi Bobbidi Bu;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.498.560
+Bambini;Disney Forever;Themes;Cam Caminì;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.407.872
+Bambini;Disney Forever;Themes;Canzoncina di primavera (Bambi);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.060.288
+Bambini;Disney Forever;Themes;Canzone sciocca;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 5.627.904
+Bambini;Disney Forever;Themes;Canzoni elefanti e noddole;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.694.592
+Bambini;Disney Forever;Themes;Casimiro (Dumbo);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.466.368
+Bambini;Disney Forever;Themes;Concertino a quattro zampe;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.076.672
+Bambini;Disney Forever;Themes;Crudelia de Mon;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.548.288
+Bambini;Disney Forever;Themes;Dance of the Reed Flutes (Fantasia);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.142.208
+Bambini;Disney Forever;Themes;Ehi Ho!;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.289.088
+Bambini;Disney Forever;Themes;Fai una fischiatina (Pinocchio);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.925.120
+Bambini;Disney Forever;Themes;Hakuna Matata (Il re Leone);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 5.320.704
+Bambini;Disney Forever;Themes;Hi Diddle Dee Dee;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.019.328
+Bambini;Disney Forever;Themes;I sogni son desideri (Cenerentola);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.579.904
+Bambini;Disney Forever;Themes;I tre porcellini;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.088.384
+Bambini;Disney Forever;Themes;Il capitano Uncino mantiene le promesse (Peter Pan);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.949.696
+Bambini;Disney Forever;Themes;Il mio amore un dì verrà (Biancaneve);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.281.472
+Bambini;Disney Forever;Themes;Impara a fischiettar;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.355.776
+Bambini;Disney Forever;Themes;Intorno al camino (La carica dei 101);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.142.784
+Bambini;Disney Forever;Themes;Io lo so (La bella addormentata nel bosco);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.313.664
+Bambini;Disney Forever;Themes;Io vivo come un re (Mary Poppins);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.424.832
+Bambini;Disney Forever;Themes;La canzone del non compleanno;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.322.432
+Bambini;Disney Forever;Themes;La canzone di tigro;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 339.968
+Bambini;Disney Forever;Themes;La canzone di Topolino;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.916.928
+Bambini;Disney Forever;Themes;La marcia del colonnello Hathi (Il libro della giungla);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.022.848
+Bambini;Disney Forever;Themes;La parata degli elefanti rosa (Dumbo);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.584.576
+Bambini;Disney Forever;Themes;La vita dei pirati (Peter Pan);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 630.784
+Bambini;Disney Forever;Themes;L'aquilone (Mary Poppins);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.236.416
+Bambini;Disney Forever;Themes;Lo stretto indispensabile;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 5.804.032
+Bambini;Disney Forever;Themes;Mago Merlino (La spada nella roccia);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.826.816
+Bambini;Disney Forever;Themes;Romeòs Swing;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.100.672
+Bambini;Disney Forever;Themes;Seguendo il capo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.117.632
+Bambini;Disney Forever;Themes;Supercalifragilistic;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.490.368
+Bambini;Disney Forever;Themes;The Aristocats (Gli aristogatti);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.801.664
+Bambini;Disney Forever;Themes;Un poco di zucchero;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.624.960
+Bambini;Disney Forever;Themes;Una stella cade (Pinocchio);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.899.392
+Bambini;Disney Forever;Themes;Urca Urca tirolero;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.207.744
+Bambini;Disney Forever;Themes;Voglio essere come te;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.886.528
+Bambini;Disney Forever;Themes;Whistle stop;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.753.088
+Bambini;Disney Forever;Themes;Winnie the Pooh (Winnie the Pooh);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.392.640
+Bambini;Zecchino d'oro;46.mo;Bruno;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.964.928
+Bambini;Zecchino d'oro;46.mo;Crock, shock,brock,clock;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.854.336
+Bambini;Zecchino d'oro;46.mo;Il cielo di Beirut;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.272.128
+Bambini;Zecchino d'oro;46.mo;Il mio fratellino a distanza;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.186.112
+Bambini;Zecchino d'oro;46.mo;Il tempo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.247.552
+Bambini;Zecchino d'oro;46.mo;Il tip tap del millepiedi;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.714.496
+Bambini;Zecchino d'oro;46.mo;La guerra dei mutandoni;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.788.800
+Bambini;Zecchino d'oro;46.mo;Le tagliatelle di nonna Pina;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.096.000
+Bambini;Zecchino d'oro;46.mo;Ma va là;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.993.600
+Bambini;Zecchino d'oro;46.mo;Magico;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.657.152
+Bambini;Zecchino d'oro;46.mo;Olga, la tata del Volga;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.989.504
+Bambini;Zecchino d'oro;46.mo;Rockhopper Hop;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.022.272
+Bambini;Zecchino d'oro;46.mo;Ti canterò (Per la gioia che mi dai);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.513.792
+Bambini;Zecchino d'oro;46.mo;Un'amica colombiana;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.182.016
+Bambini;Zecchino d'oro;Grandi successi;A mosca cieca;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.002.368
+Bambini;Zecchino d'oro;Grandi successi;Batti cinque (4 4 di silenzio);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.550.656
+Bambini;Zecchino d'oro;Grandi successi;Cane e gatto;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.014.656
+Bambini;Zecchino d'oro;Grandi successi;Caro Gesù ti scrivo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.231.168
+Bambini;Zecchino d'oro;Grandi successi;Cocco e Drilli;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.117.056
+Bambini;Zecchino d'oro;Grandi successi;Coccole!;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.612.672
+Bambini;Zecchino d'oro;Grandi successi;Corri topolino;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.559.424
+Bambini;Zecchino d'oro;Grandi successi;Dagli una spinta;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.940.928
+Bambini;Zecchino d'oro;Grandi successi;E' meglio Mario;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.853.760
+Bambini;Zecchino d'oro;Grandi successi;Evviva noi;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.710.976
+Bambini;Zecchino d'oro;Grandi successi;Fammi crescere i denti davanti;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.686.976
+Bambini;Zecchino d'oro;Grandi successi;Farfalla in città;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.776.512
+Bambini;Zecchino d'oro;Grandi successi;I 3 corsari;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.784.704
+Bambini;Zecchino d'oro;Grandi successi;I gol di Zé;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.493.312
+Bambini;Zecchino d'oro;Grandi successi;Il caffé della Peppina;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.686.976
+Bambini;Zecchino d'oro;Grandi successi;Il coccodrillo come fa!;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.005.888
+Bambini;Zecchino d'oro;Grandi successi;Il cuoco pasticcione;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.993.600
+Bambini;Zecchino d'oro;Grandi successi;Il Katalicammello;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.969.024
+Bambini;Zecchino d'oro;Grandi successi;Il Lungo,il corto,il pacioccone;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.985.984
+Bambini;Zecchino d'oro;Grandi successi;Il pinguino Belisario;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.076.096
+Bambini;Zecchino d'oro;Grandi successi;Il pulcino ballerino;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.235.840
+Bambini;Zecchino d'oro;Grandi successi;Il singhiozzo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.964.928
+Bambini;Zecchino d'oro;Grandi successi;Il sole verrà;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.149.248
+Bambini;Zecchino d'oro;Grandi successi;Il topo con gli occhiali;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.042.752
+Bambini;Zecchino d'oro;Grandi successi;Il torero camomillo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.186.688
+Bambini;Zecchino d'oro;Grandi successi;Il valzer del moscerino;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.878.912
+Bambini;Zecchino d'oro;Grandi successi;La figlia del re di Castiglia;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.727.936
+Bambini;Zecchino d'oro;Grandi successi;La giacca rotta;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.973.120
+Bambini;Zecchino d'oro;Grandi successi;La mia bidella candida;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.702.784
+Bambini;Zecchino d'oro;Grandi successi;La sveglia birichina;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.301.376
+Bambini;Zecchino d'oro;Grandi successi;La tartaruga sprint;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.268.608
+Bambini;Zecchino d'oro;Grandi successi;La Teresina;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.452.928
+Bambini;Zecchino d'oro;Grandi successi;La zanzara;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.092.480
+Bambini;Zecchino d'oro;Grandi successi;L'ocona sgangherona;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.124.672
+Bambini;Zecchino d'oro;Grandi successi;Metti la canottiera;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.235.264
+Bambini;Zecchino d'oro;Grandi successi;Mille voci una voce;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.764.800
+Bambini;Zecchino d'oro;Grandi successi;Mitico angioletto;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.657.152
+Bambini;Zecchino d'oro;Grandi successi;Monta in mountain bike;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.157.440
+Bambini;Zecchino d'oro;Grandi successi;Né bianco né nero;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.645.440
+Bambini;Zecchino d'oro;Grandi successi;Ninna nanna del chicco di caffé;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.609.152
+Bambini;Zecchino d'oro;Grandi successi;Non lo faccio più;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.399.680
+Bambini;Zecchino d'oro;Grandi successi;Nonno superman;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.595.712
+Bambini;Zecchino d'oro;Grandi successi;Per me cantare è un gioco;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.059.136
+Bambini;Zecchino d'oro;Grandi successi;Per un ditino nel telefono;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.977.792
+Bambini;Zecchino d'oro;Grandi successi;Pesciolino rosso;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.891.200
+Bambini;Zecchino d'oro;Grandi successi;Popoff;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.469.312
+Bambini;Zecchino d'oro;Grandi successi;Pubbli-pubbli-pubblicità;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 5.017.600
+Bambini;Zecchino d'oro;Grandi successi;Quarantaquattro gatti;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.657.728
+Bambini;Zecchino d'oro;Grandi successi;Riprendiamoci la fantasia;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.067.328
+Bambini;Zecchino d'oro;Grandi successi;Volevo un gatto nero;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.059.712
+Bambini;Zecchino d'oro;The best of;44 Gatti (Piccolo Coro Antoniano);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.707.456
+Bambini;Zecchino d'oro;The best of;Barbapapà;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.990.656
+Bambini;Zecchino d'oro;The best of;Bibbidi bobbidi bu;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.781.184
+Bambini;Zecchino d'oro;The best of;Caro gesù ti scrivo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.346.432
+Bambini;Zecchino d'oro;The best of;Casetta in canadà;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.027.520
+Bambini;Zecchino d'oro;The best of;Chiccolino di caffé (1962);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.502.080
+Bambini;Zecchino d'oro;The best of;Ci vuole un fiore - (Sergio Endrigo);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.469.312
+Bambini;Zecchino d'oro;The best of;Cin Ciù é;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.404.352
+Bambini;Zecchino d'oro;The best of;Ciribiricoccola;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.969.600
+Bambini;Zecchino d'oro;The best of;Cocco e drilli;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.449.408
+Bambini;Zecchino d'oro;The best of;Dagli una spinta;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.351.104
+Bambini;Zecchino d'oro;The best of;Fammi crescere i denti davanti;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.162.688
+Bambini;Zecchino d'oro;The best of;Gugù bambino dell'età della pietra;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.383.872
+Bambini;Zecchino d'oro;The best of;Ho visto un rospo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.497.984
+Bambini;Zecchino d'oro;The best of;I due liocorni;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.687.552
+Bambini;Zecchino d'oro;The best of;Il  pulcino ballerino;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.560.000
+Bambini;Zecchino d'oro;The best of;Il caffé della peppina;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.121.728
+Bambini;Zecchino d'oro;The best of;Il cane capellone;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.289.664
+Bambini;Zecchino d'oro;The best of;Il corsaro nero nero;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.519.040
+Bambini;Zecchino d'oro;The best of;Il lungo, il corto, il pacioccone;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.392.064
+Bambini;Zecchino d'oro;The best of;Il pinguino belisario;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.424.832
+Bambini;Zecchino d'oro;The best of;Il topo zorro;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.416.640
+Bambini;Zecchino d'oro;The best of;Il torero camomillo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.519.040
+Bambini;Zecchino d'oro;The best of;Il valzer del moscerino;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.076.096
+Bambini;Zecchino d'oro;The best of;Isotta;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.314.240
+Bambini;Zecchino d'oro;The best of;La ballata degli elefanti;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.490.368
+Bambini;Zecchino d'oro;The best of;La banda dello zoo;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.310.144
+Bambini;Zecchino d'oro;The best of;La giacca rotta;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.153.920
+Bambini;Zecchino d'oro;The best of;La giraffa genoveffa;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.678.208
+Bambini;Zecchino d'oro;The best of;La mia orchestra;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.199.552
+Bambini;Zecchino d'oro;The best of;La pecorella al bosco;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.473.984
+Bambini;Zecchino d'oro;The best of;La sveglia birichina;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.621.440
+Bambini;Zecchino d'oro;The best of;La torre degli asinelli;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.580.480
+Bambini;Zecchino d'oro;The best of;La zanzara;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.404.352
+Bambini;Zecchino d'oro;The best of;Mamma tutto (1976);0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.797.568
+Bambini;Zecchino d'oro;The best of;Maramao perché sei morto;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.678.208
+Bambini;Zecchino d'oro;The best of;Ninna nanna del chicco di caffé;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.035.712
+Bambini;Zecchino d'oro;The best of;Non lo faccio più;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.674.688
+Bambini;Zecchino d'oro;The best of;Papaveri e papere;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.362.816
+Bambini;Zecchino d'oro;The best of;Per un bicchiere di vino;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.302.528
+Bambini;Zecchino d'oro;The best of;Per un ditino nel telefono;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.400.256
+Bambini;Zecchino d'oro;The best of;Pesciolino rosso;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.076.096
+Bambini;Zecchino d'oro;The best of;Popoff;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.752.512
+Bambini;Zecchino d'oro;The best of;Popoffok;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.064.384
+Bambini;Zecchino d'oro;The best of;Sottosopra;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.936.832
+Bambini;Zecchino d'oro;The best of;Tippy, il coniglietto hippy;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.294.336
+Bambini;Zecchino d'oro;The best of;Tre civette sul comò;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 987.136
+Bambini;Zecchino d'oro;The best of;Tre scozzesi;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.883.584
+Bambini;Zecchino d'oro;The best of;Un milione di anni fà;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.269.184
+Bambini;Zecchino d'oro;The best of;Volevo un gatto nero.;0;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.433.024
 Chitarra;Carlos Fanelli & CO;Fluffies Bunnies;Fluffies Bunnies 01;385;x;x;.;x;x;.;.;.;.;.;.;x;.;.;.;.;.;.;.;bytes 4.297.687
 Chitarra;Carlos Fanelli & CO;Fluffies Bunnies;Fluffies Bunnies 02;384;x;x;.;x;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.061.297
 Chitarra;Carlos Fanelli & CO;Fluffies Bunnies;Fluffies Bunnies 03;384;x;x;.;x;x;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.714.472
@@ -5444,6 +5833,147 @@ Italiani;Zucchero Fornaciari;Spirito Divino;Papà Perché;768;x;x;x;B;.;.;.;.;x;.;
 Italiani;Zucchero Fornaciari;Spirito Divino;Senza Rimorso;896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 6.628.407
 Italiani;Zucchero Fornaciari;Spirito Divino;Voodoo Voodoo;0;x;x;x;.;.;.;.;.;.;.;.;.;.;.;.;x;.;.;.;bytes 5.953.214
 Italiani;Zucchero Fornaciari;Spirito Divino;X Colpa Di Chi_;0;x;x;x;.;.;.;.;.;x;.;.;.;.;.;.;x;.;.;x;bytes 5.741.917
+Natale;Country Christmas;Varie;A Bed For Baby Jesus;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.027.520
+Natale;Country Christmas;Varie;An Old Fashioned Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.080.768
+Natale;Country Christmas;Varie;Angels We Have Heard On High;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.630.208
+Natale;Country Christmas;Varie;Here Comes Santa Claus;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.224.128
+Natale;Country Christmas;Varie;I Wish We Could Have Christmas Everyday;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.285.568
+Natale;Country Christmas;Varie;I'm Tired Of Playing Santa Claus To You;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.748.416
+Natale;Country Christmas;Varie;Jingle Bell Rock;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.871.872
+Natale;Country Christmas;Varie;Merry Christmas To All;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.236.416
+Natale;Country Christmas;Varie;No Place Like Home For Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.822.144
+Natale;Country Christmas;Varie;Remember Bethlehem;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.108.864
+Natale;Country Christmas;Varie;Rocking Around The Christmas Tree;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.859.584
+Natale;Country Christmas;Varie;Santa Claus Shuffle;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.777.088
+Natale;Country Christmas;Varie;Santa Was a Texas Cowboy;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.519.040
+Natale;Country Christmas;Varie;Silent Night;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.953.792
+Natale;Country Christmas;Varie;Silent Night-1;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.215.360
+Natale;Country Christmas;Varie;Silvers Bells;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.641.920
+Natale;Country Christmas;Varie;The Empty Christmas Stocking;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.826.240
+Natale;Country Christmas;Varie;Three Stars;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.891.776
+Natale;Country Christmas;Varie;When Snowflakes Fall;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.686.976
+Natale;Country Christmas;Varie;White Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.199.552
+Natale;It's Christmas;Artisti Vari;Amazing Grace (Joan Orleans);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.465.216
+Natale;It's Christmas;Artisti Vari;Ave Maria (Al Bano);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.940.928
+Natale;It's Christmas;Artisti Vari;Christmas Time (Bryan Adams);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.571.712
+Natale;It's Christmas;Artisti Vari;Con la terra sotto di me (Nek);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.108.288
+Natale;It's Christmas;Artisti Vari;Gerusalemme (Amedeo Minghi);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.141.056
+Natale;It's Christmas;Artisti Vari;Happy Christmas (All Artists together);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.342.336
+Natale;It's Christmas;Artisti Vari;Happy Christmas (Nek);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.391.488
+Natale;It's Christmas;Artisti Vari;Have yourself a Merry Little Christmas (Manhattan Transfer);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.104.192
+Natale;It's Christmas;Artisti Vari;Mary's boy child (Tom Jones);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.222.976
+Natale;It's Christmas;Artisti Vari;Oh happy day (Shola Ama & The Harlem Ten);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.678.208
+Natale;It's Christmas;Artisti Vari;Oh Holy night (Sarah Brightman);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.734.976
+Natale;It's Christmas;Artisti Vari;Puoi sentirmi ancora (Pooh);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 5.558.272
+Natale;It's Christmas;Artisti Vari;Stille nacht (Randy Crawford & Felicia Weathers);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.702.784
+Natale;It's Christmas;Artisti Vari;The voice of Maria (Dionne Warwick & Pietro Marras);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.812.800
+Natale;It's Christmas;Artisti Vari;Tu scendi dalle stelle (Alex Baroni);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.276.800
+Natale;It's Christmas;Artisti Vari;Tu si na cosa grande (Gigi D'Alessio);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.465.216
+Natale;It's Christmas;Artisti Vari;White Christmas (Warwick & Tosca & Dee Dee Bridgewater);896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.911.680
+Natale;London Studio Orhcestra;Varie;Christmas is Christmas All Over The World;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.547.136
+Natale;London Studio Orhcestra;Varie;Deck The Halls;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.273.856
+Natale;London Studio Orhcestra;Varie;Ding Dong Merrily on High;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.535.424
+Natale;London Studio Orhcestra;Varie;Good King Wenceslas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.899.392
+Natale;London Studio Orhcestra;Varie;Have Yourself a Merry Little Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.576.384
+Natale;London Studio Orhcestra;Varie;I Wish it were Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.264.512
+Natale;London Studio Orhcestra;Varie;It Came Upon A Midnight Clear;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.957.312
+Natale;London Studio Orhcestra;Varie;Jingle Bells;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.744.896
+Natale;London Studio Orhcestra;Varie;Jolly Old St Nicholas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.125.824
+Natale;London Studio Orhcestra;Varie;Joy to the World;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.076.672
+Natale;London Studio Orhcestra;Varie;Little Drummer Boy;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.543.616
+Natale;London Studio Orhcestra;Varie;Mary's Little Boy Child;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.002.368
+Natale;London Studio Orhcestra;Varie;O Christmas Tree;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.416.640
+Natale;London Studio Orhcestra;Varie;Oh Come all Ye Faithful;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.276.800
+Natale;London Studio Orhcestra;Varie;Oh Little Town on Bethlehem;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.736.128
+Natale;London Studio Orhcestra;Varie;Rudolph the Red Nosed Reindeer;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.683.456
+Natale;London Studio Orhcestra;Varie;Santa Claus is Coming To Town;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.568.768
+Natale;London Studio Orhcestra;Varie;Silent Night;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.236.416
+Natale;London Studio Orhcestra;Varie;Sleigh Ride;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.625.536
+Natale;London Studio Orhcestra;Varie;The Christmas Song;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.563.520
+Natale;London Studio Orhcestra;Varie;The First Noel;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.588.672
+Natale;London Studio Orhcestra;Varie;The Holly and the Ivy;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.002.944
+Natale;London Studio Orhcestra;Varie;We Wish you a Merry Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.613.248
+Natale;London Studio Orhcestra;Varie;White Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.465.216
+Natale;London Studio Orhcestra;Varie;Winter Wonderland;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.170.880
+Natale;London Studio Orhcestra;Varie;Wonderful Christmas Time;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.736.128
+Natale;O Little Town Of Bethlehem;Varie;Angesls We Have Heard On High;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.654.784
+Natale;O Little Town Of Bethlehem;Varie;Auls Lang Syne;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.469.888
+Natale;O Little Town Of Bethlehem;Varie;Ave Maria;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 4.501.504
+Natale;O Little Town Of Bethlehem;Varie;Away in a Manger;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.007.616
+Natale;O Little Town Of Bethlehem;Varie;Deck The Halls;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.813.952
+Natale;O Little Town Of Bethlehem;Varie;For Unto Us  A Child is Born;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.502.080
+Natale;O Little Town Of Bethlehem;Varie;God Rest Ye Merry Gentlemen;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.957.888
+Natale;O Little Town Of Bethlehem;Varie;Hark! The Herald Angels Sing;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.097.152
+Natale;O Little Town Of Bethlehem;Varie;I Heard The Bells On Christmas Day;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.888.256
+Natale;O Little Town Of Bethlehem;Varie;It Came Upon A Midnight Clear;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.711.552
+Natale;O Little Town Of Bethlehem;Varie;Jolly Ol' St Nicholas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.043.904
+Natale;O Little Town Of Bethlehem;Varie;Joy To The World;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.400.256
+Natale;O Little Town Of Bethlehem;Varie;Little Drummer Boy;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.322.432
+Natale;O Little Town Of Bethlehem;Varie;Medley- What Child Is This-O Tannenbaum;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.842.624
+Natale;O Little Town Of Bethlehem;Varie;O Come All Ye Faithful;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.142.208
+Natale;O Little Town Of Bethlehem;Varie;O Holy Night;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.760.704
+Natale;O Little Town Of Bethlehem;Varie;O Little Town Of Bethlehem;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.568.192
+Natale;O Little Town Of Bethlehem;Varie;Santa Claus Is Coming To Town;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.646.592
+Natale;O Little Town Of Bethlehem;Varie;Silent Night;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.490.368
+Natale;O Little Town Of Bethlehem;Varie;The First Noel;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.757.184
+Natale;O Little Town Of Bethlehem;Varie;The Joys Of Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.957.888
+Natale;O Little Town Of Bethlehem;Varie;Up On The Housetop;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.937.408
+Natale;O Little Town Of Bethlehem;Varie;We Three Kings;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.109.440
+Natale;O Little Town Of Bethlehem;Varie;We Wish You A Merry Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.675.264
+Natale;Wonderful Christmas Time;Varie;Christmas Is Christmas All Over The World;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.235.840
+Natale;Wonderful Christmas Time;Varie;Deck The Halls;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.630.208
+Natale;Wonderful Christmas Time;Varie;Frosty The Snow Man;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.662.976
+Natale;Wonderful Christmas Time;Varie;Good King Wenceslas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.301.952
+Natale;Wonderful Christmas Time;Varie;Have Yourself A Merry Little Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.326.528
+Natale;Wonderful Christmas Time;Varie;Here Comes Santa Claus;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.683.456
+Natale;Wonderful Christmas Time;Varie;I Saw Mommy Kissing Santa Claus;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.912.256
+Natale;Wonderful Christmas Time;Varie;Jingle Bells;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.048.000
+Natale;Wonderful Christmas Time;Varie;Jolly Old Saint Nicholas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.568.192
+Natale;Wonderful Christmas Time;Varie;Joy To The World;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.843.200
+Natale;Wonderful Christmas Time;Varie;Let It Snow! Let It Snow! Let It Snow!;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.486.848
+Natale;Wonderful Christmas Time;Varie;Mary's Little Boy;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.883.584
+Natale;Wonderful Christmas Time;Varie;O Come, All Ye Faithful;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.142.208
+Natale;Wonderful Christmas Time;Varie;Rudolph The Red-Nosed Reindeer;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 1.798.144
+Natale;Wonderful Christmas Time;Varie;Santa Claus Is Coming To Town;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.228.224
+Natale;Wonderful Christmas Time;Varie;Silent Night;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.228.224
+Natale;Wonderful Christmas Time;Varie;Sleight Ride;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.871.296
+Natale;Wonderful Christmas Time;Varie;The Christmas Song;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.166.208
+Natale;Wonderful Christmas Time;Varie;The First Noel;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.969.600
+Natale;Wonderful Christmas Time;Varie;The Little Drummer Boy;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.092.480
+Natale;Wonderful Christmas Time;Varie;We Wish You A Merry Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.735.552
+Natale;Wonderful Christmas Time;Varie;White Christmas;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 3.194.880
+Natale;Wonderful Christmas Time;Varie;Winter Wonderland;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.838.528
+Natale;Wonderful Christmas Time;Varie;Wonderful Christmas Time;896;x;x;x;B;S;.;.;.;.;.;.;.;.;.;.;.;.;.;.;bytes 2.228.224
+Popolari;Alpini;Canti della Montagna;Bersagliere ha cento penne;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 1.953.792
+Popolari;Alpini;Canti della Montagna;Di quà di là del Piave;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 3.067.904
+Popolari;Alpini;Canti della Montagna;Era una notte che pioveva;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.715.648
+Popolari;Alpini;Canti della Montagna;Il capitano della compagnia;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.838.528
+Popolari;Alpini;Canti della Montagna;La sposa morta;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 1.871.872
+Popolari;Alpini;Canti della Montagna;La tradotta;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 1.830.912
+Popolari;Alpini;Canti della Montagna;La vien giù dalle montagne;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 1.896.448
+Popolari;Alpini;Canti della Montagna;O ciel biel;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.465.792
+Popolari;Alpini;Canti della Montagna;Stelutis Alpinis;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.396.160
+Popolari;Alpini;Canti della Montagna;Sul cappello che noi portiano;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.174.976
+Popolari;Alpini;Canti della Montagna;Sul ponte di Bassano;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.588.672
+Popolari;Alpini;Canti della Montagna;Vinassa vinassa;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.420.736
+Popolari;Romane;I Vianella;Lella;896;x;x;x;B;x;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 7.802.880
+Popolari;Romane;Lando Fiorini;Barcarolo romano;896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 5.103.616
+Popolari;Romane;Lando Fiorini;Cento campane;896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 3.538.944
+Popolari;Romane;Lando Fiorini;Come è bello fa l'amore quando e sera;896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 4.177.920
+Popolari;Romane;Lando Fiorini;La società dei magnaccioni;896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.666.496
+Popolari;Romane;Lando Fiorini;Lella;896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 3.846.144
+Popolari;Romane;Lando Fiorini;Nannì, na gita a li castelli;896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.105.344
+Popolari;Romane;Lando Fiorini;Quanto sei bella Roma;896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 3.813.376
+Popolari;Romane;Lando Fiorini;Roma nun fà la stupida stasera;896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 3.682.304
+Popolari;Romane;Varie;Arrivederci Roma - (Renato Rascel);896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 1.835.136
+Popolari;Romane;Varie;Chitarra Romana - (Connie Francis);896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 3.225.931
+Popolari;Romane;Varie;Lella - (Edoardo de Angelis & Antonello Venditti);896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 3.437.633
+Popolari;Romane;Varie;Roma Nun Fa La Stupida Stasera - (Claudio Villa);896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.651.951
+Popolari;Romane;Varie;Tanto pé cantà - (Nino Manfredi);896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 3.186.943
+Popolari;Romane;Varie;Te c'hanno mai mannato a quel paese (Alberto Sordi);896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 4.770.586
+Popolari;Romane;Varie;Tutta Roma - (Guzzanti);896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 3.159.684
+Popolari;Romane;Varie;Vecchia Roma - (Gabriella Ferri);896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 4.460.672
+Popolari;Romane;Varie;Venticello de Roma - (Renato Rascel);896;x;x;x;B;S;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 2.725.400
 Stranieri;Abba;The Definitive Collection;Angeleyes;768;A;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 4.161.536
 Stranieri;Abba;The Definitive Collection;Chiquitita;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 5.193.728
 Stranieri;Abba;The Definitive Collection;Dancing Queen;768;x;x;x;B;.;.;.;.;x;.;.;.;.;.;.;.;.;.;.;bytes 3.710.976
