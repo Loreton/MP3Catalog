@@ -22,7 +22,9 @@ import SOURCE    as Prj
 if __name__ == "__main__":
         # LnLib è la dir delle LnFunction oppure il nome dello zip file
     Prj.Version  = 'V0.1'
-    Ln           = Prj.setup.setupEnv(Prj, LnLib='LnPythonLib')
+    Ln           = Prj.Ln
+    # sys.exit()
+    # Ln           = Prj.setup.setupEnv(Prj, LnLib='LnPythonLib')
     gv           = Ln.LnDict()      # default = _dynamic=False
     gv.Prj       = Prj
     gv.Ln        = Ln
@@ -72,7 +74,7 @@ if __name__ == "__main__":
     # import MP3Catalog as MP3Catalog
 
     # Prj.main.MP3Catalog.Main(gv, sys.argv)
-    Prj.mainLite(gv, gv.INPUT_PARAM.action)
+    Prj.Main(gv, gv.INPUT_PARAM.action)
 
     gv.Ln.exit(gv, 0, "completed", printStack=False, stackLevel=9, console=True)
 

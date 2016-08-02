@@ -17,7 +17,7 @@ import os, sys
 # -  2 - Controllo parametri di input
 # -  5 - Chiamata al programma principale del progetto
 ################################################################################
-def mainLite(gv, action):
+def Main(gv, action):
     logger  = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
     C       = gv.Ln.Colors()
     gv.data = gv.Ln.LnDict()

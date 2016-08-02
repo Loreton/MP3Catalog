@@ -11,7 +11,7 @@ def setupEnv(Prj, LnLib=None):
     scriptName, scriptExt = os.path.basename(os.path.abspath(sys.argv[0])).split('.')
     baseDIR     = scriptDir
 
-    prjDirs = [baseDIR, baseDIR+'/bin']
+    prjDirs = [baseDIR, baseDIR+'/bin', baseDIR+'/SOURCE']
 
 
         # ------------------------------------------
@@ -44,11 +44,15 @@ def setupEnv(Prj, LnLib=None):
         if not prjDir in sys.path:
             sys.path.insert(0, os.path.abspath(prjDir))
 
-
+    # for path in sys.path: print (path)
         # --------------------------------
         # - import dei packages LnLib
         # --------------------------------
-    import LnPythonLib   as Ln
+    if os.path.isdir(baseDIR + '/SOURCE/LnLib'):
+        print ('...importing local prjLnLib')
+        import LnLib   as Ln
+    else:
+        import LnPythonLib   as Ln
 
     now     = time.localtime(); now = now
     today   = '{YY:04}{MM:02}{DD:02}'.format(YY=now.tm_year, MM=now.tm_mon, DD=now.tm_mday)
