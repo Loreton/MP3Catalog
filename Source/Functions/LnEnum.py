@@ -26,7 +26,10 @@ def enumCols(gv, record):
         # print (index, colName)
     return col
 
-
+###################################################
+# - Input una lista di nomi = valore
+# - ritorna il nome con il valore assegnato
+###################################################
 def enumColsKeyVal(gv, records):
         # Creiamo una enum con i nomi delle colonne
     col = gv.Ln.LnDict()
@@ -45,5 +48,19 @@ def enumColsKeyVal(gv, records):
           colName, index = item.split('=')
           colName = colName.strip().replace(' ', '')
           col[colName] = int(index)
+    return col
+
+
+###################################################
+# - Input una lista di nomi
+# - ritorna il nome con una sequenza binaria
+###################################################
+def enumColsBase2(gv, records):
+        # Creiamo una enum con i nomi delle colonne
+    col = gv.Ln.LnDict()
+    for index, name in enumerate(records):
+        colName = name.strip().replace(' ', '')
+        col[colName] = 2**index
+        # print (index, colName, col[colName])
     return col
 

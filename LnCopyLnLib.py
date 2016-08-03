@@ -31,6 +31,7 @@ files = [
             'System/__init__.py',
             'System/LnLogger.py',
             'System/LnColor.py',
+            'System/Exit.py',
             'System/GetKeyboardInput.py',
 
             'LnDict/__init__.py',

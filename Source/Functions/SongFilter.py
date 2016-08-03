@@ -12,6 +12,8 @@ def songFilter(gv, RECs):
     logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
     C = gv.Ln.Colors()
     sf = gv.Ln.LnDict()
+    col = gv.Prj.enumCols(gv, gv.Prj.songColumName)
+    '''
     # ricerca della riga con i nomi
     for index, song in enumerate(RECs):
         # print (len(song), song)
@@ -20,63 +22,34 @@ def songFilter(gv, RECs):
             nCols = len(col)
             RECs = RECs[index:]
             break
-
-
+    print (col)
+    '''
         # ----------------------------------------------
         # - Preleviamo tutte le canzoni analizzate
-        # Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Count
+        # - Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Count
         # ----------------------------------------------
-    sf.validSongs  = [RECs[0]]  # init con il nome delle colonne
-    sf.analizzate = [RECs[0]]  # init con il nome delle colonne
-    sf.scartate   = [RECs[0]]  # init con il nome delle colonne
-
-    validTotSize     = 0
-    scartateTotSize     = 0
-    analizzateTotSize     = 0
-
-    sf.excludeType     = ['Bambini', 'Natale', 'Popolari', 'Themes']
-    sf.excludeAuthor   = ['Bambini', 'Chitarra', 'Classica']
-
-        # Assegnamo un valore binario ad ogni colonna che ci interessa filtrare.
-    colVal = gv.Prj.enumColsKeyVal(gv, ['Analizzata   = 1',
-                                        'Recomended = 2',
-                                        'Loreto     = 4',
-                                        'Buona      = 8',
-                                        'Soft       = 16',
-                                        'Vivace     = 32',
-                                        'MoltoViv    = 64',
-                                        'Camera     = 128',
-                                        'Car        = 256',
-                                        ]
-                                    )
+    sf.validSongs  = [gv.Prj.songColumName]  # init con il nome delle colonne
+    sf.analizzate  = [gv.Prj.songColumName]  # init con il nome delle colonne
+    sf.scartate    = [gv.Prj.songColumName]  # init con il nome delle colonne
 
 
+    # sf.excludeType     = ['Bambini', 'Natale', 'Popolari', 'Themes']
+    # sf.excludeAuthor   = ['Bambini', 'Chitarra', 'Classica']
 
-    C.printCyan ("Analizzata   {1:>6} - {0}".format(gv.INPUT_PARAM.Analizzata,colVal.Analizzata), tab=4)
-    C.printCyan ("Recomended   {1:>6} - {0}".format(gv.INPUT_PARAM.Recomended,  colVal.Recomended), tab=4)
-    C.printCyan ("Loreto       {1:>6} - {0}".format(gv.INPUT_PARAM.Loreto,      colVal.Loreto), tab=4)
-    C.printCyan ("Buona        {1:>6} - {0}".format(gv.INPUT_PARAM.Buona,       colVal.Buona), tab=4)
-    C.printCyan ("Soft         {1:>6} - {0}".format(gv.INPUT_PARAM.Soft,        colVal.Soft), tab=4)
-    C.printCyan ("Vivace       {1:>6} - {0}".format(gv.INPUT_PARAM.Vivace,      colVal.Vivace), tab=4)
-    C.printCyan ("MoltoViv     {1:>6} - {0}".format(gv.INPUT_PARAM.MoltoViv,     colVal.MoltoViv), tab=4)
-    C.printCyan ("Camera       {1:>6} - {0}".format(gv.INPUT_PARAM.Camera,      colVal.Camera), tab=4)
-    C.printCyan ("Car          {1:>6} - {0}".format(gv.INPUT_PARAM.Car,         colVal.Car), tab=4)
+        # Assegnamo un peso binario ad ogni colonna che ci interessa filtrare.
+    colVal = gv.Prj.enumColsBase2(gv, gv.Prj.songColumName)
+
+    # visualizzazione pesi e calcolo dello score
+    reqScore = 0
+    for item in gv.Prj.songColumName:
+        C.printCyan ("{ITEM:<10}   {WEIGHT:>6} - {BOOL}".format(ITEM=item, BOOL=gv.INPUT_PARAM[item],  WEIGHT=colVal[item]), tab=4)
+        reqScore  +=  gv.INPUT_PARAM[item]   * colVal[item]
+
     print ()
     C.printCyan ("num of output directory: {0}".format(gv.INPUT_PARAM.numDirs), tab=4)
     comment = ' - no limit' if gv.INPUT_PARAM.maxBytes == 0 else ''
     C.printCyan ("Max Byte per directory:  {0}{1}".format(gv.INPUT_PARAM.maxBytes, comment), tab=4)
     C.printCyan ("Max Songs to extract:    {0}".format(gv.INPUT_PARAM.maxSongs), tab=4)
-
-    reqScore =      gv.INPUT_PARAM.Analizzata   * colVal.Analizzata +\
-                    gv.INPUT_PARAM.Recomended   * colVal.Recomended +\
-                    gv.INPUT_PARAM.Loreto       * colVal.Loreto +\
-                    gv.INPUT_PARAM.Buona        * colVal.Buona +\
-                    gv.INPUT_PARAM.Soft         * colVal.Soft +\
-                    gv.INPUT_PARAM.Vivace       * colVal.Vivace +\
-                    gv.INPUT_PARAM.MoltoViv     * colVal.MoltoViv +\
-                    gv.INPUT_PARAM.Camera       * colVal.Camera +\
-                    gv.INPUT_PARAM.Car          * colVal.Car
-
     print ()
     C.printCyan ('requested Score: {0}'.format(reqScore), tab=4)
     print ()
@@ -85,7 +58,14 @@ def songFilter(gv, RECs):
     sf.colVal      = colVal
     sf.reqScore    = reqScore
 
-    for index, song in enumerate(RECs[1:]):
+    validTotSize        = 0
+    scartateTotSize     = 0
+    analizzateTotSize   = 0
+
+    excludeCol  = gv.INPUT_PARAM.exclude
+    includeCol  = gv.INPUT_PARAM.include
+
+    for index, song in enumerate(RECs):
         if len(song) != nCols:
             sf.scartate.append(song)
             continue
@@ -96,7 +76,14 @@ def songFilter(gv, RECs):
 
         size = int(song[col.SongSize].replace('bytes', '').replace('.', ''))
 
-        if not song[col.Analizzata] == '.':
+        # verifichiamo le colonne da escludere.
+        for colName in gv.Prj.songColumName:
+            if colName.lower() in (x.lower() for x in excludeCol):
+
+            if song[colName]
+            if name.lower() in (x.lower() for x in InputPARAM.flags):
+
+        if not song[col['Analysed']] == '.':
             analizzateTotSize += int(size)
             sf.analizzate.append(song)
 

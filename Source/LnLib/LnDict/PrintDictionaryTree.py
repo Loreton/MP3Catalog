@@ -38,6 +38,7 @@ import inspect
 
 # ########################################################################
 def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', console=False, listInLine=5, fEXIT=False):
+    color = gv.Ln.Colors()
     global allDictTYPES, myDictTYPES
     myDictTYPES = []
     myDictTYPES.extend(extDict)
@@ -80,22 +81,20 @@ def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, 
         header = True
 
     if console:
-        COLOR = ''
-        if gv: COLOR = gv.Ln.cCYAN
-
         if header:
             if header == True:
                 header = caller
 
             print()
-            print(lTAB + COLOR + "*"*60)
-            print(lTAB + COLOR + "*     {0}".format(header))
-            print(lTAB + COLOR + "*"*60)
+            color.printCyan("*"*60, tab=8)
+            color.printCyan("*     {0}".format(header), tab=8)
+            color.printCyan("*"*60, tab=8)
 
 
         for line in lista:
             if not isAscii(line): line = str.encode(line, 'utf-8')
-            print("{0}{1}{2}".format(COLOR, lTAB, line))
+            # print("{0}{1}{2}".format(COLOR, lTAB, line))
+            color.printCyan(line, tab=len(lTAB))
 
     if fEXIT:
         # if gv:

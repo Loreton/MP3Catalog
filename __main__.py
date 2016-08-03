@@ -14,59 +14,87 @@ import os
 # solo per caricare il modulo setupEnv()
 # import Setup as setup
 
-import SOURCE    as Prj
+import Source    as Prj
 
 ################################################################################
 # - M A I N
 ################################################################################
 if __name__ == "__main__":
-        # LnLib è la dir delle LnFunction oppure il nome dello zip file
-    Prj.Version  = 'V0.1'
-    Ln           = Prj.Ln
-    # sys.exit()
-    # Ln           = Prj.setup.setupEnv(Prj, LnLib='LnPythonLib')
-    gv           = Ln.LnDict()      # default = _dynamic=False
+    Prj.Version  = 'V01'
+    gv           = Prj.Ln.LnDict()      # default = _dynamic=False
     gv.Prj       = Prj
-    gv.Ln        = Ln
-    TEST         = ''
-    prefix      = 'MP3Catalog'
-
-    if TEST: prefix =  prefix + '_TEST'
+    gv.Ln        = Prj.Ln
+    Prj.prefix     = 'MP3Catalog'
 
         # ----------------------------------------------------
-        # - lettura dei parametri di input in un dictionary
+        # - lettura dei parametri di input
+        # - Nel caso specifico abbiamo un argomento multiValue
+        # -   e quindi passiamo i valori validi per detto argomento.
         # ----------------------------------------------------
-    Input           = Prj.setup.parseInput(gv, sys.argv[1:])
-    gv.INPUT_PARAM  = Ln.LnDict(Input)
-    if gv.INPUT_PARAM.fDEBUG: gv.printDict(gv)
+    # songsFlags = 'Analysed, Recomended, Loreto, Buona, Soft, Car, Vivace Molto, Vivace, Camera'
+    # gv.Prj.songFlags = [
+    #                 'Analizzata',
+    #                 'Buona',
+    #                 'Camera'
+    #                 'Car',
+    #                 'Loreto',
+    #                 'MoltoViv',
+    #                 'Recomended',
+    #                 'Soft',
+    #                 'Vivace',
+    #             ]
 
 
-        # ---------------------------------------------------------
-        # - Intercettazione per la creazione ....
-        # ---------------------------------------------------------
-    if gv.INPUT_PARAM.action in ['dddd', 'xxx']:
-        sys.exit()
+    songColums = 'Type;Author Name;Album Name;Song Name;Punteggio;Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Country;Strumentale;Classica;Lirica;Live;Discreta;Undefined;Avoid it;Confusionaria;Song Size'
+    gv.Prj.songColumName = songColums.replace(' ', '').split(';')
 
+    # gv.Prj.songColums = [
+    #                 'Type',
+    #                 'Author Name',
+    #                 'Album Name',
+    #                 'Song Name',
+    #                 'Punteggio',
+    #                 'Analizzata',
+    #                 'Recomended',
+    #                 'Loreto',
+    #                 'Buona',
+    #                 'Soft',
+    #                 'Vivace',
+    #                 'Molto Viv',
+    #                 'Camera',
+    #                 'Car',
+    #                 'Lenta',
+    #                 'Country',
+    #                 'Strumentale',
+    #                 'Classica',
+    #                 'Lirica',
+    #                 'Live',
+    #                 'Discreta',
+    #                 'Undefined',
+    #                 'Avoid it',
+    #                 'Confusionaria',
+    #                 'Song Size',
+    #             ]
+
+
+    Input           = Prj.setup.parseInput(gv, args=sys.argv[1:], flags=gv.Prj.songColumName)
+    gv.INPUT_PARAM  = gv.Ln.LnDict(Input)
+    if gv.INPUT_PARAM.fTRACE: gv.printDict(gv)
 
     gv.EXECUTE = gv.INPUT_PARAM.fEXECUTE
     gv.CONSOLE = gv.INPUT_PARAM.LogCONSOLE
     gv.fDEBUG  = gv.INPUT_PARAM.fDEBUG
 
+        # ---------------------------------------------------------
+        # - SetUp dell'ambiente
+        # ---------------------------------------------------------
+    Prj.setup.setupEnv(gv)
 
         # ---------------------------------------------------------
         # - SetUp del log
         # ---------------------------------------------------------
-    logger = Prj.setup.setupLog(gv, prefix=prefix)
+    logger = Prj.setup.setupLog(gv)
 
-        # ---------------------------------------------------------
-        # - file di configurazione
-        # ---------------------------------------------------------
-    iniFileName = '{CONFDIR}/{PREFIX}_hostName_{VERSION}.ini'.format(CONFDIR=gv.Prj.configDIR, PREFIX=prefix, VERSION=gv.Prj.Version)
-    iniFileName = os.path.normpath(iniFileName)
-    iniFileName = os.path.relpath(iniFileName)
-
-
-    # print (iniFileName)
 
         # --------------------------------------------------------
         # - CALL Project MAIN Program

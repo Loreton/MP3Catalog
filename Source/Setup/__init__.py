@@ -3,7 +3,7 @@
 # -*- coding: iso-8859-1 -*-
 
 
-# from . SetupEnv             import setupEnv
+from . SetupEnv             import setupEnv
 # from . SetupEnv_New         import setupEnv
 from . SetupLog             import setupLog
 from . ParseInput           import parseInput

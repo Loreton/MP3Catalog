@@ -11,12 +11,14 @@ this_mod = sys.modules[__name__]
 #############################################################
 # - parseInput()
 #############################################################
-def parseInput(gv, args, programVersion=None):
-    global C
+def parseInput(gv, args, flags, programVersion=None):
+    global C, songColumName
     C = gv.Ln.Colors()
     if not programVersion: programVersion = gv.Prj.Version
 
+    # songColumName.SAMPLE = 'analysed recomended loreto buona soft car vivace molto_vivace camera'
 
+    songColumName = flags
     positionalActionsDict  =  dict (
             # extract     = "filtra le canzoni e crea i file con le selezioni...",
             copySongs   = "le canzoni risultate 'validSongs' le copia sulla dir di destinazione"
@@ -29,32 +31,19 @@ def parseInput(gv, args, programVersion=None):
     mainArgs   = prepareArgParse(positionalActionsDict, programVersion)
     InputPARAM = commonParsing(mainArgs.action)
 
+    if InputPARAM.fTRACE: InputPARAM.fDEBUG = True
 
         # aggiungiamo manualmente valori alla struttura
     InputPARAM.action       = mainArgs.action
+    '''
+    for item in songColumName:     # InputPARAM.flags --> agomento multiValue --> []
+        if item.lower() in (name.lower() for name in InputPARAM.flags):
+            value = True
+        else:
+            value = False
 
-    if InputPARAM.defaultFlags:
-        InputPARAM.Recomended = True
-        InputPARAM.Loreto     = True
-        InputPARAM.Buona      = True
-
-
-
-            # -----------------------------------------
-            # - Controlli
-            # -----------------------------------------
-    if InputPARAM.fDEBUG:
-        print ('\n', InputPARAM, '\n')
-        dictID = vars(InputPARAM)
-        print()
-        print('     ---- {0} - INPUT Parameters ---'.format(InputPARAM.action))
-        print()
-        for key, val in dictID.items():
-                print('         {0:<20} : {1}'.format(key, val))
-        print()
-        print('     ---- {0} - INPUT Parameters ---'.format(InputPARAM.action))
-        print()
-        # sys.exit()
+        setattr(InputPARAM, item, value)
+    '''
 
 
 
@@ -64,6 +53,19 @@ def parseInput(gv, args, programVersion=None):
     myDict = {}
     for key, val in vars(InputPARAM).items():
         myDict[key] = val
+
+            # -----------------------------------------
+            # - Controlli
+            # -----------------------------------------
+    if InputPARAM.fDEBUG:
+        C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
+        dictID = vars(InputPARAM)
+        for key, val in sorted(dictID.items()):
+                C.printCyan('{0:<20} : {1}'.format(key, val), tab = 8)
+
+        C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
+        print ()
+
 
     return myDict
 
@@ -142,13 +144,6 @@ def commonParsing(actionName, DESCR='CIAO DESCR'):
 
 
 
-    # --------------------------------------------------
-    # - forzare l'help solo se sappiamo che il comando
-    # - richiede ulteriori parametri altrimenti
-    # - il programma non va avanti.
-    # --------------------------------------------------
-    # if len(sys.argv[2:]) == 0: sys.argv.append('-h')
-
 
 
         # use dispatch pattern to invoke method with same name
@@ -179,6 +174,7 @@ def COPYSONGS(myParser):
     _copySongsOptions(myParser)
     _commonOptions(myParser)
     _debugOptions(myParser)
+    # _commonMultipleOptions(myParser)
     # _testOptions(myParser)
 
 # def EXTRACT(myParser):
@@ -203,15 +199,6 @@ def _debugOptions(myParser):
     [DEFAULT: False]
     """))
 
-    myParser.add_argument( "-D", "--debug",
-                            required=False,
-                            action="store_true",
-                            dest="fDEBUG",
-                            default=False,
-                            help=C.getYellow("""enter in DEBUG mode.
-    [DEFAULT: False]
-    """))
-
         # log debug su console
     myParser.add_argument( "-dc", "--dconsole",
                             required=False,
@@ -221,6 +208,31 @@ def _debugOptions(myParser):
                             help=C.getYellow("""display log to console.
     [DEFAULT: False]
     """))
+
+
+    # --------------------------------------------------
+    # - definizione dei gruppi mutuamente esclusivi
+    # --------------------------------------------------
+    debugGroup = myParser.add_mutually_exclusive_group(required=False)  # True indica obbligatorietà di uno del gruppo
+
+    debugGroup.add_argument( "-D", "--debug",
+                            required=False,
+                            action="store_true",
+                            dest="fDEBUG",
+                            default=False,
+                            help=C.getYellow("""enter in DEBUG mode.
+    [DEFAULT: False]
+    """))
+
+    debugGroup.add_argument( "-T", "--trace",
+                            required=False,
+                            action="store_true",
+                            dest="fTRACE",
+                            default=False,
+                            help=C.getYellow("""enter in TRACE mode.
+    [DEFAULT: False]
+    """))
+
 # ---------------------------
 # - COPYSONGS
 # ---------------------------
@@ -234,9 +246,7 @@ def _copySongsOptions(myParser):
     Es.: 10m | 10G | 10K | 2549878
     [DEFAULT: 0 (no limits)]
     """))
-    #                         help=C.getYellow("""Numero massimo di bytes che deve avere l'output
-    # [DEFAULT: 0 (no limits)]
-    # """))
+
 
     myParser.add_argument( "--num-out-dirs",
                             type=int,
@@ -295,22 +305,40 @@ def _songDirs(myParser):
 
 
 
+
+
+
+
+
 # ---------------------------
 # - COMMON
 # ---------------------------
 def _commonOptions(myParser):
-
-    myParser.add_argument( "-a",
-                            action="store_true",
-                            default=False,
+    opts = C.getYellowH(' '.join(songColumName))
+    myParser.add_argument( "--include",
+                            default=['analysed'],
                             required=False,
-                            dest="defaultFlags",
-                            help=C.getYellow("""include i seguenti flags:
-        --recomended    = True
-        --loreto        = True
-        --buona         = True
-    [DEFAULT: False]
-    """))
+                            # dest="multipleFlags",  # se omesso viene preso il nome lungo del parametro.
+                            nargs='*',
+                            help=C.getYellow("""inserire uno o piu argomenti della lista:
+
+        {0}
+
+    [DEFAULT: analysed]
+    """.format(opts)))
+
+    myParser.add_argument( "--exclude",
+                            default=['SongSize'],
+                            required=False,
+                            # dest="multipleFlags",  # se omesso viene preso il nome lungo del parametro.
+                            nargs='*',
+                            help=C.getYellow("""inserire uno o piu argomenti della lista:
+
+        {0}
+
+    [DEFAULT: analysed]
+    """.format(opts)))
+
 
     myParser.add_argument( "--max-songs",
                             type=int,
@@ -321,101 +349,13 @@ def _commonOptions(myParser):
     [DEFAULT: 0 (all songs)]
     """))
 
-    myParser.add_argument( "--no-analysed",
-                            action="store_false",
-                            default=True,
-                            required=False,
-                            dest="Analizzata",
-                            help=C.getYellow("""Indica che le canzoni da filtrare NON abbiano il flag di analysed.
-    [DEFAULT: True]
-    """))
-
-    myParser.add_argument( "--recomended",
-                            action="store_true",
-                            default=False,
-                            required=False,
-                            dest="Recomended",
-                            help=C.getYellow("""Indica che le canzoni da filtrare abbiano il flag di recomended.
-    [DEFAULT: False]
-    """))
-
-    myParser.add_argument( "--loreto",
-                            action="store_true",
-                            default=False,
-                            required=False,
-                            dest="Loreto",
-                            help=C.getYellow("""Indica che le canzoni da filtrare abbiano il flag di loreto.
-    [DEFAULT: False]
-    """))
-
-    myParser.add_argument( "--buona",
-                            action="store_true",
-                            default=False,
-                            required=False,
-                            dest="Buona",
-                            help=C.getYellow("""Indica che le canzoni da filtrare abbiano il flag di Buona.
-    [DEFAULT: False]
-    """))
-
-    myParser.add_argument( "--vivace",
-                            action="store_true",
-                            default=False,
-                            required=False,
-                            dest="Vivace",
-                            help=C.getYellow("""Indica che le canzoni da filtrare abbiano il flag di vivace.
-    [DEFAULT: False]
-    """))
-
-    myParser.add_argument( "--molto-vivace",
-                            action="store_true",
-                            default=False,
-                            required=False,
-                            dest="MoltoViv",
-                            help=C.getYellow("""Indica che le canzoni da filtrare abbiano il flag di molto-vivace.
-    [DEFAULT: False]
-    """))
-
-    myParser.add_argument( "--car",
-                            action="store_true",
-                            default=False,
-                            required=False,
-                            dest="Car",
-                            help=C.getYellow("""Indica che le canzoni da filtrare abbiano il flag di car.
-    [DEFAULT: False]
-    """))
-
-    myParser.add_argument( "--soft",
-                            action="store_true",
-                            default=False,
-                            required=False,
-                            dest="Soft",
-                            help=C.getYellow("""Indica che le canzoni da filtrare abbiano il flag di Soft.
-    [DEFAULT: False]
-    """))
-
-    myParser.add_argument( "--camera",
-                            action="store_true",
-                            default=False,
-                            required=False,
-                            dest="Camera",
-                            help=C.getYellow("""Indica che le canzoni da filtrare abbiano il flag di camera.
-    [DEFAULT: False]
-    """))
-
-
-
-
-
-
 
 ###############################################
 # -
 ###############################################
 def calculateBytes(value):
-    # print (len(value), value)
-    # if value == '0':
-    #     value = '9'*24
     lastChar = value.strip().lower()[-1]
+
     if lastChar == 'm':
         bytes = int(value[:-1]) * 1000000
     elif lastChar == 'g':
@@ -425,5 +365,4 @@ def calculateBytes(value):
     else:
         bytes = int(value)
 
-    print ('.............BYTES', bytes)
     return bytes

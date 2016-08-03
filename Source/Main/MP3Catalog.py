@@ -28,10 +28,19 @@ def Main(gv, action):
     gv.data.fileAnalizzate  = gv.Prj.dataDIR + '/_Analizzate.csv'
     gv.data.fileValidSongs  = gv.Prj.dataDIR + '/_ValidSongs.csv'
 
-    # if action == 'extract' or action == 'copySongs':
+        # ------------------------------------------------------------
+        # - Lettura del file.csv e modifica/verifica dei nomi colonne
+        # ------------------------------------------------------------
     rowList = gv.Prj.readFile(gv, csvFile)
+    rowList[0] = rowList[0].replace(' ', '')   # eliminiamo i BLANK nei nomi colonne
+    if not rowList[0].strip().strip(';') == ';'.join(gv.Prj.songColumName):
+        C.printYellowH('i nomi delle colonne non coincidono', tab=4)
+        C.printYellowH('file     : {0}'.format(rowList[0]), tab=4)
+        C.printYellowH('required : {0}'.format(';'.join(gv.Prj.songColumName)), tab=4)
+        sys.exit()
+
     RECs = []       # RECs una lista di liste/canzoni
-    for row in rowList:
+    for row in rowList[1:]:
         tokens = [token.strip() for token in row.split(';') if token]
         RECs.append(tokens)
     sf = gv.Prj.songFilter(gv, RECs)
