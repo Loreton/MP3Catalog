@@ -47,76 +47,80 @@ class LnColors:
 
     BW         = FG.BLACK + BG.WHITE
     BWH        = FG.BLACK + BG.WHITE + HI.BRIGHT
+    YelloOnBlack        = FG.BLACK + BG.YELLOW
 
 
 
+
+    def yellowRev(self, msg, tab=0, end='\n', reset=True):
+        self._print (' '*tab + self.YelloOnBlack, msg, end, reset)
 
     def printYellow(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.YELLOW + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.YELLOW, msg, end, reset)
 
     def printYellowH(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.YELLOWH + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.YELLOWH, msg, end, reset)
 
     def printGreen(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.GREEN + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.GREEN, msg, end, reset)
 
     def printBlue(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.BLUE + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.BLUE, msg, end, reset)
 
     def printMagenta(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.MAGENTA + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.MAGENTA, msg, end, reset)
 
     def printFucsia(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.FUCSIA + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.FUCSIA, msg, end, reset)
 
     def printCyan(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.CYAN + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.CYAN, msg, end, reset)
 
     def printCyanH(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.CYANH + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.CYANH, msg, end, reset)
 
     def printWhite(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.WHITE + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.WHITE, msg, end, reset)
 
     def printRed(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.RED + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.RED, msg, end, reset)
 
     def printRedH(self, msg, tab=0, end='\n', reset=True):
-        self._print (self.REDH + ' '*tab, msg, end, reset)
+        self._print ( ' '*tab + self.REDH, msg, end, reset)
 
 
         # -----------------------------------------------
         # - ritorna una stringa colorata come richiesto
         # -----------------------------------------------
     def getYellow(self, msg, tab=0, end='\n', reset=True):
-        return self._print (self.YELLOW + ' '*tab, msg, end, reset)
+        return self._print ( ' '*tab + self.YELLOW, msg, end, reset)
 
     def getYellowH(self, msg, tab=0, end='\n', reset=True):
-        return self._print (self.YELLOWH + ' '*tab, msg, end, reset)
+        return self._print ( ' '*tab + self.YELLOWH, msg, end, reset)
 
     def getGreen(self, msg, tab=0, end='\n', reset=True):
-        return self._print (self.GREEN + ' '*tab, msg, end, reset)
+        return self._print ( ' '*tab + self.GREEN, msg, end, reset)
 
     def getBlue(self, msg, tab=0, end='\n', reset=True):
-        return self._print (self.BLUE + ' '*tab, msg, end, reset)
+        return self._print ( ' '*tab + self.BLUE, msg, end, reset)
 
     def getMagenta(self, msg, tab=0, end='\n', reset=True):
-        return self._print (self.MAGENTA + ' '*tab, msg, end, reset)
+        return self._print ( ' '*tab + self.MAGENTA, msg, end, reset)
 
     def getFucsia(self, msg, tab=0, end='\n', reset=True):
-        return self._print (self.FUCSIA + ' '*tab, msg, end, reset)
+        return self._print ( ' '*tab + self.FUCSIA, msg, end, reset)
 
     def getCyan(self, msg, tab=0, end='\n', reset=True):
-        return self._print (self.CYAN + ' '*tab, msg, end, reset)
+        return self._print ( ' '*tab + self.CYAN, msg, end, reset)
 
     def getWhite(self, msg, tab=0, end='\n', reset=True):
-        return self._print (self.WHITE + ' '*tab, msg, end, reset)
+        return self._print ( ' '*tab + self.WHITE, msg, end, reset)
 
     def getRed(self, msg, tab=0, end='\n', reset=True):
-        return self._print (self.RED + ' '*tab, msg, end, reset)
+        return self._print ( ' '*tab + self.RED, msg, end, reset)
 
     def getRedH(self, msg, tab=0, end='\n', reset=True):
-        return self._print (self.REDH + ' '*tab, msg, end, reset)
+        return self._print ( ' '*tab + self.REDH, msg, end, reset)
 
 
 

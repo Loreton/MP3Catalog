@@ -29,17 +29,20 @@ def Main(gv, action):
     gv.data.fileValidSongs  = gv.Prj.dataDIR + '/_ValidSongs.csv'
 
         # ------------------------------------------------------------
-        # - Lettura del file.csv e modifica/verifica dei nomi colonne
+        # - Lettura del file.csv
+        # - La prima riga conriene il nome delle colonne
+        # - Eliminiamo i blank nei nomi colonne
         # ------------------------------------------------------------
     rowList = gv.Prj.readFile(gv, csvFile)
     rowList[0] = rowList[0].replace(' ', '')   # eliminiamo i BLANK nei nomi colonne
-    if not rowList[0].strip().strip(';') == ';'.join(gv.Prj.songColumName):
+    if not rowList[0].strip().strip(';') == ';'.join(gv.Prj.songColumsName):
         C.printYellowH('i nomi delle colonne non coincidono', tab=4)
         C.printYellowH('file     : {0}'.format(rowList[0]), tab=4)
-        C.printYellowH('required : {0}'.format(';'.join(gv.Prj.songColumName)), tab=4)
+        C.printYellowH('required : {0}'.format(';'.join(gv.Prj.songColumsName)), tab=4)
         sys.exit()
 
-    RECs = []       # RECs una lista di liste/canzoni
+        # RECs creazione di una lista di liste/canzoni [[],[],..]
+    RECs = []
     for row in rowList[1:]:
         tokens = [token.strip() for token in row.split(';') if token]
         RECs.append(tokens)

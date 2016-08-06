@@ -37,7 +37,7 @@ def exit(gv, rcode, text, printStack=False, stackLevel=9, console=True):
         printColor = C.printGreen
         logWrite = logger.debug
     else:
-        printColor = C.printError
+        printColor = C.printERROR
         logWrite = logger.error
 
 

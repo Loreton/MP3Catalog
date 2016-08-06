@@ -62,7 +62,8 @@ def getKeyboardInput(gv, msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySe
                 print('\n... try again\n')
 
     except Exception as why:
-        gv.Ln.exit(8, "Error running program [%s]\n\n ....%s\n"  % (sys.argv[0], why) )
+        gv.Ln.exit(gv, 8, "Error running program [{ME}]\n\n ....{WHY}\n".format(ME=sys.argv[0], WHY=why) )
+
 
     return choice
 

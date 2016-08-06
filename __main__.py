@@ -5,6 +5,7 @@
 # sudo update-alternatives --config python
 # /opt/python3.4/bin/pip3.4 install netifaces
 import sys; sys.dont_write_bytecode = True
+# import sys
 import os
 
 # ------------------------------------------------------------
@@ -31,53 +32,15 @@ if __name__ == "__main__":
         # - Nel caso specifico abbiamo un argomento multiValue
         # -   e quindi passiamo i valori validi per detto argomento.
         # ----------------------------------------------------
-    # songsFlags = 'Analysed, Recomended, Loreto, Buona, Soft, Car, Vivace Molto, Vivace, Camera'
-    # gv.Prj.songFlags = [
-    #                 'Analizzata',
-    #                 'Buona',
-    #                 'Camera'
-    #                 'Car',
-    #                 'Loreto',
-    #                 'MoltoViv',
-    #                 'Recomended',
-    #                 'Soft',
-    #                 'Vivace',
-    #             ]
 
 
-    songColums = 'Type;Author Name;Album Name;Song Name;Punteggio;Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Country;Strumentale;Classica;Lirica;Live;Discreta;Undefined;Avoid it;Confusionaria;Song Size'
-    gv.Prj.songColumName = songColums.replace(' ', '').split(';')
-
-    # gv.Prj.songColums = [
-    #                 'Type',
-    #                 'Author Name',
-    #                 'Album Name',
-    #                 'Song Name',
-    #                 'Punteggio',
-    #                 'Analizzata',
-    #                 'Recomended',
-    #                 'Loreto',
-    #                 'Buona',
-    #                 'Soft',
-    #                 'Vivace',
-    #                 'Molto Viv',
-    #                 'Camera',
-    #                 'Car',
-    #                 'Lenta',
-    #                 'Country',
-    #                 'Strumentale',
-    #                 'Classica',
-    #                 'Lirica',
-    #                 'Live',
-    #                 'Discreta',
-    #                 'Undefined',
-    #                 'Avoid it',
-    #                 'Confusionaria',
-    #                 'Song Size',
-    #             ]
+    songColumns = 'Type;Author Name;Album Name;Song Name;Punteggio;Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Country;Strumentale;Classica;Lirica;Live;Discreta;Undefined;Avoid it;Confusionaria;Song Size'
+    gv.Prj.songColumsName = songColumns.replace(' ', '').split(';')
+    gv.Prj.songAttributes = gv.Prj.songColumsName[6:-1] # partiamo da Recomended
 
 
-    Input           = Prj.setup.parseInput(gv, args=sys.argv[1:], flags=gv.Prj.songColumName)
+
+    Input           = Prj.setup.parseInput(gv, args=sys.argv[1:], columnsName=gv.Prj.songAttributes)
     gv.INPUT_PARAM  = gv.Ln.LnDict(Input)
     if gv.INPUT_PARAM.fTRACE: gv.printDict(gv)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
-import sys; sys.dont_write_bytecode = True
+import sys
 import os
 import argparse
 # mi serve per poi cercare i metodi dentro
@@ -11,17 +11,17 @@ this_mod = sys.modules[__name__]
 #############################################################
 # - parseInput()
 #############################################################
-def parseInput(gv, args, flags, programVersion=None):
-    global C, songColumName
+def parseInput(gv, args, columnsName, programVersion=None):
+    global C, songColumsName
+    songColumsName = columnsName
     C = gv.Ln.Colors()
     if not programVersion: programVersion = gv.Prj.Version
 
-    # songColumName.SAMPLE = 'analysed recomended loreto buona soft car vivace molto_vivace camera'
+    # songColumsName.SAMPLE = 'analizzata recomended loreto buona soft car vivace molto_vivace camera'
 
-    songColumName = flags
     positionalActionsDict  =  dict (
             # extract     = "filtra le canzoni e crea i file con le selezioni...",
-            copySongs   = "le canzoni risultate 'validSongs' le copia sulla dir di destinazione"
+            copySongs   = "copia le canzoni risultate dalla selezione nella directory di destinazione"
         )
 
 
@@ -35,15 +35,27 @@ def parseInput(gv, args, flags, programVersion=None):
 
         # aggiungiamo manualmente valori alla struttura
     InputPARAM.action       = mainArgs.action
-    '''
-    for item in songColumName:     # InputPARAM.flags --> agomento multiValue --> []
-        if item.lower() in (name.lower() for name in InputPARAM.flags):
-            value = True
-        else:
-            value = False
 
-        setattr(InputPARAM, item, value)
-    '''
+        # eliminiamo valori di include exclude non previsti
+    print ()
+    for item in reversed(InputPARAM.include):
+        if item:
+            if not item in songColumsName:
+                C.printCyanH ('{0} - is not an INCLUDE valid argument'.format(item), tab=4)
+                sys.exit()
+        else:
+            InputPARAM.include.remove(item)
+
+    for item in reversed(InputPARAM.exclude):
+        if item:
+            if not item in songColumsName:
+                C.printCyanH ('{0} - is not an EXCUDE valid argument'.format(item), tab=4)
+                sys.exit()
+        else:
+            InputPARAM.exclude.remove(item)
+    print ()
+
+
 
 
 
@@ -107,22 +119,14 @@ def prepareArgParse(positionalActionsDict, programVersion):
 
     myParser.add_argument('action', help='Command/Action to run')
 
-    # print ('11111', sys.argv[1:2])
     mainArgs = myParser.parse_args(sys.argv[1:2])
-    # print ('22222', mainArgs.action)
 
-        # - Positional Parameter ....
-    # if len(positionalActionsDict):
-
-        # parse_args defaults to [1:] for args, but you need to
-        # exclude the rest of the args too, or validation will fail
 
     if not (mainArgs.action in positionalActionsDict.keys()):
         myParser.print_help()
         C.printYellow(".... Unrecognized action [{0}]. Valid actions are:".format(mainArgs.action), tab=8)
         for action in positionalActionsDict.keys():
             C.printYellow (action, tab=16)
-        # print (C.RESET)
         exit(1)
 
     return mainArgs
@@ -139,10 +143,6 @@ def commonParsing(actionName, DESCR='CIAO DESCR'):
                                         formatter_class=argparse.RawTextHelpFormatter,
                                         # formatter_class=argparse.RawDescriptionHelpFormatter,
                                         )
-
-
-
-
 
 
 
@@ -187,7 +187,7 @@ def COPYSONGS(myParser):
 
 
 # ---------------------------
-# - COPYSONGS
+# - _debugOptions
 # ---------------------------
 def _debugOptions(myParser):
 
@@ -211,7 +211,7 @@ def _debugOptions(myParser):
 
 
     # --------------------------------------------------
-    # - definizione dei gruppi mutuamente esclusivi
+    # - gruppi mutuamente esclusivi
     # --------------------------------------------------
     debugGroup = myParser.add_mutually_exclusive_group(required=False)  # True indica obbligatorietà di uno del gruppo
 
@@ -234,7 +234,7 @@ def _debugOptions(myParser):
     """))
 
 # ---------------------------
-# - COPYSONGS
+# - _copySongsOptions
 # ---------------------------
 def _copySongsOptions(myParser):
     myParser.add_argument( "--max-output-bytes",
@@ -260,7 +260,7 @@ def _copySongsOptions(myParser):
 
 
 # ---------------------------
-# - EXECUTE
+# - _executeOptions
 # ---------------------------
 def _executeOptions(myParser):
     myParser.add_argument( "--go",
@@ -272,7 +272,7 @@ def _executeOptions(myParser):
     """))
 
 # ---------------------------
-# - Directrory
+# - _songDirs
 # ---------------------------
 def _songDirs(myParser):
     mandatory = C.getYellowH('MANDATORY')
@@ -311,12 +311,17 @@ def _songDirs(myParser):
 
 
 # ---------------------------
-# - COMMON
+# - _commonOptions
 # ---------------------------
 def _commonOptions(myParser):
-    opts = C.getYellowH(' '.join(songColumName))
+    # split della lista in gruppi da x elementi
+    nElem = 5
+    opts = ''
+    composite_list = [songColumsName[x:x+nElem] for x in range(0, len(songColumsName),nElem)]
+    for item in composite_list:
+        opts += C.getYellowH(' '.join(item) + '\n        ')
     myParser.add_argument( "--include",
-                            default=['analysed'],
+                            default=['analizzata'],
                             required=False,
                             # dest="multipleFlags",  # se omesso viene preso il nome lungo del parametro.
                             nargs='*',
@@ -324,11 +329,12 @@ def _commonOptions(myParser):
 
         {0}
 
-    [DEFAULT: analysed]
+        gli elementi vanno in AND. Ttutti i flag devono essere presenti per accettare la canzone.
+    [DEFAULT: analizzata]
     """.format(opts)))
 
     myParser.add_argument( "--exclude",
-                            default=['SongSize'],
+                            default=[''],
                             required=False,
                             # dest="multipleFlags",  # se omesso viene preso il nome lungo del parametro.
                             nargs='*',
@@ -336,7 +342,8 @@ def _commonOptions(myParser):
 
         {0}
 
-    [DEFAULT: analysed]
+        gli elementi vanno in OR. Basta che uno sia presente che la canzone viene scartata
+    [DEFAULT: '']
     """.format(opts)))
 
 
@@ -351,7 +358,7 @@ def _commonOptions(myParser):
 
 
 ###############################################
-# -
+# - calculateBytes
 ###############################################
 def calculateBytes(value):
     lastChar = value.strip().lower()[-1]

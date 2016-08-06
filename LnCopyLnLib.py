@@ -1,6 +1,6 @@
 #!/opt/python3.4/bin/python3.4
 
-import sys; sys.dont_write_bytecode = True
+import sys
 import os
 import shutil
 

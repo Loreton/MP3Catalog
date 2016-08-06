@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: iso-8859-1 -*-
 
-import sys; sys.dont_write_bytecode = True
+# import sys; sys.dont_write_bytecode = True
+import sys
 
 
 
