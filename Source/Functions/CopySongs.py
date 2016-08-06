@@ -10,6 +10,7 @@ import os, sys
 import shutil
 
 def copySongs(gv, RECs):
+    global c, copiedSongs
     logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
     c = gv.Ln.Colors()
 
@@ -31,6 +32,7 @@ def copySongs(gv, RECs):
     '''
 
     NOTFOUND = []
+    copiedSongs = []
 
 
     DISPLAY_LEN=50
@@ -97,7 +99,11 @@ def copySongs(gv, RECs):
 
 
                 # - copiamo la canzone... se non esiste
+
+
             c.printCyan('--> {FILE:<{LEN}}'.format(LEN=DISPLAY_LEN,FILE=destSongName[:DISPLAY_LEN]), end=' ', tab=4)
+            isCopied = copia(gv, sourceSongName, destSongName)
+            '''
             if gv.INPUT_PARAM.fEXECUTE:
                 destdir = os.path.dirname(destSongName)
                 if not os.path.exists(destdir): os.makedirs(destdir)
@@ -110,14 +116,18 @@ def copySongs(gv, RECs):
                         print (msg)
                         return False
 
+                copiedSongs.append(destSongName)
                 c.printYellow('...copyied', tab=4)
             else:
+                copiedSongs.append(destSongName)
                 c.printYellow('...will be copyied', tab=4)
+            '''
 
                 # - aggiorniamo i contatori
-            gv.copySong[DirTree].nSongs  += 1
-            gv.copySong.remainingSongs   -= 1
-            gv.copySong[DirTree].totSize += realSongSize
+            if isCopied:
+                gv.copySong[DirTree].nSongs  += 1
+                gv.copySong.remainingSongs   -= 1
+                gv.copySong[DirTree].totSize += realSongSize
 
 
         else:
@@ -129,3 +139,43 @@ def copySongs(gv, RECs):
     gv.copySong.printDict(gv)
     sys.exit()
 
+def copia(gv, sourceSongName, destSongName):
+
+    if gv.INPUT_PARAM.fEXECUTE:
+        destdir = os.path.dirname(destSongName)
+        if not os.path.exists(destdir): os.makedirs(destdir)
+
+        if os.path.isfile(destSongName):
+            msg = """
+            La canzone:
+                {0}
+            esiste gia': [R]eplace [S]kip?
+            """.format(destSongName)
+            choice = gv.Ln.getKeyboardInput(gv, "" , keySep=",", validKeys='R,S', exitKey='X', deepLevel=2).lower()
+            if choice == 'x':
+                sys.exit()
+            elif choice == 's':
+                c.printYellow('...skipped', tab=4)
+                return False
+
+        try:
+            shutil.copyfile(sourceSongName, destSongName)
+
+        except (IOError, os.error) as why:
+            msg = "Can't COPY [{0}] to [{1}]: {3}".format(sourceSongName, destSongName, str(why))
+            print (msg)
+            return False
+
+        copiedSongs.append(destSongName)
+        c.printYellow('...copyied', tab=4)
+        return True
+
+    else:
+        if destSongName in copiedSongs:
+            c.printRedH('...duplicate', tab=4)
+            return False
+
+        else:
+            copiedSongs.append(destSongName)
+            c.printYellow('...will be copied', tab=4)
+            return True

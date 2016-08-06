@@ -46,7 +46,6 @@ def songFilter(gv, RECs):
     print ()
     C.printCyan ('requested Score: {0}'.format(reqScore), tab=4)
     print ()
-    # choice = gv.Ln.getKeyboardInput(gv, "    Pausa temporanea" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
 
     sf.col         = col
     sf.colVal      = colVal
@@ -77,7 +76,8 @@ def songFilter(gv, RECs):
 
 
         size = int(song[col.SongSize].replace('bytes', '').replace('.', ''))
-        # se le canzoni sono state analizzate
+
+        # se la canzone sono state analizzate... ignorala
         if song[col['Analizzata']] != '.':
             sf.analizzate.append(song)
             analizzateTotSize += size
@@ -105,8 +105,6 @@ def songFilter(gv, RECs):
             if song[col[colName]] == '.':
                 isValidSong = False
                 break
-            # else:
-            #     print (colName, song[col[colName]])
 
         if isValidSong:
             sf.validSongs.append(song)
