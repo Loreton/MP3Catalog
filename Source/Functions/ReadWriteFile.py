@@ -43,7 +43,10 @@ def writeFile(gv, outFile, data=[]):
     logger.debug('number of lines to write: {0}'.format(len(data)))
     f = open(outFile, "w", encoding="latin-1")
     for line in data:
-        f.write(';'.join(line))
+        if isinstance(line, list):
+            f.write(';'.join(line))
+        else:
+            f.write(line)
         f.write('\n')
     f.close()
 

@@ -103,25 +103,7 @@ def copySongs(gv, RECs):
 
             c.printCyan('--> {FILE:<{LEN}}'.format(LEN=DISPLAY_LEN,FILE=destSongName[:DISPLAY_LEN]), end=' ', tab=4)
             isCopied = copia(gv, sourceSongName, destSongName)
-            '''
-            if gv.INPUT_PARAM.fEXECUTE:
-                destdir = os.path.dirname(destSongName)
-                if not os.path.exists(destdir): os.makedirs(destdir)
-                if not os.path.isfile(destSongName):
-                    try:
-                        shutil.copyfile(sourceSongName, destSongName)
 
-                    except (IOError, os.error) as why:
-                        msg = "Can't COPY [{0}] to [{1}]: {3}".format(sourceSongName, destSongName, str(why))
-                        print (msg)
-                        return False
-
-                copiedSongs.append(destSongName)
-                c.printYellow('...copyied', tab=4)
-            else:
-                copiedSongs.append(destSongName)
-                c.printYellow('...will be copyied', tab=4)
-            '''
 
                 # - aggiorniamo i contatori
             if isCopied:
@@ -136,27 +118,35 @@ def copySongs(gv, RECs):
 
 
 
-    gv.copySong.printDict(gv)
-    sys.exit()
+
 
 def copia(gv, sourceSongName, destSongName):
-
+    isCopied = False
     if gv.INPUT_PARAM.fEXECUTE:
         destdir = os.path.dirname(destSongName)
         if not os.path.exists(destdir): os.makedirs(destdir)
 
+        action = c.getYellow('...copyied', tab=4)
+
         if os.path.isfile(destSongName):
-            msg = """
-            La canzone:
-                {0}
-            esiste gia': [R]eplace [S]kip?
-            """.format(destSongName)
-            choice = gv.Ln.getKeyboardInput(gv, "" , keySep=",", validKeys='R,S', exitKey='X', deepLevel=2).lower()
-            if choice == 'x':
-                sys.exit()
-            elif choice == 's':
-                c.printYellow('...skipped', tab=4)
-                return False
+            gv.songList.duplicate.append(sourceSongName)
+            sourceSongSize = os.path.getsize(sourceSongName)
+            destSongSize = os.path.getsize(destSongName)
+            # - check songSize
+            if sourceSongSize == destSongSize:
+                c.printRedH('...skipped - same size', tab=4)
+                return isCopied
+
+            # - proviamo a fare il rename
+            fname = destSongName.split('.mp3')[0]
+            FOUND = True
+            counter = 0
+            while FOUND==True:
+                counter += 1
+                destSongName = '{FNAME}-{COUNTER:03}.mp3'.format(FNAME=fname, COUNTER=counter)
+                FOUND = os.path.isfile(destSongName)
+            action = c.getRedH('...renamed - {COUNTER:03}'.format(COUNTER=counter), tab=4)
+
 
         try:
             shutil.copyfile(sourceSongName, destSongName)
@@ -164,18 +154,23 @@ def copia(gv, sourceSongName, destSongName):
         except (IOError, os.error) as why:
             msg = "Can't COPY [{0}] to [{1}]: {3}".format(sourceSongName, destSongName, str(why))
             print (msg)
-            return False
+            sys.exit()
 
+
+        print (action)
         copiedSongs.append(destSongName)
-        c.printYellow('...copyied', tab=4)
-        return True
+        isCopied = True
+        return isCopied
 
-    else:
+    else:   # siamo in dry-run mode
         if destSongName in copiedSongs:
             c.printRedH('...duplicate', tab=4)
+            gv.songList.duplicate.append(sourceSongName)
             return False
 
         else:
             copiedSongs.append(destSongName)
             c.printYellow('...will be copied', tab=4)
             return True
+
+

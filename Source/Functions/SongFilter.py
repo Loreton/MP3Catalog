@@ -11,16 +11,9 @@ class BreakIt(Exception): pass
 def songFilter(gv, RECs):
     logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
     C = gv.Ln.Colors()
-    sf = gv.Ln.LnDict()
     col = gv.Prj.enumCols(gv, gv.Prj.songColumsName)
 
-        # ----------------------------------------------
-        # - Preleviamo tutte le canzoni analizzate
-        # - Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Count
-        # ----------------------------------------------
-    sf.validSongs  = [gv.Prj.songColumsName]  # init con il nome delle colonne
-    sf.analizzate  = [gv.Prj.songColumsName]  # init con il nome delle colonne
-    sf.scartate    = [gv.Prj.songColumsName]  # init con il nome delle colonne
+
 
 
 
@@ -47,9 +40,9 @@ def songFilter(gv, RECs):
     C.printCyan ('requested Score: {0}'.format(reqScore), tab=4)
     print ()
 
-    sf.col         = col
-    sf.colVal      = colVal
-    sf.reqScore    = reqScore
+    # gv.songList.col         = col
+    # gv.songList.colVal      = colVal
+    # gv.songList.reqScore    = reqScore
 
     validTotSize        = 0
     scartateTotSize     = 0
@@ -79,7 +72,7 @@ def songFilter(gv, RECs):
 
         # se la canzone sono state analizzate... ignorala
         if song[col['Analizzata']] != '.':
-            sf.analizzate.append(song)
+            gv.songList.analizzate.append(song)
             analizzateTotSize += size
         else:
             toBeAanalysed += 1
@@ -87,7 +80,7 @@ def songFilter(gv, RECs):
             continue
 
         if song[col.Type] in excludeType or song[col.AuthorName] in excludeAuthor:
-            sf.scartate.append(song)
+            gv.songList.scartate.append(song)
             scartateTotSize += size
             scartate        += 1
             continue
@@ -95,7 +88,7 @@ def songFilter(gv, RECs):
             # verifichiamo le colonne da escludere.
         for colName in excludeCol:
             if not song[col[colName]] == '.':
-                sf.scartate.append(song)
+                gv.songList.scartate.append(song)
                 scartateTotSize += size
                 scartate        += 1
                 continue
@@ -107,10 +100,10 @@ def songFilter(gv, RECs):
                 break
 
         if isValidSong:
-            sf.validSongs.append(song)
+            gv.songList.validSongs.append(song)
             validTotSize += int(size)
         else:
-            sf.scartate.append(song)
+            gv.songList.scartate.append(song)
             scartateTotSize += size
 
 
@@ -120,15 +113,15 @@ def songFilter(gv, RECs):
     C.printYellow('Invalid Lines    : {0:>6}'.format(invalidLines), tab=4)
     C.printYellow('Canzoni TOTALI   : {0:>6}'.format(len(RECs) - invalidLines), tab=4)
     print()
-    C.printYellow('ANALIZZATE       : {0:>6} - bytes: {1:,}'.format(len(sf.analizzate)-1, analizzateTotSize), tab=4)
+    C.printYellow('ANALIZZATE       : {0:>6} - bytes: {1:,}'.format(len(gv.songList.analizzate)-1, analizzateTotSize), tab=4)
     C.printYellow('Da ANALIZZARE    : {0:>6} - bytes: {1:,}'.format(toBeAanalysed, toBeAanalysedSize), tab=4)
-    C.printYellow('VALIDE           : {0:>6} - bytes: {1:,}'.format(len(sf.validSongs)-1, validTotSize), tab=4)
-    C.printYellow('SCARTATE         : {0:>6} - bytes: {1:,}'.format(len(sf.scartate)-1, scartateTotSize), tab=4)
+    C.printYellow('VALIDE           : {0:>6} - bytes: {1:,}'.format(len(gv.songList.validSongs)-1, validTotSize), tab=4)
+    C.printYellow('SCARTATE         : {0:>6} - bytes: {1:,}'.format(len(gv.songList.scartate)-1, scartateTotSize), tab=4)
 
     '''
     '''
     print()
 
-    return sf
+    return
 
 

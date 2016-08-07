@@ -27,6 +27,19 @@ def Main(gv, action):
     fileScartate    = gv.Prj.dataDIR + '/_Scartate.csv'
     fileAnalizzate  = gv.Prj.dataDIR + '/_Analizzate.csv'
     fileValidSongs  = gv.Prj.dataDIR + '/_ValidSongs.csv'
+    fileDuplicateSongs  = gv.Prj.dataDIR + '/_DuplicateSongs.csv'
+
+        # ----------------------------------------------
+        # - Preleviamo tutte le canzoni analizzate
+        # - Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Count
+        # ----------------------------------------------
+    gv.songList = gv.Ln.LnDict()
+    songList = gv.songList
+    songList.validSongs  = [gv.Prj.songColumsName]  # init con il nome delle colonne
+    songList.analizzate  = [gv.Prj.songColumsName]  # init con il nome delle colonne
+    songList.scartate    = [gv.Prj.songColumsName]  # init con il nome delle colonne
+    songList.duplicate   = [gv.Prj.songColumsName]  # init con il nome delle colonne
+
 
         # ------------------------------------------------------------
         # - Lettura del file.csv
@@ -46,7 +59,7 @@ def Main(gv, action):
     for row in rowList[1:]:
         tokens = [token.strip() for token in row.split(';') if token]
         RECs.append(tokens)
-    songFiltered = gv.Prj.songFilter(gv, RECs)
+    gv.Prj.songFilter(gv, RECs)
 
     choice = gv.Ln.getKeyboardInput(gv, "    Vuoi salvare i dati sui relativi file?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
     if choice.lower() in ['x']:
@@ -54,13 +67,13 @@ def Main(gv, action):
 
     elif choice.lower() in ['yes']:
         C.printYellow('writing file: {0}'.format(fileScartate), tab=4)
-        gv.Prj.writeFile(gv, fileScartate,   data=songFiltered.scartate)
+        gv.Prj.writeFile(gv, fileScartate,   data=songList.scartate)
 
         C.printYellow('writing file: {0}'.format(fileValidSongs), tab=4)
-        gv.Prj.writeFile(gv, fileValidSongs,   data=songFiltered.validSongs)
+        gv.Prj.writeFile(gv, fileValidSongs,   data=songList.validSongs)
 
         C.printYellow('writing file: {0}'.format(fileAnalizzate), tab=4)
-        gv.Prj.writeFile(gv, fileAnalizzate, data=songFiltered.analizzate)
+        gv.Prj.writeFile(gv, fileAnalizzate, data=songList.analizzate)
 
 
 
@@ -69,12 +82,18 @@ def Main(gv, action):
         if choice.lower() in ['x', 'no']:
             sys.exit()
 
-        RECs = songFiltered.validSongs[:]
+        RECs = songList.validSongs[:]
         logger.info('trovate {0} canzoni da copiare'.format(len(RECs)))
         if gv.INPUT_PARAM.fCHECK_SOURCE:
             gv.Prj.checkSourceSongs(gv, RECs)
         else:
             gv.Prj.copySongs(gv, RECs)
+            print()
+            C.printYellow('writing file: {0}'.format(fileDuplicateSongs), tab=4)
+            print()
+            gv.Prj.writeFile(gv, fileDuplicateSongs, data=songList.duplicate)
+
+            gv.copySong.printDict(gv)
 
     else:
         C.printRed('Action {0} not yet implemented...!'.format(action), tab=8)
