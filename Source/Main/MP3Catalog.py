@@ -23,7 +23,7 @@ def Main(gv, action):
     gv.data = gv.Ln.LnDict()
 
     # csvFile                 = gv.Prj.dataDIR + '/MP3_Master_2015-08-10.csv'
-    csvFile         = gv.Prj.dataDIR + '/MP3_Master_2016-07-25.csv'
+    csvFile         = gv.Prj.dataDIR + '/MP3_Master_2016-09-05.csv'
     fileScartate    = gv.Prj.dataDIR + '/_Scartate.csv'
     fileAnalizzate  = gv.Prj.dataDIR + '/_Analizzate.csv'
     fileValidSongs  = gv.Prj.dataDIR + '/_ValidSongs.csv'
