@@ -9,7 +9,7 @@
 import os, sys
 
 def checkSourceSongs(gv, RECs):
-    logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
+    logger = gv.Ln.setLogger(gv, package=__name__)
     color  = gv.Ln.Colors()
 
     print (len(RECs))

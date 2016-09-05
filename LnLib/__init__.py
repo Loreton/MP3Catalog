@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: iso-8859-1 -*-
 
-# import sys; sys.dont_write_bytecode = True
 import sys
+import platform
 
+
+# - sys.version_info(major=3, minor=3, micro=2, releaselevel='final', serial=0)
+v = sys.version_info
+pyVer = '{0}{1}{2}'.format(v.major, v.minor, v.micro)
+OpSys = platform.system()
 
 
 from . System.LnLogger                      import setLogger

@@ -16,16 +16,17 @@ import os
 # import Setup as setup
 
 import Source    as Prj
+import LnLib     as Ln
 
 ################################################################################
 # - M A I N
 ################################################################################
 if __name__ == "__main__":
     Prj.Version  = 'V01'
-    gv           = Prj.Ln.LnDict()      # default = _dynamic=False
+    gv           = Ln.LnDict()      # default = _dynamic=False
     gv.Prj       = Prj
-    gv.Ln        = Prj.Ln
-    Prj.prefix     = 'MP3Catalog'
+    gv.Ln        = Ln
+    Prj.prefix   = 'MP3Catalog'
 
         # ----------------------------------------------------
         # - lettura dei parametri di input
@@ -33,6 +34,9 @@ if __name__ == "__main__":
         # -   e quindi passiamo i valori validi per detto argomento.
         # ----------------------------------------------------
 
+    # gv.songFilter.excludeType   = ['Bambini', 'Natale', 'Popolari', 'Themes']
+    # gv.songFilter.excludeAuthor = []
+    # gv.songFilter.column        = ['Type', 'Author Name', 'Album Name', 'Song Name', 'Punteggio', 'Analizzata', 'Recomended', 'Loreto', 'Buona', 'Soft', 'Vivace', 'Molto Viv', 'Camera', 'Car', 'Lenta', 'Country', 'Strumentale', 'Classica', 'Lirica', 'Live', 'Discreta', 'Undefined', 'Avoid it', 'Confusionaria', 'Song Size']
 
     songColumns = 'Type;Author Name;Album Name;Song Name;Punteggio;Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Country;Strumentale;Classica;Lirica;Live;Discreta;Undefined;Avoid it;Confusionaria;Song Size'
     gv.Prj.songColumsName = songColumns.replace(' ', '').split(';')
@@ -44,9 +48,9 @@ if __name__ == "__main__":
     gv.INPUT_PARAM  = gv.Ln.LnDict(Input)
     if gv.INPUT_PARAM.fTRACE: gv.printDict(gv)
 
-    gv.EXECUTE = gv.INPUT_PARAM.fEXECUTE
-    gv.CONSOLE = gv.INPUT_PARAM.LogCONSOLE
-    gv.fDEBUG  = gv.INPUT_PARAM.fDEBUG
+    gv.EXECUTE    = gv.INPUT_PARAM.fEXECUTE
+    gv.LogCONSOLE = gv.INPUT_PARAM.LogCONSOLE
+    gv.fDEBUG     = gv.INPUT_PARAM.fDEBUG
 
         # ---------------------------------------------------------
         # - SetUp dell'ambiente

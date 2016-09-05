@@ -73,7 +73,8 @@ def initLogger(iniLogFile, logFileName, package, packageQualifiers=2):
     gPackageQualifiers = packageQualifiers
 
     if os.path.isfile(iniLogFile):
-        print ('    using loggerConfigFile:', iniLogFile)
+        # print ('    using loggerConfigFile: {}', iniLogFile)
+        print ("    {0:<32}: {1}".format('loggerConfigFile', logFileName))
     else:
         print (iniLogFile, "... NOT FOUND")
         sys.exit()
@@ -92,7 +93,7 @@ def initLogger(iniLogFile, logFileName, package, packageQualifiers=2):
     logger.setLevel(savedLevel)
 
     logFileName = logging.getLoggerClass().root.handlers[0].baseFilename
-    print ("    {0:<32}: {1}".format('using LOG file', logFileName))
+    print ("    {0:<32}: {1}".format('LOG file', logFileName))
 
     return logFileName
 
@@ -114,37 +115,37 @@ def initLogger(iniLogFile, logFileName, package, packageQualifiers=2):
 #                   utile quando si hanno più funzioni all'interno dello stesso modulo
 #
 # ====================================================================================
-def setLogger(package, CONSOLE=False, stackNum=0):
+# def setLogger(gv, package, CONSOLE=None, stackNum=0):
+def setLogger(gv, package, CONSOLE=None, stackNum=0):
     stackLevel = 1                          # stackLevel di base
     stackLevel += stackNum                  # aggiungiamo quello richiesto dal caller
 
-    funcName    = sys._getframe(stackLevel).f_code.co_name
-    funcLineNO  = sys._getframe(stackLevel).f_lineno
-    if funcName == '<module>': funcName = '__main__'
-
-
-    # print(__name__, 'LogConsole................:', CONSOLE )
+    if not CONSOLE: CONSOLE = gv.INPUT_PARAM.LogCONSOLE
     if CONSOLE:
-        pkgName = 'LnConsole.{0}'.format(package)   # sposta il log su console
-        # pkgName = 'LnConsole.{0}'.format(package.split('.')[-1])  # sposta il log su console
-        cLogger = logging.getLogger('LnConsole')
-        cLogger.setLevel(logging.DEBUG)
+            # LnConsole o LnC o altro... deve essere definito come qualname nel logger nel file logger.ini
+        cLogger = logging.getLogger('LnC')
+        pkgName = 'LnC.{0}'.format(package.split('.')[-1])
+
+        if   CONSOLE.lower() == 'info':     cLogger.setLevel(logging.INFO)
+        elif CONSOLE.lower() == 'warning':  cLogger.setLevel(logging.WARNING)
+        elif CONSOLE.lower() == 'debug':    cLogger.setLevel(logging.DEBUG)
+
     else:
         pkgName = package
 
 
+    funcName    = sys._getframe(stackLevel).f_code.co_name
+    funcLineNO  = sys._getframe(stackLevel).f_lineno
+    if funcName == '<module>': funcName = '__main__'
     if funcName: pkgName += '.' + funcName
-
         # ------------------------------------------------
         # - del package cerchiamo di prendere
         # - solo gli ultimi gPackageQualifiers.
         # ------------------------------------------------
+
     packageHier = pkgName.split('.')
-    # pkgName     = ('.'.join(packageHier[-gPackageQualifiers:]))
-    # pkgName     = (packageHier[0] +'.'+packageHier[1]) # prendiamo il primo ed il secondo
-    # pkgName     = (packageHier[1] +'.'+packageHier[-1]) # prendiamo il secondo e l'ultimo
-    pkgName     = (packageHier[0] +'.'+packageHier[-1]) # prendiamo il primo e l'ultimo
-    # print (__name__, 'pkgName..............',  pkgName)
+    pkgName     = ('.'.join(packageHier[-gPackageQualifiers:]))
+    pkgName     = (packageHier[0] +'.'+packageHier[-1])
 
 
     # -----------------------------------------------------------------------------------------

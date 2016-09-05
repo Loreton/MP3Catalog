@@ -11,7 +11,7 @@ import shutil
 
 def copySongs(gv, RECs):
     global c, copiedSongs
-    logger = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
+    logger = gv.Ln.setLogger(gv, package=__name__)
     c = gv.Ln.Colors()
 
     col = gv.Prj.enumCols(gv, RECs[0])

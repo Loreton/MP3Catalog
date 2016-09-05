@@ -4,7 +4,7 @@
 #
 # Version 0.01 08/04/2010:  Starting
 # ####################################################################################################################
-import os, sys
+import sys
 
 
 # ###########################################################################
@@ -15,8 +15,8 @@ import os, sys
 # * 01-01-2014 - modificato il validKeysLIST.
 # ###########################################################################
 def getKeyboardInput(gv, msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySep="|", fDEBUG=False):
-    logger = gv.Ln.setLogger(package=__name__)
-
+    logger = gv.Ln.setLogger(gv, package=__name__)
+    C = gv.Ln.Colors()
 
     exitKeyUPP = exitKey.upper()
 
@@ -28,29 +28,35 @@ def getKeyboardInput(gv, msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySe
     if keySep in exitKeyUPP:
         exitKeyLIST = exitKeyUPP.split(keySep)
     else:
-        exitKeyLIST = exitKeyUPP
+        exitKeyLIST = [exitKeyUPP]
 
     print()
-    if " Temporanea" in msg: fDEBUG=True
+    if " uscita temporanea" in msg.lower():
+        if not 'ENTER' in exitKeyLIST: exitKeyLIST.append('ENTER')
+        fDEBUG  =   True
+
     if fDEBUG:
-        print("exitKeyLIST....:", exitKeyLIST)
-        print("validKeyLIST...:", validKeyLIST)
-        caller = "%s" % (calledBy(deepLevel))
+        C.printCyan(" exitKeyLIST....: {0}".format(exitKeyLIST))
+        C.printCyan(" validKeyLIST...: {0}".format(validKeyLIST))
+        print()
+        caller = gv.Ln.calledBy(deepLevel)
         msg = "<{CALLER}> - [{MSG} - ({VALKEY})] ({EXITKEY} to exit) ==> ".format(CALLER=caller, MSG=msg, VALKEY=validKeys, EXITKEY=exitKey)
     else:
-        msg = "%s [%s] - (%s to exit) ==> " % (msg, validKeys, exitKey)
+        msg = "{0} [{1}] - ({2} to exit) ==> ".format(msg, validKeys, exitKey)
 
     try:
         while True:
-            choice      = input(msg).strip()
+            choice      = input(msg).strip()    # non mi accetta il colore
             choiceUPP   = choice.upper()
-            if fDEBUG: print("choice: [%s]" % (choice))
+            if fDEBUG: C.printCyan("choice: [{0}]".format(choice))
 
-            if choice == '':
-                if "ENTER" in validKeys:
+            if choice == '':    # diamo priorità alla exit
+                if "ENTER" in exitKeyLIST:
+                    sys.exit()
+                elif "ENTER" in validKeys:
                     return ''
                 else:
-                    print('\n... please enter something\n')
+                    C.printCyan('\n... please enter something\n')
 
             elif choiceUPP in exitKeyLIST:
                 gv.Ln.exit(gv, 9998, "Exiting on user request new.", printStack=True)
@@ -59,12 +65,10 @@ def getKeyboardInput(gv, msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySe
                 break
 
             else:
-                print('\n... try again\n')
+                C.printCyan('\n... try again\n')
 
     except Exception as why:
         gv.Ln.exit(gv, 8, "Error running program [{ME}]\n\n ....{WHY}\n".format(ME=sys.argv[0], WHY=why) )
 
-
     return choice
-
 

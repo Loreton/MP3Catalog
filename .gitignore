@@ -37,5 +37,5 @@ nosetests.xml
 
 # Excel data
 _*.csv
-
 *.sublime-*
+*.zip

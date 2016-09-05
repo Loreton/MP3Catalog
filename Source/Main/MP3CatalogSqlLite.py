@@ -26,4 +26,4 @@ def Main(gv, action):
         # - Importing Excel File if required
         # -----------------------------------
     if action == 'importExcel':
-        csvData = gv.Prj.excel.readExcelData(gv) if gv.ImportExcel else []
+        csvData = gv.Ln.excel.readExcelData(fileName)

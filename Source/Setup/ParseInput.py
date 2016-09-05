@@ -31,11 +31,17 @@ def parseInput(gv, args, columnsName, programVersion=None):
     mainArgs   = prepareArgParse(positionalActionsDict, programVersion)
     InputPARAM = commonParsing(mainArgs.action)
 
-    if InputPARAM.fTRACE: InputPARAM.fDEBUG = True
+    if InputPARAM.fTRACE:       InputPARAM.fDEBUG = True
+    if InputPARAM.LogCONSOLE:   InputPARAM.LogACTIVE = True
 
         # aggiungiamo manualmente valori alla struttura
     InputPARAM.action       = mainArgs.action
 
+    # print (songColumsName)
+    # print (InputPARAM.include)
+
+    # sys.exit()
+    '''
         # eliminiamo valori di include exclude non previsti
     print ()
     for item in reversed(InputPARAM.include):
@@ -54,7 +60,7 @@ def parseInput(gv, args, columnsName, programVersion=None):
         else:
             InputPARAM.exclude.remove(item)
     print ()
-
+    '''
 
 
 
@@ -191,6 +197,28 @@ def COPYSONGS(myParser):
 # ---------------------------
 def _debugOptions(myParser):
 
+
+        # log Activation
+    myParser.add_argument( "--log",
+                            required=False,
+                            action="store_true",
+                            dest="LogACTIVE",
+                            default=False,
+                            help=C.getYellow("""attivazione del logger.
+    [DEFAULT: False]
+    """))
+
+        # log debug su console
+    myParser.add_argument( "--log-console",
+                            required=False,
+                            dest="LogCONSOLE",
+                            choices=['info', 'warning', 'debug'],
+                            default=None,
+                            help=C.getYellow("""attivazione log sulla console.
+    [DEFAULT: False]
+    """))
+
+
     myParser.add_argument( "--check-source",
                             action="store_true",
                             dest="fCHECK_SOURCE",
@@ -199,15 +227,15 @@ def _debugOptions(myParser):
     [DEFAULT: False]
     """))
 
-        # log debug su console
-    myParser.add_argument( "-dc", "--dconsole",
-                            required=False,
-                            action="store_true",
-                            dest="LogCONSOLE",
-                            default=False,
-                            help=C.getYellow("""display log to console.
-    [DEFAULT: False]
-    """))
+    #     # log debug su console
+    # myParser.add_argument( "-dc", "--dconsole",
+    #                         required=False,
+    #                         action="store_true",
+    #                         dest="LogCONSOLE",
+    #                         default=False,
+    #                         help=C.getYellow("""display log to console.
+    # [DEFAULT: False]
+    # """))
 
 
     # --------------------------------------------------
@@ -292,14 +320,14 @@ def _songDirs(myParser):
                             help=mandatory + C.getYellow(""" - Nome della directory dove copiare le canzoni selezionate ...
     """))
 
-    myParser.add_argument( "-1", "--one-dir-x-author",
-                            action="store_true",
-                            required=False,
-                            default=False,
-                            dest="oneDirPerAuthor",
-                            help=C.getYellow("""viene creata una directory per autore (quindi senza le dir di Album)
-    [DEFAULT: False]
-    """))
+    # myParser.add_argument( "-1", "--one-dir-x-author",
+    #                         action="store_true",
+    #                         required=False,
+    #                         default=False,
+    #                         dest="oneDirPerAuthor",
+    #                         help=C.getYellow("""viene creata una directory per autore (quindi senza le dir di Album)
+    # [DEFAULT: False]
+    # """))
 
 
 
@@ -318,33 +346,74 @@ def _commonOptions(myParser):
     nElem = 5
     opts = ''
     composite_list = [songColumsName[x:x+nElem] for x in range(0, len(songColumsName),nElem)]
+
     for item in composite_list:
-        opts += C.getYellowH(' '.join(item) + '\n        ')
+        opts += C.getYellowH(','.join(item) + ',\n        ')
+
+    defaultInclude = ['Analizzata']
     myParser.add_argument( "--include",
-                            default=['analizzata'],
-                            required=False,
+                            type=checkInclude,
+
                             # dest="multipleFlags",  # se omesso viene preso il nome lungo del parametro.
+
+                            # ------------------------------------------------------------
+                            # - il parametro choice mi visualizza le possibili scelte
+                            # - ma visto che sono troppe le visualizzo nella
+                            # - variabile opts ed elimino il parametro.
+                            # - Il controllo lo faccio io manualmente con il type=.
+                            # ------------------------------------------------------------
+                            # choices=songColumsName,
+
+                            default=defaultInclude,
+                            required=False,
+
                             nargs='*',
                             help=C.getYellow("""inserire uno o piu argomenti della lista:
 
-        {0}
+        {OPT}
 
         gli elementi vanno in AND. Ttutti i flag devono essere presenti per accettare la canzone.
-    [DEFAULT: analizzata]
-    """.format(opts)))
+    [DEFAULT: {DEFAULT}]
 
+    La sintassi dell'include:
+        --include Loreto Lenta   --> CORRETTA
+        --include=Loreto,Lenta   --> ERRATA
+    """.format(DEFAULT=defaultInclude, OPT=opts)))
+
+
+
+
+    defaultExclude = ['Undefined' ,'Avoidit','Confusionaria']
     myParser.add_argument( "--exclude",
-                            default=[''],
-                            required=False,
+                            type=checkExclude,
+                            # ------------------------------------------------------------
+                            # - il parametro choice mi visualizza le possibili scelte
+                            # - ma visto che sono troppe le visualizzo nella
+                            # - variabile opts ed elimino il parametro.
+                            # - Il controllo lo faccio io manualmente con il type=.
+                            # ------------------------------------------------------------
+                            # choices=songColumsName,
+
                             # dest="multipleFlags",  # se omesso viene preso il nome lungo del parametro.
-                            nargs='*',
+                            default=defaultExclude,
+                            required=False,
+                            nargs='+',
                             help=C.getYellow("""inserire uno o piu argomenti della lista:
 
-        {0}
+        {OPT}
 
         gli elementi vanno in OR. Basta che uno sia presente che la canzone viene scartata
-    [DEFAULT: '']
-    """.format(opts)))
+    [DEFAULT: {DEFAULT}]
+
+    La sintassi dell'exclude:
+        --exclude Loreto Lenta   --> CORRETTA
+        --exclude=Loreto,Lenta   --> ERRATA
+
+    """.format(DEFAULT=defaultExclude, OPT=opts)))
+
+
+
+
 
 
     myParser.add_argument( "--max-songs",
@@ -373,3 +442,23 @@ def calculateBytes(value):
         bytes = int(value)
 
     return bytes
+
+###############################################
+# - checkInclude
+###############################################
+def checkInclude(value):
+    if not value in songColumsName:
+        C.printRedH ('{0} - is not an INCLUDE valid argument'.format(value), tab=4)
+        sys.exit()
+
+    return value
+
+###############################################
+# - checkExclude
+###############################################
+def checkExclude(value):
+    if not value in songColumsName:
+        C.printCyanH ('{0} - is not an EXCLUDE valid argument'.format(value), tab=4)
+        sys.exit()
+
+    return value

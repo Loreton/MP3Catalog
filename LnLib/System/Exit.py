@@ -19,7 +19,7 @@ EXIT_STACK  = -32
 # - da saltare se stessa.
 # =======================================================================
 def exit(gv, rcode, text, printStack=False, stackLevel=9, console=True):
-    logger      = gv.Ln.setLogger(package=__name__)
+    logger  = gv.Ln.setLogger(gv, package=__name__)
     C = gv.Ln.Colors()
 
     if text == None:
@@ -50,19 +50,16 @@ def exit(gv, rcode, text, printStack=False, stackLevel=9, console=True):
         for i in reversed(list(range(1, stackLevel))):
             caller = _calledBy(i)
             if not 'index out of range' in caller:
-                logWrite("    %s" % (caller))
+                logWrite("    {0}".format(caller))
                 if console:
                     printColor(caller, tab=8)
 
-    logWrite("[RCODE: %d]" % (rcode))
+    logWrite("[RCODE: {0}]".format(rcode))
     logWrite("[TEXT Message:]" )
     for line in textList:
-        logWrite(' '*10 + "%s" % (line))
+        logWrite(' '*10 + "{0}".format(line))
         if console:
             printColor (line, tab=8)
-
-
-
 
     sys.exit(rcode)
 

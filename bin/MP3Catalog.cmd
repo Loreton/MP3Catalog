@@ -15,19 +15,20 @@
 
     @set "extPARAMS=%*"
 
-    @goto :EXTRACT
+    :: @goto :EXTRACT
     @goto :COPYSONGS
 
 
-:EXTRACT
-    set "params=extract"
+:: :EXTRACT
+    :: set "params=extract"
     :: %START% python.exe %mainProgram% %params% %extPARAMS%
-    python.exe %mainProgram% %params% %extPARAMS%
-    goto :EOF
+    :: python.exe %mainProgram% %params% %extPARAMS%
+    :: goto :EOF
 
 :COPYSONGS
     set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3 --check-source"
     set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3  --max-output-bytes=4G --num-out-dirs=6"
+    set "params=copySongs copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3  --max-output-bytes=8G --num-out-dirs=2 --include Soft Loreto"
     python.exe %mainProgram% %params% %extPARAMS%
     goto :EOF
 

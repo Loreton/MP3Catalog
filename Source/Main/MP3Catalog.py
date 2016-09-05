@@ -18,7 +18,7 @@ import os, sys
 # -  5 - Chiamata al programma principale del progetto
 ################################################################################
 def Main(gv, action):
-    logger  = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
+    logger  = gv.Ln.setLogger(gv, package=__name__)
     C       = gv.Ln.Colors()
     gv.data = gv.Ln.LnDict()
 
@@ -28,6 +28,8 @@ def Main(gv, action):
     fileAnalizzate  = gv.Prj.dataDIR + '/_Analizzate.csv'
     fileValidSongs  = gv.Prj.dataDIR + '/_ValidSongs.csv'
     fileDuplicateSongs  = gv.Prj.dataDIR + '/_DuplicateSongs.csv'
+
+
 
         # ----------------------------------------------
         # - Preleviamo tutte le canzoni analizzate
