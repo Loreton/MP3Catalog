@@ -26,9 +26,9 @@
     :: goto :EOF
 
 :COPYSONGS
-    set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3 --check-source"
     set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3  --max-output-bytes=4G --num-out-dirs=6"
-    set "params=copySongs copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3  --max-output-bytes=8G --num-out-dirs=2 --include Soft Loreto"
+    set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3  --max-output-bytes=8G --num-out-dirs=2 --include Soft Loreto --exclude Strumentale Classica Lirica Live Discreta Undefined Avoidit Confusionaria"
+    set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3 --check-source"
     python.exe %mainProgram% %params% %extPARAMS%
     goto :EOF
 
