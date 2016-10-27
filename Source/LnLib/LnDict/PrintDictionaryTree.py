@@ -37,7 +37,7 @@ import inspect
 # #########################################################################################
 
 # ########################################################################
-def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', console=False, listInLine=5, fEXIT=False):
+def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', listInLine=5, fEXIT=False, fCONSOLE=True, stackLevel=1):
     color = gv.Ln.Colors()
     global allDictTYPES, myDictTYPES
     myDictTYPES = []
@@ -55,40 +55,42 @@ def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, 
 
     lista = getDictionaryTree(dictID, MaxDeepLevel=MaxDeepLevel, level=level, retCols=retCols, listInLine=listInLine)
 
+
+    '''
     # catturiamo il caller
-
-    '''
-    # da errore su window
-    caller = inspect.stack()[stackLevel]
-    dummy, programFile, funcLineNO, funcName, lineCode, rest = caller
-    '''
-
+    stackLevel = 1
     try:
-        stackLevel = 2
-        funcName    = sys._getframe(stackLevel).f_code.co_name
+        test    = sys._getframe(stackLevel)
     except:
         stackLevel = 1
-        funcName    = sys._getframe(stackLevel).f_code.co_name
+    '''
+    # print ('...........', stackLevel)
 
-    funcLineNO  = sys._getframe(stackLevel).f_lineno
-    fileName    = sys._getframe(stackLevel).f_code.co_filename
+    caller = inspect.stack()[stackLevel]
+    dummy, fileName, funcLineNO, funcName, lineCode, rest = caller
     fName       = os.path.basename( fileName.split('.')[0])
     if funcName == '<module>': funcName = '__main__'
     caller = "Called by: [{FNAME}.{FUNC}:{LINEO}]".format(FNAME=fName, FUNC=funcName, LINEO=funcLineNO)
+
+        # ---- Cerchiamo di catturare il dictionary richiamato
+        # ---- da verificare con attenzione
+    dictionaryName =  (lineCode[0].split('.printDict')[0].split()[-1])
+    if dictionaryName:
+        header2 = "dictionary: {DICT}".format(DICT=dictionaryName)
+    else:
+        header2 = None
 
 
     if fEXIT and not header:
         header = True
 
-    if console:
-        if header:
-            if header == True:
-                header = caller
-
-            print()
-            color.printCyan("*"*60, tab=8)
-            color.printCyan("*     {0}".format(header), tab=8)
-            color.printCyan("*"*60, tab=8)
+    if not header: header = caller
+    if fCONSOLE:
+        print()
+        color.printCyan("*"*60, tab=8)
+        color.printCyan("*     {0}".format(header), tab=8)
+        if header2: color.printCyan("*     {0}".format(header2), tab=8)
+        color.printCyan("*"*60, tab=8)
 
 
         for line in lista:
@@ -97,9 +99,6 @@ def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, 
             color.printCyan(line, tab=len(lTAB))
 
     if fEXIT:
-        # if gv:
-        #     gv.Ln.exit(gv, 0, "Exiting on user request new.", printStack=True, console=console)
-        # else:
         print("Exiting on user request. {CALLER}".format(CALLER=caller))
         sys.exit(0)
 
@@ -170,6 +169,7 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
             # - Tale variabile è usata solo per contenere mie classi specifiche
             # ------------------------------------------------------------------
         if key == 'myDictTYPES': continue
+        if key == '_dynamicDotMap': continue
 
         if type(val) in myDictTYPES:
             val = vars(val)
@@ -230,24 +230,30 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
                     newLine = "{0:<50}: []".format(newLine.rstrip())                  # Enpty LIST
                     lista.append(newLine)
 
-                elif len(val) <= listInLine:                                      # scriviamo la lista INLINE e non su righe diverse.
-                    newLine = "{0:<50}: [ ".format(newLine.rstrip())      # Scrivi anche il primo valore (per allinearlo)
+                #@TODO: Eliminato in quanto dava errori perché manca il controllo su una possibile classe
+                #  come invece fatto nell' 'else:'
 
-                    newLine += formatAlign(val[0], 5)      # Scrivi anche il primo valore (per allinearlo)
-                    for item in val[1:]:                                        # Scrivi gli altri items
-                        newLine += ", " + formatAlign(item, 10)
+                # elif len(val) <= listInLine:                                      # scriviamo la lista INLINE e non su righe diverse.
+                #     newLine = "{0:<50}: [ ".format(newLine.rstrip())      # Scrivi anche il primo valore (per allinearlo)
 
-                    newLine += " ]"
-                    lista.append(newLine)
+                #     print ('22222222aaaaaa', valueType, type(val), val )
+                #     newLine += formatAlign(val[0], 5)      # Scrivi anche il primo valore (per allinearlo)
+                #     for item in val[1:]:                                        # Scrivi gli altri items
+                #         newLine += ", " + formatAlign(item, 10)
+
+                #     newLine += " ]"
+                #     lista.append(newLine)
+
                 else:
                     lista.append("{0:<50}: [".format(newLine.rstrip()) )             # Apertura LIST
                     counter = 0
                     for line in val:
                         if type(line) in allDictTYPES:            # Dictionary interno ad una LIST
+                            # print ('22222222aaaaaa', type(line), line )
                             counter += 1
                             level += 1
                             lista.append('')
-                            lista.append('[{0:02}] dict-{1:02}' % (level, counter))
+                            lista.append('[{0:02}] dict-{1:02}'.format(level, counter))
                             newLista = getDictionaryTree(line, MaxDeepLevel=MaxDeepLevel-1, level=level+1, retCols=retCols)
                             lista.extend(newLista)
                             level -= 1
@@ -267,6 +273,7 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
                  valueType == float or\
                  valueTypeStr == "datetime.date":
                 newLine = "{0:<50}: {1}".format(newLine.rstrip(), val)
+
                 lista.append(newLine)
 
             else:
@@ -289,11 +296,16 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
         # elif valueTypeStr == 'collections.OrderedDict' and key == '_map':   continue
         elif valueTypeStr == 'collections.OrderedDict': valueTypeStr = 'ordDict' + key
 
+        # print ('....', type(key), key)
         if isinstance(key, str):
             if key.startswith('__') and key.endswith('__'): continue    # elimina tutti i built-in (presente in un modulo)
+            # if key.startswith('_dynamic'):
+            #     sys.exit()
+            #     continue    # elimina il dynamic di DotMap
 
         if valueType == types.ModuleType: continue                  # elimina eventuali import (presente in un modulo)
 
+        # print ('1111111111111111', valueType, key)
         if valueType in allDictTYPES:
 
                 # ------------------------------
@@ -333,7 +345,8 @@ def formatAlign(value, len=10):
     if isinstance(value, int):
         outFmt = '{0:>'
     else:
-        # print ('.............',value, type(value))
+        # print ('2222222222222222', value, type(value))
+        # print ('3333333333333333', myDictTYPES)
         if value.isdigit():
             outFmt = '{0:>'
         else:
@@ -382,4 +395,4 @@ if __name__ == "__main__":
     print("pippo        = {0}".format(pippo))
     print("header       = {0}".format(header))
     print()
-    printDictionaryTree(gv, dictID, header=header, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', console=console, listInLine=5, fEXIT=fEXIT)
+    printDictionaryTree(gv, dictID, header=header, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', listInLine=5, fEXIT=fEXIT)

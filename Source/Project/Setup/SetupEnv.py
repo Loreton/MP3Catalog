@@ -20,18 +20,20 @@ def setupEnv300(gv):
     scriptName  = os.path.basename(scriptMain).split('.')[0]
     scriptExt   = os.path.basename(scriptMain).split('.')[1]
     prjBaseDIR  = os.path.abspath(os.path.dirname(scriptMain))
-    if prjBaseDIR.endswith('/bin') or prjBaseDIR.endswith('/Source'):
+    lastSubDir  = os.path.basename(prjBaseDIR)
+    if lastSubDir in ['bin', 'Source']:
         prjBaseDIR = os.path.abspath(os.path.join(prjBaseDIR, '../'))
     prjName     = os.path.basename(prjBaseDIR)
 
 
-    configDIR  = os.path.abspath(os.path.join(prjBaseDIR, 'conf'))
-    dataDIR    = os.path.abspath(os.path.join(prjBaseDIR, 'data'))
+    configDIR   = os.path.abspath(os.path.join(prjBaseDIR, 'conf'))
+    dataDIR     = os.path.abspath(os.path.join(prjBaseDIR, 'data'))
 
         # ---------------------------------------------------------
         # - file di configurazione
         # ---------------------------------------------------------
-    iniFileName = os.path.abspath(os.path.join(configDIR, gv.Prj.prefix + '_' + gv.Prj.Version + '.ini'))
+    iniFileName = os.path.abspath(os.path.join(configDIR, gv.Prj.name + '_' + gv.Prj.Version + '.ini'))
+
 
 
     gv.Prj.scriptName  = scriptName
@@ -41,11 +43,11 @@ def setupEnv300(gv):
     gv.Prj.iniFileName = iniFileName
 
 
-    now     = time.localtime()
-    gv.Prj.now     = now
-    gv.Prj.today   = '{YY:04}.{MM:02}.{DD:02}'.format(YY=now.tm_year, MM=now.tm_mon, DD=now.tm_mday)
-    gv.Prj.DATE    = '{YY:04}{MM:02}{DD:02}'.format(YY=now.tm_year, MM=now.tm_mon, DD=now.tm_mday)
-    gv.Prj.TIME    = '{HH:02}{MM:02}{SS:02}'.format(HH=now.tm_hour, MM=now.tm_min, SS=now.tm_sec)
+    now             = time.localtime()
+    gv.Prj.now      = now
+    gv.Prj.today    = '{YY:04}.{MM:02}.{DD:02}'.format(YY=now.tm_year, MM=now.tm_mon, DD=now.tm_mday)
+    gv.Prj.DATE     = '{YY:04}{MM:02}{DD:02}'.format(YY=now.tm_year, MM=now.tm_mon, DD=now.tm_mday)
+    gv.Prj.TIME     = '{HH:02}{MM:02}{SS:02}'.format(HH=now.tm_hour, MM=now.tm_min, SS=now.tm_sec)
 
     if gv.fDEBUG:
         C.printYellow('.'*10 + __name__ + '.'*10, tab=4)

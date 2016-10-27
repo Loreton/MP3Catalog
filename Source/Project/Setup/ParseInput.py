@@ -29,39 +29,18 @@ def parseInput(gv, args, columnsName, programVersion=None):
         # se non ci sono parametri... forziamo l'help
     if len(sys.argv) == 1: sys.argv.append('-h')
     mainArgs   = prepareArgParse(positionalActionsDict, programVersion)
-    InputPARAM = commonParsing(mainArgs.action)
+    InputPARAM = commonParsing(mainArgs.songAction)
 
-    if InputPARAM.fTRACE:       InputPARAM.fDEBUG = True
-    if InputPARAM.LogCONSOLE:   InputPARAM.LogACTIVE = True
+    if InputPARAM.LogMODULE:
+        InputPARAM.LogACTIVE  = True
+
+    if InputPARAM.LogCONSOLE:
+        InputPARAM.LogACTIVE = True
 
         # aggiungiamo manualmente valori alla struttura
-    InputPARAM.action       = mainArgs.action
+    InputPARAM.songAction       = mainArgs.songAction
 
-    # print (songColumsName)
-    # print (InputPARAM.include)
-
-    # sys.exit()
-    '''
-        # eliminiamo valori di include exclude non previsti
     print ()
-    for item in reversed(InputPARAM.include):
-        if item:
-            if not item in songColumsName:
-                C.printCyanH ('{0} - is not an INCLUDE valid argument'.format(item), tab=4)
-                sys.exit()
-        else:
-            InputPARAM.include.remove(item)
-
-    for item in reversed(InputPARAM.exclude):
-        if item:
-            if not item in songColumsName:
-                C.printCyanH ('{0} - is not an EXCUDE valid argument'.format(item), tab=4)
-                sys.exit()
-        else:
-            InputPARAM.exclude.remove(item)
-    print ()
-    '''
-
 
 
 
@@ -79,7 +58,9 @@ def parseInput(gv, args, columnsName, programVersion=None):
         C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
         dictID = vars(InputPARAM)
         for key, val in sorted(dictID.items()):
-                C.printCyan('{0:<20} : {1}'.format(key, val), tab = 8)
+            TYPE = '(' + str(type(val)).split("'")[1] + ')'
+            C.printCyan('{0:<20} : {1:<6} - {2}'.format(key, TYPE, val), tab = 8)
+
 
         C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
         print ()
@@ -106,7 +87,7 @@ def prepareArgParse(positionalActionsDict, programVersion):
     totalCMDLIST += '\n '
 
     mainHelp="""
-        Immettere uno dei seguenti comandi/action:
+        Immettere uno dei seguenti valori/comandi/action:
         (con il parametro -h se si desidera lo specifico help)
                 {CMDLIST}\n""".format(CMDLIST=totalCMDLIST)
 
@@ -121,18 +102,22 @@ def prepareArgParse(positionalActionsDict, programVersion):
 
     myParser.add_argument('--version',
                             action='version',
-                            version='%(prog)s {VER}'.format(VER=programVersion))
+                            version='{PROG} Version: {VER}'.format(PROG='JBossCMK', VER=programVersion))
+                            # version='%(prog)s {VER}'.format(VER=programVersion))
 
-    myParser.add_argument('action', help='Command/Action to run')
+
+
+    myParser.add_argument('songAction', help='JBoss Version directory')
+
+
 
     mainArgs = myParser.parse_args(sys.argv[1:2])
 
-
-    if not (mainArgs.action in positionalActionsDict.keys()):
+    if not (mainArgs.songAction in positionalActionsDict.keys()):
         myParser.print_help()
-        C.printYellow(".... Unrecognized action [{0}]. Valid actions are:".format(mainArgs.action), tab=8)
-        for action in positionalActionsDict.keys():
-            C.printYellow (action, tab=16)
+        C.printYellow(".... Unrecognized value [{0}]. Valid values are:".format(mainArgs.songAction), tab=8)
+        for positionalParm in positionalActionsDict.keys():
+            C.printYellow (positionalParm, tab=16)
         exit(1)
 
     return mainArgs
@@ -141,9 +126,9 @@ def prepareArgParse(positionalActionsDict, programVersion):
 ###################################################
 # - commonParsing
 ###################################################
-def commonParsing(actionName, DESCR='CIAO DESCR'):
-    usageMsg = "\n          {COLOR}   {ACTION} {COLRESET}[options]".format(COLOR=C.YEL, ACTION=actionName, COLRESET=C.RESET)
-    myParser = argparse.ArgumentParser( description=actionName + ' Command',
+def commonParsing(positionalParm, DESCR='CIAO DESCR'):
+    usageMsg = "\n          {COLOR}   {ACTION} {COLRESET}[options]".format(COLOR=C.YEL, ACTION=positionalParm, COLRESET=C.RESET)
+    myParser = argparse.ArgumentParser( description=positionalParm + ' Command',
                                         add_help=True, usage=usageMsg,
                                         # formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                                         formatter_class=argparse.RawTextHelpFormatter,
@@ -154,10 +139,10 @@ def commonParsing(actionName, DESCR='CIAO DESCR'):
 
         # use dispatch pattern to invoke method with same name
         # ritorna un nameSpace
-    if hasattr(this_mod, actionName.upper()):
-        getattr(this_mod, actionName.upper())(myParser)
+    if hasattr(this_mod, positionalParm.upper()):
+        getattr(this_mod, positionalParm.upper())(myParser)
     else:
-        C.printCyan ('[{0}] - Command not yet implemented!'.format(actionName))
+        C.printCyan ('[{0}] - Command not yet implemented!'.format(positionalParm))
         sys.exit(1)
 
 
@@ -180,14 +165,7 @@ def COPYSONGS(myParser):
     _copySongsOptions(myParser)
     _commonOptions(myParser)
     _debugOptions(myParser)
-    # _commonMultipleOptions(myParser)
-    # _testOptions(myParser)
 
-# def EXTRACT(myParser):
-#     _commonOptions(myParser)
-#     _executeOptions(myParser)
-#     _debugOptions(myParser)
-    # pass
 
 
 
@@ -197,9 +175,8 @@ def COPYSONGS(myParser):
 # ---------------------------
 def _debugOptions(myParser):
 
-
-        # log Activation
-    myParser.add_argument( "--log",
+    logGroup = myParser.add_mutually_exclusive_group(required=False)  # True indica obbligatorietà di uno del gruppo
+    logGroup.add_argument( "--log",
                             required=False,
                             action="store_true",
                             dest="LogACTIVE",
@@ -209,12 +186,41 @@ def _debugOptions(myParser):
     """))
 
         # log debug su console
-    myParser.add_argument( "--log-console",
+    logGroup.add_argument( "--log-console",
                             required=False,
                             dest="LogCONSOLE",
-                            choices=['info', 'warning', 'debug'],
-                            default=None,
+                            action="store_true",
+                            # choices=['info', 'debug'],
+                            default=False,
                             help=C.getYellow("""attivazione log sulla console.
+    """))
+
+        # log debug su specifica funzione
+    myParser.add_argument( "--log-function",
+                            required=False,
+                            dest="LogMODULE",
+                            default=False,
+                            help=C.getYellow("""attivazione log sul una singola funcName o stringa di essa.
+    Possono essere anche porzioni di funcName separate da ',' Es: pippo,uto,ciao
+    """))
+
+
+
+    myParser.add_argument( "-D", "--debug",
+                            required=False,
+                            action="store_true",
+                            dest="fDEBUG",
+                            default=False,
+                            help=C.getYellow("""enter in DEBUG mode..
+    [DEFAULT: None]
+    """))
+
+    myParser.add_argument( "--elapsed",
+                            required=False,
+                            action="store_true",
+                            dest="fELAPSED",
+                            default=False,
+                            help=C.getYellow("""display del tempo necessario al processo..
     [DEFAULT: False]
     """))
 
@@ -227,39 +233,7 @@ def _debugOptions(myParser):
     [DEFAULT: False]
     """))
 
-    #     # log debug su console
-    # myParser.add_argument( "-dc", "--dconsole",
-    #                         required=False,
-    #                         action="store_true",
-    #                         dest="LogCONSOLE",
-    #                         default=False,
-    #                         help=C.getYellow("""display log to console.
-    # [DEFAULT: False]
-    # """))
 
-
-    # --------------------------------------------------
-    # - gruppi mutuamente esclusivi
-    # --------------------------------------------------
-    debugGroup = myParser.add_mutually_exclusive_group(required=False)  # True indica obbligatorietà di uno del gruppo
-
-    debugGroup.add_argument( "-D", "--debug",
-                            required=False,
-                            action="store_true",
-                            dest="fDEBUG",
-                            default=False,
-                            help=C.getYellow("""enter in DEBUG mode.
-    [DEFAULT: False]
-    """))
-
-    debugGroup.add_argument( "-T", "--trace",
-                            required=False,
-                            action="store_true",
-                            dest="fTRACE",
-                            default=False,
-                            help=C.getYellow("""enter in TRACE mode.
-    [DEFAULT: False]
-    """))
 
 # ---------------------------
 # - _copySongsOptions
@@ -319,21 +293,6 @@ def _songDirs(myParser):
                             metavar="directory di destinazione",
                             help=mandatory + C.getYellow(""" - Nome della directory dove copiare le canzoni selezionate ...
     """))
-
-    # myParser.add_argument( "-1", "--one-dir-x-author",
-    #                         action="store_true",
-    #                         required=False,
-    #                         default=False,
-    #                         dest="oneDirPerAuthor",
-    #                         help=C.getYellow("""viene creata una directory per autore (quindi senza le dir di Album)
-    # [DEFAULT: False]
-    # """))
-
-
-
-
-
-
 
 
 
@@ -414,8 +373,6 @@ def _commonOptions(myParser):
 
 
 
-
-
     myParser.add_argument( "--max-songs",
                             type=int,
                             default=0,
@@ -425,6 +382,14 @@ def _commonOptions(myParser):
     [DEFAULT: 0 (all songs)]
     """))
 
+    myParser.add_argument( '-excel', "--import-from-excel",
+                            action="store_true",
+                            dest="fIMPORT_EXCEL",
+                            default=False,
+                            help=C.getYellow("""Indica che si desidera importare
+    il file excel definito nel file di configurazione.
+    [DEFAULT: False]
+    """))
 
 ###############################################
 # - calculateBytes

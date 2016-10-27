@@ -23,7 +23,7 @@ def setupLog(gv):
         C       = gv.Ln.Colors()
 
         logFileName         = '/tmp/{PREFIX}_{USER}.log'.format(PREFIX=gv.Prj.prefix, USER=getpass.getuser())
-        logConfigFileName   = '{CONFDIR}/{PREFIX}_LoggerConfig.ini'.format(CONFDIR=gv.Prj.configDIR, PREFIX=gv.Prj.prefix)
+        logConfigFileName   = os.path.normpath('{CONFDIR}/LoggerConfig.ini'.format(CONFDIR=gv.Prj.configDIR))
 
         if gv.fDEBUG:
             C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
@@ -34,8 +34,12 @@ def setupLog(gv):
 
 
 
-        gv.Ln.initLogger(iniLogFile=logConfigFileName, logFileName=logFileName, package='MP3', packageQualifiers=8)
-        logger = gv.Ln.setLogger(gv, package="Main")
+        if os.path.isfile(logConfigFileName):
+            gv.Ln.initLogger(iniLogFile=logConfigFileName, logFileName=logFileName, package=gv.Prj.name, packageQualifiers=8)
+            logger = gv.Ln.setLogger(gv, package="Main")
+        else:
+            errMsg = 'il file {0} non esiste..'.format(logConfigFileName)
+            gv.Ln.exit(gv, 1, errMsg)
     else:
         logger = nullLogger()
 

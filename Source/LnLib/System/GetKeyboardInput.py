@@ -18,6 +18,7 @@ def getKeyboardInput(gv, msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySe
     logger = gv.Ln.setLogger(gv, package=__name__)
     C = gv.Ln.Colors()
 
+
     exitKeyUPP = exitKey.upper()
 
     if keySep in validKeys:
@@ -36,8 +37,9 @@ def getKeyboardInput(gv, msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySe
         fDEBUG  =   True
 
     if fDEBUG:
-        C.printCyan(" exitKeyLIST....: {0}".format(exitKeyLIST))
-        C.printCyan(" validKeyLIST...: {0}".format(validKeyLIST))
+        funcName = __name__.split('.')[-1]
+        C.printCyan(" {0} - exitKeyLIST....: {1}".format(funcName, exitKeyLIST), tab=4)
+        C.printCyan(" {0} - validKeyLIST...: {1}".format(funcName, validKeyLIST), tab=4)
         print()
         caller = gv.Ln.calledBy(deepLevel)
         msg = "<{CALLER}> - [{MSG} - ({VALKEY})] ({EXITKEY} to exit) ==> ".format(CALLER=caller, MSG=msg, VALKEY=validKeys, EXITKEY=exitKey)

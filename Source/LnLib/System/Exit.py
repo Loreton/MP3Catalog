@@ -20,7 +20,7 @@ EXIT_STACK  = -32
 # =======================================================================
 def exit(gv, rcode, text, printStack=False, stackLevel=9, console=True):
     logger  = gv.Ln.setLogger(gv, package=__name__)
-    C = gv.Ln.Colors()
+    C       = gv.Ln.Colors()
 
     if text == None:
         textList = ['No error message passed']
@@ -54,12 +54,17 @@ def exit(gv, rcode, text, printStack=False, stackLevel=9, console=True):
                 if console:
                     printColor(caller, tab=8)
 
-    logWrite("[RCODE: {0}]".format(rcode))
-    logWrite("[TEXT Message:]" )
-    for line in textList:
-        logWrite(' '*10 + "{0}".format(line))
-        if console:
+    if console:
+        printColor("  RCODE       : {0}".format(rcode), tab=4)
+        printColor("  TEXT Message: ", tab=4 )
+        for line in textList:
             printColor (line, tab=8)
+
+    else:
+        logWrite("  RCODE       : {0}".format(rcode))
+        logWrite("  TEXT Message: " )
+        for line in textList:
+            logWrite(' '*10 + "{0}".format(line))
 
     sys.exit(rcode)
 

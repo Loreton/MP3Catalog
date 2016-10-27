@@ -15,7 +15,7 @@ import os
 # solo per caricare il modulo setupEnv()
 # import Setup as setup
 
-import Source    as Prj
+import Project    as Prj
 import LnLib     as Ln
 
 ################################################################################
@@ -26,6 +26,7 @@ if __name__ == "__main__":
     gv           = Ln.LnDict()      # default = _dynamic=False
     gv.Prj       = Prj
     gv.Ln        = Ln
+    Prj.name     = 'MP3Catalog'
     Prj.prefix   = 'MP3Catalog'
 
         # ----------------------------------------------------
@@ -46,9 +47,10 @@ if __name__ == "__main__":
 
     Input           = Prj.setup.parseInput(gv, args=sys.argv[1:], columnsName=gv.Prj.songAttributes)
     gv.INPUT_PARAM  = gv.Ln.LnDict(Input)
-    if gv.INPUT_PARAM.fTRACE: gv.printDict(gv)
+    # if gv.INPUT_PARAM.fTRACE: gv.printDict(gv)
 
-    gv.EXECUTE    = gv.INPUT_PARAM.fEXECUTE
+    gv.fEXECUTE    = gv.INPUT_PARAM.fEXECUTE
+    gv.fIMPORT_EXCEL  = gv.INPUT_PARAM.fIMPORT_EXCEL
     gv.LogCONSOLE = gv.INPUT_PARAM.LogCONSOLE
     gv.fDEBUG     = gv.INPUT_PARAM.fDEBUG
 
@@ -69,8 +71,9 @@ if __name__ == "__main__":
     # import MP3Catalog as MP3Catalog
 
     # Prj.main.MP3Catalog.Main(gv, sys.argv)
-    Prj.Main(gv, gv.INPUT_PARAM.action)
+    Prj.Main(gv, gv.INPUT_PARAM.songAction)
 
     gv.Ln.exit(gv, 0, "completed", printStack=False, stackLevel=9, console=True)
+    # gv.Ln.exit(gv, 0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
 
 

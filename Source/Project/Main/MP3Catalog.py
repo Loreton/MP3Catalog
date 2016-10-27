@@ -22,13 +22,34 @@ def Main(gv, action):
     C       = gv.Ln.Colors()
     gv.data = gv.Ln.LnDict()
 
-    # csvFile                 = gv.Prj.dataDIR + '/MP3_Master_2015-08-10.csv'
-    csvFile         = gv.Prj.dataDIR + '/MP3_Master_2016-09-05.csv'
-    fileScartate    = gv.Prj.dataDIR + '/_Scartate.csv'
-    fileAnalizzate  = gv.Prj.dataDIR + '/_Analizzate.csv'
-    fileValidSongs  = gv.Prj.dataDIR + '/_ValidSongs.csv'
+    # extraSections       = gv.Ln.LnDict()
+    # extraSections.MAIN  = gv.Ln.LnDict()
+
+    iniConfigParser, iniDict = gv.Ln.ReadIniFile(gv, gv.Prj.iniFileName, RAW=False, exitOnError=True, subSectionChar='.')
+
+    # gv.Ln.printDict(gv, iniDict)
+    gv.ini = gv.Ln.LnDict(iniDict)
+    if gv.fDEBUG:
+        gv.ini.printDict(gv)
+
+
+        # -----------------------------------
+        # - Importing Excel File if required
+        # -----------------------------------
+    xlsFile = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.ini.EXCEL.EXCEL_File))
+    csvFile = xlsFile.rsplit('.', -1)[0] + '.csv'
+
+    if gv.fIMPORT_EXCEL:
+        mydata = gv.Ln.Excel(xlsFile)
+        mydata.exportToCSV2('Catalog', outFname=csvFile, rangeString="B2:Z17", colNames=4, fPRINT=False)
+        # mydata.exportToDict('Catalog', fPRINT=False)
+
+    fileScartate        = gv.Prj.dataDIR + '/_Scartate.csv'
+    fileAnalizzate      = gv.Prj.dataDIR + '/_Analizzate.csv'
+    fileValidSongs      = gv.Prj.dataDIR + '/_ValidSongs.csv'
     fileDuplicateSongs  = gv.Prj.dataDIR + '/_DuplicateSongs.csv'
 
+    gv.Ln.exit(gv, 0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
 
 
         # ----------------------------------------------
@@ -62,7 +83,6 @@ def Main(gv, action):
         tokens = [token.strip() for token in row.split(';') if token]
         RECs.append(tokens)
     gv.Prj.songFilter(gv, RECs)
-
     choice = gv.Ln.getKeyboardInput(gv, "    Vuoi salvare i dati sui relativi file?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
     if choice.lower() in ['x']:
         sys.exit()

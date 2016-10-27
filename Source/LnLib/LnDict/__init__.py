@@ -1,38 +1,39 @@
+from __future__ import print_function
 from collections import OrderedDict
 from pprint import pprint
 from sys import version_info
 from inspect import ismethod
 
-# by Loreto
+# by Loreto preso il "Commits on Oct 7, 2016"
 from . PrintDictionaryTree import printDictionaryTree as printDict
+# rinominato _dynamic in _dynamicDotMap per gestirlo con printDictionaryTree
 
 class DotMap(OrderedDict):
 
     def __init__(self, *args, **kwargs):
         self._map = OrderedDict()
-        # self._dynamic = True
-        self._dynamic = False   # by Loreto
+        self._dynamicDotMap = False    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
         if kwargs:
-            if '_dynamic' in kwargs:
-                self._dynamic = kwargs['_dynamic']
+            if '_dynamicDotMap' in kwargs:
+                self._dynamicDotMap = kwargs['_dynamicDotMap']
         if args:
             d = args[0]
             if isinstance(d, dict):
                 for k,v in self.__call_items(d):
                     if type(v) is dict:
-                        v = DotMap(v, _dynamic=self._dynamic)
+                        v = DotMap(v, _dynamicDotMap=self._dynamicDotMap)
                     if type(v) is list:
                         l = []
                         for i in v:
                             n = i
                             if type(i) is dict:
-                                n = DotMap(i, _dynamic=self._dynamic)
+                                n = DotMap(i, _dynamicDotMap=self._dynamicDotMap)
                             l.append(n)
                         v = l
                     self._map[k] = v
         if kwargs:
             for k,v in self.__call_items(kwargs):
-                if k is not '_dynamic':
+                if k is not '_dynamicDotMap':
                     self._map[k] = v
 
     def __call_items(self, obj):
@@ -56,19 +57,19 @@ class DotMap(OrderedDict):
     def __setitem__(self, k, v):
         self._map[k] = v
     def __getitem__(self, k):
-        if k not in self._map and self._dynamic:
+        if k not in self._map and self._dynamicDotMap and k != '_ipython_canary_method_should_not_exist_':
             # automatically extend to new DotMap
             self[k] = DotMap()
         return self._map[k]
 
     def __setattr__(self, k, v):
-        if k in {'_map','_dynamic'}:
+        if k in {'_map','_dynamicDotMap', '_ipython_canary_method_should_not_exist_'}:
             super(DotMap, self).__setattr__(k,v)
         else:
             self[k] = v
 
     def __getattr__(self, k):
-        if k == {'_map','_dynamic'}:
+        if k == {'_map','_dynamicDotMap','_ipython_canary_method_should_not_exist_'}:
             super(DotMap, self).__getattr__(k)
         else:
             return self[k]
@@ -82,7 +83,11 @@ class DotMap(OrderedDict):
     def __str__(self):
         items = []
         for k,v in self.__call_items(self._map):
-            items.append('{0}={1}'.format(k, repr(v)))
+            # bizarre recursive assignment situation (why someone would do this is beyond me)
+            if id(v) == id(self):
+                items.append('{0}=DotMap(...)'.format(k))
+            else:
+                items.append('{0}={1}'.format(k, repr(v)))
         out = 'DotMap({0})'.format(', '.join(items))
         return out
 
@@ -93,7 +98,19 @@ class DotMap(OrderedDict):
         d = {}
         for k,v in self.items():
             if type(v) is DotMap:
-                v = v.toDict()
+                # bizarre recursive assignment support
+                if id(v) == id(self):
+                    v = d
+                else:
+                    v = v.toDict()
+            elif type(v) is list:
+                l = []
+                for i in v:
+                    n = i
+                    if type(i) is DotMap:
+                        n = i.toDict()
+                    l.append(n)
+                v = l
             d[k] = v
         return d
 
@@ -102,8 +119,8 @@ class DotMap(OrderedDict):
 
 
         # by Loreto
-    def printDict(self, gv, header=False, fEXIT=False, lTAB=' '*4):
-        printDict(gv, self, extDict=[DotMap], header=header, retCols='LTV', lTAB=lTAB, console=True, fEXIT=fEXIT)
+    def printDict(self, gv, header='', fEXIT=False, lTAB=' '*4, fCONSOLE=True):
+        return printDict(gv, self, extDict=[DotMap], header=header, retCols='LTV', lTAB=lTAB, fEXIT=fEXIT, fCONSOLE=fCONSOLE, stackLevel=2)
 
 
     def empty(self):
@@ -112,6 +129,10 @@ class DotMap(OrderedDict):
     # proper dict subclassing
     def values(self):
         return self._map.values()
+
+    # ipython support
+    def __dir__(self):
+        return self.keys()
 
     @classmethod
     def parseOther(self, other):
@@ -150,7 +171,7 @@ class DotMap(OrderedDict):
     def clear(self):
         self._map.clear()
     def copy(self):
-        return self
+        return DotMap(self.toDict())
     def get(self, key, default=None):
         return self._map.get(key, default)
     def has_key(self, key):
@@ -252,13 +273,18 @@ if __name__ == '__main__':
     print(d.empty())
     d.a = 1
     print(d.empty())
+    print()
+    x = DotMap({'a': 'b'})
+    print(x.b.empty()) # True (and creates empty DotMap)
+    print(x.b) # DotMap()
+    print(x.b.empty()) # also True
 
-    # _dynamic
-    print('\n== _dynamic ==')
+    # _dynamicDotMap
+    print('\n== _dynamicDotMap ==')
     d = DotMap()
     d.still.works
     print(d)
-    d = DotMap(_dynamic=False)
+    d = DotMap(_dynamicDotMap=False)
     try:
         d.no.creation
         print(d)
@@ -270,7 +296,7 @@ if __name__ == '__main__':
     dm.still.works
     dm.sub.still.works
     print(dm)
-    dm2 = DotMap(d,_dynamic=False)
+    dm2 = DotMap(d,_dynamicDotMap=False)
     try:
         dm.sub.yes.creation
         print(dm)
@@ -278,3 +304,27 @@ if __name__ == '__main__':
         print(dm)
     except KeyError:
         print('KeyError caught')
+
+    # _dynamicDotMap
+    print('\n== toDict() ==')
+    conf = DotMap()
+    conf.dep = DotMap(facts=DotMap(operating_systems=DotMap(os_CentOS_7=True), virtual_data_centers=[DotMap(name='vdc1', members=['sp1'], options=DotMap(secret_key='badsecret', description='My First VDC')), DotMap(name='vdc2', members=['sp2'], options=DotMap(secret_key='badsecret', description='My Second VDC'))], install_node='192.168.2.200', replication_group_defaults=DotMap(full_replication=False, enable_rebalancing=False, description='Default replication group description', allow_all_namespaces=False), node_defaults=DotMap(ntp_servers=['192.168.2.2'], ecs_root_user='root', dns_servers=['192.168.2.2'], dns_domain='local', ecs_root_pass='badpassword'), storage_pools=[DotMap(name='sp1', members=['192.168.2.220'], options=DotMap(ecs_block_devices=['/dev/vdb'], description='My First SP')), DotMap(name='sp2', members=['192.168.2.221'], options=DotMap(protected=False, ecs_block_devices=['/dev/vdb'], description='My Second SP'))], storage_pool_defaults=DotMap(cold_storage_enabled=False, protected=False, ecs_block_devices=['/dev/vdc'], description='Default storage pool description'), virtual_data_center_defaults=DotMap(secret_key='badsecret', description='Default virtual data center description'), management_clients=['192.168.2.0/24'], replication_groups=[DotMap(name='rg1', members=['vdc1', 'vdc2'], options=DotMap(description='My RG'))]), lawyers=DotMap(license_accepted=True))
+    print(conf.dep.toDict()['facts']['replication_groups'])
+
+    # recursive assignment
+    print('\n== recursive assignment ==')
+    # dict
+    d = dict()
+    d['a'] = 5
+    print(id(d))
+    d['recursive'] = d
+    print(d)
+    print(d['recursive']['recursive']['recursive'])
+    # DotMap
+    m = DotMap()
+    m.a = 5
+    print(id(m))
+    m.recursive = m
+    print(m.recursive.recursive.recursive)
+    print(m)
+    print(m.toDict())

@@ -21,7 +21,9 @@ from . System.LnColor                       import LnColors as Colors
 from . LnDict                               import DotMap  as LnDict
 from . LnDict.PrintDictionaryTree           import printDictionaryTree as printDict
 
+from . LnFile.ReadIniFile                   import ReadIniFile
 
 
+from . Excel.LnExcel_Class              import Excel
 
 

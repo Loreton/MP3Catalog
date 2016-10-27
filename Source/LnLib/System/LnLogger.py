@@ -72,12 +72,12 @@ def initLogger(iniLogFile, logFileName, package, packageQualifiers=2):
     global gPackageQualifiers
     gPackageQualifiers = packageQualifiers
 
-    if os.path.isfile(iniLogFile):
-        # print ('    using loggerConfigFile: {}', iniLogFile)
-        print ("    {0:<32}: {1}".format('loggerConfigFile', logFileName))
-    else:
+    if not os.path.isfile(iniLogFile):
         print (iniLogFile, "... NOT FOUND")
         sys.exit()
+    # else:
+        # print ('    using loggerConfigFile: {}', iniLogFile)
+        # print ("    {0:<32}: {1}".format('loggerConfigFile', logFileName))
 
 
     logging.config.fileConfig(iniLogFile, disable_existing_loggers=False, defaults={'rotateLogFile': logFileName})
@@ -93,7 +93,7 @@ def initLogger(iniLogFile, logFileName, package, packageQualifiers=2):
     logger.setLevel(savedLevel)
 
     logFileName = logging.getLoggerClass().root.handlers[0].baseFilename
-    print ("    {0:<32}: {1}".format('LOG file', logFileName))
+    # print ("    {0:<32}: {1}".format('LOG file', logFileName))
 
     return logFileName
 
@@ -117,36 +117,59 @@ def initLogger(iniLogFile, logFileName, package, packageQualifiers=2):
 # ====================================================================================
 # def setLogger(gv, package, CONSOLE=None, stackNum=0):
 def setLogger(gv, package, CONSOLE=None, stackNum=0):
+
+    class nullLogger():
+            def __init__(self, package=None, stackNum=1):
+                pass
+            def info(self, data):   pass
+            def debug(self, data):  pass
+            def error(self, data):  pass
+            def warning(self, data):  pass
+
+        ##############################################################################
+        # - classe che mi permette di lavorare nel caso il logger non sia richiesto
+        ##############################################################################
+
     stackLevel = 1                          # stackLevel di base
     stackLevel += stackNum                  # aggiungiamo quello richiesto dal caller
-
-    if not CONSOLE: CONSOLE = gv.INPUT_PARAM.LogCONSOLE
-    if CONSOLE:
-            # LnConsole o LnC o altro... deve essere definito come qualname nel logger nel file logger.ini
-        cLogger = logging.getLogger('LnC')
-        pkgName = 'LnC.{0}'.format(package.split('.')[-1])
-
-        if   CONSOLE.lower() == 'info':     cLogger.setLevel(logging.INFO)
-        elif CONSOLE.lower() == 'warning':  cLogger.setLevel(logging.WARNING)
-        elif CONSOLE.lower() == 'debug':    cLogger.setLevel(logging.DEBUG)
-
-    else:
-        pkgName = package
-
 
     funcName    = sys._getframe(stackLevel).f_code.co_name
     funcLineNO  = sys._getframe(stackLevel).f_lineno
     if funcName == '<module>': funcName = '__main__'
-    if funcName: pkgName += '.' + funcName
-        # ------------------------------------------------
-        # - del package cerchiamo di prendere
-        # - solo gli ultimi gPackageQualifiers.
-        # ------------------------------------------------
 
-    packageHier = pkgName.split('.')
-    pkgName     = ('.'.join(packageHier[-gPackageQualifiers:]))
-    pkgName     = (packageHier[0] +'.'+packageHier[-1])
+    pkgName = package + '.' + funcName if funcName else package
 
+    # - tracciamo la singola funzione oppure modulo oppure libreria od altro
+    LOG_LEVEL = None
+    if gv.INPUT_PARAM.LogMODULE:
+        fullPkg = (package + funcName).lower()
+        for stringa in gv.INPUT_PARAM.LogMODULE.split(','):
+            if stringa.lower() in fullPkg:
+                LOG_LEVEL = logging.DEBUG
+
+    elif gv.INPUT_PARAM.LogACTIVE:
+        LOG_LEVEL = logging.DEBUG
+
+    else:
+        return nullLogger()
+
+
+        # ------------------------------------------------
+        # - del package prendiamo
+        # - solo gli ultimi n.. gPackageQualifiers.
+        # ------------------------------------------------
+    if gv.INPUT_PARAM.LogCONSOLE:
+        pkgName = 'LnC.{0}'.format(package.split('.')[-1])
+    else:
+        packageHier = pkgName.split('.')
+
+        pkgName     = (packageHier[0] +'.'+packageHier[-1])  # se ho nomi servizi uguali in diversi moduli crea confusione
+        pkgName     = ('.'.join(packageHier[-gPackageQualifiers:]))
+
+        pkgName     = ('.'.join(packageHier[-2:])) # prende il modulo+Function
+
+
+    logger = logging.getLogger(pkgName)
 
     # -----------------------------------------------------------------------------------------
     # - Per quanto riguarda il setLogger, devo intervenire sul numero di riga della funzione
@@ -154,7 +177,12 @@ def setLogger(gv, package, CONSOLE=None, stackNum=0):
     # - Per fare questo utilizzo l'aggiunta di un filtro passandogli il lineNO corretto
     # - per poi ripristinarlo al default
     # -----------------------------------------------------------------------------------------
-    logger      = logging.getLogger(pkgName)
+
+    if LOG_LEVEL:
+        logger.setLevel(LOG_LEVEL)
+    else:
+         # logger.setLevel(logging.NOTSET)  # oppure FATAL
+         logger.disabled
 
         # - creiamo il contextFilter
     LnFilter    = ContextFilter()
@@ -178,7 +206,6 @@ def setLogger(gv, package, CONSOLE=None, stackNum=0):
         # --------------------------------------------------------------------------
     LnFilter.setLineNO(None)
     LnFilter.setStack(5)            # ho verificato che con 5 sembra andare bene
-
 
     return logger
 
