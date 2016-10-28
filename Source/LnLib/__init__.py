@@ -13,6 +13,7 @@ OpSys = platform.system()
 
 from . System.LnLogger                      import setLogger
 from . System.LnLogger                      import initLogger
+from . System.LnLogger                      import setNullLogger
 from . System.GetKeyboardInput              import getKeyboardInput
 from . System.Exit                          import exit
 from . System.LnColor                       import LnColors as Colors

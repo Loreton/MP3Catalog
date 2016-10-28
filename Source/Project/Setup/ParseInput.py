@@ -21,7 +21,8 @@ def parseInput(gv, args, columnsName, programVersion=None):
 
     positionalActionsDict  =  dict (
             # extract     = "filtra le canzoni e crea i file con le selezioni...",
-            copySongs   = "copia le canzoni risultate dalla selezione nella directory di destinazione"
+            copySongs   = "copia le canzoni risultate dalla selezione nella directory di destinazione",
+            exportExcel = "esporta il file excel, definito nel file di conf,  in formato CSV"
         )
 
 
@@ -32,7 +33,7 @@ def parseInput(gv, args, columnsName, programVersion=None):
     InputPARAM = commonParsing(mainArgs.songAction)
 
     if InputPARAM.LogMODULE:
-        InputPARAM.LogACTIVE  = True
+        InputPARAM.LogACTIVE = True
 
     if InputPARAM.LogCONSOLE:
         InputPARAM.LogACTIVE = True
@@ -160,10 +161,19 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
 # ---------------------------
 def COPYSONGS(myParser):
     if len(sys.argv[1:]) == 1: sys.argv.append('-h')
-    _songDirs(myParser)
     _executeOptions(myParser)
-    _copySongsOptions(myParser)
+    _debugOptions(myParser)
     _commonOptions(myParser)
+    _copySongsOptions(myParser)
+    _songDirs(myParser)
+    _excelExport(myParser)
+
+# ---------------------------
+# - A C T I O N s
+# ---------------------------
+def EXPORTEXCEL(myParser):
+    # if len(sys.argv[1:]) == 1: sys.argv.append('-h')
+    _excelExport(myParser)
     _debugOptions(myParser)
 
 
@@ -296,6 +306,26 @@ def _songDirs(myParser):
 
 
 
+# ---------------------------
+# - _excelExport
+# ---------------------------
+def _excelExport(myParser):
+    mandatory = ''
+    # mandatory = C.getYellowH('MANDATORY')
+
+    myParser.add_argument( "-f", "--input-file",
+                            type=str,
+                            required=False,
+                            dest="excelFile",
+                            metavar="Excel filename",
+                            default=None,
+                            help=mandatory + C.getYellow( """ - Nome del file Excel di cui fare l'export.
+    Il file di output avrà lo stesso fullPath ma con estenzione .csv
+    DEFAULT: come definito nel file config.ini [EXCEL]-->EXCEL_File
+    """))
+
+
+
 
 # ---------------------------
 # - _commonOptions
@@ -371,8 +401,6 @@ def _commonOptions(myParser):
     """.format(DEFAULT=defaultExclude, OPT=opts)))
 
 
-
-
     myParser.add_argument( "--max-songs",
                             type=int,
                             default=0,
@@ -382,14 +410,7 @@ def _commonOptions(myParser):
     [DEFAULT: 0 (all songs)]
     """))
 
-    myParser.add_argument( '-excel', "--import-from-excel",
-                            action="store_true",
-                            dest="fIMPORT_EXCEL",
-                            default=False,
-                            help=C.getYellow("""Indica che si desidera importare
-    il file excel definito nel file di configurazione.
-    [DEFAULT: False]
-    """))
+
 
 ###############################################
 # - calculateBytes

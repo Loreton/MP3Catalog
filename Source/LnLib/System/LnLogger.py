@@ -11,6 +11,11 @@ import logging.config # obbligatorio altrimenti da' l'errore: <'module' object h
 import inspect
 
 gPackageQualifiers = 0
+isLoggerActive = False   # variabile globale accessibile anche dall'esterno
+
+
+
+
 
 # http://stackoverflow.com/questions/16203908/how-to-input-variables-in-logger-formatter
 class ContextFilter(logging.Filter):
@@ -98,6 +103,23 @@ def initLogger(iniLogFile, logFileName, package, packageQualifiers=2):
     return logFileName
 
 
+def setNullLogger():
+    global isLoggerActive
+
+    ##############################################################################
+    # - classe che mi permette di lavorare nel caso il logger non sia richiesto
+    ##############################################################################
+
+    class nullLogger():
+            def __init__(self, package=None, stackNum=1):
+                pass
+            def info(self, data):   pass
+            def debug(self, data):  pass
+            def error(self, data):  pass
+            def warning(self, data):  pass
+
+    isLoggerActive = False
+    return nullLogger()
 
 
 # ====================================================================================
@@ -118,13 +140,8 @@ def initLogger(iniLogFile, logFileName, package, packageQualifiers=2):
 # def setLogger(gv, package, CONSOLE=None, stackNum=0):
 def setLogger(gv, package, CONSOLE=None, stackNum=0):
 
-    class nullLogger():
-            def __init__(self, package=None, stackNum=1):
-                pass
-            def info(self, data):   pass
-            def debug(self, data):  pass
-            def error(self, data):  pass
-            def warning(self, data):  pass
+    if not isLoggerActive:
+        return setNullLogger()
 
         ##############################################################################
         # - classe che mi permette di lavorare nel caso il logger non sia richiesto
@@ -151,7 +168,7 @@ def setLogger(gv, package, CONSOLE=None, stackNum=0):
         LOG_LEVEL = logging.DEBUG
 
     else:
-        return nullLogger()
+        return setNullLogger()
 
 
         # ------------------------------------------------

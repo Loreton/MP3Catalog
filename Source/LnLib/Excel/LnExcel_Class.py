@@ -71,10 +71,10 @@ class Excel(object):
                 #       TypeError: 'generator' object is not subscriptable
             self._wb = openpyxl.load_workbook(  self._filename,
                                                 read_only=True,
-                                                use_iterators=False,
                                                 keep_vba=False,
                                                 data_only=True
                                             )
+                                                # use_iterators=False,
             self.sheetNames    = self._wb.get_sheet_names()
 
         except Exception as why:
@@ -91,7 +91,7 @@ class Excel(object):
     # - exportToCSV()
     # - Export di un foglio excel to CSV format
     #######################################################
-    def exportToCSV(self, sheetName, outFname=None, maxrows=99999999, fPRINT=False):
+    def exportToCSV0(self, sheetName, outFname=None, maxrows=99999999, fPRINT=False):
         if fPRINT:
             print("Converting sheetName: [{0}] to CSV file: [{1}]." .format(sheetName, outFname))
 
@@ -133,11 +133,13 @@ class Excel(object):
         return data
 
 
-    #######################################################
+    ####################################################################
     # - exportToCSV()
     # - Export di un foglio excel to CSV format
-    #######################################################
-    def exportToCSV2(self, sheetName, outFname=None, rangeString=None, colNames=0, maxrows=99999999, fPRINT=False):
+    # - rangeString: range di celle su cui operare
+    # - colNames   : numero di riga che contiene i nomi delle colonne
+    ####################################################################
+    def exportToCSV(self, sheetName, outFname=None, rangeString=None, colNames=0, maxrows=99999999, fPRINT=False):
         if fPRINT:
             print("Converting sheetName: [{0}] to CSV file: [{1}]." .format(sheetName, outFname))
 
@@ -151,22 +153,20 @@ class Excel(object):
         else:
             minCol, minRow, maxCol, maxRow = 1, 1, ws.max_column, ws.max_row
 
+        fullRange = get_column_letter(minCol) + str(minRow) + ':' + get_column_letter(maxCol) + str(maxRow)
+
         minCol -= 1         # col parte da '0'
         maxCol -= 1         # col parte da '0'
 
         # minRow, maxRow = rows_from_range(rangeString)
         # minCol, maxCol = cols_from_range(rangeString)
 
-        # print()
-        # print ('minCol:', minCol)
-        # print ('minRow:', minRow)
-        # print ('maxCol:', maxCol)
-        # print ('maxRow:', maxRow)
 
             # ---------------------------------
             # - grosso modo può andare.....
             # ---------------------------------
-        data = []
+        dataList        = []
+        dataListOfList  = []
         for indexRow, row in enumerate(ws.rows):
                 # - prendiamo tutte le righe previste nel range
             if minRow <= indexRow < maxRow:
@@ -177,24 +177,26 @@ class Excel(object):
                         if minCol <= indexCol <= maxCol:
                             val = cell.value if cell.value else ''
                             line.append(val)
-                            # print ('    ', cell.value, end='')
                 else:
                     continue
-                # print ('1111111111', line)
-                # print ('22222222222222222', ';'.join(line.split()))
+
+
+                    # costruiamo la riga ...
                 lineStr = line[0]
                 for item in line[1:]:
                     lineStr = '{0};{1}'.format(lineStr, item)
-                # data.append(';'.join(line))
-                data.append(lineStr)
+                    # ... per inserirla nell'array
+
+                dataList.append(lineStr)
+                dataListOfList.append(line)
 
         if fPRINT:
-            for index, line in enumerate(data):
+            for index, line in enumerate(dataList):
                 print ('{0:5} - {1}'.format(index, line))
 
         if outFname:
             FILE = open(outFname, "wb")
-            for line in data:
+            for line in dataList:
                 line = "{0}{1}".format(line, '\n')
                 FILE.write(bytes(line, 'UTF-8'))       # con Python3 bisogna convertirlo in bytes
             FILE.close()
@@ -202,10 +204,18 @@ class Excel(object):
                 print("..... file: {FILE} has been written".format(FILE=outFname))
 
         if fPRINT:
-            print("full Range: {0}".format(fullRange))
-            print("file {0} has been created".format(outFname))
+            print()
+            print("     full Range: {0}".format(fullRange))
+            print("     file {0} has been created".format(outFname))
+            print()
 
-        return data
+        for item in dataListOfList:
+            print (item)
+        print ()
+        for item in dataList:
+            print (item)
+        print ()
+        return dataList
 
 
 
@@ -214,18 +224,12 @@ class Excel(object):
 
 
 
-
+#######################################################
+# -
+#######################################################
 
 if __name__ == "__main__":
-    excelFileName = 'J:/GIT-REPO/Python3/MP3Catalog/data/MP3_Master_TEST.xlsm'
-
-    try:
-        # warnings.simplefilter("ignore")
-        wb = openpyxl.load_workbook(excelFileName, read_only=True)
-        # wb = openpyxl.load_workbook(excelFileName)
-
-    except Exception as why:
-        print("error reading file: {0} [{1}]".format(excelFileName, why))
-
-
-    exportToCSV('', wb)
+    excelFileName = 'J:\\GIT-REPO\\Python3\\MP3Catalog\\data\\MP3_Master_forTEST.xlsm'
+    csvFile = excelFileName.rsplit('.', -1)[0] + '.csv'
+    mydata  = Excel(excelFileName)
+    mydata.exportToCSV('Catalog', outFname=csvFile, rangeString="B2:Z17", colNames=4, fPRINT=True)

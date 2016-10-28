@@ -14,8 +14,7 @@ import codecs
 # ######################################################
 # # https://docs.python.org/3/library/configparser.html
 # ######################################################
-def ReadIniFile(gv, fileName, RAW=False, returnOrderedDict=False, extraSections=[], exitOnError=False, STRICT=True, subSectionChar=None):
-    logger  = gv.Ln.setLogger(gv, package=__name__)
+def ReadIniFile(fileName, logger, RAW=False, returnOrderedDict=False, extraSections=[], exitOnError=False, STRICT=True, subSectionChar=None):
         # Setting del parser
     configMain = configparser.ConfigParser( allow_no_value=False,
                                         delimiters=('=', ':'),

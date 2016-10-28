@@ -3,15 +3,15 @@
 import sys, os
 import time
 
-def setupEnv(gv):
+def setupEnv(gv, fDEBUG=False):
     # print (gv.Ln.pyVer)
     if gv.Ln.pyVer >= '340':
         # setupEnv340(gv)
-        setupEnv300(gv)
+        setupEnv300(gv, fDEBUG=fDEBUG)
     else:
-        setupEnv300(gv)
+        setupEnv300(gv, fDEBUG=fDEBUG)
 
-def setupEnv300(gv):
+def setupEnv300(gv, fDEBUG=False):
     C = gv.Ln.Colors()
         # ------------------------------------------
         # - Preparazione directories
@@ -49,7 +49,7 @@ def setupEnv300(gv):
     gv.Prj.DATE     = '{YY:04}{MM:02}{DD:02}'.format(YY=now.tm_year, MM=now.tm_mon, DD=now.tm_mday)
     gv.Prj.TIME     = '{HH:02}{MM:02}{SS:02}'.format(HH=now.tm_hour, MM=now.tm_min, SS=now.tm_sec)
 
-    if gv.fDEBUG:
+    if fDEBUG:
         C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
         C.printCyan('scriptName       {0}'.format(gv.Prj.scriptName), tab=8)
         C.printCyan('prjBaseDIR       {0}'.format(gv.Prj.prjBaseDIR), tab=8)

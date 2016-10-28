@@ -29,35 +29,48 @@ if __name__ == "__main__":
     Prj.name     = 'MP3Catalog'
     Prj.prefix   = 'MP3Catalog'
 
-        # ----------------------------------------------------
-        # - lettura dei parametri di input
-        # - Nel caso specifico abbiamo un argomento multiValue
-        # -   e quindi passiamo i valori validi per detto argomento.
-        # ----------------------------------------------------
 
-    # gv.songFilter.excludeType   = ['Bambini', 'Natale', 'Popolari', 'Themes']
-    # gv.songFilter.excludeAuthor = []
-    # gv.songFilter.column        = ['Type', 'Author Name', 'Album Name', 'Song Name', 'Punteggio', 'Analizzata', 'Recomended', 'Loreto', 'Buona', 'Soft', 'Vivace', 'Molto Viv', 'Camera', 'Car', 'Lenta', 'Country', 'Strumentale', 'Classica', 'Lirica', 'Live', 'Discreta', 'Undefined', 'Avoid it', 'Confusionaria', 'Song Size']
+    ''' -------------------------------
+        per iniziare disabilitiamo il LOG
+    --------------------------------'''
+    logger = gv.Ln.setNullLogger()
 
-    songColumns = 'Type;Author Name;Album Name;Song Name;Punteggio;Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Country;Strumentale;Classica;Lirica;Live;Discreta;Undefined;Avoid it;Confusionaria;Song Size'
-    gv.Prj.songColumsName = songColumns.replace(' ', '').split(';')
-    gv.Prj.songAttributes = gv.Prj.songColumsName[6:-1] # partiamo da Recomended
-
-
-
-    Input           = Prj.setup.parseInput(gv, args=sys.argv[1:], columnsName=gv.Prj.songAttributes)
-    gv.INPUT_PARAM  = gv.Ln.LnDict(Input)
-    # if gv.INPUT_PARAM.fTRACE: gv.printDict(gv)
-
-    gv.fEXECUTE    = gv.INPUT_PARAM.fEXECUTE
-    gv.fIMPORT_EXCEL  = gv.INPUT_PARAM.fIMPORT_EXCEL
-    gv.LogCONSOLE = gv.INPUT_PARAM.LogCONSOLE
-    gv.fDEBUG     = gv.INPUT_PARAM.fDEBUG
 
         # ---------------------------------------------------------
         # - SetUp dell'ambiente
         # ---------------------------------------------------------
-    Prj.setup.setupEnv(gv)
+    Prj.setup.setupEnv(gv, fDEBUG=False)
+
+
+    ''' ---
+        Sono costretto a leggere il file ini perché
+        mi servono i nomi delle colonne
+        per il controllo dell'input.
+    --- '''
+    iniConfigParser, iniDict = gv.Ln.ReadIniFile(gv.Prj.iniFileName, logger, RAW=False, exitOnError=True, subSectionChar='.')
+    gv.ini = gv.Ln.LnDict(iniDict)
+    # gv.ini.printDict(gv)
+
+    songColumns = ''.join(gv.ini.EXCEL.NomiColonnePrimarie.split('\n'))
+    songColumns += ','+ ''.join(gv.ini.EXCEL.NomiAttributi.split('\n'))
+    songColumns = songColumns.replace(' ', '')
+
+    gv.Prj.songColumsName = songColumns.split(',')
+    gv.Prj.songAttributes = gv.Prj.songColumsName[6:-1] # partiamo da Recomended
+
+
+    ''' ---
+        lettura dei parametri di input
+        Nel caso specifico abbiamo un argomento multiValue
+          e quindi passiamo i valori validi per detto argomento.
+    --- '''
+    Input           = Prj.setup.parseInput(gv, args=sys.argv[1:], columnsName=gv.Prj.songAttributes)
+    gv.INPUT_PARAM  = gv.Ln.LnDict(Input)
+
+    gv.LogCONSOLE    = gv.INPUT_PARAM.LogCONSOLE
+    gv.fDEBUG        = gv.INPUT_PARAM.fDEBUG
+
+
 
         # ---------------------------------------------------------
         # - SetUp del log
@@ -74,6 +87,6 @@ if __name__ == "__main__":
     Prj.Main(gv, gv.INPUT_PARAM.songAction)
 
     gv.Ln.exit(gv, 0, "completed", printStack=False, stackLevel=9, console=True)
-    # gv.Ln.exit(gv, 0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
+    gv.Ln.exit(gv, 0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
 
 

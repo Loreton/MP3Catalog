@@ -22,35 +22,32 @@ def Main(gv, action):
     C       = gv.Ln.Colors()
     gv.data = gv.Ln.LnDict()
 
-    # extraSections       = gv.Ln.LnDict()
-    # extraSections.MAIN  = gv.Ln.LnDict()
-
     iniConfigParser, iniDict = gv.Ln.ReadIniFile(gv, gv.Prj.iniFileName, RAW=False, exitOnError=True, subSectionChar='.')
 
-    # gv.Ln.printDict(gv, iniDict)
     gv.ini = gv.Ln.LnDict(iniDict)
     if gv.fDEBUG:
         gv.ini.printDict(gv)
 
 
-        # -----------------------------------
-        # - Importing Excel File if required
-        # -----------------------------------
-    xlsFile = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.ini.EXCEL.EXCEL_File))
+        # ========================================
+        # - Exporting Excel File
+        # ========================================
+    xlsFile = gv.INPUT_PARAM.excelFile
+    if not xlsFile:     # se non passato tramite parametro prendiamo quello definito in config
+        xlsFile = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.ini.EXCEL.EXCEL_File))
+
     csvFile = xlsFile.rsplit('.', -1)[0] + '.csv'
 
-    if gv.fIMPORT_EXCEL:
-        mydata = gv.Ln.Excel(xlsFile)
-        mydata.exportToCSV2('Catalog', outFname=csvFile, rangeString="B2:Z17", colNames=4, fPRINT=False)
-        # mydata.exportToDict('Catalog', fPRINT=False)
+    if action == 'exportExcel':
+        mydata  = gv.Ln.Excel(xlsFile)
+        mydata.exportToCSV('Catalog', outFname=csvFile, rangeString="B2:Z17", colNames=4, fPRINT=True)
+        return
 
-    fileScartate        = gv.Prj.dataDIR + '/_Scartate.csv'
-    fileAnalizzate      = gv.Prj.dataDIR + '/_Analizzate.csv'
-    fileValidSongs      = gv.Prj.dataDIR + '/_ValidSongs.csv'
-    fileDuplicateSongs  = gv.Prj.dataDIR + '/_DuplicateSongs.csv'
 
-    gv.Ln.exit(gv, 0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
-
+    fileScartate        = gv.Prj.dataDIR + '/tmp/_Scartate.csv'
+    fileAnalizzate      = gv.Prj.dataDIR + '/tmp/_Analizzate.csv'
+    fileValidSongs      = gv.Prj.dataDIR + '/tmp/_ValidSongs.csv'
+    fileDuplicateSongs  = gv.Prj.dataDIR + '/tmp/_DuplicateSongs.csv'
 
         # ----------------------------------------------
         # - Preleviamo tutte le canzoni analizzate
@@ -63,6 +60,7 @@ def Main(gv, action):
     songList.scartate    = [gv.Prj.songColumsName]  # init con il nome delle colonne
     songList.duplicate   = [gv.Prj.songColumsName]  # init con il nome delle colonne
 
+    gv.fEXECUTE      = gv.INPUT_PARAM.fEXECUTE
 
         # ------------------------------------------------------------
         # - Lettura del file.csv
@@ -83,9 +81,11 @@ def Main(gv, action):
         tokens = [token.strip() for token in row.split(';') if token]
         RECs.append(tokens)
     gv.Prj.songFilter(gv, RECs)
+
     choice = gv.Ln.getKeyboardInput(gv, "    Vuoi salvare i dati sui relativi file?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
+
     if choice.lower() in ['x']:
-        sys.exit()
+        gv.Ln.exit(gv, 0, "exiting on user request", printStack=False, stackLevel=9, console=True)
 
     elif choice.lower() in ['yes']:
         C.printYellow('writing file: {0}'.format(fileScartate), tab=4)
@@ -97,7 +97,7 @@ def Main(gv, action):
         C.printYellow('writing file: {0}'.format(fileAnalizzate), tab=4)
         gv.Prj.writeFile(gv, fileAnalizzate, data=songList.analizzate)
 
-
+    gv.Ln.exit(gv, 0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
 
     if action == 'copySongs':
         choice = gv.Ln.getKeyboardInput(gv, "    Continuare per copiare le canzoni sulla destinazione?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
