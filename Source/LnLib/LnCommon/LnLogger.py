@@ -13,8 +13,9 @@ import inspect
 gPackageQualifiers = 0
 isLoggerActive = False   # variabile globale accessibile anche dall'esterno
 
-
-
+_logMODULE  = False
+_logCONSOLE = False
+_logACTIVE  = False
 
 
 # http://stackoverflow.com/questions/16203908/how-to-input-variables-in-logger-formatter
@@ -48,7 +49,7 @@ class ContextFilter(logging.Filter):
 ###############################################
 #
 ###############################################
-def getCaller(deepLevel=0, funcName=None):
+def GetCaller(deepLevel=0, funcName=None):
     try:
         caller  = inspect.stack()[deepLevel]
     except Exception as why:
@@ -73,17 +74,19 @@ def getCaller(deepLevel=0, funcName=None):
     # ========================================================
     # - INIT del log. Chiamato solo dal MAIN program
     # ========================================================
-def initLogger(iniLogFile, logFileName, package, packageQualifiers=2):
+def InitLogger(iniLogFile, logFileName, package, logCONSOLE=False, logMODULE=False, logACTIVE=False, packageQualifiers=2):
     global gPackageQualifiers
+    global _logMODULE, _logCONSOLE, _logACTIVE
+
+    _logMODULE  = logMODULE
+    _logCONSOLE = logCONSOLE
+    _logACTIVE  = logACTIVE
+
     gPackageQualifiers = packageQualifiers
 
     if not os.path.isfile(iniLogFile):
         print (iniLogFile, "... NOT FOUND")
         sys.exit()
-    # else:
-        # print ('    using loggerConfigFile: {}', iniLogFile)
-        # print ("    {0:<32}: {1}".format('loggerConfigFile', logFileName))
-
 
     logging.config.fileConfig(iniLogFile, disable_existing_loggers=False, defaults={'rotateLogFile': logFileName})
     logger      = logging.getLogger(package)
@@ -103,7 +106,7 @@ def initLogger(iniLogFile, logFileName, package, packageQualifiers=2):
     return logFileName
 
 
-def setNullLogger():
+def SetNullLogger(package=None):
     global isLoggerActive
 
     ##############################################################################
@@ -113,10 +116,10 @@ def setNullLogger():
     class nullLogger():
             def __init__(self, package=None, stackNum=1):
                 pass
-            def info(self, data):   pass
-            def debug(self, data):  pass
-            def error(self, data):  pass
-            def warning(self, data):  pass
+            def Info(self, data):   pass
+            def Debug(self, data):  pass
+            def Error(self, data):  pass
+            def Warning(self, data):  pass
 
     isLoggerActive = False
     return nullLogger()
@@ -137,45 +140,41 @@ def setNullLogger():
 #                   utile quando si hanno più funzioni all'interno dello stesso modulo
 #
 # ====================================================================================
-# def setLogger(gv, package, CONSOLE=None, stackNum=0):
-def setLogger(gv, package, CONSOLE=None, stackNum=0):
+# def SetLogger(gv, package, CONSOLE=None, stackNum=0):
+def SetLogger(package, stackNum=0):
+    # global isLoggerActive
 
-    if not isLoggerActive:
-        return setNullLogger()
+    if _logMODULE or _logACTIVE:
+        stackLevel = 1                          # stackLevel di base
+        stackLevel += stackNum                  # aggiungiamo quello richiesto dal caller
 
-        ##############################################################################
-        # - classe che mi permette di lavorare nel caso il logger non sia richiesto
-        ##############################################################################
+        funcName    = sys._getframe(stackLevel).f_code.co_name
+        funcLineNO  = sys._getframe(stackLevel).f_lineno
+        if funcName == '<module>': funcName = '__main__'
 
-    stackLevel = 1                          # stackLevel di base
-    stackLevel += stackNum                  # aggiungiamo quello richiesto dal caller
+        pkgName = package + '.' + funcName if funcName else package
 
-    funcName    = sys._getframe(stackLevel).f_code.co_name
-    funcLineNO  = sys._getframe(stackLevel).f_lineno
-    if funcName == '<module>': funcName = '__main__'
+        # - tracciamo la singola funzione oppure modulo oppure libreria od altro
+        LOG_LEVEL = None
+        if _logMODULE:
+            fullPkg = (package + funcName).lower()
+            for stringa in _logMODULE.split(','):
+                if stringa.lower() in fullPkg:
+                    LOG_LEVEL = logging.DEBUG
 
-    pkgName = package + '.' + funcName if funcName else package
-
-    # - tracciamo la singola funzione oppure modulo oppure libreria od altro
-    LOG_LEVEL = None
-    if gv.INPUT_PARAM.LogMODULE:
-        fullPkg = (package + funcName).lower()
-        for stringa in gv.INPUT_PARAM.LogMODULE.split(','):
-            if stringa.lower() in fullPkg:
-                LOG_LEVEL = logging.DEBUG
-
-    elif gv.INPUT_PARAM.LogACTIVE:
-        LOG_LEVEL = logging.DEBUG
+        elif _logACTIVE:
+            LOG_LEVEL = logging.DEBUG
 
     else:
-        return setNullLogger()
+        return SetNullLogger()
+
 
 
         # ------------------------------------------------
         # - del package prendiamo
         # - solo gli ultimi n.. gPackageQualifiers.
         # ------------------------------------------------
-    if gv.INPUT_PARAM.LogCONSOLE:
+    if _logCONSOLE:
         pkgName = 'LnC.{0}'.format(package.split('.')[-1])
     else:
         packageHier = pkgName.split('.')
@@ -215,7 +214,7 @@ def setLogger(gv, package, CONSOLE=None, stackNum=0):
         # - nel "...called by" inseriamo il caller-1
         # ----------------------------------------------------------------------------------
     # logger.debug('')
-    logger.debug('......called by:{CALLER}'.format(CALLER=getCaller(stackLevel+2)))
+    logger.debug('......called by:{CALLER}'.format(CALLER=GetCaller(stackLevel+2)))
 
         # --------------------------------------------------------------------------
         # - azzeriamo il lineNO in modo che le prossime chiamate al logger, che
@@ -237,5 +236,5 @@ if __name__ == '__main__':
     logFileName          = '/tmp/IFC_{USER}.log'.format(USER=userName)
     logConfigFileName   = os.path.join(os.path.dirname(__file__), 'LoggerConfig.ini')
 
-    gv.Ln.initLogger(iniLogFile=logConfigFileName, logFileName=logFileName, package='IFC', packageQualifiers=2)
+    InitLogger(iniLogFile=logConfigFileName, logFileName=logFileName, package='IFC', packageQualifiers=2)
     logger = gv.Ln.setLogger(gv, package="Main")

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: iso-8859-1 -*-
 
-import sys
+import sys, os
 import platform
 
 
@@ -9,14 +9,21 @@ import platform
 v = sys.version_info
 pyVer = '{0}{1}{2}'.format(v.major, v.minor, v.micro)
 OpSys = platform.system()
+# print (os.getcwd())
+# sys.path.insert(0, os.path.abspath('System'))
+# sys.path.insert(0, os.path.abspath('System/LnLogger'))
+# sys.path.insert(0, os.path.abspath('System'))
+# sys.path.insert(0, os.getcwd())
+# sys.exit()
 
+from . LnCommon.LnLogger                      import SetLogger
+from . LnCommon.LnLogger                      import InitLogger
+from . LnCommon.LnLogger                      import SetNullLogger
 
-from . System.LnLogger                      import setLogger
-from . System.LnLogger                      import initLogger
-from . System.LnLogger                      import setNullLogger
+from . LnCommon.LnColor                       import LnColors as Colors
+
 from . System.GetKeyboardInput              import getKeyboardInput
-from . System.Exit                          import exit
-from . System.LnColor                       import LnColors as Colors
+from . System.Exit                          import Exit
 
 
 from . LnDict                               import DotMap  as LnDict
@@ -26,5 +33,4 @@ from . LnFile.ReadIniFile                   import ReadIniFile
 
 
 from . Excel.LnExcel_Class              import Excel
-
 

@@ -30,10 +30,12 @@ if __name__ == "__main__":
     Prj.prefix   = 'MP3Catalog'
 
 
-    ''' -------------------------------
+    '''
+    -----------------------------------------------
         per iniziare disabilitiamo il LOG
-    --------------------------------'''
-    logger = gv.Ln.setNullLogger()
+    -----------------------------------------------
+    '''
+    logger = gv.Ln.SetNullLogger()
 
 
         # ---------------------------------------------------------
@@ -42,12 +44,12 @@ if __name__ == "__main__":
     Prj.setup.setupEnv(gv, fDEBUG=False)
 
 
-    ''' ---
-        Sono costretto a leggere il file ini perché
-        mi servono i nomi delle colonne
-        per il controllo dell'input.
-    --- '''
-    iniConfigParser, iniDict = gv.Ln.ReadIniFile(gv.Prj.iniFileName, logger, RAW=False, exitOnError=True, subSectionChar='.')
+    # ------------------------------------------------------------------
+    # - Lettura del file ini perché
+    # - mi servono i nomi delle colonne
+    # - per il controllo dell'input.
+    # ------------------------------------------------------------------
+    iniConfigParser, iniDict = gv.Ln.ReadIniFile(gv.Prj.iniFileName, RAW=False, exitOnError=True, subSectionChar='.')
     gv.ini = gv.Ln.LnDict(iniDict)
     # gv.ini.printDict(gv)
 
@@ -59,15 +61,14 @@ if __name__ == "__main__":
     gv.Prj.songAttributes = gv.Prj.songColumsName[6:-1] # partiamo da Recomended
 
 
-    ''' ---
-        lettura dei parametri di input
-        Nel caso specifico abbiamo un argomento multiValue
-          e quindi passiamo i valori validi per detto argomento.
-    --- '''
+    # ------------------------------------------------------------------
+    # - lettura dei parametri di input
+    # - Nel caso specifico abbiamo un argomento multiValue
+    # -   e quindi passiamo i valori validi per detto argomento.
+    # ------------------------------------------------------------------
     Input           = Prj.setup.parseInput(gv, args=sys.argv[1:], columnsName=gv.Prj.songAttributes)
     gv.INPUT_PARAM  = gv.Ln.LnDict(Input)
-
-    gv.LogCONSOLE    = gv.INPUT_PARAM.LogCONSOLE
+    # gv.INPUT_PARAM.printDict(gv)
     gv.fDEBUG        = gv.INPUT_PARAM.fDEBUG
 
 
@@ -76,7 +77,7 @@ if __name__ == "__main__":
         # - SetUp del log
         # ---------------------------------------------------------
     logger = Prj.setup.setupLog(gv)
-
+    logger.debug('................ciao')
 
         # --------------------------------------------------------
         # - CALL Project MAIN Program
@@ -86,7 +87,9 @@ if __name__ == "__main__":
     # Prj.main.MP3Catalog.Main(gv, sys.argv)
     Prj.Main(gv, gv.INPUT_PARAM.songAction)
 
+    gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
+    gv.Ln.Exit(0, "completed", printStack=False, stackLevel=9, console=True)
+    sys.exit()
     gv.Ln.exit(gv, 0, "completed", printStack=False, stackLevel=9, console=True)
-    gv.Ln.exit(gv, 0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
 
 

@@ -11,10 +11,14 @@ import collections
 import configparser
 import codecs
 
+from ..LnCommon.LnLogger import SetLogger
+
 # ######################################################
 # # https://docs.python.org/3/library/configparser.html
 # ######################################################
-def ReadIniFile(fileName, logger, RAW=False, returnOrderedDict=False, extraSections=[], exitOnError=False, STRICT=True, subSectionChar=None):
+def ReadIniFile(fileName, RAW=False, returnOrderedDict=False, extraSections=[], exitOnError=False, STRICT=True, subSectionChar=None):
+    logger  = SetLogger(package=__name__)
+
         # Setting del parser
     configMain = configparser.ConfigParser( allow_no_value=False,
                                         delimiters=('=', ':'),

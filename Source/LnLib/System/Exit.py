@@ -7,6 +7,9 @@
 
 import types, os, inspect, sys
 
+from ..LnCommon.LnLogger import SetLogger       # OK funziona dalla upperDir del package
+from ..LnCommon.LnColor  import LnColors
+
 
 EXIT_KEYB   = -30
 PAUSE_KEYB   = -31
@@ -18,9 +21,9 @@ EXIT_STACK  = -32
 # - Ad esempio la Prj.exit() chimaera wuesta exit con stackLevel=2 in modo
 # - da saltare se stessa.
 # =======================================================================
-def exit(gv, rcode, text, printStack=False, stackLevel=9, console=True):
-    logger  = gv.Ln.setLogger(gv, package=__name__)
-    C       = gv.Ln.Colors()
+def Exit(rcode, text, printStack=False, stackLevel=9, console=True):
+    logger  = SetLogger(package=__name__)
+    C       = LnColors()
 
     if text == None:
         textList = ['No error message passed']

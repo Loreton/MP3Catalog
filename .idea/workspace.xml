@@ -2,46 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd3bb645-1066-47da-aed3-45fa9a049867" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/LnDict/PrintDictionaryTree.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/LnDict/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/System/Exit.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/System/GetKeyboardInput.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/System/LnColor.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/System/LnLogger.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/System/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/colorama/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/colorama/ansi.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/colorama/ansitowin32.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/colorama/initialise.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/colorama/win32.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LnLib/colorama/winterm.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Functions/CheckSourceSongs.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Functions/CopySongs.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Functions/LnEnum.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Functions/ReadWriteFile.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Functions/SongFilter.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Functions/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Main/MP3Catalog.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Main/MP3CatalogSqlLite.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Main/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Setup/ParseInput.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Setup/SetupEnv.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Setup/SetupLog.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/Setup/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Source/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/__main__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/conf/MP3Catalog_LoggerConfig.ini" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/MP3_Master_2015-08-10.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/MP3_Master_2015-08-10.xlsm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/MP3_Master_2016-07-25.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/MP3_Master_2016-07-25.xlsm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/MP3_Master_Last.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/MP3_Master_Last.xlsm" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/_Analizzate.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/_Scartate.csv" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/MP3Catalog_V01.ini" afterPath="$PROJECT_DIR$/conf/MP3Catalog_V01.ini" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/LnFile/ReadIniFile.py" afterPath="$PROJECT_DIR$/Source/LnLib/LnFile/ReadIniFile.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/System/Exit.py" afterPath="$PROJECT_DIR$/Source/LnLib/System/Exit.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/System/LnLogger.py" afterPath="$PROJECT_DIR$/Source/LnLib/System/LnLogger.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py" afterPath="$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Setup/SetupLog.py" afterPath="$PROJECT_DIR$/Source/Project/Setup/SetupLog.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/__main__.py" afterPath="$PROJECT_DIR$/Source/__main__.py" />
     </list>
     <ignored path="MP3Catalog.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -66,20 +33,52 @@
         <entry file="file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
+              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <folding>
+                <marker date="1477911872000" expanded="true" signature="582:5079" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__main__.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Source/__main__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.8244445">
+              <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LnLogger.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Source/LnLib/System/LnLogger.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="170" column="0" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
+              <folding>
+                <element signature="e#509#523#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SetupLog.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Source/Project/Setup/SetupLog.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
               <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LnExcel_Class.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Source/LnLib/Excel/LnExcel_Class.py">
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Source/LnLib/LnDict/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.79333335">
-              <caret line="161" column="0" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
-              <folding>
-                <element signature="e#212#226#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0">
+              <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -94,6 +93,8 @@
       <list>
         <option value="$PROJECT_DIR$/Source/Setup/ParseInput.py" />
         <option value="$PROJECT_DIR$/Source/LnLib/Excel/LnExcel_Class.py" />
+        <option value="$PROJECT_DIR$/Source/LnLib/LnFile/ReadIniFile.py" />
+        <option value="$PROJECT_DIR$/Source/__main__.py" />
       </list>
     </option>
   </component>
@@ -128,7 +129,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -204,6 +204,7 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -364,7 +365,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="MP3Catalog" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Source/__main__.py" />
-      <option name="PARAMETERS" value="copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3 --check-source -exc" />
+      <option name="PARAMETERS" value="copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3 --check-source --log" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
@@ -404,7 +405,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39949748" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39949748" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -429,18 +430,24 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Source/LnLib/Excel/LnExcel_Class.py</url>
-          <line>160</line>
-          <option name="timeStamp" value="7" />
+          <url>file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py</url>
+          <line>18</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Source/LnLib/System/LnLogger.py</url>
+          <line>148</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="8" />
+      <option name="time" value="13" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="ws" />
         <watch expression="ws.rows" />
         <watch expression="row" />
+        <watch expression="gv" language="Python" />
       </configuration>
     </watches-manager>
   </component>
@@ -448,8 +455,32 @@
     <entry file="file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+          <folding>
+            <marker date="1477911872000" expanded="true" signature="582:5079" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/LnLib/Excel/LnExcel_Class.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#212#226#0" expanded="false" />
+            <marker date="1477657640000" expanded="true" signature="1332:2667" placeholder="..." />
+            <marker date="1477657640000" expanded="true" signature="2269:2667" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1477911872000" expanded="true" signature="582:5079" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -460,15 +491,80 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Source/__main__.py">
+    <entry file="file://$PROJECT_DIR$/Source/LnLib/Excel/LnExcel_Class.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="3.5833333">
+          <caret line="165" column="0" selection-start-line="165" selection-start-column="0" selection-end-line="165" selection-end-column="0" />
+          <folding>
+            <element signature="e#212#226#0" expanded="false" />
+            <marker date="1477657640000" expanded="true" signature="1332:2667" placeholder="..." />
+            <marker date="1477657640000" expanded="true" signature="2269:2667" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding>
+            <marker date="1477911872000" expanded="true" signature="582:5079" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://J:/LnFree/Pgm/WinPython-64bit-3.4.4.1/python-3.4.4.amd64/Lib/configparser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="734" column="0" selection-start-line="734" selection-start-column="0" selection-end-line="734" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/LnLib/LnFile/ReadIniFile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/LnLib/LnDict/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/Project/Setup/SetupEnv.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/LnLib/System/LnLogger.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="170" column="0" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
+          <folding>
+            <element signature="e#509#523#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/Project/Setup/SetupLog.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
@@ -476,13 +572,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Source/LnLib/Excel/LnExcel_Class.py">
+    <entry file="file://$PROJECT_DIR$/Source/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79333335">
-          <caret line="161" column="0" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
-          <folding>
-            <element signature="e#212#226#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.8244445">
+          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

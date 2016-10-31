@@ -18,15 +18,10 @@ import os, sys
 # -  5 - Chiamata al programma principale del progetto
 ################################################################################
 def Main(gv, action):
-    logger  = gv.Ln.setLogger(gv, package=__name__)
+    logger  = gv.Ln.SetLogger(package=__name__)
     C       = gv.Ln.Colors()
     gv.data = gv.Ln.LnDict()
 
-    iniConfigParser, iniDict = gv.Ln.ReadIniFile(gv, gv.Prj.iniFileName, RAW=False, exitOnError=True, subSectionChar='.')
-
-    gv.ini = gv.Ln.LnDict(iniDict)
-    if gv.fDEBUG:
-        gv.ini.printDict(gv)
 
 
         # ========================================
@@ -49,6 +44,7 @@ def Main(gv, action):
     fileValidSongs      = gv.Prj.dataDIR + '/tmp/_ValidSongs.csv'
     fileDuplicateSongs  = gv.Prj.dataDIR + '/tmp/_DuplicateSongs.csv'
 
+    # gv.Ln.exit(gv, 0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
         # ----------------------------------------------
         # - Preleviamo tutte le canzoni analizzate
         # - Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Count
@@ -73,7 +69,7 @@ def Main(gv, action):
         C.printYellowH('i nomi delle colonne non coincidono', tab=4)
         C.printYellowH('file     : {0}'.format(rowList[0]), tab=4)
         C.printYellowH('required : {0}'.format(';'.join(gv.Prj.songColumsName)), tab=4)
-        sys.exit()
+        gv.Ln.exit(gv, 1, 'i nomi delle colonne non coincidono')
 
         # RECs creazione di una lista di liste/canzoni [[],[],..]
     RECs = []
@@ -88,7 +84,8 @@ def Main(gv, action):
         gv.Ln.exit(gv, 0, "exiting on user request", printStack=False, stackLevel=9, console=True)
 
     elif choice.lower() in ['yes']:
-        C.printYellow('writing file: {0}'.format(fileScartate), tab=4)
+        msg = 'writing file: {0}'.format(fileScartate)
+        C.printYellow(msg, tab=4); logger.info(msg)
         gv.Prj.writeFile(gv, fileScartate,   data=songList.scartate)
 
         C.printYellow('writing file: {0}'.format(fileValidSongs), tab=4)

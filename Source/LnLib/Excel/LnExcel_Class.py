@@ -8,11 +8,11 @@ import types
 import platform
 import openpyxl
 
-from openpyxl.utils import get_column_letter
-import openpyxl.utils as xls
+from    openpyxl.utils import get_column_letter
+import  openpyxl.utils as xls
 
-
-
+# from LnLib.System.LnLogger import setLogger as defSetLogger  # OK funziona dalla root del package
+from ..LnCommon.LnLogger import SetLogger as defSetLogger        # OK funziona dalla upperDir del package
 
 ##########################################################################################################
 # Per la creazione di attributi read-only
@@ -34,8 +34,6 @@ def ro_property(name):
 
 
 
-
-
 # ###########################################################
 # - getInterfacesData(ifc) - con un solo indirizzo IP sulla scheda
 # ###########################################################
@@ -44,7 +42,7 @@ class Excel(object):
         # * Calling Sample:
         # * eth0 = Ln.LnInterfaces('eth0', myIP=True, DRYRUN=True, setLogger=gv.Ln.setLogger)
         # ***********************************************
-    def __init__(self, excelFileName, fDEBUG=False):
+    def __init__(self, excelFileName, SetLogger=defSetLogger, fDEBUG=False):
             # ----- defaults
         self._name              = None
         self._description       = None
@@ -55,6 +53,7 @@ class Excel(object):
         self._filename          = excelFileName
         self._description       = "class to manage execl file."
         self._author            = "Loreto Notarantonio"
+        self._SetLogger         = SetLogger
 
 
         self._read()
@@ -64,6 +63,7 @@ class Excel(object):
     # - Lettura di un file Excel e ritorna il WorkBook
     #######################################################
     def _read(self, keep_vba=False):
+        logger = self._SetLogger(__name__)
         try:
                 # warnings.simplefilter("ignore")
                 # in read-only=True:
@@ -79,11 +79,13 @@ class Excel(object):
 
         except Exception as why:
             print("error reading file: {0} [{1}]".format(self._filename, why))
+            logger.error("error reading file: {0} [{1}]".format(self._filename, why))
             sys.exit(99)
 
 
         if self._fDEBUG:
             print('sheet names: {0}'.format(self.sheetNames))
+            logger.info('sheet names: {0}'.format(self.sheetNames))
 
 
 
@@ -140,6 +142,7 @@ class Excel(object):
     # - colNames   : numero di riga che contiene i nomi delle colonne
     ####################################################################
     def exportToCSV(self, sheetName, outFname=None, rangeString=None, colNames=0, maxrows=99999999, fPRINT=False):
+        logger = self._SetLogger(__name__)
         if fPRINT:
             print("Converting sheetName: [{0}] to CSV file: [{1}]." .format(sheetName, outFname))
 
@@ -154,6 +157,7 @@ class Excel(object):
             minCol, minRow, maxCol, maxRow = 1, 1, ws.max_column, ws.max_row
 
         fullRange = get_column_letter(minCol) + str(minRow) + ':' + get_column_letter(maxCol) + str(maxRow)
+        logger.info("     full Range: {0}".format(fullRange))
 
         minCol -= 1         # col parte da '0'
         maxCol -= 1         # col parte da '0'
@@ -200,6 +204,7 @@ class Excel(object):
                 line = "{0}{1}".format(line, '\n')
                 FILE.write(bytes(line, 'UTF-8'))       # con Python3 bisogna convertirlo in bytes
             FILE.close()
+            logger.info("..... file: {FILE} has been written".format(FILE=outFname))
             if fPRINT:
                 print("..... file: {FILE} has been written".format(FILE=outFname))
 
