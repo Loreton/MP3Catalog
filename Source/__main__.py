@@ -4,8 +4,8 @@
 
 # sudo update-alternatives --config python
 # /opt/python3.4/bin/pip3.4 install netifaces
-import sys; sys.dont_write_bytecode = True
-# import sys
+# import sys; sys.dont_write_bytecode = True
+import sys
 import os
 
 # ------------------------------------------------------------
@@ -49,16 +49,20 @@ if __name__ == "__main__":
     # - mi servono i nomi delle colonne
     # - per il controllo dell'input.
     # ------------------------------------------------------------------
-    iniConfigParser, iniDict = gv.Ln.ReadIniFile(gv.Prj.iniFileName, RAW=False, exitOnError=True, subSectionChar='.')
-    gv.ini = gv.Ln.LnDict(iniDict)
-    # gv.ini.printDict(gv)
+    # iniConfigParser, iniDict = gv.Ln.ReadIniFile(gv.Prj.iniFileName, RAW=False, exitOnError=True, subSectionChar='.')
+    # gv.ini = gv.Ln.LnDict(iniDict)
+    iniFile = gv.Ln.ReadIniFile(gv.Prj.iniFileName)
+    iniFile.read()
+    gv.ini = gv.Ln.LnDict(iniFile.dict)
+    # gv.ini.printDict(gv, fEXIT=True)
 
     songColumns = ''.join(gv.ini.EXCEL.NomiColonnePrimarie.split('\n'))
     songColumns += ','+ ''.join(gv.ini.EXCEL.NomiAttributi.split('\n'))
     songColumns = songColumns.replace(' ', '')
 
-    gv.Prj.songColumsName = songColumns.split(',')
+    gv.Prj.songColumsName = [x.strip() for x in songColumns.split(',')]
     gv.Prj.songAttributes = gv.Prj.songColumsName[6:-1] # partiamo da Recomended
+
 
 
     # ------------------------------------------------------------------
@@ -77,19 +81,13 @@ if __name__ == "__main__":
         # - SetUp del log
         # ---------------------------------------------------------
     logger = Prj.setup.setupLog(gv)
-    logger.debug('................ciao')
 
-        # --------------------------------------------------------
-        # - CALL Project MAIN Program
-        # --------------------------------------------------------
-    # import MP3Catalog as MP3Catalog
 
-    # Prj.main.MP3Catalog.Main(gv, sys.argv)
     Prj.Main(gv, gv.INPUT_PARAM.songAction)
 
-    gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
     gv.Ln.Exit(0, "completed", printStack=False, stackLevel=9, console=True)
+    gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
     sys.exit()
-    gv.Ln.exit(gv, 0, "completed", printStack=False, stackLevel=9, console=True)
+
 
 

@@ -12,7 +12,7 @@ def setupEnv(gv, fDEBUG=False):
         setupEnv300(gv, fDEBUG=fDEBUG)
 
 def setupEnv300(gv, fDEBUG=False):
-    C = gv.Ln.Colors()
+    C = gv.Ln.LnColor()
         # ------------------------------------------
         # - Preparazione directories
         # ------------------------------------------

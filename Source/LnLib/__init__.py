@@ -20,7 +20,7 @@ from . LnCommon.LnLogger                      import SetLogger
 from . LnCommon.LnLogger                      import InitLogger
 from . LnCommon.LnLogger                      import SetNullLogger
 
-from . LnCommon.LnColor                       import LnColors as Colors
+from . LnCommon.LnColor                       import LnColor
 
 from . System.GetKeyboardInput              import getKeyboardInput
 from . System.Exit                          import Exit
@@ -29,7 +29,7 @@ from . System.Exit                          import Exit
 from . LnDict                               import DotMap  as LnDict
 from . LnDict.PrintDictionaryTree           import printDictionaryTree as printDict
 
-from . LnFile.ReadIniFile                   import ReadIniFile
+from . LnFile.ReadIniFile_Class                   import ReadIniFile
 
 
 from . Excel.LnExcel_Class              import Excel

@@ -16,6 +16,8 @@ import argparse
 allDictTYPES = []
 import inspect
 
+from ..LnCommon.LnLogger import SetLogger
+from ..LnCommon.LnColor  import LnColor
 
 # #########################################################################################
 # - printDictionaryTree() ordered
@@ -38,7 +40,7 @@ import inspect
 
 # ########################################################################
 def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', listInLine=5, fEXIT=False, fCONSOLE=True, stackLevel=1):
-    color = gv.Ln.Colors()
+    # color = gv.Ln.Colors()
     global allDictTYPES, myDictTYPES
     myDictTYPES = []
     myDictTYPES.extend(extDict)
@@ -54,17 +56,6 @@ def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, 
     allDictTYPES.extend(myDictTYPES)
 
     lista = getDictionaryTree(dictID, MaxDeepLevel=MaxDeepLevel, level=level, retCols=retCols, listInLine=listInLine)
-
-
-    '''
-    # catturiamo il caller
-    stackLevel = 1
-    try:
-        test    = sys._getframe(stackLevel)
-    except:
-        stackLevel = 1
-    '''
-    # print ('...........', stackLevel)
 
     caller = inspect.stack()[stackLevel]
     dummy, fileName, funcLineNO, funcName, lineCode, rest = caller
@@ -87,16 +78,16 @@ def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, 
     if not header: header = caller
     if fCONSOLE:
         print()
-        color.printCyan("*"*60, tab=8)
-        color.printCyan("*     {0}".format(header), tab=8)
-        if header2: color.printCyan("*     {0}".format(header2), tab=8)
-        color.printCyan("*"*60, tab=8)
+        LnColor.printCyan("*"*60, tab=8)
+        LnColor.printCyan("*     {0}".format(header), tab=8)
+        if header2: LnColor.printCyan("*     {0}".format(header2), tab=8)
+        LnColor.printCyan("*"*60, tab=8)
 
 
         for line in lista:
             if not isAscii(line): line = str.encode(line, 'utf-8')
             # print("{0}{1}{2}".format(COLOR, lTAB, line))
-            color.printCyan(line, tab=len(lTAB))
+            LnColor.printCyan(line, tab=len(lTAB))
 
     if fEXIT:
         print("Exiting on user request. {CALLER}".format(CALLER=caller))
@@ -212,6 +203,10 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
 
                 lista.append('{0:<50}: ]'.format(' ') )                # Chiusura LIST
 
+            elif valueTypeStr == "datetime.date":
+                newLine = "{0:<50}: {1}".format(newLine.rstrip(), val)
+                lista.append(newLine)
+
             elif valueTypeStr.endswith('.enumerateClass'):
                 ENUM_SORTED_BY_VALUE = True
                 lista.append("{0:<50}: [".format(newLine.rstrip()))   # Apertura LIST
@@ -230,26 +225,11 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
                     newLine = "{0:<50}: []".format(newLine.rstrip())                  # Enpty LIST
                     lista.append(newLine)
 
-                #@TODO: Eliminato in quanto dava errori perché manca il controllo su una possibile classe
-                #  come invece fatto nell' 'else:'
-
-                # elif len(val) <= listInLine:                                      # scriviamo la lista INLINE e non su righe diverse.
-                #     newLine = "{0:<50}: [ ".format(newLine.rstrip())      # Scrivi anche il primo valore (per allinearlo)
-
-                #     print ('22222222aaaaaa', valueType, type(val), val )
-                #     newLine += formatAlign(val[0], 5)      # Scrivi anche il primo valore (per allinearlo)
-                #     for item in val[1:]:                                        # Scrivi gli altri items
-                #         newLine += ", " + formatAlign(item, 10)
-
-                #     newLine += " ]"
-                #     lista.append(newLine)
-
                 else:
                     lista.append("{0:<50}: [".format(newLine.rstrip()) )             # Apertura LIST
                     counter = 0
                     for line in val:
                         if type(line) in allDictTYPES:            # Dictionary interno ad una LIST
-                            # print ('22222222aaaaaa', type(line), line )
                             counter += 1
                             level += 1
                             lista.append('')
@@ -266,14 +246,8 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
                     lista.append(newLine)
                     lista.append('')
 
-            elif valueType == bool or\
-                 valueType == type(None) or\
-                 valueType == int or\
-                 valueType == int or\
-                 valueType == float or\
-                 valueTypeStr == "datetime.date":
+            elif valueType in (bool, type(None), int, float):
                 newLine = "{0:<50}: {1}".format(newLine.rstrip(), val)
-
                 lista.append(newLine)
 
             else:
@@ -296,25 +270,18 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
         # elif valueTypeStr == 'collections.OrderedDict' and key == '_map':   continue
         elif valueTypeStr == 'collections.OrderedDict': valueTypeStr = 'ordDict' + key
 
-        # print ('....', type(key), key)
         if isinstance(key, str):
             if key.startswith('__') and key.endswith('__'): continue    # elimina tutti i built-in (presente in un modulo)
-            # if key.startswith('_dynamic'):
-            #     sys.exit()
-            #     continue    # elimina il dynamic di DotMap
 
         if valueType == types.ModuleType: continue                  # elimina eventuali import (presente in un modulo)
 
-        # print ('1111111111111111', valueType, key)
         if valueType in allDictTYPES:
-
                 # ------------------------------
                 # - Tentativo di allineamento
                 # - Es.:
                 # -    DotMap        MAIN
                 # -    OrderedDict   MAIN
                 # ------------------------------
-
             if 'T' in retCols:
                 newLine = '{VALUE_TYPE:<13} {INDENT} {LINE}'.format(VALUE_TYPE=valueTypeStr, INDENT=' '*level*TabSize, LINE=key)
             else:
@@ -326,8 +293,6 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
                 # riga riguardante dotMap - Non serve! Loreto
             if key == '_map':
                 level -= 1
-            # elif valueTypeStr == 'ConfigParser' and key == 'configParser':
-            #     level -= 1
             else:
                 lista.append(newLine)
 
@@ -338,22 +303,6 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
 
 
 
-###################################################################
-#
-###################################################################
-def formatAlign(value, len=10):
-    if isinstance(value, int):
-        outFmt = '{0:>'
-    else:
-        # print ('2222222222222222', value, type(value))
-        # print ('3333333333333333', myDictTYPES)
-        if value.isdigit():
-            outFmt = '{0:>'
-        else:
-            outFmt = '{0:<'
-
-    outFmt += str(len) + '}'
-    return outFmt.format(value)
 ###################################################################
 #
 ###################################################################

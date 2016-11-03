@@ -6,6 +6,8 @@
 # ####################################################################################################################
 import sys
 
+from ..LnCommon.LnLogger import SetLogger
+from ..LnCommon.LnColor  import LnColor
 
 # ###########################################################################
 # * Gestione input da Keyboard.
@@ -15,9 +17,7 @@ import sys
 # * 01-01-2014 - modificato il validKeysLIST.
 # ###########################################################################
 def getKeyboardInput(gv, msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySep="|", fDEBUG=False):
-    logger = gv.Ln.setLogger(gv, package=__name__)
-    C = gv.Ln.Colors()
-
+    logger = gv.Ln.SetLogger(package=__name__)
 
     exitKeyUPP = exitKey.upper()
 
@@ -38,8 +38,8 @@ def getKeyboardInput(gv, msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySe
 
     if fDEBUG:
         funcName = __name__.split('.')[-1]
-        C.printCyan(" {0} - exitKeyLIST....: {1}".format(funcName, exitKeyLIST), tab=4)
-        C.printCyan(" {0} - validKeyLIST...: {1}".format(funcName, validKeyLIST), tab=4)
+        LnColor.printCyan(" {0} - exitKeyLIST....: {1}".format(funcName, exitKeyLIST), tab=4)
+        LnColor.printCyan(" {0} - validKeyLIST...: {1}".format(funcName, validKeyLIST), tab=4)
         print()
         caller = gv.Ln.calledBy(deepLevel)
         msg = "<{CALLER}> - [{MSG} - ({VALKEY})] ({EXITKEY} to exit) ==> ".format(CALLER=caller, MSG=msg, VALKEY=validKeys, EXITKEY=exitKey)
@@ -50,7 +50,7 @@ def getKeyboardInput(gv, msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySe
         while True:
             choice      = input(msg).strip()    # non mi accetta il colore
             choiceUPP   = choice.upper()
-            if fDEBUG: C.printCyan("choice: [{0}]".format(choice))
+            if fDEBUG: LnColor.printCyan("choice: [{0}]".format(choice))
 
             if choice == '':    # diamo priorità alla exit
                 if "ENTER" in exitKeyLIST:
@@ -58,19 +58,19 @@ def getKeyboardInput(gv, msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySe
                 elif "ENTER" in validKeys:
                     return ''
                 else:
-                    C.printCyan('\n... please enter something\n')
+                    LnColor.printCyan('\n... please enter something\n')
 
             elif choiceUPP in exitKeyLIST:
-                gv.Ln.exit(gv, 9998, "Exiting on user request new.", printStack=True)
+                gv.Ln.Exit(9998, "Exiting on user request new.", printStack=True)
 
             elif choice in validKeyLIST:
                 break
 
             else:
-                C.printCyan('\n... try again\n')
+                LnColor.printCyan('\n... try again\n')
 
     except Exception as why:
-        gv.Ln.exit(gv, 8, "Error running program [{ME}]\n\n ....{WHY}\n".format(ME=sys.argv[0], WHY=why) )
+        gv.Ln.Exit(8, "Error running program [{ME}]\n\n ....{WHY}\n".format(ME=sys.argv[0], WHY=why) )
 
     return choice
 

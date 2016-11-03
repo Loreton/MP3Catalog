@@ -39,7 +39,8 @@ def setupLog(gv):
             errMsg = 'il file {0} non esiste..'.format(logConfigFileName)
             gv.Ln.Exit(1, errMsg)
     else:
-        logger = gv.Ln.setNullLogger()
+        logger = gv.Ln.SetLogger(package="Main")
+        # logger = gv.Ln.setNullLogger()
 
     return logger
 

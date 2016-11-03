@@ -11,18 +11,18 @@ this_mod = sys.modules[__name__]
 #############################################################
 # - parseInput()
 #############################################################
-def parseInput(gv, args, columnsName, programVersion=None):
-    global C, songColumsName
+def parseInput(gVars, args, columnsName, programVersion=None):
+    global LnColor, songColumsName, gv
+    gv = gVars
     songColumsName = columnsName
-    C = gv.Ln.Colors()
-    if not programVersion: programVersion = gv.Prj.Version
-
-    # songColumsName.SAMPLE = 'analizzata recomended loreto buona soft car vivace molto_vivace camera'
+    LnColor = gv.Ln.LnColor()
+    if not programVersion: programVersion = 'unknown'
 
     positionalActionsDict  =  dict (
             # extract     = "filtra le canzoni e crea i file con le selezioni...",
             copySongs   = "copia le canzoni risultate dalla selezione nella directory di destinazione",
-            exportExcel = "esporta il file excel, definito nel file di conf,  in formato CSV"
+            ExcelExport = "esporta il file excel, definito nel file di conf,  in formato CSV",
+            merge       = "legge la directory ed inserisce/modifica le canzoni esistenti"
         )
 
 
@@ -56,14 +56,14 @@ def parseInput(gv, args, columnsName, programVersion=None):
             # - Controlli
             # -----------------------------------------
     if InputPARAM.fDEBUG:
-        C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
+        LnColor.printYellow('.'*10 + __name__ + '.'*10, tab=4)
         dictID = vars(InputPARAM)
         for key, val in sorted(dictID.items()):
             TYPE = '(' + str(type(val)).split("'")[1] + ')'
-            C.printCyan('{0:<20} : {1:<6} - {2}'.format(key, TYPE, val), tab = 8)
+            LnColor.printCyan('{0:<20} : {1:<6} - {2}'.format(key, TYPE, val), tab = 8)
 
 
-        C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
+        LnColor.printYellow('.'*10 + __name__ + '.'*10, tab=4)
         print ()
 
 
@@ -94,9 +94,9 @@ def prepareArgParse(positionalActionsDict, programVersion):
 
     myParser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter,     # indicates that description and epilog are already correctly formatted and should not be line-wrapped:
-        description=C.getYellow(description),
+        description=LnColor.getYellow(description),
         usage='',                                               # non voglio lo usage
-        epilog=C.getYellow(mainHelp),
+        epilog=LnColor.getYellow(mainHelp),
         conflict_handler='resolve',
     )
 
@@ -116,9 +116,9 @@ def prepareArgParse(positionalActionsDict, programVersion):
 
     if not (mainArgs.songAction in positionalActionsDict.keys()):
         myParser.print_help()
-        C.printYellow(".... Unrecognized value [{0}]. Valid values are:".format(mainArgs.songAction), tab=8)
+        LnColor.printYellow(".... Unrecognized value [{0}]. Valid values are:".format(mainArgs.songAction), tab=8)
         for positionalParm in positionalActionsDict.keys():
-            C.printYellow (positionalParm, tab=16)
+            LnColor.printYellow (positionalParm, tab=16)
         exit(1)
 
     return mainArgs
@@ -128,7 +128,7 @@ def prepareArgParse(positionalActionsDict, programVersion):
 # - commonParsing
 ###################################################
 def commonParsing(positionalParm, DESCR='CIAO DESCR'):
-    usageMsg = "\n          {COLOR}   {ACTION} {COLRESET}[options]".format(COLOR=C.YEL, ACTION=positionalParm, COLRESET=C.RESET)
+    usageMsg = "\n          {COLOR}   {ACTION} {COLRESET}[options]".format(COLOR=LnColor.YEL, ACTION=positionalParm, COLRESET=LnColor.RESET)
     myParser = argparse.ArgumentParser( description=positionalParm + ' Command',
                                         add_help=True, usage=usageMsg,
                                         # formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -143,7 +143,7 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
     if hasattr(this_mod, positionalParm.upper()):
         getattr(this_mod, positionalParm.upper())(myParser)
     else:
-        C.printCyan ('[{0}] - Command not yet implemented!'.format(positionalParm))
+        LnColor.printCyan ('[{0}] - Command not yet implemented!'.format(positionalParm))
         sys.exit(1)
 
 
@@ -160,7 +160,10 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
 # - A C T I O N s
 # ---------------------------
 def COPYSONGS(myParser):
-    if len(sys.argv[1:]) == 1: sys.argv.append('-h')
+    '''
+        se aspetta  parametri obbligatori...
+        ... if len(sys.argv[1:]) == 1: sys.argv.append('-h')
+    '''
     _executeOptions(myParser)
     _debugOptions(myParser)
     _commonOptions(myParser)
@@ -171,9 +174,24 @@ def COPYSONGS(myParser):
 # ---------------------------
 # - A C T I O N s
 # ---------------------------
-def EXPORTEXCEL(myParser):
-    # if len(sys.argv[1:]) == 1: sys.argv.append('-h')
+def EXCELEXPORT(myParser):
+    '''
+        se aspetta  parametri obbligatori...
+        ... if len(sys.argv[1:]) == 1: sys.argv.append('-h')
+    '''
     _excelExport(myParser)
+    _debugOptions(myParser)
+
+
+# ---------------------------
+# - A C T I O N s
+# ---------------------------
+def MERGE(myParser):
+    '''
+        se aspetta  parametri obbligatori...
+        ... if len(sys.argv[1:]) == 1: sys.argv.append('-h')
+    '''
+    _songDirs(myParser)
     _debugOptions(myParser)
 
 
@@ -191,7 +209,7 @@ def _debugOptions(myParser):
                             action="store_true",
                             dest="LogACTIVE",
                             default=False,
-                            help=C.getYellow("""attivazione del logger.
+                            help=LnColor.getYellow("""attivazione del logger.
     [DEFAULT: False]
     """))
 
@@ -202,7 +220,7 @@ def _debugOptions(myParser):
                             action="store_true",
                             # choices=['info', 'debug'],
                             default=False,
-                            help=C.getYellow("""attivazione log sulla console.
+                            help=LnColor.getYellow("""attivazione log sulla console.
     """))
 
         # log debug su specifica funzione
@@ -210,7 +228,7 @@ def _debugOptions(myParser):
                             required=False,
                             dest="LogMODULE",
                             default=False,
-                            help=C.getYellow("""attivazione log sul una singola funcName o stringa di essa.
+                            help=LnColor.getYellow("""attivazione log sul una singola funcName o stringa di essa.
     Possono essere anche porzioni di funcName separate da ',' Es: pippo,uto,ciao
     """))
 
@@ -221,7 +239,7 @@ def _debugOptions(myParser):
                             action="store_true",
                             dest="fDEBUG",
                             default=False,
-                            help=C.getYellow("""enter in DEBUG mode..
+                            help=LnColor.getYellow("""enter in DEBUG mode..
     [DEFAULT: None]
     """))
 
@@ -230,7 +248,7 @@ def _debugOptions(myParser):
                             action="store_true",
                             dest="fELAPSED",
                             default=False,
-                            help=C.getYellow("""display del tempo necessario al processo..
+                            help=LnColor.getYellow("""display del tempo necessario al processo..
     [DEFAULT: False]
     """))
 
@@ -239,7 +257,7 @@ def _debugOptions(myParser):
                             action="store_true",
                             dest="fCHECK_SOURCE",
                             default=False,
-                            help=C.getYellow("""Verify that all the sources song are present.
+                            help=LnColor.getYellow("""Verify that all the sources song are present.
     [DEFAULT: False]
     """))
 
@@ -254,7 +272,7 @@ def _copySongsOptions(myParser):
                             default='0',
                             required=False,
                             dest="maxBytes",
-                            help=C.getYellow("""Numero massimo di bytes che deve avere l'output
+                            help=LnColor.getYellow("""Numero massimo di bytes che deve avere l'output
     Es.: 10m | 10G | 10K | 2549878
     [DEFAULT: 0 (no limits)]
     """))
@@ -265,7 +283,7 @@ def _copySongsOptions(myParser):
                             default=1,
                             required=False,
                             dest="numDirs",
-                            help=C.getYellow("""Numero di directory da creare.
+                            help=LnColor.getYellow("""Numero di directory da creare.
     Verranno create tante subDirs sotto la dest-dir con un size <= --max-output-bytes.
     [DEFAULT: 1]
     """))
@@ -279,7 +297,7 @@ def _executeOptions(myParser):
                             action="store_true",
                             dest="fEXECUTE",
                             default=False,
-                            help=C.getYellow("""Execute commands.
+                            help=LnColor.getYellow("""Execute commands.
     [DEFAULT: False, run in DRY-RUN mode]
     """))
 
@@ -287,22 +305,27 @@ def _executeOptions(myParser):
 # - _songDirs
 # ---------------------------
 def _songDirs(myParser):
-    mandatory = C.getYellowH('MANDATORY')
+    mandatory = LnColor.getYellowH('MANDATORY')
+    mandatory = ''
     myParser.add_argument( "-s", "--source-dir",
                             type=str,
-                            required=True,
+                            required=False,
+                            default=gv.ini.MAIN.sourceDIR,
                             dest="sourceDIR",
                             metavar="directory sorgente",
-                            help=mandatory + C.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
-    """))
+                            help=mandatory + LnColor.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
+    [DEFAULT: {0}]
+    """.format(gv.ini.MAIN.sourceDIR)))
 
     myParser.add_argument( "-d", "--dest-dir",
                             type=str,
-                            required=True,
+                            required=False,
+                            default=gv.ini.MAIN.destDIR,
                             dest="destDIR",
                             metavar="directory di destinazione",
-                            help=mandatory + C.getYellow(""" - Nome della directory dove copiare le canzoni selezionate ...
-    """))
+                            help=mandatory + LnColor.getYellow(""" - Nome della directory dove copiare le canzoni selezionate ...
+    [DEFAULT: {0}]
+    """.format(gv.ini.MAIN.destDIR)))
 
 
 
@@ -311,7 +334,7 @@ def _songDirs(myParser):
 # ---------------------------
 def _excelExport(myParser):
     mandatory = ''
-    # mandatory = C.getYellowH('MANDATORY')
+    # mandatory = LnColor.getYellowH('MANDATORY')
 
     myParser.add_argument( "-f", "--input-file",
                             type=str,
@@ -319,7 +342,7 @@ def _excelExport(myParser):
                             dest="excelFile",
                             metavar="Excel filename",
                             default=None,
-                            help=mandatory + C.getYellow( """ - Nome del file Excel di cui fare l'export.
+                            help=mandatory + LnColor.getYellow( """ - Nome del file Excel di cui fare l'export.
     Il file di output avrà lo stesso fullPath ma con estenzione .csv
     DEFAULT: come definito nel file config.ini [EXCEL]-->EXCEL_File
     """))
@@ -334,12 +357,14 @@ def _commonOptions(myParser):
     # split della lista in gruppi da x elementi
     nElem = 5
     opts = ''
+    # - per ragioni di display delle colonne,
+    # - creiamo una lista di liste dove ognuna è una riga
     composite_list = [songColumsName[x:x+nElem] for x in range(0, len(songColumsName),nElem)]
-
     for item in composite_list:
-        opts += C.getYellowH(','.join(item) + ',\n        ')
+        opts += LnColor.getYellowH(','.join(item) + ',\n        ')
 
     defaultInclude = ['Analizzata']
+    defaultInclude = [x.strip() for x in gv.ini.MAIN.include.split(',')]
     myParser.add_argument( "--include",
                             type=checkInclude,
 
@@ -357,7 +382,7 @@ def _commonOptions(myParser):
                             required=False,
 
                             nargs='*',
-                            help=C.getYellow("""inserire uno o piu argomenti della lista:
+                            help=LnColor.getYellow("""inserire uno o piu argomenti della lista:
 
         {OPT}
 
@@ -373,6 +398,7 @@ def _commonOptions(myParser):
 
 
     defaultExclude = ['Undefined' ,'Avoidit','Confusionaria']
+    defaultExclude = [x.strip() for x in gv.ini.MAIN.exclude.split(',')]
     myParser.add_argument( "--exclude",
                             type=checkExclude,
                             # ------------------------------------------------------------
@@ -387,7 +413,7 @@ def _commonOptions(myParser):
                             default=defaultExclude,
                             required=False,
                             nargs='+',
-                            help=C.getYellow("""inserire uno o piu argomenti della lista:
+                            help=LnColor.getYellow("""inserire uno o piu argomenti della lista:
 
         {OPT}
 
@@ -406,7 +432,7 @@ def _commonOptions(myParser):
                             default=0,
                             required=False,
                             dest="maxSongs",
-                            help=C.getYellow("""Numero massimo di canzoni da processare... comodo per DEBUG
+                            help=LnColor.getYellow("""Numero massimo di canzoni da processare... comodo per DEBUG
     [DEFAULT: 0 (all songs)]
     """))
 
@@ -434,7 +460,7 @@ def calculateBytes(value):
 ###############################################
 def checkInclude(value):
     if not value in songColumsName:
-        C.printRedH ('{0} - is not an INCLUDE valid argument'.format(value), tab=4)
+        LnColor.printRedH ('{0} - is not an INCLUDE valid argument'.format(value), tab=4)
         sys.exit()
 
     return value
@@ -444,7 +470,7 @@ def checkInclude(value):
 ###############################################
 def checkExclude(value):
     if not value in songColumsName:
-        C.printCyanH ('{0} - is not an EXCLUDE valid argument'.format(value), tab=4)
+        LnColor.printCyanH ('{0} - is not an EXCLUDE valid argument'.format(value), tab=4)
         sys.exit()
 
     return value

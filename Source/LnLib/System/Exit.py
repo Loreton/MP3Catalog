@@ -8,7 +8,7 @@
 import types, os, inspect, sys
 
 from ..LnCommon.LnLogger import SetLogger       # OK funziona dalla upperDir del package
-from ..LnCommon.LnColor  import LnColors
+from ..LnCommon.LnColor  import LnColor
 
 
 EXIT_KEYB   = -30
@@ -23,7 +23,7 @@ EXIT_STACK  = -32
 # =======================================================================
 def Exit(rcode, text, printStack=False, stackLevel=9, console=True):
     logger  = SetLogger(package=__name__)
-    C       = LnColors()
+    C       = LnColor()
 
     if text == None:
         textList = ['No error message passed']

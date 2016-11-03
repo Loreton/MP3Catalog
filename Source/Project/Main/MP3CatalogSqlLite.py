@@ -18,7 +18,7 @@ import os, sys
 # -  5 - Chiamata al programma principale del progetto
 ################################################################################
 def Main(gv, action):
-    logger  = gv.Ln.setLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
+    logger  = gv.Ln.SetLogger(package=__name__, CONSOLE=gv.INPUT_PARAM.LogCONSOLE)
     C       = gv.Ln.Colors()
     gv.data = gv.Ln.LnDict()
 

@@ -116,10 +116,10 @@ def SetNullLogger(package=None):
     class nullLogger():
             def __init__(self, package=None, stackNum=1):
                 pass
-            def Info(self, data):   pass
-            def Debug(self, data):  pass
-            def Error(self, data):  pass
-            def Warning(self, data):  pass
+            def info(self, data):   pass
+            def debug(self, data):  pass
+            def error(self, data):  pass
+            def warning(self, data):  pass
 
     isLoggerActive = False
     return nullLogger()

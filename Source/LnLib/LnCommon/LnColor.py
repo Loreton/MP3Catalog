@@ -9,7 +9,7 @@ from .. import colorama
     C.printRed('loreto', tab=5)
     C.printERROR('loreto', tab=20)
 '''
-class LnColors:
+class LnColor:
     colorama.init(autoreset=True)
     # for i in dir('LnColors'): print (i)
     '''

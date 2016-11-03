@@ -9,16 +9,12 @@ import sys
 class BreakIt(Exception): pass
 
 def songFilter(gv, RECs):
-    logger = gv.Ln.setLogger(gv, package=__name__)
-    C = gv.Ln.Colors()
+    logger = gv.Ln.SetLogger(package=__name__)
+    C = gv.Ln.LnColor()
     col = gv.Prj.enumCols(gv, gv.Prj.songColumsName)
 
 
-
-
-
         # Assegnamo un peso binario ad ogni colonna che ci interessa filtrare.
-    # colVal = gv.Prj.enumColsBase2(gv, gv.Prj.songAttributes)
     colVal = gv.Prj.enumColsBase2(gv, gv.INPUT_PARAM.include)
     reqScore = 0
     for item in colVal:
@@ -32,17 +28,17 @@ def songFilter(gv, RECs):
 
     print ()
     C.printCyan ("num of output directory: {0}".format(gv.INPUT_PARAM.numDirs), tab=4)
+
     comment = ' - no limit' if gv.INPUT_PARAM.maxBytes == 0 else ''
     C.printCyan ("Max Byte per directory:  {0}{1}".format(gv.INPUT_PARAM.maxBytes, comment), tab=4)
+
     comment = ' - no limit' if gv.INPUT_PARAM.maxSongs == 0 else ''
     C.printCyan ("Max Songs to extract:    {0}{1}".format(gv.INPUT_PARAM.maxSongs, comment), tab=4)
+
     print ()
     C.printCyan ('requested Score: {0}'.format(reqScore), tab=4)
     print ()
 
-    # gv.songList.col         = col
-    # gv.songList.colVal      = colVal
-    # gv.songList.reqScore    = reqScore
 
     validTotSize        = 0
     scartateTotSize     = 0
@@ -55,8 +51,8 @@ def songFilter(gv, RECs):
 
     excludeType     = ['Bambini', 'Natale', 'Popolari', 'Themes']
     excludeAuthor   = ['xxx', 'cccc', 'xxx']
-    includeCol  = ['Analizzata']
-    includeCol.extend(gv.INPUT_PARAM.include)
+
+    includeCol  = gv.INPUT_PARAM.include
     excludeCol  = gv.INPUT_PARAM.exclude
 
     for index, song in enumerate(RECs):

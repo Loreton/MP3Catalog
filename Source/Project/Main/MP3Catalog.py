@@ -7,7 +7,7 @@
 
 
 import os, sys
-
+import ast
 
 
 
@@ -19,7 +19,7 @@ import os, sys
 ################################################################################
 def Main(gv, action):
     logger  = gv.Ln.SetLogger(package=__name__)
-    C       = gv.Ln.Colors()
+    C       = gv.Ln.LnColor()
     gv.data = gv.Ln.LnDict()
 
 
@@ -44,13 +44,13 @@ def Main(gv, action):
     fileValidSongs      = gv.Prj.dataDIR + '/tmp/_ValidSongs.csv'
     fileDuplicateSongs  = gv.Prj.dataDIR + '/tmp/_DuplicateSongs.csv'
 
-    # gv.Ln.exit(gv, 0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
+    # gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
         # ----------------------------------------------
         # - Preleviamo tutte le canzoni analizzate
         # - Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Count
         # ----------------------------------------------
     gv.songList = gv.Ln.LnDict()
-    songList = gv.songList
+    songList    = gv.songList
     songList.validSongs  = [gv.Prj.songColumsName]  # init con il nome delle colonne
     songList.analizzate  = [gv.Prj.songColumsName]  # init con il nome delle colonne
     songList.scartate    = [gv.Prj.songColumsName]  # init con il nome delle colonne
@@ -63,17 +63,20 @@ def Main(gv, action):
         # - La prima riga conriene il nome delle colonne
         # - Eliminiamo i blank nei nomi colonne
         # ------------------------------------------------------------
-    rowList = gv.Prj.readFile(gv, csvFile)
-    rowList[0] = rowList[0].replace(' ', '')   # eliminiamo i BLANK nei nomi colonne
-    if not rowList[0].strip().strip(';') == ';'.join(gv.Prj.songColumsName):
+    csvRowList = gv.Prj.readFile(gv, csvFile)
+    csvRowList[0] = csvRowList[0].replace(' ', '')   # eliminiamo i BLANK nei nomi colonne
+
+    xx = ast.literal_eval(csvRowList[0])    # converte una stringa formato LIST in una LIST
+    if not ';'.join(xx) == ';'.join(gv.Prj.songColumsName):
         C.printYellowH('i nomi delle colonne non coincidono', tab=4)
-        C.printYellowH('file     : {0}'.format(rowList[0]), tab=4)
+        C.printYellowH('file     : {0}'.format(csvRowList[0]), tab=4)
         C.printYellowH('required : {0}'.format(';'.join(gv.Prj.songColumsName)), tab=4)
-        gv.Ln.exit(gv, 1, 'i nomi delle colonne non coincidono')
+        gv.Ln.Exit(1, 'I nomi delle colonne non coincidono')
+
 
         # RECs creazione di una lista di liste/canzoni [[],[],..]
     RECs = []
-    for row in rowList[1:]:
+    for row in csvRowList[1:]:
         tokens = [token.strip() for token in row.split(';') if token]
         RECs.append(tokens)
     gv.Prj.songFilter(gv, RECs)
@@ -81,7 +84,7 @@ def Main(gv, action):
     choice = gv.Ln.getKeyboardInput(gv, "    Vuoi salvare i dati sui relativi file?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
 
     if choice.lower() in ['x']:
-        gv.Ln.exit(gv, 0, "exiting on user request", printStack=False, stackLevel=9, console=True)
+        gv.Ln.exit(0, "exiting on user request", printStack=False, stackLevel=9, console=True)
 
     elif choice.lower() in ['yes']:
         msg = 'writing file: {0}'.format(fileScartate)
@@ -94,18 +97,20 @@ def Main(gv, action):
         C.printYellow('writing file: {0}'.format(fileAnalizzate), tab=4)
         gv.Prj.writeFile(gv, fileAnalizzate, data=songList.analizzate)
 
-    gv.Ln.exit(gv, 0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
 
     if action == 'copySongs':
-        choice = gv.Ln.getKeyboardInput(gv, "    Continuare per copiare le canzoni sulla destinazione?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
-        if choice.lower() in ['x', 'no']:
-            sys.exit()
 
         RECs = songList.validSongs[:]
         logger.info('trovate {0} canzoni da copiare'.format(len(RECs)))
+
         if gv.INPUT_PARAM.fCHECK_SOURCE:
             gv.Prj.checkSourceSongs(gv, RECs)
+
         else:
+            choice = gv.Ln.getKeyboardInput(gv, "    Continuare per copiare le canzoni sulla destinazione?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
+            if choice.lower() in ['x', 'no']:
+                sys.exit()
+
             gv.Prj.copySongs(gv, RECs)
             print()
             C.printYellow('writing file: {0}'.format(fileDuplicateSongs), tab=4)
@@ -117,3 +122,4 @@ def Main(gv, action):
     else:
         C.printRed('Action {0} not yet implemented...!'.format(action), tab=8)
         sys.exit()
+    gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)

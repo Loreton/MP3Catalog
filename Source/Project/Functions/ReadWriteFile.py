@@ -12,7 +12,7 @@ import os, sys
 
     # print ('.......readFile.....')
 def readFile(gv, csvFile):
-    logger = gv.Ln.setLogger(gv, package=__name__)
+    logger = gv.Ln.SetLogger(package=__name__)
     row = []
     # f = codecs.open(csvFile, "r", "utf-8")
     # f = open(csvFile, 'r', encoding="ascii", errors="surrogateescape")
@@ -35,7 +35,7 @@ def readType02(csvFile):
 
 
 def writeFile(gv, outFile, data=[]):
-    logger = gv.Ln.setLogger(gv, package=__name__)
+    logger = gv.Ln.SetLogger(package=__name__)
     row = []
     # f = codecs.open(csvFile, "r", "utf-8")
     # f = open(csvFile, 'r', encoding="ascii", errors="surrogateescape")
