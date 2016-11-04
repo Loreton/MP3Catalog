@@ -17,10 +17,15 @@ def readFile(gv, csvFile):
     # f = codecs.open(csvFile, "r", "utf-8")
     # f = open(csvFile, 'r', encoding="ascii", errors="surrogateescape")
     logger.debug('reading file: {0}'.format(csvFile))
-    f = open(csvFile, "r", encoding="latin-1")
+    try:
+        f = open(csvFile, "r", encoding="latin-1")
+    except (Exception) as why:
+        gv.Ln.Exit(1, str(why), printStack=True)
+
     for line in f:
         row.append(line.strip())
     f.close()
+
     logger.debug('number of lines found: {0}'.format(len(row)))
     return row
 

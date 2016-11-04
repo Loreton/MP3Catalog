@@ -30,17 +30,15 @@ if __name__ == "__main__":
     Prj.prefix   = 'MP3Catalog'
 
 
-    '''
-    -----------------------------------------------
-        per iniziare disabilitiamo il LOG
-    -----------------------------------------------
-    '''
+    # ---------------------------------------------------------
+    # - per iniziare disabilitiamo il LOG
+    # ---------------------------------------------------------
     logger = gv.Ln.SetNullLogger()
 
 
-        # ---------------------------------------------------------
-        # - SetUp dell'ambiente
-        # ---------------------------------------------------------
+    # ---------------------------------------------------------
+    # - SetUp dell'ambiente
+    # ---------------------------------------------------------
     Prj.setup.setupEnv(gv, fDEBUG=False)
 
 
@@ -49,20 +47,30 @@ if __name__ == "__main__":
     # - mi servono i nomi delle colonne
     # - per il controllo dell'input.
     # ------------------------------------------------------------------
-    # iniConfigParser, iniDict = gv.Ln.ReadIniFile(gv.Prj.iniFileName, RAW=False, exitOnError=True, subSectionChar='.')
-    # gv.ini = gv.Ln.LnDict(iniDict)
     iniFile = gv.Ln.ReadIniFile(gv.Prj.iniFileName)
     iniFile.read()
     gv.ini = gv.Ln.LnDict(iniFile.dict)
     # gv.ini.printDict(gv, fEXIT=True)
 
-    songColumns = ''.join(gv.ini.EXCEL.NomiColonnePrimarie.split('\n'))
-    songColumns += ','+ ''.join(gv.ini.EXCEL.NomiAttributi.split('\n'))
-    songColumns = songColumns.replace(' ', '')
+    primaryCols   = ''.join(gv.ini.EXCEL.NomiColonnePrimarie.split('\n'))
+    attributeCols = ''.join(gv.ini.EXCEL.NomiAttributi.split('\n'))
 
-    gv.Prj.songColumsName = [x.strip() for x in songColumns.split(',')]
-    gv.Prj.songAttributes = gv.Prj.songColumsName[6:-1] # partiamo da Recomended
+        # rimuovi i BLANK all'interno dei nomi ei campi
+    primaryCols   = primaryCols.replace(' ', '')
+    attributeCols = attributeCols.replace(' ', '')
+    songColumns   = primaryCols + ','+ attributeCols
 
+
+    gv.song = gv.Ln.LnDict()
+    gv.song.primaryCols   = [x.strip() for x in primaryCols.split(',')]
+    gv.song.attributeCols = [x.strip() for x in attributeCols.split(',')]
+    gv.song.songCols      = gv.song.primaryCols[:]
+    gv.song.songCols.extend(gv.song.attributeCols)
+
+        # - pseudo enum delle colonne
+    gv.song.field = gv.Ln.LnDict()
+    for index, colName in enumerate(gv.song.songCols):
+        gv.song.field[colName] = index
 
 
     # ------------------------------------------------------------------
@@ -70,7 +78,7 @@ if __name__ == "__main__":
     # - Nel caso specifico abbiamo un argomento multiValue
     # -   e quindi passiamo i valori validi per detto argomento.
     # ------------------------------------------------------------------
-    Input           = Prj.setup.parseInput(gv, args=sys.argv[1:], columnsName=gv.Prj.songAttributes)
+    Input           = Prj.setup.parseInput(gv, args=sys.argv[1:], columnsName=gv.song.attributeCols)
     gv.INPUT_PARAM  = gv.Ln.LnDict(Input)
     # gv.INPUT_PARAM.printDict(gv)
     gv.fDEBUG        = gv.INPUT_PARAM.fDEBUG

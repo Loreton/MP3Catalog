@@ -9,9 +9,9 @@ import sys
 class BreakIt(Exception): pass
 
 def songFilter(gv, RECs):
-    logger = gv.Ln.SetLogger(package=__name__)
-    C = gv.Ln.LnColor()
-    col = gv.Prj.enumCols(gv, gv.Prj.songColumsName)
+    logger  = gv.Ln.SetLogger(package=__name__)
+    C       = gv.Ln.LnColor()
+    col     = gv.Prj.enumCols(gv, gv.Prj.songColumsName)
 
 
         # Assegnamo un peso binario ad ogni colonna che ci interessa filtrare.
@@ -46,16 +46,18 @@ def songFilter(gv, RECs):
     analizzateTotSize   = 0
     toBeAanalysed       = 0
     toBeAanalysedSize   = 0
-    invalidLines   = 0
-    nCols = len(gv.Prj.songColumsName)
+    invalidLines        = 0
+    nCols               = len(gv.Prj.songColumsName)
 
     excludeType     = ['Bambini', 'Natale', 'Popolari', 'Themes']
     excludeAuthor   = ['xxx', 'cccc', 'xxx']
 
     includeCol  = gv.INPUT_PARAM.include
     excludeCol  = gv.INPUT_PARAM.exclude
-
+    print (RECs)
+    sys.exit()
     for index, song in enumerate(RECs):
+        xx = len(song)
         if len(song) != nCols:
             invalidLines += 1
             continue
@@ -121,7 +123,11 @@ def songFilter(gv, RECs):
 
 
     C.printYellow('Record TOTALI                    : {0:>6}'.format(len(RECs)), tab=4)
-    C.printYellow('Invalid Lines                    : {0:>6}'.format(invalidLines), tab=4)
+    msg = 'Invalid Lines                    : {0:>6}'.format(invalidLines)
+    if invalidLines > 0:
+        C.printRedH(msg, tab=4)
+    else:
+        C.printYellow(msg, tab=4)
 
     C.printYellow('Canzoni con flag   ANALIZZATA    : {0:>6} - bytes: {1:,}'.format(len(gv.songList.analizzate)-1, analizzateTotSize), tab=4)
     C.printYellow('Canzoni senza flag ANALIZZATA    : {0:>6} - bytes: {1:,}'.format(toBeAanalysed, toBeAanalysedSize), tab=4)

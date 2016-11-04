@@ -40,7 +40,7 @@ from ..LnCommon.LnColor  import LnColor
 
 # ########################################################################
 def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', listInLine=5, fEXIT=False, fCONSOLE=True, stackLevel=1):
-    # color = gv.Ln.Colors()
+    color = gv.Ln.LnColor()
     global allDictTYPES, myDictTYPES
     myDictTYPES = []
     myDictTYPES.extend(extDict)
@@ -78,16 +78,16 @@ def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, 
     if not header: header = caller
     if fCONSOLE:
         print()
-        LnColor.printCyan("*"*60, tab=8)
-        LnColor.printCyan("*     {0}".format(header), tab=8)
-        if header2: LnColor.printCyan("*     {0}".format(header2), tab=8)
-        LnColor.printCyan("*"*60, tab=8)
+        color.printCyan("*"*60, tab=8)
+        color.printCyan("*     {0}".format(header), tab=8)
+        if header2: color.printCyan("*     {0}".format(header2), tab=8)
+        color.printCyan("*"*60, tab=8)
 
 
         for line in lista:
             if not isAscii(line): line = str.encode(line, 'utf-8')
             # print("{0}{1}{2}".format(COLOR, lTAB, line))
-            LnColor.printCyan(line, tab=len(lTAB))
+            color.printCyan(line, tab=len(lTAB))
 
     if fEXIT:
         print("Exiting on user request. {CALLER}".format(CALLER=caller))

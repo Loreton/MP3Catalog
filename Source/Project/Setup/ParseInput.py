@@ -169,7 +169,7 @@ def COPYSONGS(myParser):
     _commonOptions(myParser)
     _copySongsOptions(myParser)
     _songDirs(myParser)
-    _excelExport(myParser)
+    _excelFile(myParser)
 
 # ---------------------------
 # - A C T I O N s
@@ -179,7 +179,7 @@ def EXCELEXPORT(myParser):
         se aspetta  parametri obbligatori...
         ... if len(sys.argv[1:]) == 1: sys.argv.append('-h')
     '''
-    _excelExport(myParser)
+    _excelFile(myParser)
     _debugOptions(myParser)
 
 
@@ -191,6 +191,7 @@ def MERGE(myParser):
         se aspetta  parametri obbligatori...
         ... if len(sys.argv[1:]) == 1: sys.argv.append('-h')
     '''
+    _excelFile(myParser)
     _songDirs(myParser)
     _debugOptions(myParser)
 
@@ -310,29 +311,29 @@ def _songDirs(myParser):
     myParser.add_argument( "-s", "--source-dir",
                             type=str,
                             required=False,
-                            default=gv.ini.MAIN.sourceDIR,
+                            default=gv.ini.INPUT_DEFAULT.sourceDIR,
                             dest="sourceDIR",
                             metavar="directory sorgente",
                             help=mandatory + LnColor.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
     [DEFAULT: {0}]
-    """.format(gv.ini.MAIN.sourceDIR)))
+    """.format(gv.ini.INPUT_DEFAULT.sourceDIR)))
 
     myParser.add_argument( "-d", "--dest-dir",
                             type=str,
                             required=False,
-                            default=gv.ini.MAIN.destDIR,
+                            default=gv.ini.INPUT_DEFAULT.destDIR,
                             dest="destDIR",
                             metavar="directory di destinazione",
                             help=mandatory + LnColor.getYellow(""" - Nome della directory dove copiare le canzoni selezionate ...
     [DEFAULT: {0}]
-    """.format(gv.ini.MAIN.destDIR)))
+    """.format(gv.ini.INPUT_DEFAULT.destDIR)))
 
 
 
 # ---------------------------
-# - _excelExport
+# - _excelFile
 # ---------------------------
-def _excelExport(myParser):
+def _excelFile(myParser):
     mandatory = ''
     # mandatory = LnColor.getYellowH('MANDATORY')
 
@@ -341,7 +342,7 @@ def _excelExport(myParser):
                             required=False,
                             dest="excelFile",
                             metavar="Excel filename",
-                            default=None,
+                            default=gv.ini.INPUT_DEFAULT.EXCEL_File,
                             help=mandatory + LnColor.getYellow( """ - Nome del file Excel di cui fare l'export.
     Il file di output avrà lo stesso fullPath ma con estenzione .csv
     DEFAULT: come definito nel file config.ini [EXCEL]-->EXCEL_File
@@ -364,7 +365,7 @@ def _commonOptions(myParser):
         opts += LnColor.getYellowH(','.join(item) + ',\n        ')
 
     defaultInclude = ['Analizzata']
-    defaultInclude = [x.strip() for x in gv.ini.MAIN.include.split(',')]
+    defaultInclude = [x.strip() for x in gv.ini.INPUT_DEFAULT.include.split(',')]
     myParser.add_argument( "--include",
                             type=checkInclude,
 
@@ -398,7 +399,7 @@ def _commonOptions(myParser):
 
 
     defaultExclude = ['Undefined' ,'Avoidit','Confusionaria']
-    defaultExclude = [x.strip() for x in gv.ini.MAIN.exclude.split(',')]
+    defaultExclude = [x.strip() for x in gv.ini.INPUT_DEFAULT.exclude.split(',')]
     myParser.add_argument( "--exclude",
                             type=checkExclude,
                             # ------------------------------------------------------------

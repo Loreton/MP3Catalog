@@ -48,14 +48,6 @@ def Exit(rcode, text, printStack=False, stackLevel=9, console=True):
         # - Display dello STACK
         # - http://blog.dscpl.com.au/2015/03/generating-full-stack-traces-for.html
         # -------------------------------
-    if printStack:
-        logWrite("EXIT STACK:")
-        for i in reversed(list(range(1, stackLevel))):
-            caller = _calledBy(i)
-            if not 'index out of range' in caller:
-                logWrite("    {0}".format(caller))
-                if console:
-                    printColor(caller, tab=8)
 
     if console:
         printColor("  RCODE       : {0}".format(rcode), tab=4)
@@ -69,6 +61,15 @@ def Exit(rcode, text, printStack=False, stackLevel=9, console=True):
         for line in textList:
             logWrite(' '*10 + "{0}".format(line))
 
+    if printStack:
+        logWrite("EXIT STACK:")
+        print()
+        for i in reversed(list(range(1, stackLevel))):
+            caller = _calledBy(i)
+            if not 'index out of range' in caller:
+                logWrite("    {0}".format(caller))
+                if console:
+                    printColor(caller, tab=8)
     sys.exit(rcode)
 
 

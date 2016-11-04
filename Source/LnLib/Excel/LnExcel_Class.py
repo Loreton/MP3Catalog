@@ -11,8 +11,7 @@ import openpyxl
 from    openpyxl.utils import get_column_letter
 import  openpyxl.utils as xls
 
-# from LnLib.System.LnLogger import setLogger as defSetLogger  # OK funziona dalla root del package
-from ..LnCommon.LnLogger import SetLogger as defSetLogger        # OK funziona dalla upperDir del package
+from ..LnCommon.LnLogger import SetLogger        # OK funziona dalla upperDir del package
 
 ##########################################################################################################
 # Per la creazione di attributi read-only
@@ -42,7 +41,7 @@ class Excel(object):
         # * Calling Sample:
         # * eth0 = Ln.LnInterfaces('eth0', myIP=True, DRYRUN=True, setLogger=gv.Ln.setLogger)
         # ***********************************************
-    def __init__(self, excelFileName, SetLogger=defSetLogger, fDEBUG=False):
+    def __init__(self, excelFileName, fDEBUG=False):
             # ----- defaults
         self._name              = None
         self._description       = None
@@ -89,59 +88,16 @@ class Excel(object):
 
 
 
-    #######################################################
-    # - exportToCSV()
-    # - Export di un foglio excel to CSV format
-    #######################################################
-    def exportToCSV0(self, sheetName, outFname=None, maxrows=99999999, fPRINT=False):
-        if fPRINT:
-            print("Converting sheetName: [{0}] to CSV file: [{1}]." .format(sheetName, outFname))
-
-        ws          = self._wb.get_sheet_by_name(sheetName)
-        nRows       = ws.max_row
-        nCols       = ws.max_column
-
-        fullRange = get_column_letter(1) + str(1) + ':' + get_column_letter(nCols) + str(nRows)
-
-        data = []
-        for inx, row in enumerate(ws.rows):
-            if inx > maxrows: break
-            line = []
-            for cell in row:
-                val = cell.value
-                if val == None:
-                    val = '""'
-                line.append(val)
-
-            data.append(line)
-            if fPRINT:
-                print ("{0:5} - {1}".format(inx, line))
-                print()
-
-        if outFname:
-            # outFname = '/tmp/excelToCSV_{0}.csv'.format(sheetName)
-            FILE = open(outFname, "wb")
-            for line in data:
-                line = "{0}{1}".format(line, '\n')
-                FILE.write(bytes(line, 'UTF-8'))       # con Python3 bisogna convertirlo in bytes
-            FILE.close()
-            if fPRINT:
-                print("..... file: {FILE} has been written".format(FILE=outFname))
-
-        if fPRINT:
-            print("full Range: {0}".format(fullRange))
-            print("file {0} has been created".format(outFname))
-
-        return data
-
 
     ####################################################################
     # - exportToCSV()
     # - Export di un foglio excel to CSV format
     # - rangeString: range di celle su cui operare
     # - colNames   : numero di riga che contiene i nomi delle colonne
+    # - csvType     : simple    "a"; "b",...
+    # -             : listtype  ["a"; "b",...]
     ####################################################################
-    def exportToCSV(self, sheetName, outFname=None, rangeString=None, colNames=0, maxrows=99999999, fPRINT=False):
+    def exportCSV(self, sheetName, csvType='simple', outFname=None, rangeString=None, colNames=0, maxrows=99999999, fPRINT=False):
         logger = self._SetLogger(__name__)
         if fPRINT:
             print("Converting sheetName: [{0}] to CSV file: [{1}]." .format(sheetName, outFname))
@@ -162,15 +118,12 @@ class Excel(object):
         minCol -= 1         # col parte da '0'
         maxCol -= 1         # col parte da '0'
 
-        # minRow, maxRow = rows_from_range(rangeString)
-        # minCol, maxCol = cols_from_range(rangeString)
-
 
             # ---------------------------------
             # - grosso modo può andare.....
             # ---------------------------------
         dataList        = []
-        dataListOfList  = []
+        # dataListOfList  = []
         for indexRow, row in enumerate(ws.rows):
                 # - prendiamo tutte le righe previste nel range
             if minRow <= indexRow < maxRow:
@@ -184,15 +137,17 @@ class Excel(object):
                 else:
                     continue
 
+                if csvType == 'listtype':
+                    dataList.append(line)
 
-                    # costruiamo la riga ...
-                lineStr = line[0]
-                for item in line[1:]:
-                    lineStr = '{0};{1}'.format(lineStr, item)
-                    # ... per inserirla nell'array
+                else:
+                        # costruiamo la riga ...
+                    lineStr = line[0]
+                    for item in line[1:]:
+                        lineStr = '{0};{1}'.format(lineStr, item)
 
-                dataList.append(lineStr)
-                dataListOfList.append(line)
+                        # ... per inserirla nell'array
+                    dataList.append(lineStr)
 
         if fPRINT:
             for index, line in enumerate(dataList):
@@ -203,8 +158,10 @@ class Excel(object):
             for line in dataList:
                 line = "{0}{1}".format(line, '\n')
                 FILE.write(bytes(line, 'UTF-8'))       # con Python3 bisogna convertirlo in bytes
+
             FILE.close()
             logger.info("..... file: {FILE} has been written".format(FILE=outFname))
+
             if fPRINT:
                 print("..... file: {FILE} has been written".format(FILE=outFname))
 
@@ -214,13 +171,14 @@ class Excel(object):
             print("     file {0} has been created".format(outFname))
             print()
 
-        for item in dataListOfList:
-            print (item)
-        print ()
-        for item in dataList:
-            print (item)
-        print ()
-        return dataList
+            for item in dataList:
+                print (item)
+            print ()
+
+        self.data = dataList
+
+
+
 
 
 

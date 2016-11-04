@@ -11,6 +11,55 @@ import ast
 
 
 
+###############################################
+# -
+###############################################
+def insertSong(gv, song):
+    logger  = gv.Ln.SetLogger(package=__name__)
+
+        # ===========================================
+        #  - Inserimento di un nuovo record
+        # ===========================================
+    # mp3Dict = gv.song.dict
+
+    ptr = gv.song.dict
+    startAttributeCols = gv.song.field.SongName+1
+
+        # - creazione dictionary per type.author.album.songName
+    for field in song[:startAttributeCols]:
+        if not field in ptr:
+            ptr[field] = gv.Ln.LnDict()
+        ptr = ptr[field]
+
+        if gv.song.attributeCols[0] in ptr:
+            pass
+        else:
+            print ('....new entry', song)
+                # su ogni canzone mettiamo i vari attributi di default
+            for index, value in enumerate(song[startAttributeCols:]):
+                attrName  = gv.song.attributeCols[index]
+                ptr[attrName] = '.'
+
+
+###############################################
+# -
+###############################################
+def merge(gv):
+    logger  = gv.Ln.SetLogger(package=__name__)
+    mp3Dict = gv.song.dict
+
+    # lettura directory
+    listaFile = gv.Ln.DirList(gv.ini.MAIN.sourceDIR, patternLIST=['*.mp3'], onlyDir=False, maxDeep=99)
+    firstField = len(gv.ini.MAIN.sourceDIR.split(os.path.sep))
+    for line in listaFile:
+        line = line.rsplit('.', 1)[0]
+        record = line.split(os.path.sep)[firstField:]
+        if not record[0] in gv.ini.MAIN.songType: continue
+        if record[0].startswith('@'): continue
+        insertSong(gv, record)
+        # print (record)
+
+
 ################################################################################
 # - M A I N
 # - Prevede:
@@ -23,20 +72,13 @@ def Main(gv, action):
     gv.data = gv.Ln.LnDict()
 
 
+    csvSongs = gv.Prj.ReadCSVFile(gv)
 
-        # ========================================
-        # - Exporting Excel File
-        # ========================================
-    xlsFile = gv.INPUT_PARAM.excelFile
-    if not xlsFile:     # se non passato tramite parametro prendiamo quello definito in config
-        xlsFile = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.ini.EXCEL.EXCEL_File))
+    if action == 'merge':
+        merge(gv)
 
-    csvFile = xlsFile.rsplit('.', -1)[0] + '.csv'
 
-    if action == 'exportExcel':
-        mydata  = gv.Ln.Excel(xlsFile)
-        mydata.exportToCSV('Catalog', outFname=csvFile, rangeString="B2:Z17", colNames=4, fPRINT=True)
-        return
+    return
 
 
     fileScartate        = gv.Prj.dataDIR + '/tmp/_Scartate.csv'
@@ -56,49 +98,35 @@ def Main(gv, action):
     songList.scartate    = [gv.Prj.songColumsName]  # init con il nome delle colonne
     songList.duplicate   = [gv.Prj.songColumsName]  # init con il nome delle colonne
 
-    gv.fEXECUTE      = gv.INPUT_PARAM.fEXECUTE
-
-        # ------------------------------------------------------------
-        # - Lettura del file.csv
-        # - La prima riga conriene il nome delle colonne
-        # - Eliminiamo i blank nei nomi colonne
-        # ------------------------------------------------------------
-    csvRowList = gv.Prj.readFile(gv, csvFile)
-    csvRowList[0] = csvRowList[0].replace(' ', '')   # eliminiamo i BLANK nei nomi colonne
-
-    xx = ast.literal_eval(csvRowList[0])    # converte una stringa formato LIST in una LIST
-    if not ';'.join(xx) == ';'.join(gv.Prj.songColumsName):
-        C.printYellowH('i nomi delle colonne non coincidono', tab=4)
-        C.printYellowH('file     : {0}'.format(csvRowList[0]), tab=4)
-        C.printYellowH('required : {0}'.format(';'.join(gv.Prj.songColumsName)), tab=4)
-        gv.Ln.Exit(1, 'I nomi delle colonne non coincidono')
 
 
-        # RECs creazione di una lista di liste/canzoni [[],[],..]
-    RECs = []
-    for row in csvRowList[1:]:
-        tokens = [token.strip() for token in row.split(';') if token]
-        RECs.append(tokens)
+
+
+
     gv.Prj.songFilter(gv, RECs)
 
+    # - Salvataggio dei dati
+    '''
     choice = gv.Ln.getKeyboardInput(gv, "    Vuoi salvare i dati sui relativi file?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
 
     if choice.lower() in ['x']:
         gv.Ln.exit(0, "exiting on user request", printStack=False, stackLevel=9, console=True)
 
     elif choice.lower() in ['yes']:
-        msg = 'writing file: {0}'.format(fileScartate)
-        C.printYellow(msg, tab=4); logger.info(msg)
-        gv.Prj.writeFile(gv, fileScartate,   data=songList.scartate)
+    '''
+    msg = 'writing file: {0}'.format(fileScartate)
+    C.printYellow(msg, tab=4); logger.info(msg)
+    gv.Prj.writeFile(gv, fileScartate,   data=songList.scartate)
 
-        C.printYellow('writing file: {0}'.format(fileValidSongs), tab=4)
-        gv.Prj.writeFile(gv, fileValidSongs,   data=songList.validSongs)
+    C.printYellow('writing file: {0}'.format(fileValidSongs), tab=4)
+    gv.Prj.writeFile(gv, fileValidSongs,   data=songList.validSongs)
 
-        C.printYellow('writing file: {0}'.format(fileAnalizzate), tab=4)
-        gv.Prj.writeFile(gv, fileAnalizzate, data=songList.analizzate)
+    C.printYellow('writing file: {0}'.format(fileAnalizzate), tab=4)
+    gv.Prj.writeFile(gv, fileAnalizzate, data=songList.analizzate)
 
 
     if action == 'copySongs':
+        gv.fEXECUTE      = gv.INPUT_PARAM.fEXECUTE
 
         RECs = songList.validSongs[:]
         logger.info('trovate {0} canzoni da copiare'.format(len(RECs)))
