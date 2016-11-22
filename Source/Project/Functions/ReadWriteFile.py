@@ -49,7 +49,9 @@ def writeFile(gv, outFile, data=[]):
     f = open(outFile, "w", encoding="latin-1")
     for line in data:
         if isinstance(line, list):
-            f.write(';'.join(line))
+            # converte all items to string
+            lineStr = [str(item) for item in line]
+            f.write(';'.join(lineStr)) # potrebbe dare errore se qualce item non è stringa
         else:
             f.write(line)
         f.write('\n')

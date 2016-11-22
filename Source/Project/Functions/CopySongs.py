@@ -12,7 +12,7 @@ import shutil
 def copySongs(gv, RECs):
     global c, copiedSongs
     logger = gv.Ln.SetLogger(package=__name__)
-    c = gv.Ln.Colors()
+    c = gv.Ln.LnColor()
 
     col = gv.Prj.enumCols(gv, RECs[0])
     nCols = len(col)
@@ -45,13 +45,17 @@ def copySongs(gv, RECs):
         if len(song) != nCols: continue
         if gv.INPUT_PARAM.maxSongs and index > gv.INPUT_PARAM.maxSongs: break
 
-        recSongSize = int(song[col.SongSize].replace('bytes', '').replace('.', ''))
+        if isinstance(song[col.SongSize], int):
+            recSongSize = song[col.SongSize]
+        elif isinstance(song[col.SongSize], str):
+            recSongSize = int(song[col.SongSize].replace('bytes', '').replace('.', ''))
 
-        sourceSongName = os.path.join(  gv.INPUT_PARAM.sourceDIR,
+        sourceSongName = os.path.join(
+                                    gv.INPUT_PARAM.MP3SourceDir,
                                     song[col.Type],
                                     song[col.AuthorName],
                                     song[col.AlbumName],
-                                    song[col.SongName] + '.mp3')
+                                    song[col.SongName].strip() + '.mp3')
 
 
         c.printGreen ('{FILE:<{LEN}}'.format(LEN=DISPLAY_LEN,FILE=sourceSongName[-DISPLAY_LEN:]), end='', tab=4)

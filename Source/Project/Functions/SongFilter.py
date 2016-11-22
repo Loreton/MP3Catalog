@@ -73,10 +73,8 @@ def songFilter(gv, RECs):
         if isinstance(song[col.SongSize], int):
             size = song[col.SongSize]
         elif isinstance(song[col.SongSize], str):
-            # print (type(song[col.SongSize]), song[col.SongSize])
-            songSize = song[col.SongSize].replace('bytes', '').replace('.', '')
-            # print (type(songSize), songSize)
-            size = int(songSize)
+            size = int(song[col.SongSize].replace('bytes', '').replace('.', ''))
+
 
 
         # se la canzone NON ha il flag 'Analizzata'... ignorala

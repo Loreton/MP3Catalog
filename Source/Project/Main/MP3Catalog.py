@@ -99,45 +99,34 @@ def Main(gv, action):
     gv.songList.scartate    = [gv.song.colsName]  # init LIST con il nome delle colonne
     gv.songList.duplicate   = [gv.song.colsName]  # init LIST con il nome delle colonne
 
-
-
-
     gv.Prj.songFilter(gv, RECs)
-    gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)
 
 
-    # - Salvataggio dei dati
-    '''
-    choice = gv.Ln.getKeyboardInput(gv, "    Vuoi salvare i dati sui relativi file?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
+    # - Salvataggio dei dati solo per DEBUG
+    choice = gv.Ln.getKeyboardInput("    Vuoi salvare i dati sui relativi file?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
+    if choice.lower() in ['yes']:
+        # songList    = gv.songList
+        msg = 'writing file: {0}'.format(fileScartate)
+        C.printYellow(msg, tab=4); logger.info(msg)
+        gv.Prj.writeFile(gv, fileScartate,   data=gv.songList.scartate)
 
-    if choice.lower() in ['x']:
-        gv.Ln.exit(0, "exiting on user request", printStack=False, stackLevel=9, console=True)
+        C.printYellow('writing file: {0}'.format(fileValidSongs), tab=4)
+        gv.Prj.writeFile(gv, fileValidSongs,   data=gv.songList.validSongs)
 
-    elif choice.lower() in ['yes']:
-    '''
-    songList    = gv.songList
-    msg = 'writing file: {0}'.format(fileScartate)
-    C.printYellow(msg, tab=4); logger.info(msg)
-    gv.Prj.writeFile(gv, fileScartate,   data=songList.scartate)
-
-    C.printYellow('writing file: {0}'.format(fileValidSongs), tab=4)
-    gv.Prj.writeFile(gv, fileValidSongs,   data=songList.validSongs)
-
-    C.printYellow('writing file: {0}'.format(fileAnalizzate), tab=4)
-    gv.Prj.writeFile(gv, fileAnalizzate, data=songList.analizzate)
+        C.printYellow('writing file: {0}'.format(fileAnalizzate), tab=4)
+        gv.Prj.writeFile(gv, fileAnalizzate, data=gv.songList.analizzate)
 
 
     if action == 'copySongs':
         gv.fEXECUTE      = gv.INPUT_PARAM.fEXECUTE
-
-        RECs = songList.validSongs[:]
+        RECs = gv.songList.validSongs[:]
         logger.info('trovate {0} canzoni da copiare'.format(len(RECs)))
 
         if gv.INPUT_PARAM.fCHECK_SOURCE:
             gv.Prj.checkSourceSongs(gv, RECs)
 
         else:
-            choice = gv.Ln.getKeyboardInput(gv, "    Continuare per copiare le canzoni sulla destinazione?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
+            choice = gv.Ln.getKeyboardInput("    Continuare per copiare le canzoni sulla destinazione?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
             if choice.lower() in ['x', 'no']:
                 sys.exit()
 
@@ -145,11 +134,13 @@ def Main(gv, action):
             print()
             C.printYellow('writing file: {0}'.format(fileDuplicateSongs), tab=4)
             print()
-            gv.Prj.writeFile(gv, fileDuplicateSongs, data=songList.duplicate)
+            gv.Prj.writeFile(gv, fileDuplicateSongs, data=gv.songList.duplicate)
 
             gv.copySong.printDict(gv)
 
     else:
         C.printRed('Action {0} not yet implemented...!'.format(action), tab=8)
         sys.exit()
+
+    gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)
     gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)
