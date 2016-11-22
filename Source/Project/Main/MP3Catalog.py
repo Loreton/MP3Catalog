@@ -49,8 +49,8 @@ def merge(gv):
     mp3Dict = gv.song.dict
 
     # lettura directory
-    listaFile = gv.Ln.DirList(gv.ini.MAIN.sourceDIR, patternLIST=['*.mp3'], onlyDir=False, maxDeep=99)
-    firstField = len(gv.ini.MAIN.sourceDIR.split(os.path.sep))
+    listaFile = gv.Ln.DirList(gv.ini.MAIN.MP3sourceDir, patternLIST=['*.mp3'], onlyDir=False, maxDeep=99)
+    firstField = len(gv.ini.MAIN.MP3sourceDir.split(os.path.sep))
     for line in listaFile:
         line = line.rsplit('.', 1)[0]
         record = line.split(os.path.sep)[firstField:]
@@ -72,38 +72,39 @@ def Main(gv, action):
     gv.data = gv.Ln.LnDict()
 
 
-    csvSongs = gv.Prj.ReadCSVFile(gv)
+        # ritorna una lista di canzoni (lista a sua volta)
+        # SONGS[
+        #       song1[...]
+        #       song2[...]
+        #      ]
+    RECs = gv.Prj.ReadCSVFile(gv)
+    # print (type(RECs), RECs)
 
     if action == 'merge':
         merge(gv)
 
 
-    return
+    fileScartate        = '{ROOT}/tmp/_Scartate.csv'.format(ROOT=gv.Prj.dataDIR)
+    fileAnalizzate      = '{ROOT}/tmp/_Analizzate.csv'.format(ROOT=gv.Prj.dataDIR)
+    fileValidSongs      = '{ROOT}/tmp/_ValidSongs.csv'.format(ROOT=gv.Prj.dataDIR)
+    fileDuplicateSongs  = '{ROOT}/tmp/_DuplicateSongs.csv'.format(ROOT=gv.Prj.dataDIR)
 
-
-    fileScartate        = gv.Prj.dataDIR + '/tmp/_Scartate.csv'
-    fileAnalizzate      = gv.Prj.dataDIR + '/tmp/_Analizzate.csv'
-    fileValidSongs      = gv.Prj.dataDIR + '/tmp/_ValidSongs.csv'
-    fileDuplicateSongs  = gv.Prj.dataDIR + '/tmp/_DuplicateSongs.csv'
-
-    # gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
         # ----------------------------------------------
         # - Preleviamo tutte le canzoni analizzate
         # - Analizzata;Recomended;Loreto;Buona;Soft;Vivace;Molto Viv;Camera;Car;Lenta;Count
         # ----------------------------------------------
     gv.songList = gv.Ln.LnDict()
-    songList    = gv.songList
-    songList.validSongs  = [gv.Prj.songColumsName]  # init con il nome delle colonne
-    songList.analizzate  = [gv.Prj.songColumsName]  # init con il nome delle colonne
-    songList.scartate    = [gv.Prj.songColumsName]  # init con il nome delle colonne
-    songList.duplicate   = [gv.Prj.songColumsName]  # init con il nome delle colonne
-
-
+    gv.songList.validSongs  = [gv.song.colsName]  # init LIST con il nome delle colonne
+    gv.songList.analizzate  = [gv.song.colsName]  # init LIST con il nome delle colonne
+    gv.songList.scartate    = [gv.song.colsName]  # init LIST con il nome delle colonne
+    gv.songList.duplicate   = [gv.song.colsName]  # init LIST con il nome delle colonne
 
 
 
 
     gv.Prj.songFilter(gv, RECs)
+    gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)
+
 
     # - Salvataggio dei dati
     '''
@@ -114,6 +115,7 @@ def Main(gv, action):
 
     elif choice.lower() in ['yes']:
     '''
+    songList    = gv.songList
     msg = 'writing file: {0}'.format(fileScartate)
     C.printYellow(msg, tab=4); logger.info(msg)
     gv.Prj.writeFile(gv, fileScartate,   data=songList.scartate)

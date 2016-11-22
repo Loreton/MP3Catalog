@@ -7,9 +7,9 @@ import os, sys
 # #########################################################
 # - SetUp del log
 # #########################################################
-def setupLog(gv):
+def SetupLog(gv):
     if gv.INPUT_PARAM.LogACTIVE:
-        C       = gv.Ln.Colors()
+        C       = gv.Ln.LnColor()
 
         logFileName         = '/tmp/{PREFIX}_{USER}.log'.format(PREFIX=gv.Prj.prefix, USER=getpass.getuser())
         logConfigFileName   = os.path.normpath('{CONFDIR}/LoggerConfig.ini'.format(CONFDIR=gv.Prj.configDIR))
@@ -24,7 +24,6 @@ def setupLog(gv):
 
 
         if os.path.isfile(logConfigFileName):
-            # gv.Ln.initLogger(iniLogFile=logConfigFileName, logFileName=logFileName, package=gv.Prj.name, packageQualifiers=8)
             gv.Ln.InitLogger(   iniLogFile=logConfigFileName,
                                 logFileName=logFileName,
                                 package=gv.Prj.name,
@@ -40,7 +39,7 @@ def setupLog(gv):
             gv.Ln.Exit(1, errMsg)
     else:
         logger = gv.Ln.SetLogger(package="Main")
-        # logger = gv.Ln.setNullLogger()
+
 
     return logger
 

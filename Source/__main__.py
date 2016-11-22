@@ -39,7 +39,7 @@ if __name__ == "__main__":
     # ---------------------------------------------------------
     # - SetUp dell'ambiente
     # ---------------------------------------------------------
-    Prj.setup.setupEnv(gv, fDEBUG=False)
+    Prj.SetupEnv(gv, fDEBUG=False)
 
 
     # ------------------------------------------------------------------
@@ -64,12 +64,12 @@ if __name__ == "__main__":
     gv.song = gv.Ln.LnDict()
     gv.song.primaryCols   = [x.strip() for x in primaryCols.split(',')]
     gv.song.attributeCols = [x.strip() for x in attributeCols.split(',')]
-    gv.song.songCols      = gv.song.primaryCols[:]
-    gv.song.songCols.extend(gv.song.attributeCols)
+    gv.song.colsName      = gv.song.primaryCols[:]
+    gv.song.colsName.extend(gv.song.attributeCols)
 
         # - pseudo enum delle colonne
     gv.song.field = gv.Ln.LnDict()
-    for index, colName in enumerate(gv.song.songCols):
+    for index, colName in enumerate(gv.song.colsName):
         gv.song.field[colName] = index
 
 
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     # - Nel caso specifico abbiamo un argomento multiValue
     # -   e quindi passiamo i valori validi per detto argomento.
     # ------------------------------------------------------------------
-    Input           = Prj.setup.parseInput(gv, args=sys.argv[1:], columnsName=gv.song.attributeCols)
+    Input           = Prj.ParseInput(gv, args=sys.argv[1:], columnsName=gv.song.attributeCols)
     gv.INPUT_PARAM  = gv.Ln.LnDict(Input)
     # gv.INPUT_PARAM.printDict(gv)
     gv.fDEBUG        = gv.INPUT_PARAM.fDEBUG
@@ -88,7 +88,7 @@ if __name__ == "__main__":
         # ---------------------------------------------------------
         # - SetUp del log
         # ---------------------------------------------------------
-    logger = Prj.setup.setupLog(gv)
+    logger = Prj.SetupLog(gv)
 
 
     Prj.Main(gv, gv.INPUT_PARAM.songAction)

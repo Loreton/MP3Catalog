@@ -11,7 +11,7 @@ this_mod = sys.modules[__name__]
 #############################################################
 # - parseInput()
 #############################################################
-def parseInput(gVars, args, columnsName, programVersion=None):
+def ParseInput(gVars, args, columnsName, programVersion=None):
     global LnColor, songColumsName, gv
     gv = gVars
     songColumsName = columnsName
@@ -311,12 +311,12 @@ def _songDirs(myParser):
     myParser.add_argument( "-s", "--source-dir",
                             type=str,
                             required=False,
-                            default=gv.ini.INPUT_DEFAULT.sourceDIR,
-                            dest="sourceDIR",
+                            default=gv.ini.INPUT_DEFAULT.MP3SourceDir,
+                            dest="MP3SourceDir",
                             metavar="directory sorgente",
                             help=mandatory + LnColor.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
     [DEFAULT: {0}]
-    """.format(gv.ini.INPUT_DEFAULT.sourceDIR)))
+    """.format(gv.ini.INPUT_DEFAULT.MP3SourceDir)))
 
     myParser.add_argument( "-d", "--dest-dir",
                             type=str,

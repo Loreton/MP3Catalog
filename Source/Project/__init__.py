@@ -36,6 +36,11 @@ from . Main.MP3Catalog              import  Main
 from . import Setup     as setup
 from . import Functions as func
 
+from . Setup.SetupEnv               import   SetupEnv
+from . Setup.SetupLog               import   SetupLog
+from . Setup.ParseInput              import  ParseInput
+
+
 from . Functions.SongFilter         import  songFilter
 from . Functions.SongFilter         import  songFilter
 

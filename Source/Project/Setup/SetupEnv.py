@@ -3,7 +3,7 @@
 import sys, os
 import time
 
-def setupEnv(gv, fDEBUG=False):
+def SetupEnv(gv, fDEBUG=False):
     # print (gv.Ln.pyVer)
     if gv.Ln.pyVer >= '340':
         # setupEnv340(gv)

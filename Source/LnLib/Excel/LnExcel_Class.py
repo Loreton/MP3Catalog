@@ -107,6 +107,7 @@ class Excel(object):
         nCols       = ws.max_column
 
 
+        # print (type(rangeString), rangeString)
         if rangeString:
             minCol, minRow, maxCol, maxRow = xls.range_boundaries(rangeString)
         else:

@@ -11,12 +11,12 @@ class BreakIt(Exception): pass
 def songFilter(gv, RECs):
     logger  = gv.Ln.SetLogger(package=__name__)
     C       = gv.Ln.LnColor()
-    col     = gv.Prj.enumCols(gv, gv.Prj.songColumsName)
-
+    col     = gv.Prj.enumCols(gv, gv.song.colsName)
 
         # Assegnamo un peso binario ad ogni colonna che ci interessa filtrare.
     colVal = gv.Prj.enumColsBase2(gv, gv.INPUT_PARAM.include)
     reqScore = 0
+    C.printCyan ('---  Attribute weight ----', tab=4)
     for item in colVal:
         C.printCyan ("{ITEM:<14} -->  {WEIGHT:>6}".format(
                 ITEM=item,
@@ -25,18 +25,21 @@ def songFilter(gv, RECs):
             )
 
         reqScore  +=  colVal[item]
-
-    print ()
-    C.printCyan ("num of output directory: {0}".format(gv.INPUT_PARAM.numDirs), tab=4)
-
-    comment = ' - no limit' if gv.INPUT_PARAM.maxBytes == 0 else ''
-    C.printCyan ("Max Byte per directory:  {0}{1}".format(gv.INPUT_PARAM.maxBytes, comment), tab=4)
-
-    comment = ' - no limit' if gv.INPUT_PARAM.maxSongs == 0 else ''
-    C.printCyan ("Max Songs to extract:    {0}{1}".format(gv.INPUT_PARAM.maxSongs, comment), tab=4)
-
     print ()
     C.printCyan ('requested Score: {0}'.format(reqScore), tab=4)
+
+    print ()
+    print ()
+    C.printCyan ('---  Summary   ----', tab=4)
+    C.printCyan ("num of output directory : {0}".format(gv.INPUT_PARAM.numDirs), tab=4)
+
+    comment = ' - no limit' if gv.INPUT_PARAM.maxBytes == 0 else ''
+    C.printCyan ("Max Byte per directory  : {0}{1}".format(gv.INPUT_PARAM.maxBytes, comment), tab=4)
+
+    comment = ' - no limit' if gv.INPUT_PARAM.maxSongs == 0 else ''
+    C.printCyan ("Max Songs to extract    : {0}{1}".format(gv.INPUT_PARAM.maxSongs, comment), tab=4)
+
+    print ()
     print ()
 
 
@@ -47,27 +50,34 @@ def songFilter(gv, RECs):
     toBeAanalysed       = 0
     toBeAanalysedSize   = 0
     invalidLines        = 0
-    nCols               = len(gv.Prj.songColumsName)
+    nCols               = len(gv.song.colsName)
 
     excludeType     = ['Bambini', 'Natale', 'Popolari', 'Themes']
     excludeAuthor   = ['xxx', 'cccc', 'xxx']
 
     includeCol  = gv.INPUT_PARAM.include
     excludeCol  = gv.INPUT_PARAM.exclude
-    print (RECs)
-    sys.exit()
+    maxSongs    = gv.INPUT_PARAM.maxSongs
+
+    RECs = RECs[1:]  # skip column name row
     for index, song in enumerate(RECs):
-        xx = len(song)
+        # print (song)
         if len(song) != nCols:
             invalidLines += 1
             continue
 
-        if gv.INPUT_PARAM.maxSongs and index > gv.INPUT_PARAM.maxSongs:
-            print ('numero massimo di canzoni raggiunto')
+        if maxSongs and index > maxSongs:
+            C.printRedH('numero massimo di canzoni raggiunto', tab=4)
             break
 
+        if isinstance(song[col.SongSize], int):
+            size = song[col.SongSize]
+        elif isinstance(song[col.SongSize], str):
+            # print (type(song[col.SongSize]), song[col.SongSize])
+            songSize = song[col.SongSize].replace('bytes', '').replace('.', '')
+            # print (type(songSize), songSize)
+            size = int(songSize)
 
-        size = int(song[col.SongSize].replace('bytes', '').replace('.', ''))
 
         # se la canzone NON ha il flag 'Analizzata'... ignorala
         if song[col['Analizzata']] == '.':  # deve avere un carattere diverso da '.'
@@ -141,8 +151,6 @@ def songFilter(gv, RECs):
     C.printYellow('risultate VALIDE dalla ricerca   : {0:>6} - bytes: {1:,}'.format(len(gv.songList.validSongs)-1, validTotSize), tab=4)
     C.printYellow('tisultate SCARTATE dalla ricerca : {0:>6} - bytes: {1:,}'.format(len(gv.songList.scartate)-1, scartateTotSize), tab=4)
 
-    '''
-    '''
     print()
 
     return
