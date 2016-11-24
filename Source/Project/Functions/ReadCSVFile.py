@@ -34,9 +34,12 @@ def ReadCSVFile(gv):
     if gv.Ln.Fmtime(xlsFile) > gv.Ln.Fmtime(csvFile):
         logger.debug('range To process: {}'.format(gv.ini.EXCEL.RangeToProcess))
         mydata  = gv.Ln.Excel(xlsFile)
-        mydata.exportCSV('Catalog', csvType=csvFormat, outFname=csvFile, rangeString=gv.ini.EXCEL.RangeToProcess, colNames=4, fPRINT=False)
+        # mydata.exportCSV_bytes('Catalog', csvType=csvFormat, outFname=csvFile, rangeString=gv.ini.EXCEL.RangeToProcess, colNames=4, fPRINT=False)
+        mydata.exportCSV('Catalog', csvType=csvFormat, outFname=csvFile, rangeString=gv.ini.EXCEL.RangeToProcess, colNames=4, encoding='utf-8', fPRINT=False)
     else:
         logger.debug('excel file is older than CSV file. No export will take place.')
+
+
 
         # ------------------------------------------------------------
         # - Lettura del file.csv
@@ -56,12 +59,15 @@ def ReadCSVFile(gv):
         # colNames = [token.strip() for token in csvRowList[0].split(';') if token]
         colNames = [token.strip() for token in csvRowList[0].split(';')]
 
-    excelColsName = ';'.join(colNames)
+    excelColsName  = ';'.join(colNames)
     configColsName = ';'.join(gv.song.colsName)
     logger.debug('excel  columns name: {0}'.format(excelColsName))
     logger.debug('config columns name: {0}'.format(configColsName))
 
-    if not ';'.join(colNames) == ';'.join(gv.song.colsName):
+    # if not ';'.join(colNames) == ';'.join(gv.song.colsName):
+    # print (excelColsName)
+    # print (configColsName)
+    if not excelColsName == configColsName:
         C.printYellowH('i nomi delle colonne non coincidono', tab=4)
         C.printYellowH('file     : {0}'.format(csvRowList[0]), tab=4)
         C.printYellowH('expected : {0}'.format(configColsName), tab=4)
@@ -76,7 +82,9 @@ def ReadCSVFile(gv):
     if csvFormat == 'listtype':
         for row in csvRowList:
             try:
+                # print (type(row), row)
                 column = ast.literal_eval(row)    # converte una stringa formato LIST in una LIST
+                # print (type(column), column)
                 if len(column[gv.song.field.Type].strip()) > 3:
                     RECs.append(column)
             except Exception as why:
@@ -89,7 +97,7 @@ def ReadCSVFile(gv):
 
 
     gv.song.list = RECs
-
+    # print (RECs[2])
         # ===========================================
         #  - Creazione del dictionary del CSV
         # ===========================================
@@ -115,4 +123,5 @@ def ReadCSVFile(gv):
 
     if gv.fDEBUG: gv.song.dict.printDict(gv)
     return RECs
+    gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)
 

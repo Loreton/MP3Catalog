@@ -88,6 +88,7 @@ def Main(gv, action):
     fileAnalizzate      = '{ROOT}/tmp/_Analizzate.csv'.format(ROOT=gv.Prj.dataDIR)
     fileValidSongs      = '{ROOT}/tmp/_ValidSongs.csv'.format(ROOT=gv.Prj.dataDIR)
     fileDuplicateSongs  = '{ROOT}/tmp/_DuplicateSongs.csv'.format(ROOT=gv.Prj.dataDIR)
+    fileNotFoundSongs   = '{ROOT}/tmp/_NotFoundSongs.csv'.format(ROOT=gv.Prj.dataDIR)
 
         # ----------------------------------------------
         # - Preleviamo tutte le canzoni analizzate
@@ -118,7 +119,8 @@ def Main(gv, action):
 
 
     if action == 'copySongs':
-        gv.fEXECUTE      = gv.INPUT_PARAM.fEXECUTE
+        copySong    = None
+        gv.fEXECUTE = gv.INPUT_PARAM.fEXECUTE
         RECs = gv.songList.validSongs[:]
         logger.info('trovate {0} canzoni da copiare'.format(len(RECs)))
 
@@ -130,17 +132,20 @@ def Main(gv, action):
             if choice.lower() in ['x', 'no']:
                 sys.exit()
 
-            gv.Prj.copySongs(gv, RECs)
+            copySong = gv.Prj.copySongs(gv, RECs)
             print()
             C.printYellow('writing file: {0}'.format(fileDuplicateSongs), tab=4)
             print()
             gv.Prj.writeFile(gv, fileDuplicateSongs, data=gv.songList.duplicate)
+            print()
+            C.printYellow('writing file: {0}'.format(fileNotFoundSongs), tab=4)
+            print()
+            gv.Prj.writeFile(gv, fileNotFoundSongs, data=copySong.NOTFOUND)
 
-            gv.copySong.printDict(gv)
+            # gv.copySong.printDict(gv)
 
     else:
         C.printRed('Action {0} not yet implemented...!'.format(action), tab=8)
         sys.exit()
 
-    gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)
     gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)

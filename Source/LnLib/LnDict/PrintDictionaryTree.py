@@ -21,11 +21,11 @@ from ..LnCommon.LnColor  import LnColor
 
 # #########################################################################################
 # - printDictionaryTree() ordered
-# - CALL: printDictionaryTree(CfgDict, MaxDeepLevel=3, values=True, lTAB=' '*12)
+# - CALL: printDictionaryTree(CfgDict, MaxDeepLevel=3, retValues=True, lTAB=' '*12)
 # - PARAMS:
 # -     level:          serve per tenere traccia delle iterazioni ed anche per l'indentazione
 # -     MaxDeepLevel:   Indica il numero MAX di profondità (iterazioni) da raggiungere
-# -     values:         Indica se ritornare anche il valore delle keys
+# -     retValues:         Indica se ritornare anche il valore delle keys
 # -     lTAB:           Prefix a sinistra della riga
 # -     retCols:         'LTV'
 # -                        L  se vogliamo LevelCol
@@ -109,7 +109,7 @@ def isAscii(s):
 # - PARAMS:
 # -     level:          serve per tenere traccia delle iterazioni ed abche per l'indentazione
 # -     MaxDeepLevel:   Indica il numero MAX di profondità (iterazioni) da raggiungere
-# -     values:         Indica se ritornare anche il valore delle keys
+# -     retValues:         Indica se ritornare anche il valore delle keys
 # -
 # - RETURN: LIST of the keys with level indication:
 # -            LVL TYPE       KeyName
@@ -144,7 +144,7 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
     if MaxDeepLevel < 0: return lista
 
     thisDictType = type(dictID)
-    values = (True if 'V' in retCols else False)
+    retValues = (True if 'V' in retCols else False)
     if not thisDictType in allDictTYPES:
         return lista
 
@@ -187,21 +187,25 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
         if valueType in allDictTYPES:
             continue
 
-        if values:
-            if valueType in [bytes, str]:
+        if retValues:
+            if valueType in (bool, type(None), int, float):
+                newLine = "{0:<50}: {1}".format(newLine.rstrip(), val)
+                lista.append(newLine)
+
+            elif valueType in [str]:
                 if val.strip() == '':
-                    val = '"' + val + '"'
+                    val = '"{0}"'.format(val)
                 val = val.replace('\n', ' ')        # vale per le righe multiline (tipo nel file.ini)
                 newLine = "{0:<50}: {1}".format(newLine.rstrip(), val.strip())
                 lista.append(newLine)
 
-            elif isinstance(val, enumerate):
-                lista.append("{0:<50}: [".format(newLine.rstrip()))          # Apertura LIST
-                for index, name in val:
-                    newLine = prepareListValueLine(name, retCols, level)
-                    lista.append(newLine)
-
-                lista.append('{0:<50}: ]'.format(' ') )                # Chiusura LIST
+            elif valueType in [bytes]:
+                val = val.decode('utf-8')
+                if val.strip() == '':
+                    val = '"{0}"'.format(val)
+                val = val.replace('\n', ' ')        # vale per le righe multiline (tipo nel file.ini)
+                newLine = "{0:<50}: {1}".format(newLine.rstrip(), val.strip())
+                lista.append(newLine)
 
             elif valueTypeStr == "datetime.date":
                 newLine = "{0:<50}: {1}".format(newLine.rstrip(), val)
@@ -246,9 +250,13 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
                     lista.append(newLine)
                     lista.append('')
 
-            elif valueType in (bool, type(None), int, float):
-                newLine = "{0:<50}: {1}".format(newLine.rstrip(), val)
-                lista.append(newLine)
+            elif isinstance(val, enumerate):
+                lista.append("{0:<50}: [".format(newLine.rstrip()))          # Apertura LIST
+                for index, name in val:
+                    newLine = prepareListValueLine(name, retCols, level)
+                    lista.append(newLine)
+
+                lista.append('{0:<50}: ]'.format(' ') )                # Chiusura LIST
 
             else:
                 lista.append(newLine)

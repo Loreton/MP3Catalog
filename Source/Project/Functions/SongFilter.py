@@ -52,7 +52,11 @@ def songFilter(gv, RECs):
     invalidLines        = 0
     nCols               = len(gv.song.colsName)
 
-    excludeType     = ['Bambini', 'Natale', 'Popolari', 'Themes']
+                            # b'Bambini', b'Natale', b'Popolari', b'Themes'
+    excludeType     = [
+                            'Bambini', 'Natale', 'Popolari', 'Themes',
+                    ]
+
     excludeAuthor   = ['xxx', 'cccc', 'xxx']
 
     includeCol  = gv.INPUT_PARAM.include
@@ -76,9 +80,9 @@ def songFilter(gv, RECs):
             size = int(song[col.SongSize].replace('bytes', '').replace('.', ''))
 
 
-
+        # choice = gv.Ln.getKeyboardInput("    pause continue...   " , keySep=",", validKeys='yes', exitKey='X', deepLevel=2)
         # se la canzone NON ha il flag 'Analizzata'... ignorala
-        if song[col['Analizzata']] == '.':  # deve avere un carattere diverso da '.'
+        if song[col['Analizzata']] in ['.', b'.']:  # deve avere un carattere diverso da '.'
             toBeAanalysed += 1
             toBeAanalysedSize += size
             continue
@@ -95,33 +99,32 @@ def songFilter(gv, RECs):
 
         isValidSong = True
 
+        # TRACE_SONG = TraceSong(song[col[colName]])
 
-        TRACE_SONG = False
-        if TRACE_SONG:
-            if song[col.SongName] == 'Conforto alla vita':
-                print (song)
-            else:
-                TRACE_SONG = False   #azzera flag se non è la canzone che vogliamo verificare
-
+            # ---------------------------------------
+            # - verifichiamo le colonne da includere.
+            # - deve contentere un valore == '.'
+            # ---------------------------------------
         for colName in includeCol:
-            if TRACE_SONG: print ('INCLUDE:', colName, song[col[colName]])
-            if song[col[colName]] == '.':
+            if song[col[colName]] in ['.', b'.']:
                 isValidSong = False
                 break
+        logger.debug('INCLUDE: {0} isValidSong:{1}'.format(song[col[colName]], isValidSong))
 
-        if TRACE_SONG: print('INCLUDE: isValidSong', isValidSong)
-
-            # verifichiamo le colonne da escludere.
+            # ---------------------------------------
+            # - verifichiamo le colonne da escludere.
+            # - deve contentere un valore diverso da '.'
+            # ---------------------------------------
         for colName in excludeCol:
-            if TRACE_SONG: print ('EXCLUDE:', colName, song[col[colName]])
-            if song[col[colName]] != '.':
+            if not song[col[colName]] in ['.', b'.']:
                 isValidSong = False
+                break
+        logger.debug('EXCLUDE: {0} isValidSong:{1}'.format(song[col[colName]], isValidSong))
 
-        if TRACE_SONG: print('EXCLUDE: isValidSong', isValidSong)
 
         if isValidSong:
             gv.songList.validSongs.append(song)
-            validTotSize += int(size)
+            validTotSize   += size
         else:
             gv.songList.scartate.append(song)
             scartateTotSize += size
@@ -154,3 +157,27 @@ def songFilter(gv, RECs):
     return
 
 
+
+
+def TraceSong():
+    retVal = False
+    if song[col.SongName] == 'Conforto alla vita':
+        print (song)
+        retVal = True
+    return retVal
+
+    for colName in includeCol:
+        if TRACE_SONG: print ('INCLUDE:', colName, song[col[colName]])
+        if song[col[colName]] == '.':
+            isValidSong = False
+            break
+
+    if TRACE_SONG: print('INCLUDE: isValidSong', isValidSong)
+
+        # verifichiamo le colonne da escludere.
+    for colName in excludeCol:
+        if TRACE_SONG: print ('EXCLUDE:', colName, song[col[colName]])
+        if not song[col[colName]] in ['.', b'.']:
+            isValidSong = False
+
+    if TRACE_SONG: print('EXCLUDE: isValidSong', isValidSong)

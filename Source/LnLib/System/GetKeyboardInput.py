@@ -8,6 +8,7 @@ import sys
 
 from ..LnCommon.LnLogger import SetLogger
 from ..LnCommon.LnColor  import LnColor
+from . Exit  import Exit
 
 # ###########################################################################
 # * Gestione input da Keyboard.
@@ -61,7 +62,7 @@ def getKeyboardInput(msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySep="|
                     C.printCyan('\n... please enter something\n')
 
             elif choiceUPP in exitKeyLIST:
-                gv.Ln.Exit(9998, "Exiting on user request new.", printStack=True)
+                Exit(9998, "Exiting on user request new.", printStack=True)
 
             elif choice in validKeyLIST:
                 break
@@ -70,7 +71,7 @@ def getKeyboardInput(msg, validKeys='ENTER', exitKey='X', deepLevel=1, keySep="|
                 C.printCyan('\n... try again\n')
 
     except Exception as why:
-        gv.Ln.Exit(8, "Error running program [{ME}]\n\n ....{WHY}\n".format(ME=sys.argv[0], WHY=why) )
+        Exit(8, "Error running program [{ME}]\n\n ....{WHY}\n".format(ME=sys.argv[0], WHY=why) )
 
     return choice
 
