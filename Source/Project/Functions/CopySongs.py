@@ -24,20 +24,12 @@ def copySongs(gv, RECs):
     copySong.totalSongs      = len(RECs[1:])
     copySong.remainingSongs  = copySong.totalSongs
 
-    '''
-        copySong['dir01'].totSize    = 1
-        copySong['dir01'].nSongs     = 1
-        copySong.currDirNo           = 1
-        copySong.nAvailDirs          = 1
-    '''
-
     NOTFOUND    = []; copySong.NOTFOUND = NOTFOUND
     copiedSongs = []
 
 
     DISPLAY_LEN=55
     for index, song in enumerate(RECs[1:]):
-        rootDirLen=len(gv.INPUT_PARAM.MP3SourceDir + song[col.Type]) +1
         if copySong.nAvailDirs < 1:
             print ('Abbiamo raggiunto il limite per tutte le directories.')
             break
@@ -51,21 +43,6 @@ def copySongs(gv, RECs):
         elif isinstance(song[col.SongSize], str):
             recSongSize = int(song[col.SongSize].replace('bytes', '').replace('.', ''))
 
-        # val=song[col.Type]; print(type(val), val)
-        # val=song[col.Type].decode('utf-8'); print(type(val), val)
-        # val=song[col.AuthorName].decode('utf-8'); print(type(val), val)
-        # val=song[col.AlbumName].decode('utf-8'); print(type(val), val)
-        # val=song[col.SongName].strip().decode('utf-8'); print(type(val), val)
-
-        # sourceSongName = "{DIR}{SEP}{TYPE}{SEP}{AUTHOR}{SEP}{ALBUM}{SEP}{SONG}.mp3".format(
-        #                             DIR=gv.INPUT_PARAM.MP3SourceDir,
-        #                             TYPE=song[col.Type].decode('utf-8'),
-        #                             AUTHOR=song[col.AuthorName].decode('utf-8'),
-        #                             ALBUM=song[col.AlbumName].decode('utf-8'),
-        #                             SONG=song[col.SongName].strip().decode('utf-8'),
-        #                             SEP=os.path.sep
-        #                             )
-
         sourceSongName = os.path.join(
                                     gv.INPUT_PARAM.MP3SourceDir,
                                     song[col.Type],
@@ -73,15 +50,8 @@ def copySongs(gv, RECs):
                                     song[col.AlbumName],
                                     song[col.SongName].strip() + '.mp3')
 
-        # choice = gv.Ln.getKeyboardInput("    pause continue...   " , keySep=",", validKeys='yes', exitKey='X', deepLevel=2)
-        if 'Caffé del LA Paix' in song[col.SongName]:
-            print (sourceSongName)
-            print (sourceSongName.encode("UTF-8"))
-            print(os.path.isfile(sourceSongName.encode("UTF-8")))
-            choice = gv.Ln.getKeyboardInput("    Pausa, vuoi continuare?" , keySep=",", validKeys='yes', exitKey='X', deepLevel=2)
-
-
-        c.printGreen ('{FILE:<{LEN}}'.format(LEN=DISPLAY_LEN,FILE=sourceSongName[rootDirLen:]), end='', tab=4)
+        sourceRootDirLen=len(gv.INPUT_PARAM.MP3SourceDir + song[col.Type]) +1
+        c.printGreen ('{FILE:<{LEN}}'.format(FILE=sourceSongName[sourceRootDirLen:sourceRootDirLen+DISPLAY_LEN:], LEN=DISPLAY_LEN), end='', tab=4)
 
             # ---------------------------------
             # - se la canzone sorgente esiste....
@@ -126,16 +96,10 @@ def copySongs(gv, RECs):
                                           song[col.SongName].strip() + '.mp3')
 
 
-            # destSongName = "{DIR}{SEP}{{DIRNO:02}}{SEP}{AUTHOR}{SEP}{SONG}.mp3".format(
-            #                             DIR=gv.INPUT_PARAM.destDIR,
-            #                             DIRNO=copySong.currDirNo,
-            #                             AUTHOR=song[col.AuthorName].decode('utf-8'),
-            #                             SONG=song[col.SongName].strip().decode('utf-8'),
-            #                             SEP=os.path.sep
-            #                             )
+            destRootDirLen=len(gv.INPUT_PARAM.destDIR)
+            c.printCyan('--> {FILE:<{LEN}}'.format(FILE=destSongName[destRootDirLen:destRootDirLen+DISPLAY_LEN], LEN=DISPLAY_LEN), end=' ', tab=4)
 
                 # - copiamo la canzone... se non esiste
-            c.printCyan('--> {FILE:<{LEN}}'.format(LEN=DISPLAY_LEN,FILE=destSongName[:DISPLAY_LEN]), end=' ', tab=4)
             isCopied = copia(gv, sourceSongName, destSongName)
 
 

@@ -8,7 +8,7 @@ import sys
 
 from ..LnCommon.LnLogger import SetLogger
 from ..LnCommon.LnColor  import LnColor
-from . Exit  import Exit
+from ..LnCommon.Exit     import Exit
 
 # ###########################################################################
 # * Gestione input da Keyboard.

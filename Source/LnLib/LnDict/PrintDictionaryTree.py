@@ -9,7 +9,7 @@
 import sys, os
 import types
 import collections, configparser
-import argparse
+# import argparse
 
 
 
@@ -57,6 +57,41 @@ def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, 
 
     lista = getDictionaryTree(dictID, MaxDeepLevel=MaxDeepLevel, level=level, retCols=retCols, listInLine=listInLine)
 
+    if not fCONSOLE:
+        retLIST = []
+        prevLevel = -1
+        currPTR = []
+        newPath = []
+        for line in lista:
+            if line.strip() == '':  continue
+            # print (line)
+            level, rest = line.split(']')
+            level = int(level.split('[')[1].strip())
+
+            rest = rest.strip()
+            if level == 0:        # siamo sulla root
+                prevLevel = 0
+                if currPTR: retLIST.append(currPTR) # salviamo il precedente
+                currPTR = [rest]
+
+            elif level > prevLevel:    # andiamo in basso nella struttura
+                currPTR.append(rest)
+                prevLevel = level
+
+            elif level == prevLevel:   # vuol dire che stiamo risalendo nella struttura
+                if currPTR: retLIST.append(currPTR) # salviamo il precedente
+                delta = 1
+                currPTR = currPTR[:-delta]  # saliamo di un livello
+
+            elif level < prevLevel:   # vuol dire che stiamo risalendo nella struttura
+                if currPTR: retLIST.append(currPTR) # salviamo il precedente
+                delta = prevLevel-level-1
+                currPTR = currPTR[:-delta]  # saliamo di due livelli
+
+            print(level, rest)
+        return retLIST
+
+
     caller = inspect.stack()[stackLevel]
     dummy, fileName, funcLineNO, funcName, lineCode, rest = caller
     fName       = os.path.basename( fileName.split('.')[0])
@@ -76,18 +111,18 @@ def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, 
         header = True
 
     if not header: header = caller
-    if fCONSOLE:
-        print()
-        color.printCyan("*"*60, tab=8)
-        color.printCyan("*     {0}".format(header), tab=8)
-        if header2: color.printCyan("*     {0}".format(header2), tab=8)
-        color.printCyan("*"*60, tab=8)
+# if fCONSOLE:
+    print()
+    color.printCyan("*"*60, tab=8)
+    color.printCyan("*     {0}".format(header), tab=8)
+    if header2: color.printCyan("*     {0}".format(header2), tab=8)
+    color.printCyan("*"*60, tab=8)
 
 
-        for line in lista:
-            if not isAscii(line): line = str.encode(line, 'utf-8')
-            # print("{0}{1}{2}".format(COLOR, lTAB, line))
-            color.printCyan(line, tab=len(lTAB))
+    for line in lista:
+        if not isAscii(line): line = str.encode(line, 'utf-8')
+        # print("{0}{1}{2}".format(COLOR, lTAB, line))
+        color.printCyan(line, tab=len(lTAB))
 
     if fEXIT:
         print("Exiting on user request. {CALLER}".format(CALLER=caller))
@@ -141,6 +176,15 @@ def isAscii(s):
 def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLine=5):
     lista = []
     TabSize = 3
+
+        # MaxDeepLevel non risponde correttamente al numero dei livelli
+        # Non ho capito la ragione. A tentativi provare il valore giusto.
+        # Di fatto i livelli sembrano indicati dai numeri dispari:
+        #  lvl 1 = MaxDeepLevel = 1
+        #  lvl 2 = MaxDeepLevel = 3
+        #  lvl 3 = MaxDeepLevel = 5
+        #  lvl 4 ....
+        #  quindi passare (livelloDesiderato*2-1)
     if MaxDeepLevel < 0: return lista
 
     thisDictType = type(dictID)

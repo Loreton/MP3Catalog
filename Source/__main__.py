@@ -4,8 +4,8 @@
 
 # sudo update-alternatives --config python
 # /opt/python3.4/bin/pip3.4 install netifaces
-# import sys; sys.dont_write_bytecode = True
-import sys
+import sys; sys.dont_write_bytecode = True
+# import sys
 import os
 
 # ------------------------------------------------------------
@@ -20,6 +20,10 @@ import LnLib     as Ln
 
 ################################################################################
 # - M A I N
+#    gv.song.primaryCols    = []
+#    gv.song.attributeCols  = []
+#    gv.song.colsName       = []
+#    gv.song.field[colname] = enum
 ################################################################################
 if __name__ == "__main__":
     Prj.Version  = 'V01'

@@ -5,20 +5,15 @@
 #                                               by Loreto Notarantonio 2013, February
 # ######################################################################################
 
+# unicode tips https://www.safaribooksonline.com/library/view/fluent-python/9781491946237/ch04.html
 
-import os, sys
+# import os, sys
 
-
-
-    # print ('.......readFile.....')
-def readFile(gv, csvFile, encoding='utf-8'):
+def readFile(csvFile, encoding='utf-8'):
     logger = gv.Ln.SetLogger(package=__name__)
     row = []
-    # f = codecs.open(csvFile, "r", "utf-8")
-    # f = open(csvFile, 'r', encoding="ascii", errors="surrogateescape")
     logger.debug('reading file: {0}'.format(csvFile))
     try:
-        # f = open(csvFile, "r", encoding="latin-1")
         f = open(csvFile, "r", encoding=encoding)
     except (Exception) as why:
         gv.Ln.Exit(1, str(why), printStack=True)
@@ -27,13 +22,11 @@ def readFile(gv, csvFile, encoding='utf-8'):
         row.append(line.strip())
     f.close()
 
-    logger.debug('number of lines found: {0}'.format(len(row)))
+    # logger.debug('number of lines found: {0}'.format(len(row)))
     return row
 
 def readType02(csvFile, encoding='utf-8'):
     row = []
-    # with open(csvFile, encoding='ascii', errors="surrogateescape") as f:
-    # with open(csvFile, 'r', encoding='latin-1') as f:
     with open(csvFile, 'r', encoding=encoding) as f:
         row = f.read()
     row = row.split('\n').strip()

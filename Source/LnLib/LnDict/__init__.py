@@ -121,6 +121,10 @@ class DotMap(OrderedDict):
         # by Loreto
     def printDict(self, gv, header='', fEXIT=False, lTAB=' '*4, fCONSOLE=True):
         return printDict(gv, self, extDict=[DotMap], header=header, retCols='LTV', lTAB=lTAB, fEXIT=fEXIT, fCONSOLE=fCONSOLE, stackLevel=2)
+    def toList(self, gv, MaxDeepLevel):
+        # forziamo retCols ='' e fCONSOLE=False
+        deepLevel = MaxDeepLevel*2-1 # passare (livelloDesiderato*2-1)
+        return printDict(gv, self, extDict=[DotMap], MaxDeepLevel=deepLevel, retCols='L', fCONSOLE=False)
 
 
     def empty(self):

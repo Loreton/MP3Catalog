@@ -34,8 +34,7 @@ def ReadCSVFile(gv):
     if gv.Ln.Fmtime(xlsFile) > gv.Ln.Fmtime(csvFile):
         logger.debug('range To process: {}'.format(gv.ini.EXCEL.RangeToProcess))
         mydata  = gv.Ln.Excel(xlsFile)
-        # mydata.exportCSV_bytes('Catalog', csvType=csvFormat, outFname=csvFile, rangeString=gv.ini.EXCEL.RangeToProcess, colNames=4, fPRINT=False)
-        mydata.exportCSV('Catalog', csvType=csvFormat, outFname=csvFile, rangeString=gv.ini.EXCEL.RangeToProcess, colNames=4, encoding='utf-8', fPRINT=False)
+        mydata.exportCSV('Catalog', csvType=csvFormat, outFname=csvFile, rangeString=gv.ini.EXCEL.RangeToProcess, colNames=4)
     else:
         logger.debug('excel file is older than CSV file. No export will take place.')
 
@@ -46,7 +45,7 @@ def ReadCSVFile(gv):
         # - La prima riga contiene il nome delle colonne
         # - Eliminiamo i blank nei nomi colonne
         # ------------------------------------------------------------
-    csvRowList      = gv.Prj.readFile(gv, csvFile)
+    csvRowList      = gv.Ln.readTextFile(csvFile)
     csvRowList[0]   = csvRowList[0].replace(' ', '')   # eliminiamo i BLANK nei nomi colonne
 
     if csvFormat == 'listtype':
@@ -64,9 +63,6 @@ def ReadCSVFile(gv):
     logger.debug('excel  columns name: {0}'.format(excelColsName))
     logger.debug('config columns name: {0}'.format(configColsName))
 
-    # if not ';'.join(colNames) == ';'.join(gv.song.colsName):
-    # print (excelColsName)
-    # print (configColsName)
     if not excelColsName == configColsName:
         C.printYellowH('i nomi delle colonne non coincidono', tab=4)
         C.printYellowH('file     : {0}'.format(csvRowList[0]), tab=4)
@@ -82,9 +78,7 @@ def ReadCSVFile(gv):
     if csvFormat == 'listtype':
         for row in csvRowList:
             try:
-                # print (type(row), row)
                 column = ast.literal_eval(row)    # converte una stringa formato LIST in una LIST
-                # print (type(column), column)
                 if len(column[gv.song.field.Type].strip()) > 3:
                     RECs.append(column)
             except Exception as why:
@@ -97,7 +91,7 @@ def ReadCSVFile(gv):
 
 
     gv.song.list = RECs
-    # print (RECs[2])
+
         # ===========================================
         #  - Creazione del dictionary del CSV
         # ===========================================
@@ -105,7 +99,6 @@ def ReadCSVFile(gv):
     for song in RECs[1:]:   # skip line 0 with fields name
         ptr = gv.song.dict
         startAttributeCols = gv.song.field.SongName+1
-        # startAttributeCols = len(gv.song.primaryCols)
 
             # -creazione dictionary per type.author.album.songName
         for field in song[:startAttributeCols]:

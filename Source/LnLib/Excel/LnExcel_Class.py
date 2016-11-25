@@ -90,102 +90,6 @@ class Excel(object):
 
 
     ####################################################################
-    # - exportToCSV_bytes() cerchiamo di lavorare con i dati in bytes e non str
-    # - Export di un foglio excel to CSV format
-    # - rangeString: range di celle su cui operare
-    # - colNames   : numero di riga che contiene i nomi delle colonne
-    # - csvType     : simple    "a"; "b",...
-    # -             : listtype  ["a"; "b",...]
-    ####################################################################
-    def exportCSV_bytes(self, sheetName, csvType='simple', outFname=None, rangeString=None, colNames=0, maxrows=99999999, fPRINT=False):
-        logger = self._SetLogger(__name__)
-        if fPRINT:
-            print("Converting sheetName: [{0}] to CSV file: [{1}]." .format(sheetName, outFname))
-
-        ws          = self._wb.get_sheet_by_name(sheetName)
-        nRows       = ws.max_row
-        nCols       = ws.max_column
-
-
-        # print (type(rangeString), rangeString)
-        if rangeString:
-            minCol, minRow, maxCol, maxRow = xls.range_boundaries(rangeString)
-        else:
-            minCol, minRow, maxCol, maxRow = 1, 1, ws.max_column, ws.max_row
-
-        fullRange = get_column_letter(minCol) + str(minRow) + ':' + get_column_letter(maxCol) + str(maxRow)
-        logger.info("     full Range: {0}".format(fullRange))
-
-        minCol -= 1         # col parte da '0'
-        maxCol -= 1         # col parte da '0'
-
-
-            # ---------------------------------
-            # - grosso modo può andare.....
-            # ---------------------------------
-        dataList        = []
-        # dataListOfList  = []
-        for indexRow, row in enumerate(ws.rows):
-                # - prendiamo tutte le righe previste nel range
-            if minRow <= indexRow < maxRow:
-                # - ...e lo stesso per le colonne
-                if indexRow >= colNames:
-                    line = []
-                    for indexCol, cell in enumerate(row):
-                        if minCol <= indexCol <= maxCol:
-                            val = cell.value if cell.value else ''
-                            if isinstance(val, str):
-                                line.append(val.encode('utf-8'))
-                            else:
-                                line.append(val)
-                else:
-                    continue
-
-                    # --- i dati sono in formato bytes
-                if csvType == 'listtype':
-                    # myLine = [item.encode('utf-8') for item in line]
-                    dataList.append(line)
-
-                else:
-                        # costruiamo la riga ...
-                    lineStr = line[0]
-                    for item in line[1:]:
-                        lineStr = '{0};{1}'.format(lineStr, item)
-
-                        # ... per inserirla nell'array
-                    dataList.append(lineStr)
-
-        if fPRINT:
-            for index, line in enumerate(dataList):
-                print ('{0:5} - {1}'.format(index, line))
-
-        if outFname:
-            FILE = open(outFname, "wb")
-            for line in dataList:
-                line = "{0}{1}".format(line, '\n')
-                FILE.write(bytes(line, 'UTF-8'))       # con Python3 bisogna convertirlo in bytes
-
-            FILE.close()
-            logger.info("..... file: {FILE} has been written".format(FILE=outFname))
-
-            if fPRINT:
-                print("..... file: {FILE} has been written".format(FILE=outFname))
-
-        if fPRINT:
-            print()
-            print("     full Range: {0}".format(fullRange))
-            print("     file {0} has been created".format(outFname))
-            print()
-
-            for item in dataList:
-                print (item)
-            print ()
-
-        self.data = dataList
-
-
-
-    ####################################################################
     # - exportToCSV()
     # - Export di un foglio excel to CSV format
     # - rangeString: range di celle su cui operare
@@ -193,7 +97,16 @@ class Excel(object):
     # - csvType     : simple    "a"; "b",...
     # -             : listtype  ["a"; "b",...]
     ####################################################################
-    def exportCSV(self, sheetName, csvType='simple', outFname=None, rangeString=None, colNames=0, maxrows=99999999, encoding='utf-8', fPRINT=False):
+    def exportCSV(self, sheetName,
+                        csvType='simple',
+                        outFname=None,
+                        rangeString=None,
+                        colNames=0,
+                        maxrows=99999999,
+                        encoding='utf-8',
+                        stripFields=True,
+                        fPRINT=False):
+
         logger = self._SetLogger(__name__)
         if fPRINT:
             print("Converting sheetName: [{0}] to CSV file: [{1}]." .format(sheetName, outFname))
@@ -230,6 +143,7 @@ class Excel(object):
                     for indexCol, cell in enumerate(row):
                         if minCol <= indexCol <= maxCol:
                             val = cell.value if cell.value else ''
+                            if stripFields and isinstance(val, str): val=val.strip()
                             line.append(val)
                 else:
                     continue
@@ -241,7 +155,10 @@ class Excel(object):
                         # costruiamo la riga ...
                     lineStr = line[0]
                     for item in line[1:]:
-                        lineStr = '{0};{1}'.format(lineStr, item)
+                        if stripFields:
+                            lineStr = '{0};{1}'.format(lineStr, item.strip())
+                        else:
+                            lineStr = '{0};{1}'.format(lineStr, item)
 
                         # ... per inserirla nell'array
                     dataList.append(lineStr)
