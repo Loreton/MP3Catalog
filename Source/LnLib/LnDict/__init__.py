@@ -4,18 +4,24 @@ from pprint import pprint
 from sys import version_info
 from inspect import ismethod
 
-# by Loreto preso il "Commits on Oct 7, 2016"
-from . PrintDictionaryTree import printDictionaryTree as printDict
-from . DictToList                import DictToList
-from . DictToList                import printDictValues
-# rinominato _dynamic in _dynamicDotMap per gestirlo con printDictionaryTree
+LORETO = False
+LORETO = True
+if LORETO:
+    from . PrintDictionaryTree import printDictionaryTree as printDict
+    from . DictToList                import DictToList
+    from . DictToList                import printDictValues
 
+# rinominato _dynamic in _dynamicDotMap per gestirlo con printDictionaryTree
 class DotMap(OrderedDict):
 
     def __init__(self, *args, **kwargs):
         self._map = OrderedDict()
         self._dynamicDotMap = False    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
-        self._myDictTYPES = [DotMap] # by Loreto
+
+        if LORETO:
+            self._dynamicDotMap = True    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
+            self._myDictTYPES = [DotMap] # by Loreto
+
         if kwargs:
             if '_dynamicDotMap' in kwargs:
                 self._dynamicDotMap = kwargs['_dynamicDotMap']
@@ -120,19 +126,19 @@ class DotMap(OrderedDict):
     def pprint(self):
         pprint(self.toDict())
 
+    if LORETO:
+            # by Loreto
+        def printDict(self, gv, header='', fEXIT=False, lTAB=' '*4, fCONSOLE=True):
+            return printDict(gv, self, extDict=[DotMap], header=header, retCols='LTV', lTAB=lTAB, fEXIT=fEXIT, fCONSOLE=fCONSOLE, stackLevel=2)
 
-        # by Loreto
-    def printDict(self, gv, header='', fEXIT=False, lTAB=' '*4, fCONSOLE=True):
-        return printDict(gv, self, extDict=[DotMap], header=header, retCols='LTV', lTAB=lTAB, fEXIT=fEXIT, fCONSOLE=fCONSOLE, stackLevel=2)
+        def GetKeyList(self, fPRINT=False):
+            return DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
 
-    def GetKeyList(self, fPRINT=False):
-        return DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
-
-    def PrintTree(self):
-        # keyList = DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=False)
-        keyList = self.GetKeyList(self)
-        for index, item in enumerate(keyList):
-            printDictValues(self, pointer=item, myDictTYPES=self._myDictTYPES)
+        def PrintTree(self):
+            # keyList = DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=False)
+            keyList = self.GetKeyList(self)
+            for index, item in enumerate(keyList):
+                printDictValues(self, pointer=item, myDictTYPES=self._myDictTYPES)
 
     def empty(self):
         return (not any(self))
