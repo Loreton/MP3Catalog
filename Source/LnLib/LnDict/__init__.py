@@ -129,7 +129,8 @@ class DotMap(OrderedDict):
         return DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
 
     def PrintTree(self):
-        keyList = DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=False)
+        # keyList = DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=False)
+        keyList = self.GetKeyList(self)
         for index, item in enumerate(keyList):
             printDictValues(self, pointer=item, myDictTYPES=self._myDictTYPES)
 

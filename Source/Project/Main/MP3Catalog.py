@@ -83,7 +83,7 @@ def merge(gv):
     # gv.song.dict.printDict(gv)
 
 
-    keyList = gv.song.dict.GetKeyList(fPRINT=False)
+    keyList = gv.song.dict.GetKeyList(fPRINT=True)
     gv.song.dict.PrintTree()
 
     sys.exit()
