@@ -6,6 +6,8 @@ from inspect import ismethod
 
 # by Loreto preso il "Commits on Oct 7, 2016"
 from . PrintDictionaryTree import printDictionaryTree as printDict
+from . DictToList                import DictToList
+from . DictToList                import printDictValues
 # rinominato _dynamic in _dynamicDotMap per gestirlo con printDictionaryTree
 
 class DotMap(OrderedDict):
@@ -13,6 +15,7 @@ class DotMap(OrderedDict):
     def __init__(self, *args, **kwargs):
         self._map = OrderedDict()
         self._dynamicDotMap = False    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
+        self._myDictTYPES = [DotMap] # by Loreto
         if kwargs:
             if '_dynamicDotMap' in kwargs:
                 self._dynamicDotMap = kwargs['_dynamicDotMap']
@@ -121,11 +124,14 @@ class DotMap(OrderedDict):
         # by Loreto
     def printDict(self, gv, header='', fEXIT=False, lTAB=' '*4, fCONSOLE=True):
         return printDict(gv, self, extDict=[DotMap], header=header, retCols='LTV', lTAB=lTAB, fEXIT=fEXIT, fCONSOLE=fCONSOLE, stackLevel=2)
-    def toList(self, gv, MaxDeepLevel):
-        # forziamo retCols ='' e fCONSOLE=False
-        deepLevel = MaxDeepLevel*2-1 # passare (livelloDesiderato*2-1)
-        return printDict(gv, self, extDict=[DotMap], MaxDeepLevel=deepLevel, retCols='L', fCONSOLE=False)
 
+    def GetKeyList(self, fPRINT=False):
+        return DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
+
+    def PrintTree(self):
+        keyList = DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=False)
+        for index, item in enumerate(keyList):
+            printDictValues(self, pointer=item, myDictTYPES=self._myDictTYPES)
 
     def empty(self):
         return (not any(self))

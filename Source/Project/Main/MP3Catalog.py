@@ -81,13 +81,21 @@ def merge(gv):
     # ret = gv.song.dict.toList(gv)
     myDictTYPES = [dict, gv.Ln.LnDict]
     # gv.song.dict.printDict(gv)
-    # ret = gv.song.dict.toList(gv, MaxDeepLevel=4)
+
+
+    keyList = gv.song.dict.GetKeyList(fPRINT=False)
+    gv.song.dict.PrintTree()
+
+    sys.exit()
+    ''' OK '''
     ret = gv.Ln.DictToList(gv.song.dict, myDictTYPES=myDictTYPES)
+    # ret = gv.Ln.DictToList(gv, myDictTYPES=myDictTYPES)
+
     print ()
     print ()
     for index, item in enumerate(ret):
         print ('{0:02} - {1}'.format(index, item))
-        # if index >10: sys.exit()
+        gv.Ln.printDictValues(gv, pointer=item, myDictTYPES=myDictTYPES)
 
     sys.exit()
 

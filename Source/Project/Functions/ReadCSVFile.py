@@ -72,20 +72,27 @@ def ReadCSVFile(gv):
 
 
         # ===========================================
-        # RECs creazione di una lista di liste/canzoni [[],[],..]
+        # - RECs creazione di una lista di liste/canzoni [[],[],..]
         # ===========================================
     RECs = []
     if csvFormat == 'listtype':
         for row in csvRowList:
             try:
-                column = ast.literal_eval(row)    # converte una stringa formato LIST in una LIST
+                column0 = ast.literal_eval(row)    # converte una stringa formato LIST in una LIST
+                column = []
+                for token in column0:
+                    if isinstance(token, str):
+                        column.append(token.strip())
+                    else:
+                        column.append(token)
+
                 if len(column[gv.song.field.Type].strip()) > 3:
                     RECs.append(column)
             except Exception as why:
                 gv.Ln.Exit(2, str(why), fullStack=True)
     else:
         for row in csvRowList:
-            column = [token.strip() for token in row.split(';')]
+            column = [token.strip() for token in row.split(';') if isinstance(token, str)]
             if len(column[gv.song.field.Type].strip()) > 3:
                 RECs.append(column)
 
