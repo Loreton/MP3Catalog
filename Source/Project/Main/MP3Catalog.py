@@ -10,144 +10,73 @@ import os, sys
 import ast
 
 
-
-###############################################
-# - InsertSong()
-# - 1. Verifica se file passato esiste nel dictionary
-# - 2. Se non esiste la inserisce.
-###############################################
-def insertSong(gv, songPath):
-    logger  = gv.Ln.SetLogger(package=__name__)
-
-        # prima colonna degli attributi (subito dopo il nome canzone)
-    startAttributeCols = gv.song.field.SongName+1
-
-        # -----------------------------------------------------
-        # - Ci spostiamo nei campi primari della canzone
-        # -      type.author.album.songName
-        # - Se il path non esiste lo crea
-        # - All'uscita dovremmo avere il ptr-->attributeCols
-        # -----------------------------------------------------
-    ptr = gv.song.dict
-    for field in songPath[:startAttributeCols]:
-        if not field in ptr:
-            ptr[field] = gv.Ln.LnDict()
-        ptr = ptr[field]
-
-        # --------------------------------------------------
-        # - facciamo il test di un attributo qualsiasi
-        # - per verificare che la canzone abbia già i dati
-        # --------------------------------------------------
-    if not 'SongSize' in ptr:
-        print ('....new entry', songPath)
-            # su ogni canzone mettiamo i vari attributi di default
-        for attributeName in gv.song.attributeCols:
-            ptr[attributeName] = '.'
-
-        ptr.SongSize = 0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ##############################################################
 # - 1. Leggiamo la rootSourceDir
-# - 2. Inseriamo ogni file nel dictionary (insertSong()
+# - 2. Inseriamo ogni file nel dictionary
 ##############################################################
 def merge(gv):
     logger  = gv.Ln.SetLogger(package=__name__)
-
-        # --------------------------------------------------
-        # - convertiamo il dictionary in una lista[]
-        # --------------------------------------------------
-    # gv.song.dict.printDict(gv)
-    # ret = gv.song.dict.toList(gv)
-    myDictTYPES = [dict, gv.Ln.LnDict]
-    # gv.song.dict.printDict(gv)
-
-
-    # keyTree = gv.song.dict.KeyTree(fPRINT=False)
-    # for line in keyTree: print(line)
-
-    # keyList = gv.song.dict.KeyList()
-    # for line in keyList: print(line)
-
-    # MAP_REDUCE
-    # newLIST = []
-    # for x in range(9):
-    #     for line in reversed(keyList):
-    #         newLine = line[:-1]
-    #         print (newLine)
-    #         if not newLine in newLIST:
-    #             newLIST.append(newLine)
-    #         del (line)
-    #     keyList = sorted(newLIST[:])
-    #     # for item in line:
-    # for line in newLIST: print(line)
-
-
-    # ptrDict = gv.song.dict.Ptr(['Bambini', "Canzoni sotto l'albero", 'Varie'])
-    ptrDict = gv.song.dict.Ptr(['Bambini', "Canzoni sotto l'albero"])
-    ptrDict.PrintTree()
-    # gv.song.dict.PrintTree(listOfQualifiers=['Bambini', "Canzoni sotto l'albero", 'Varie', 'Alla scoperta di Babbo NATALE'])
-    # gv.song.dict.PrintTree(listOfQualifiers=['Bambini', "Canzoni sotto l'albero", 'Varie'])
-    # gv.song.dict.PrintTree()
-
-    sys.exit()
-    ''' OK '''
-    ret = gv.Ln.DictToList(gv.song.dict)
-    # ret = gv.Ln.DictToList(gv, myDictTYPES=myDictTYPES)
-
-    print ()
-    print ()
-    for index, item in enumerate(ret):
-        print ('{0:02} - {1}'.format(index, item))
-        gv.Ln.printDictValues(gv, pointer=item)
-
-    sys.exit()
-
-
-
-
-
-
 
 
         # ---------------------------------------
         # - lettura directory sorgente di MP3
         # ---------------------------------------
     listaFile = gv.Ln.DirList(gv.ini.MAIN.MP3SourceDir, patternLIST=['*.mp3'], onlyDir=False, maxDeep=99)
+    if listaFile == []:
+        gv.Ln.Exit(43, 'non sono stati trovati file nella directory indicata: {0}'.format(gv.ini.MAIN.MP3SourceDir))
 
-    # numero del qualificatore subito doto la sourceDir
+
+        # numero del qualificatore subito doto la sourceDir
     firstRelField = len(gv.ini.MAIN.MP3SourceDir.split(os.path.sep))
 
+        # prima colonna degli attributi (subito dopo il nome canzone)
+    startAttributeCols = gv.song.field.SongName+1
+
         # ---------------------------------------
-        # - inserimento...
+        # - inserimento...nuove canzoni
         # ---------------------------------------
     for absName in listaFile:
-        # fileSize = os.stat(absName).st_size             # get fileSize
         line    = absName.rsplit('.', 1)[0]                       # elimina extension
-        relName = line.split(os.path.sep)[firstRelField:]    # elimina rootDir
-        if relName[0].startswith('@'): continue
-        if not relName[0] in gv.ini.MAIN.songType: continue
-        insertSong(gv, relName)
+        relativeName = line.split(os.path.sep)[firstRelField:]    # elimina rootDir
+        if relativeName[0].startswith('@'): continue
+        if not relativeName[0] in gv.ini.MAIN.songType: continue
+
+            # ------------------------
+            # - inserimento canzone
+            # ------------------------
+        ptr = gv.song.dict.Ptr(relativeName, create=True)
+        if not 'SongSize' in ptr:
+            print ('....new entry', relativeName)
+                # su ogni canzone mettiamo i vari attributi di default
+            for attributeName in gv.song.attributeCols:
+                ptr[attributeName] = '.'
+            ptr.SongSize = 0
+
+        # - print di tutto il dict
+    # gv.song.dict.PrintTree()
+
+        # ------------------------------------------------
+        # - otteniamo una lista dove ogni entry
+        # - è una lista che contiene l'albero della canzone
+        # ------------------------------------------------
+    keyList = gv.song.dict.KeyList()
+    for songQualifiers in keyList:
+        if songQualifiers == []: continue
+        fileName = os.path.sep.join(songQualifiers)
+        fileName = '{0}{1}{2}.mp3'.format(gv.ini.MAIN.MP3SourceDir, os.path.sep, fileName)
+        if os.path.isfile(fileName):
+            size = os.stat(fileName).st_size
+        else:
+            size = 0 # in modo che posso copiare gli attrivuti e poi cancellarle.
+            print('     no more exists...', fileName)
+
+        ptrSong = gv.song.dict.Ptr(songQualifiers)
+        ptrSong.SongSize = size
+        # print (fileName)
+
+    # gv.song.dict.PrintTree()
+
+    sys.exit()
 
 
 

@@ -134,12 +134,14 @@ class DotMap(OrderedDict):
         def Ptr(self, listOfQualifiers, create=False):
             ptr = self
             for item in listOfQualifiers:
-                if not item in ptr:
+                if item in ptr:
+                    ptr = ptr[item]
+                else:
                     if create:
-                        ptr[item] = self()
+                        ptr[item] = DotMap()
+                        ptr = ptr[item]
                     else:
                         return None
-                ptr = ptr[item]
 
             return ptr
 
@@ -154,11 +156,7 @@ class DotMap(OrderedDict):
 
         def PrintValue(self, listOfQualifiers):
             DictToList.PrintTree(self, listOfQualifiers=listOfQualifiers, myDictTYPES=self._myDictTYPES)
-            # keyList = DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=False)
-            # keyList = self.GetKeyList(self)
-            # for index, item in enumerate(keyList):
 
-                # PrintTree(self, self._myDictTYPES)
 
     def empty(self):
         return (not any(self))
