@@ -62,17 +62,20 @@ def merge(gv):
     keyList = gv.song.dict.KeyList()
     for songQualifiers in keyList:
         if songQualifiers == []: continue
+
         fileName = os.path.sep.join(songQualifiers)
         fileName = '{0}{1}{2}.mp3'.format(gv.ini.MAIN.MP3SourceDir, os.path.sep, fileName)
+
         if os.path.isfile(fileName):
             size = os.stat(fileName).st_size
+
         else:
             size = 0 # in modo che posso copiare gli attrivuti e poi cancellarle.
             print('     no more exists...', fileName)
 
         ptrSong = gv.song.dict.Ptr(songQualifiers)
         ptrSong.SongSize = size
-        # print (fileName)
+
 
     # gv.song.dict.PrintTree()
 

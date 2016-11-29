@@ -46,7 +46,8 @@ from . Functions.SongFilter         import  songFilter
 
 from . Functions.CopySongs          import  copySongs
 from . Functions.CheckSourceSongs   import  checkSourceSongs
-from . Functions.ReadCSVFile        import  ReadCSVFile
+from . Functions.CSVFile            import  ReadCSVFile
+from . Functions.CSVFile            import  WriteCSVFile
 
 from . Functions.LnEnum             import  enumCols
 from . Functions.LnEnum             import  enumColsKeyVal
