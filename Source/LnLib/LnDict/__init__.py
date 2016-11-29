@@ -4,45 +4,49 @@ from pprint import pprint
 from sys import version_info
 from inspect import ismethod
 
-LORETO = False
-LORETO = True
-if LORETO:
-    from . PrintDictionaryTree import printDictionaryTree as printDict
-    from . DictToList                import DictToList
-    from . DictToList                import printDictValues
+try:
+    from . import DictToList
+    LORETO = True
+except:
+    try:
+        import DictToList
+        LORETO = True
+    except:
+        LORETO = False
+        print ('LORETO:', LORETO)
 
-# rinominato _dynamic in _dynamicDotMap per gestirlo con printDictionaryTree
+
 class DotMap(OrderedDict):
 
     def __init__(self, *args, **kwargs):
         self._map = OrderedDict()
-        self._dynamicDotMap = False    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
+        self._dynamic = False    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
 
         if LORETO:
-            self._dynamicDotMap = True    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
-            self._myDictTYPES = [DotMap] # by Loreto
+            self._dynamic = True    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
+            self._myDictTYPES = [dict, DotMap] # by Loreto (DEFAULT)
 
         if kwargs:
-            if '_dynamicDotMap' in kwargs:
-                self._dynamicDotMap = kwargs['_dynamicDotMap']
+            if '_dynamic' in kwargs:
+                self._dynamic = kwargs['_dynamic']
         if args:
             d = args[0]
             if isinstance(d, dict):
                 for k,v in self.__call_items(d):
                     if type(v) is dict:
-                        v = DotMap(v, _dynamicDotMap=self._dynamicDotMap)
+                        v = DotMap(v, _dynamic=self._dynamic)
                     if type(v) is list:
                         l = []
                         for i in v:
                             n = i
                             if type(i) is dict:
-                                n = DotMap(i, _dynamicDotMap=self._dynamicDotMap)
+                                n = DotMap(i, _dynamic=self._dynamic)
                             l.append(n)
                         v = l
                     self._map[k] = v
         if kwargs:
             for k,v in self.__call_items(kwargs):
-                if k is not '_dynamicDotMap':
+                if k is not '_dynamic':
                     self._map[k] = v
 
     def __call_items(self, obj):
@@ -66,19 +70,19 @@ class DotMap(OrderedDict):
     def __setitem__(self, k, v):
         self._map[k] = v
     def __getitem__(self, k):
-        if k not in self._map and self._dynamicDotMap and k != '_ipython_canary_method_should_not_exist_':
+        if k not in self._map and self._dynamic and k != '_ipython_canary_method_should_not_exist_':
             # automatically extend to new DotMap
             self[k] = DotMap()
         return self._map[k]
 
     def __setattr__(self, k, v):
-        if k in {'_map','_dynamicDotMap', '_ipython_canary_method_should_not_exist_'}:
+        if k in {'_map','_dynamic', '_ipython_canary_method_should_not_exist_'}:
             super(DotMap, self).__setattr__(k,v)
         else:
             self[k] = v
 
     def __getattr__(self, k):
-        if k == {'_map','_dynamicDotMap','_ipython_canary_method_should_not_exist_'}:
+        if k == {'_map','_dynamic','_ipython_canary_method_should_not_exist_'}:
             super(DotMap, self).__getattr__(k)
         else:
             return self[k]
@@ -127,18 +131,34 @@ class DotMap(OrderedDict):
         pprint(self.toDict())
 
     if LORETO:
-            # by Loreto
-        def printDict(self, gv, header='', fEXIT=False, lTAB=' '*4, fCONSOLE=True):
-            return printDict(gv, self, extDict=[DotMap], header=header, retCols='LTV', lTAB=lTAB, fEXIT=fEXIT, fCONSOLE=fCONSOLE, stackLevel=2)
+        def Ptr(self, listOfQualifiers, create=False):
+            ptr = self
+            for item in listOfQualifiers:
+                if not item in ptr:
+                    if create:
+                        ptr[item] = self()
+                    else:
+                        return None
+                ptr = ptr[item]
 
-        def GetKeyList(self, fPRINT=False):
-            return DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
+            return ptr
+
+        def KeyTree(self, fPRINT=False):
+            return DictToList.KeyTree(self, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
+
+        def KeyList(self):
+            return DictToList.KeyList(self, myDictTYPES=self._myDictTYPES)
 
         def PrintTree(self):
+            DictToList.PrintTree(self, myDictTYPES=self._myDictTYPES)
+
+        def PrintValue(self, listOfQualifiers):
+            DictToList.PrintTree(self, listOfQualifiers=listOfQualifiers, myDictTYPES=self._myDictTYPES)
             # keyList = DictToList(self, myDictTYPES=self._myDictTYPES, fPRINT=False)
-            keyList = self.GetKeyList(self)
-            for index, item in enumerate(keyList):
-                printDictValues(self, pointer=item, myDictTYPES=self._myDictTYPES)
+            # keyList = self.GetKeyList(self)
+            # for index, item in enumerate(keyList):
+
+                # PrintTree(self, self._myDictTYPES)
 
     def empty(self):
         return (not any(self))
@@ -296,12 +316,12 @@ if __name__ == '__main__':
     print(x.b) # DotMap()
     print(x.b.empty()) # also True
 
-    # _dynamicDotMap
-    print('\n== _dynamicDotMap ==')
+    # _dynamic
+    print('\n== _dynamic ==')
     d = DotMap()
     d.still.works
     print(d)
-    d = DotMap(_dynamicDotMap=False)
+    d = DotMap(_dynamic=False)
     try:
         d.no.creation
         print(d)
@@ -313,7 +333,7 @@ if __name__ == '__main__':
     dm.still.works
     dm.sub.still.works
     print(dm)
-    dm2 = DotMap(d,_dynamicDotMap=False)
+    dm2 = DotMap(d,_dynamic=False)
     try:
         dm.sub.yes.creation
         print(dm)
@@ -322,7 +342,7 @@ if __name__ == '__main__':
     except KeyError:
         print('KeyError caught')
 
-    # _dynamicDotMap
+    # _dynamic
     print('\n== toDict() ==')
     conf = DotMap()
     conf.dep = DotMap(facts=DotMap(operating_systems=DotMap(os_CentOS_7=True), virtual_data_centers=[DotMap(name='vdc1', members=['sp1'], options=DotMap(secret_key='badsecret', description='My First VDC')), DotMap(name='vdc2', members=['sp2'], options=DotMap(secret_key='badsecret', description='My Second VDC'))], install_node='192.168.2.200', replication_group_defaults=DotMap(full_replication=False, enable_rebalancing=False, description='Default replication group description', allow_all_namespaces=False), node_defaults=DotMap(ntp_servers=['192.168.2.2'], ecs_root_user='root', dns_servers=['192.168.2.2'], dns_domain='local', ecs_root_pass='badpassword'), storage_pools=[DotMap(name='sp1', members=['192.168.2.220'], options=DotMap(ecs_block_devices=['/dev/vdb'], description='My First SP')), DotMap(name='sp2', members=['192.168.2.221'], options=DotMap(protected=False, ecs_block_devices=['/dev/vdb'], description='My Second SP'))], storage_pool_defaults=DotMap(cold_storage_enabled=False, protected=False, ecs_block_devices=['/dev/vdc'], description='Default storage pool description'), virtual_data_center_defaults=DotMap(secret_key='badsecret', description='Default virtual data center description'), management_clients=['192.168.2.0/24'], replication_groups=[DotMap(name='rg1', members=['vdc1', 'vdc2'], options=DotMap(description='My RG'))]), lawyers=DotMap(license_accepted=True))

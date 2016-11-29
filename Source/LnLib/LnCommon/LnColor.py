@@ -64,6 +64,9 @@ class LnColor:
     def printGreen(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         self._print ( ' '*tab + self.GREEN, msg, end, reset)
 
+    def printGreenH(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
+        self._print ( ' '*tab + self.GREENH, msg, end, reset)
+
     def printBlue(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         self._print ( ' '*tab + self.BLUE, msg, end, reset)
 

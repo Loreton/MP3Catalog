@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd3bb645-1066-47da-aed3-45fa9a049867" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/MP3Catalog.iml" afterPath="$PROJECT_DIR$/.idea/MP3Catalog.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/LnDict/DictToList.py" afterPath="$PROJECT_DIR$/Source/LnLib/LnDict/DictToList.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/LnDict/__init__.py" afterPath="$PROJECT_DIR$/Source/LnLib/LnDict/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/__init__.py" afterPath="$PROJECT_DIR$/Source/LnLib/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Functions/ReadCSVFile.py" afterPath="$PROJECT_DIR$/Source/Project/Functions/ReadCSVFile.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py" afterPath="$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MP3_Master_2016-11-22.csv" afterPath="$PROJECT_DIR$/data/MP3_Master_2016-11-22.csv" />
     </list>
@@ -34,11 +31,9 @@
       <file leaf-file-name="MP3Catalog.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4911111">
-              <caret line="94" column="12" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="12" />
-              <folding>
-                <element signature="e#262#276#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.6194332">
+              <caret line="105" column="29" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -66,7 +61,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="74" />
     <option name="y" value="40" />
-    <option name="width" value="1535" />
+    <option name="width" value="1155" />
     <option name="height" value="905" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -259,7 +254,7 @@
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="I:/LnFree/Pgm/WinPython-64bit-3.4.4.1/python-3.4.4.amd64/python.exe" />
+    <property name="last_opened_file_path" value="J:/LnFree/Pgm/WinPython-64bit-3.4.4.1/python-3.4.4.amd64/python.exe" />
   </component>
   <component name="RunManager" selected="Python.merge">
     <configuration default="false" name="__main__" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -463,10 +458,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="74" y="40" width="1535" height="905" extended-state="0" />
+    <frame x="74" y="40" width="1155" height="905" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20473996" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2045654" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914573" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914573" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -501,33 +496,28 @@
       <breakpoints>
         <line-breakpoint type="python-line">
           <url>file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py</url>
-          <line>66</line>
-          <option name="timeStamp" value="41" />
-        </line-breakpoint>
-        <line-breakpoint type="python-line">
-          <url>file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py</url>
           <line>25</line>
           <option name="timeStamp" value="42" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/Source/LnLib/LnDict/DictToList.py</url>
-          <line>49</line>
+          <line>52</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/Source/LnLib/LnDict/DictToList.py</url>
-          <line>97</line>
+          <line>128</line>
           <option name="timeStamp" value="60" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Source/LnLib/LnDict/DictToList.py</url>
-          <line>123</line>
-          <option name="timeStamp" value="61" />
+          <url>file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py</url>
+          <line>129</line>
+          <option name="timeStamp" value="66" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py</url>
-          <line>97</line>
-          <option name="timeStamp" value="66" />
+          <line>92</line>
+          <option name="timeStamp" value="67" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -540,7 +530,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="67" />
+      <option name="time" value="68" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -554,10 +544,24 @@
     <entry file="file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="87" column="0" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
-          <folding>
-            <element signature="e#262#276#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -573,9 +577,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="87" column="0" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
-          <folding>
-            <element signature="e#262#276#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -591,9 +593,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#262#276#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -609,9 +609,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#262#276#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -626,9 +624,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
-          <folding>
-            <element signature="e#262#276#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -650,9 +646,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="134" column="0" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
-          <folding>
-            <element signature="e#262#276#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -724,9 +718,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding>
-            <element signature="e#262#276#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -755,9 +747,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding>
-            <element signature="e#262#276#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -772,9 +762,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#262#276#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -867,17 +855,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.67333335">
           <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4911111">
-          <caret line="94" column="12" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="12" />
-          <folding>
-            <element signature="e#262#276#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.6194332">
+          <caret line="105" column="29" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+          <folding />
         </state>
       </provider>
     </entry>

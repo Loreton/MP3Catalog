@@ -5,19 +5,30 @@
 #                                               by Loreto Notarantonio 2013, February
 # ######################################################################################
 
-def DictToList(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False):
-        # ----------------------------------------------------
-        # - creiamo una lista che contiene:
-        # -    [level - keyName ]
-        # ----------------------------------------------------
+from ..LnCommon.LnColor  import LnColor
+C=LnColor()
+
+# #######################################################
+# # Ritorna una lista che contiene
+# # l'alberatura delle key di un dictionary
+# #    [level - keyName ]
+# #######################################################
+def KeyTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False):
+    ''' RECURSIVE '''
+
+    if level > 100:   # per sicurezza
+        import sys
+        sys.exit()
+
     for key, val in myDict.items():                  # per tutte le chiavi del dict2
         valType = type(val)                            # otteniamo il TYPE
+
             # - Se è un DICT iteriamo
         if valType in myDictTYPES:
             entry = '{0} - {1}{2}'.format(level, level*' '*4, key)
             keyList.append(entry) #  ottendo una lista di tutte le entry
             if fPRINT: print (entry)
-            DictToList(val, myDictTYPES=myDictTYPES, keyList=keyList, level=level+1, fPRINT=fPRINT)    # in questo caso il return value non mi interessa
+            KeyTree(val, myDictTYPES=myDictTYPES, keyList=keyList, level=level+1, fPRINT=fPRINT)    # in questo caso il return value non mi interessa
 
             # assumiamo di aver raggiunto l'ultimo livello del dict
         else:
@@ -26,12 +37,19 @@ def DictToList(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False):
     if not level == 0:
         return
 
-        # ----------------------------------------------------
-        # - siamo alla fine della recursività
-        # - lavorando sul livello cerchiamo di costruire
-        # - una lista di liste ...
-        # - ... una lista per ogni path
-        # ----------------------------------------------------
+
+    return keyList
+
+# #######################################################
+# # Ritorna una lista che contiene una lista di liste.
+# #    [keya, keya1, keya2]
+# #    [keyb, keyb1, keyb2]
+# #    [.....]
+# #######################################################
+def KeyList(myDict, myDictTYPES=[]):
+        # Leggiamo l'l'alberatura
+    keyList = KeyTree(myDict, myDictTYPES=myDictTYPES)
+
     prevLevel = -1
     retLIST = []
     currPTR = []
@@ -71,28 +89,46 @@ def DictToList(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False):
 
 
 
-
-def printDictValues(myDict, pointer, myDictTYPES):
+# #######################################################
+# # Stampa i soli valori contenuti in un ramo, indicato
+# #  da dotQualifers, partendo dal dict myDictRoot
+# #######################################################
+def PrintValues(mainRootDict, listOfQualifiers, myDictTYPES):
+    rootDict = mainRootDict
     level = 0
     myTAB=' '*4
     baseStartValue = 52
-    for key in pointer:
-        myDict = myDict[key]
-        thisTYPE = str(type(myDict)).split("'")[1][-6:]
+    for key in listOfQualifiers:
+        rootDict = rootDict[key]
+        thisTYPE = str(type(rootDict)).split("'")[1][-6:]
         if "DotMap" in thisTYPE: thisTYPE = 'LnDict'
         line = '[{LVL:2}] - {TYPE:<8}- {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
-        print (line)
+        C.printYellowH(line, tab=4)
         level += 1
 
-    for key, val in myDict.items():
+    for key, val in rootDict.items():
         if key == '_myDictTYPES': continue
         if not type(val) in myDictTYPES:    # ignoriamo le entrate che sono dictionary
             thisTYPE = str(type(val)).split("'")[1]
             line0 = '[{LVL:2}] - {TYPE:<8}- {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
-            line = '{LINE:<{LUN}}: {VAL}'.format(LINE=line0, LUN=baseStartValue, VAL=val)
-            print (line)
+            line  = '{LINE:<{LUN}}: {VAL}'.format(LINE=line0, LUN=baseStartValue, VAL=val)
+            C.printGreenH(line, tab=4)
+
 
     print()
+
+
+# #######################################################
+# # Stampa l'alberatura di un dict: mainDictRoot
+# #######################################################
+def PrintTree(mainRootDict, myDictTYPES):
+    keyList = KeyList(mainRootDict, myDictTYPES=myDictTYPES)
+
+    for listOfQualifiers in keyList:
+        PrintValues(mainRootDict, listOfQualifiers, myDictTYPES)
+
+
+
 
 if __name__ == '__main__':
 
@@ -114,11 +150,16 @@ if __name__ == '__main__':
                             }
                     }
 
-    # print_dict(example_dict)
-    ret = DictToList(example_dict, myDictTYPES=[dict])
-    print ()
-    print ()
-    for index, item in enumerate(ret):
-        # print ('{0:02} - {1}'.format(index, item))
-        printDictValues(example_dict, pointer=item, myDictTYPES=[dict])
-        # if index >10: sys.exit()
+
+
+
+    # keyTree = gv.song.dict.KeyTree(fPRINT=False)
+    # for line in keyTree: print(line)
+
+    # keyList = gv.song.dict.KeyList()
+    # for line in keyList: print(line)
+
+    # ptrDict = gv.song.dict.Ptr(['Bambini', "Canzoni sotto l'albero"])
+    # ptrDict.PrintTree()
+
+    # gv.song.dict.PrintTree(listOfQualifiers=['Bambini', "Canzoni sotto l'albero", 'Varie', 'Alla scoperta di Babbo NATALE'])

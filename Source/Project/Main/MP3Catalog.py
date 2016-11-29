@@ -83,19 +83,43 @@ def merge(gv):
     # gv.song.dict.printDict(gv)
 
 
-    keyList = gv.song.dict.GetKeyList(fPRINT=True)
-    gv.song.dict.PrintTree()
+    # keyTree = gv.song.dict.KeyTree(fPRINT=False)
+    # for line in keyTree: print(line)
+
+    # keyList = gv.song.dict.KeyList()
+    # for line in keyList: print(line)
+
+    # MAP_REDUCE
+    # newLIST = []
+    # for x in range(9):
+    #     for line in reversed(keyList):
+    #         newLine = line[:-1]
+    #         print (newLine)
+    #         if not newLine in newLIST:
+    #             newLIST.append(newLine)
+    #         del (line)
+    #     keyList = sorted(newLIST[:])
+    #     # for item in line:
+    # for line in newLIST: print(line)
+
+
+    # ptrDict = gv.song.dict.Ptr(['Bambini', "Canzoni sotto l'albero", 'Varie'])
+    ptrDict = gv.song.dict.Ptr(['Bambini', "Canzoni sotto l'albero"])
+    ptrDict.PrintTree()
+    # gv.song.dict.PrintTree(listOfQualifiers=['Bambini', "Canzoni sotto l'albero", 'Varie', 'Alla scoperta di Babbo NATALE'])
+    # gv.song.dict.PrintTree(listOfQualifiers=['Bambini', "Canzoni sotto l'albero", 'Varie'])
+    # gv.song.dict.PrintTree()
 
     sys.exit()
     ''' OK '''
-    ret = gv.Ln.DictToList(gv.song.dict, myDictTYPES=myDictTYPES)
+    ret = gv.Ln.DictToList(gv.song.dict)
     # ret = gv.Ln.DictToList(gv, myDictTYPES=myDictTYPES)
 
     print ()
     print ()
     for index, item in enumerate(ret):
         print ('{0:02} - {1}'.format(index, item))
-        gv.Ln.printDictValues(gv, pointer=item, myDictTYPES=myDictTYPES)
+        gv.Ln.printDictValues(gv, pointer=item)
 
     sys.exit()
 
