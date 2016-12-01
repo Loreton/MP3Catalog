@@ -33,8 +33,6 @@ def KeyTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False):
 
             # assumiamo di aver raggiunto l'ultimo livello del dict
         else:
-            ###   DEBUG LORETO
-            ggetValue(val, myDictTYPES, fPRINT=True)
             pass
 
     if not level == 0:
@@ -43,27 +41,6 @@ def KeyTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False):
 
     return keyList
 
-# #######################################################
-# # Stampa i soli valori contenuti in un ramo, indicato
-# #  da dotQualifers, partendo dal dict myDictRoot
-# #######################################################
-def ggetValue(mainRootDict, myDictTYPES, fPRINT=True):
-
-    level = 0
-    myTAB=' '*4
-    baseStartValue = 52
-        # - dict forzato nell'ordine di immissione
-    retValue = collections.OrderedDict()
-    retValue[key] = val
-    if fPRINT:
-        thisTYPE = str(type(val)).split("'")[1]
-        line0 = '[{LVL:2}] - {TYPE:<8}- {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
-        line  = '{LINE:<{LUN}}: {VAL}'.format(LINE=line0, LUN=baseStartValue, VAL=val)
-        C.printGreenH(line, tab=4)
-
-
-    if fPRINT: print()
-    return retValue
 
 # #######################################################
 # # Ritorna una lista che contiene una lista di liste.
@@ -121,7 +98,7 @@ def KeyList(myDict, myDictTYPES=[]):
 # # Stampa i soli valori contenuti in un ramo, indicato
 # #  da dotQualifers, partendo dal dict myDictRoot
 # #######################################################
-def PrintValue(mainRootDict, listOfQualifiers, myDictTYPES, fPRINT=True):
+def PrintValue_(mainRootDict, listOfQualifiers, myDictTYPES, fPRINT=True):
     rootDict = mainRootDict
     level = 0
     myTAB=' '*4
@@ -153,10 +130,11 @@ def PrintValue(mainRootDict, listOfQualifiers, myDictTYPES, fPRINT=True):
 
 
 
+
 # #######################################################
 # # Stampa l'alberatura di un dict: mainDictRoot
 # #######################################################
-def PrintTree(mainRootDict, myDictTYPES):
+def PrintTree_(mainRootDict, myDictTYPES):
     keyList = KeyList(mainRootDict, myDictTYPES=myDictTYPES)
 
     for listOfQualifiers in keyList:
@@ -176,6 +154,139 @@ def PrintTree(mainRootDict, myDictTYPES):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# #######################################################
+# # Ritorna una lista che contiene
+# # l'alberatura delle key di un dictionary
+# #    [level - keyName ]
+# #######################################################
+DICT_LINE   = C.printCyanH
+
+VALUE_LINE  = C.printYellow
+VALUE_LINE  = C.printCyan
+
+VALUE_DATA  = C.printGreenH
+
+def PrintTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False, fEXIT=False):
+    ''' RECURSIVE '''
+
+    if level > 100:   # per sicurezza
+        import sys
+        sys.exit()
+
+    myTAB=' '*4
+    for key, val in sorted(myDict.items()):                  # per tutte le chiavi del dict2
+        if key == '_myDictTYPES': continue
+            # - Se è un DICT iteriamo
+        if type(val) in myDictTYPES:
+            thisTYPE = str(type(val)).split("'")[1][-6:]
+            if "DotMap" in thisTYPE: thisTYPE = 'LnDict'
+            line0 = '[{LVL:2}] {TYPE:<8} {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
+            DICT_LINE(line0, tab=4)
+            PrintTree(val, myDictTYPES=myDictTYPES, keyList=keyList, level=level+1, fPRINT=fPRINT)    # in questo caso il return value non mi interessa
+
+        else:
+            _PrintValue(key, val, level, myDictTYPES, fPRINT=True)
+
+    if not level == 0:
+        print()
+        return
+
+    if fEXIT:
+        import sys
+        sys.exit()
+    return keyList
+
+# #######################################################
+# # Stampa i soli valori contenuti in un ramo, indicato
+# #  da dotQualifers, partendo dal dict myDictRoot
+# #######################################################
+def _PrintValue(key, value, level, myDictTYPES, fPRINT=True):
+
+    # level = 0
+    myTAB=' '*4
+        # - dict forzato nell'ordine di immissione
+
+    retValue  = collections.OrderedDict()
+    valueTYPE = str(type(value)).split("'")[1]
+    listOfValue = []
+
+    # ------------------------------
+    # - valutazione del valore
+    # ------------------------------
+
+    if valueTYPE == 'str':
+        s = value
+        if s.find('\n') >= 0:
+            listOfValue.extend(s.split('\n'))
+        elif s.find(';') >= 0:
+            listOfValue.extend(s.split(';'))
+        else:
+            STEP = 60
+            while s:
+                listOfValue.append(s[:STEP])
+                s = s[STEP:]
+
+    elif valueTYPE == 'list':
+        listOfValue.append('[')
+            # indentiamo leggermete i valori
+        x = ['  ' + item for item in value]
+        listOfValue.extend(x)
+        listOfValue.append(']')
+
+    else:
+        listOfValue.append(value)
+
+
+
+    # =========================================
+    # = P R I N T
+    # =========================================
+        # - print della riga con la key a lunghezza fissa baseStartValue
+    baseStartValue = 52
+    line0 = '[{LVL:2}] {TYPE:<8} {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=valueTYPE, KEY=key)
+    line0 = line0.ljust(baseStartValue)
+    # C.printYellowH(line0, tab=4, end='')
+    VALUE_LINE(line0, tab=4, end='')
+
+        # - aggiungiamo i ':' prima del valore
+    VALUE_DATA (': ', end='')
+
+        # - print del valore della prima entry della lista
+    line  = '{VAL}'.format(VAL=listOfValue[0])
+    VALUE_DATA(line)
+
+        # - print delle altre righe se presenti
+    for line in listOfValue[1:]:
+        line  = '{LINE:<{LUN}}  {VAL}'.format(LINE=' ', LUN=baseStartValue, VAL=line)
+        VALUE_DATA(line, tab=4)
+    else:
+        retValue[key] = value
 
 
 

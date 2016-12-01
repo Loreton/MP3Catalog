@@ -56,7 +56,7 @@ def merge(gv, csvFile, csvFormat):
             ptr.SongSize = 0
 
         # - print di tutto il dict
-    # gv.song.dict.PrintTree()
+    gv.song.dict.PrintTree(fEXIT=True)
 
         # -----------------------------------------------------------------------
         # - otteniamo una lista della struttura del dict dove ogni entry
@@ -165,6 +165,7 @@ def Main(gv, action):
     RECs = gv.Prj.ReadCSVFile(gv, csvFileInput, csvFormat)
 
     if action == 'merge':
+        gv.song.dict.PrintTree(fEXIT=True)
         merge(gv, csvFileMerged, csvFormat)
         sys.exit()
 
