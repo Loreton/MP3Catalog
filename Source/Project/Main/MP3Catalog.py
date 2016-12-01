@@ -165,7 +165,7 @@ def Main(gv, action):
     RECs = gv.Prj.ReadCSVFile(gv, csvFileInput, csvFormat)
 
     if action == 'merge':
-        gv.song.dict.PrintTree(fEXIT=True)
+        gv.song.dict.PrintTree(fEXIT=False, MaxLevel=2)
         merge(gv, csvFileMerged, csvFormat)
         sys.exit()
 

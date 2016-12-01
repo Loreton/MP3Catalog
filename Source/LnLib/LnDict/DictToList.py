@@ -5,9 +5,18 @@
 #                                               by Loreto Notarantonio 2013, February
 # ######################################################################################
 import collections
+import sys
 
 from ..LnCommon.LnColor  import LnColor
 C=LnColor()
+# colori delle righe
+DICT_LINE   = C.printCyanH
+
+VALUE_LINE  = C.printYellow
+VALUE_LINE  = C.printCyan
+
+VALUE_DATA  = C.printGreenH
+
 
 # #######################################################
 # # Ritorna una lista che contiene
@@ -18,7 +27,6 @@ def KeyTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False):
     ''' RECURSIVE '''
 
     if level > 100:   # per sicurezza
-        import sys
         sys.exit()
 
     for key, val in myDict.items():                  # per tutte le chiavi del dict2
@@ -98,7 +106,7 @@ def KeyList(myDict, myDictTYPES=[]):
 # # Stampa i soli valori contenuti in un ramo, indicato
 # #  da dotQualifers, partendo dal dict myDictRoot
 # #######################################################
-def PrintValue_(mainRootDict, listOfQualifiers, myDictTYPES, fPRINT=True):
+def PrintValue_OLD(mainRootDict, listOfQualifiers, myDictTYPES, fPRINT=True):
     rootDict = mainRootDict
     level = 0
     myTAB=' '*4
@@ -134,7 +142,7 @@ def PrintValue_(mainRootDict, listOfQualifiers, myDictTYPES, fPRINT=True):
 # #######################################################
 # # Stampa l'alberatura di un dict: mainDictRoot
 # #######################################################
-def PrintTree_(mainRootDict, myDictTYPES):
+def PrintTree_OLD(mainRootDict, myDictTYPES):
     keyList = KeyList(mainRootDict, myDictTYPES=myDictTYPES)
 
     for listOfQualifiers in keyList:
@@ -176,7 +184,29 @@ def PrintTree_(mainRootDict, myDictTYPES):
 
 
 
+import inspect, os
 
+def PrintHeader(header, stackLevel=3):
+    caller = inspect.stack()[stackLevel]
+    dummy, fileName, funcLineNO, funcName, lineCode, rest = caller
+    fName       = os.path.basename( fileName.split('.')[0])
+    if funcName == '<module>': funcName = '__main__'
+    caller = "Called by: [{FNAME}.{FUNC}:{LINEO}]".format(FNAME=fName, FUNC=funcName, LINEO=funcLineNO)
+
+        # ---- Cerchiamo di catturare il dictionary richiamato
+        # ---- da verificare con attenzione
+    if lineCode[0].find('.PxrintTree') > 0:
+        dictionaryName = (lineCode[0].split('.PrintTree')[0].split()[-1])
+        header2 = "dictionary: {0}".format(dictionaryName)
+    else:
+        header2 = "lineCode: {0}...".format(lineCode[0].strip()[:40])
+
+    header = caller
+    print()
+    C.printCyan("*"*60, tab=8)
+    C.printCyan("*     {0}".format(header), tab=8)
+    if header2: C.printCyan("*     {0}".format(header2), tab=8)
+    C.printCyan("*"*60, tab=8)
 
 
 
@@ -185,19 +215,16 @@ def PrintTree_(mainRootDict, myDictTYPES):
 # # l'alberatura delle key di un dictionary
 # #    [level - keyName ]
 # #######################################################
-DICT_LINE   = C.printCyanH
 
-VALUE_LINE  = C.printYellow
-VALUE_LINE  = C.printCyan
-
-VALUE_DATA  = C.printGreenH
-
-def PrintTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False, fEXIT=False):
+def PrintTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False, fEXIT=False, MaxLevel=10, header=None, stackLevel=2):
     ''' RECURSIVE '''
+    if level == 0:
+        PrintHeader(header, stackLevel=stackLevel+1)
 
-    if level > 100:   # per sicurezza
-        import sys
-        sys.exit()
+    if level > MaxLevel: return
+
+    # per evitare LOOP
+    if level > 100: sys.exit()
 
     myTAB=' '*4
     for key, val in sorted(myDict.items()):                  # per tutte le chiavi del dict2
@@ -208,17 +235,16 @@ def PrintTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False, fEXIT=F
             if "DotMap" in thisTYPE: thisTYPE = 'LnDict'
             line0 = '[{LVL:2}] {TYPE:<8} {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
             DICT_LINE(line0, tab=4)
-            PrintTree(val, myDictTYPES=myDictTYPES, keyList=keyList, level=level+1, fPRINT=fPRINT)    # in questo caso il return value non mi interessa
+            PrintTree(val, myDictTYPES=myDictTYPES, keyList=keyList, level=level+1, fPRINT=fPRINT, MaxLevel=MaxLevel)    # in questo caso il return value non mi interessa
 
         else:
-            _PrintValue(key, val, level, myDictTYPES, fPRINT=True)
+            __PrintValue(key, val, level, myDictTYPES, fPRINT=True)
 
     if not level == 0:
         print()
         return
 
     if fEXIT:
-        import sys
         sys.exit()
     return keyList
 
@@ -226,7 +252,7 @@ def PrintTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False, fEXIT=F
 # # Stampa i soli valori contenuti in un ramo, indicato
 # #  da dotQualifers, partendo dal dict myDictRoot
 # #######################################################
-def _PrintValue(key, value, level, myDictTYPES, fPRINT=True):
+def __PrintValue(key, value, level, myDictTYPES, fPRINT=True):
 
     # level = 0
     myTAB=' '*4

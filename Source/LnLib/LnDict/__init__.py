@@ -155,8 +155,8 @@ class DotMap(OrderedDict):
         def KeyList(self):
             return DictToList.KeyList(self, myDictTYPES=self._myDictTYPES)
 
-        def PrintTree(self, fEXIT=False):
-            DictToList.PrintTree(self, myDictTYPES=self._myDictTYPES, fEXIT=fEXIT)
+        def PrintTree(self, fEXIT=False, MaxLevel=10, header=None, stackLevel=1):
+            DictToList.PrintTree(self, myDictTYPES=self._myDictTYPES, fEXIT=fEXIT, MaxLevel=MaxLevel, header=None, stackLevel=stackLevel+1)
 
         # def PrintValue(self, listOfQualifiers=[], fPRINT=True):
         #     DictToList.PrintValue(self, listOfQualifiers=listOfQualifiers, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
