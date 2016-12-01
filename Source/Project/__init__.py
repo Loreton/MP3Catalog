@@ -43,6 +43,7 @@ from . Setup.ParseInput              import  ParseInput
 
 from . Functions.SongFilter         import  songFilter
 from . Functions.SongFilter         import  songFilter
+from . Functions.Merge              import  Merge
 
 from . Functions.CopySongs          import  copySongs
 from . Functions.CheckSourceSongs   import  checkSourceSongs

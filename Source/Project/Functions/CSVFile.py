@@ -98,7 +98,7 @@ def ReadCSVFile(gv, csvFile, csvFormat):
 
     logger.debug('FOUND {0} records... in the required range {1}'.format(len(RECs), gv.ini.EXCEL.RangeToProcess))
 
-    if gv.fDEBUG: gv.song.dict.printDict(gv)
+    if gv.fDEBUG: gv.song.dict.PrintTree()
     return RECs
     gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)
 

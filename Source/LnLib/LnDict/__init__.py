@@ -6,13 +6,13 @@ from inspect import ismethod
 
 try:
     from . import DictToList
-    from . PrintDictionaryTree import PrintDictionaryTree as PrintDict
+    from . import PrintDictionaryTree
     LORETO = True
 except (Exception) as why:
     print ('.............', str(why))
     try:
         import DictToList
-        from   PrintDictionaryTree import PrintDictionaryTree as PrintDict
+        import PrintDictionaryTree
         LORETO = True
     except:
         print ('.............', str(why))
@@ -26,9 +26,11 @@ class DotMap(OrderedDict):
         self._map = OrderedDict()
         self._dynamic = False    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
 
+            # ===================================
         if LORETO:
             self._dynamic = True    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
             self._myDictTYPES = [dict, DotMap] # by Loreto (DEFAULT)
+            # ===================================
 
         if kwargs:
             if '_dynamic' in kwargs:
@@ -134,6 +136,7 @@ class DotMap(OrderedDict):
     def pprint(self):
         pprint(self.toDict())
 
+        # ===================================
     if LORETO:
         def Ptr(self, listOfQualifiers, create=False):
             ptr = self
@@ -156,18 +159,11 @@ class DotMap(OrderedDict):
             return DictToList.KeyList(self, myDictTYPES=self._myDictTYPES)
 
         def PrintTree(self, fEXIT=False, MaxLevel=10, header=None, stackLevel=1):
-            DictToList.PrintTree(self, myDictTYPES=self._myDictTYPES, fEXIT=fEXIT, MaxLevel=MaxLevel, header=None, stackLevel=stackLevel+1)
-
-        # def PrintValue(self, listOfQualifiers=[], fPRINT=True):
-        #     DictToList.PrintValue(self, listOfQualifiers=listOfQualifiers, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
+            PrintDictionaryTree.PrintDictionary(self, myDictTYPES=self._myDictTYPES, fEXIT=fEXIT, MaxLevel=MaxLevel, header=None, stackLevel=stackLevel+1)
 
         def GetValue(self, listOfQualifiers=[], fPRINT=False):
-            return DictToList.PrintValue(self, listOfQualifiers=listOfQualifiers, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
-
-        def PrintDict(self, header='', fEXIT=False, lTAB=' '*4, fCONSOLE=True):
-            PrintDict(self, dictTYPES=self._myDictTYPES, header=header, retCols='LTV', lTAB=lTAB, fEXIT=fEXIT, fCONSOLE=fCONSOLE, stackLevel=2)
-
-
+            return DictToList.getValue(self, listOfQualifiers=listOfQualifiers, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
+        # ===================================
 
     def empty(self):
         return (not any(self))
