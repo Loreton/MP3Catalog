@@ -4,6 +4,7 @@
 # Scope:  Programma per ...........
 #                                               by Loreto Notarantonio 2013, February
 # ######################################################################################
+import collections
 
 from ..LnCommon.LnColor  import LnColor
 C=LnColor()
@@ -32,6 +33,8 @@ def KeyTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False):
 
             # assumiamo di aver raggiunto l'ultimo livello del dict
         else:
+            ###   DEBUG LORETO
+            ggetValue(key, myDictTYPES, fPRINT=True)
             pass
 
     if not level == 0:
@@ -89,11 +92,37 @@ def KeyList(myDict, myDictTYPES=[]):
 
 
 
+
 # #######################################################
 # # Stampa i soli valori contenuti in un ramo, indicato
 # #  da dotQualifers, partendo dal dict myDictRoot
 # #######################################################
-def PrintValues(mainRootDict, listOfQualifiers, myDictTYPES):
+def ggetValue(mainRootDict, myDictTYPES, fPRINT=True):
+    rootDict = mainRootDict
+    level = 0
+    myTAB=' '*4
+    baseStartValue = 52
+        # - dict forzato nell'ordine di immissione
+    retValue = collections.OrderedDict()
+    for key, val in rootDict.items():
+        if key == '_myDictTYPES': continue
+        if not type(val) in myDictTYPES:    # ignoriamo le entrate che sono dictionary
+            retValue[key] = val
+            if fPRINT:
+                thisTYPE = str(type(val)).split("'")[1]
+                line0 = '[{LVL:2}] - {TYPE:<8}- {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
+                line  = '{LINE:<{LUN}}: {VAL}'.format(LINE=line0, LUN=baseStartValue, VAL=val)
+                C.printGreenH(line, tab=4)
+
+
+    if fPRINT: print()
+    return retValue
+
+# #######################################################
+# # Stampa i soli valori contenuti in un ramo, indicato
+# #  da dotQualifers, partendo dal dict myDictRoot
+# #######################################################
+def PrintValue(mainRootDict, listOfQualifiers, myDictTYPES, fPRINT=True):
     rootDict = mainRootDict
     level = 0
     myTAB=' '*4
@@ -102,20 +131,27 @@ def PrintValues(mainRootDict, listOfQualifiers, myDictTYPES):
         rootDict = rootDict[key]
         thisTYPE = str(type(rootDict)).split("'")[1][-6:]
         if "DotMap" in thisTYPE: thisTYPE = 'LnDict'
-        line = '[{LVL:2}] - {TYPE:<8}- {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
-        C.printYellowH(line, tab=4)
+        if fPRINT:
+            line = '[{LVL:2}] - {TYPE:<8}- {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
+            C.printYellowH(line, tab=4)
         level += 1
 
+        # - dict forzato nell'ordine di immissione
+    retValue = collections.OrderedDict()
     for key, val in rootDict.items():
         if key == '_myDictTYPES': continue
         if not type(val) in myDictTYPES:    # ignoriamo le entrate che sono dictionary
-            thisTYPE = str(type(val)).split("'")[1]
-            line0 = '[{LVL:2}] - {TYPE:<8}- {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
-            line  = '{LINE:<{LUN}}: {VAL}'.format(LINE=line0, LUN=baseStartValue, VAL=val)
-            C.printGreenH(line, tab=4)
+            retValue[key] = val
+            if fPRINT:
+                thisTYPE = str(type(val)).split("'")[1]
+                line0 = '[{LVL:2}] - {TYPE:<8}- {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
+                line  = '{LINE:<{LUN}}: {VAL}'.format(LINE=line0, LUN=baseStartValue, VAL=val)
+                C.printGreenH(line, tab=4)
 
 
-    print()
+    if fPRINT: print()
+    return retValue
+
 
 
 # #######################################################
@@ -125,7 +161,7 @@ def PrintTree(mainRootDict, myDictTYPES):
     keyList = KeyList(mainRootDict, myDictTYPES=myDictTYPES)
 
     for listOfQualifiers in keyList:
-        PrintValues(mainRootDict, listOfQualifiers, myDictTYPES)
+        PrintValue(mainRootDict, listOfQualifiers, myDictTYPES)
 
 
 

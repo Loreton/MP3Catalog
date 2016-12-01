@@ -12,32 +12,9 @@ import ast
 ########################################################
 # -
 ########################################################
-def ReadCSVFile(gv):
+def ReadCSVFile(gv, csvFile, csvFormat):
     logger = gv.Ln.SetLogger(package=__name__)
     C      = gv.Ln.LnColor()
-
-        # - leggiamo tipo di csv da usare
-    csvFormat = gv.ini.MAIN.csvFormat
-    logger.debug('CSV format type: {}'.format(csvFormat))
-
-        # ========================================
-        # - Build Excel FileName
-        # ========================================
-    xlsFile = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.INPUT_PARAM.excelFile))
-    csvFile = xlsFile.rsplit('.', -1)[0] + '.csv'
-
-    logger.debug('XLS file name:    {}'.format(xlsFile))
-    logger.debug('CSV file name:    {}'.format(csvFile))
-
-
-        # - Se il csv è più vecchio dell'xls facciamo l'export
-    if gv.Ln.Fmtime(xlsFile) > gv.Ln.Fmtime(csvFile):
-        logger.debug('range To process: {}'.format(gv.ini.EXCEL.RangeToProcess))
-        mydata  = gv.Ln.Excel(xlsFile)
-        mydata.exportCSV('Catalog', csvType=csvFormat, outFname=csvFile, rangeString=gv.ini.EXCEL.RangeToProcess, colNames=4)
-    else:
-        logger.debug('excel file is older than CSV file. No export will take place.')
-
 
 
         # ------------------------------------------------------------
@@ -58,15 +35,15 @@ def ReadCSVFile(gv):
         # colNames = [token.strip() for token in csvRowList[0].split(';') if token]
         colNames = [token.strip() for token in csvRowList[0].split(';')]
 
-    excelColsName  = ';'.join(colNames)
-    configColsName = ';'.join(gv.song.colsName)
+    excelColsName    = ';'.join(colNames)
+    requiredColsName = ';'.join(gv.song.colsName)
     logger.debug('excel  columns name: {0}'.format(excelColsName))
-    logger.debug('config columns name: {0}'.format(configColsName))
+    logger.debug('config columns name: {0}'.format(requiredColsName))
 
-    if not excelColsName == configColsName:
+    if not excelColsName == requiredColsName:
         C.printYellowH('i nomi delle colonne non coincidono', tab=4)
         C.printYellowH('file     : {0}'.format(csvRowList[0]), tab=4)
-        C.printYellowH('expected : {0}'.format(configColsName), tab=4)
+        C.printYellowH('expected : {0}'.format(requiredColsName), tab=4)
         C.printYellowH('found    : {0}'.format(excelColsName), tab=4)
         gv.Ln.Exit(1, 'I nomi delle colonne non coincidono')
 
@@ -124,4 +101,30 @@ def ReadCSVFile(gv):
     if gv.fDEBUG: gv.song.dict.printDict(gv)
     return RECs
     gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)
+
+
+
+
+#######################################################
+# #
+#######################################################
+def WriteCSVFile(gv, csvFile, data=[], csvFormat=''):
+    logger = gv.Ln.SetLogger(package=__name__)
+    logger.debug('writing file:             {0}'.format(csvFile))
+    logger.debug('number of lines to write: {0}'.format(len(data)))
+
+        # -----------------------------------------------------------------------
+        # - Per ogni canzone prendiamo gli attributi e salviamola.
+        # -----------------------------------------------------------------------
+    f = open(csvFile, "w", encoding='utf-8')
+    for line in data:
+        if isinstance(line, list):
+            # converte all items to string perché...
+            # ...potrebbe dare errore se qualche item non è stringa
+            lineStr = [str(item) for item in line]
+            f.write(';'.join(lineStr))
+        else:
+            f.write(line)
+        f.write('\n')
+    f.close()
 

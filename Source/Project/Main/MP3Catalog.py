@@ -14,8 +14,14 @@ import ast
 # - 1. Leggiamo la rootSourceDir
 # - 2. Inseriamo ogni file nel dictionary
 ##############################################################
-def merge(gv):
+def merge(gv, csvFile, csvFormat):
     logger  = gv.Ln.SetLogger(package=__name__)
+
+    # gv.song.printDict(gv)
+    # gv.song.field.PrintTree()
+    # gv.song.PrintValue(['field'])
+    # gv.song.field.PrintValue()
+    # sys.exit()
 
 
         # ---------------------------------------
@@ -26,18 +32,15 @@ def merge(gv):
         gv.Ln.Exit(43, 'non sono stati trovati file nella directory indicata: {0}'.format(gv.ini.MAIN.MP3SourceDir))
 
 
-        # numero del qualificatore subito doto la sourceDir
-    firstRelField = len(gv.ini.MAIN.MP3SourceDir.split(os.path.sep))
-
-        # prima colonna degli attributi (subito dopo il nome canzone)
-    startAttributeCols = gv.song.field.SongName+1
 
         # ---------------------------------------
         # - inserimento...nuove canzoni
         # ---------------------------------------
+        # numero del qualificatore subito doto la sourceDir
+    firstRelField = len(gv.ini.MAIN.MP3SourceDir.split(os.path.sep))
     for absName in listaFile:
-        line    = absName.rsplit('.', 1)[0]                       # elimina extension
-        relativeName = line.split(os.path.sep)[firstRelField:]    # elimina rootDir
+        line            = absName.rsplit('.', 1)[0]                       # elimina extension
+        relativeName    = line.split(os.path.sep)[firstRelField:]    # elimina rootDir
         if relativeName[0].startswith('@'): continue
         if not relativeName[0] in gv.ini.MAIN.songType: continue
 
@@ -55,11 +58,24 @@ def merge(gv):
         # - print di tutto il dict
     # gv.song.dict.PrintTree()
 
-        # ------------------------------------------------
-        # - otteniamo una lista dove ogni entry
-        # - è una lista che contiene l'albero della canzone
-        # ------------------------------------------------
+        # -----------------------------------------------------------------------
+        # - otteniamo una lista della struttura del dict dove ogni entry
+        # - è una lista che contiene i token del tree della canzone
+        #   ['Bambini', 'Cartoni', 'The best of', 'Anna Dai Capelli Rossi']
+        #   ['Bambini', 'Cartoni', 'The best of', 'Arale Avventura']
+        #   ['Bambini', 'Cartoni', 'The best of', 'Arrivano I Superboys' ]
+        #   ['Bambini', 'Cartoni', 'The best of', 'Astro Robot' ]
+        # -----------------------------------------------------------------------
     keyList = gv.song.dict.KeyList()
+
+        # -----------------------------------------------------------------------
+        # - Per ogni canzone verifichiamo se esiste il file.
+        # - Se non esiste mettiamo songSize=0 nel caso dovesse
+        # -   essere necessario copiare gli attributi per poi cancellarle.
+        # - Allo stesso tempo leggiamo gli attributi e creiamo una nuova lista
+        # - da scrivere in un file CSV.
+        # -----------------------------------------------------------------------
+    mergedLIST = []
     for songQualifiers in keyList:
         if songQualifiers == []: continue
 
@@ -73,13 +89,30 @@ def merge(gv):
             size = 0 # in modo che posso copiare gli attrivuti e poi cancellarle.
             print('     no more exists...', fileName)
 
+        # - pointer alla canzone
         ptrSong = gv.song.dict.Ptr(songQualifiers)
+        # - set size
         ptrSong.SongSize = size
+        # - get song attributes values
+        songAttr = ptrSong.GetValue()
 
+        # -------------------------------------
+        # - Inseriamo la canzone nella lista
+        # - che salveremo come merged CSV
+        # -------------------------------------
+        newSong = songQualifiers[:]
+        for attributeName, val in songAttr.items():
+            # print ('    ', attributeName, val)
+            newSong.append(val)
 
-    # gv.song.dict.PrintTree()
+        mergedLIST.append(newSong)
 
-    sys.exit()
+    # -----------------------------------------------------------------------
+    # - Salviamo il tutto in formato csv
+    # -----------------------------------------------------------------------
+    # for line in mergedLIST: print (line)
+    gv.Prj.WriteCSVFile(gv, csvFile, mergedLIST, csvFormat)
+
 
 
 
@@ -101,10 +134,38 @@ def Main(gv, action):
         #       song1[...]
         #       song2[...]
         #      ]
-    RECs = gv.Prj.ReadCSVFile(gv)
+
+        # -------------------------------------------
+        # - Export del file excel se richiesto
+        # -------------------------------------------
+
+        # - tipo di csv da usare
+    csvFormat = gv.ini.MAIN.csvFormat
+    logger.debug('CSV format type: {0}'.format(csvFormat))
+
+        # ========================================
+        # - Build Excel FileName
+        # ========================================
+    xlsFile = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.INPUT_PARAM.excelFile))
+    csvFileInput  = xlsFile.rsplit('.', -1)[0] + '.csv'
+    csvFileMerged = xlsFile.rsplit('.', -1)[0] + '.merged.csv'
+
+    logger.debug('XLS file name:    {0}'.format(xlsFile))
+    logger.debug('CSV file name:    {0}'.format(csvFileInput))
+
+
+        # - Se il csv è più vecchio dell'xls facciamo l'export
+    if gv.Ln.Fmtime(xlsFile) > gv.Ln.Fmtime(csvFileInput):
+        logger.debug('range To process: {}'.format(gv.ini.EXCEL.RangeToProcess))
+        mydata  = gv.Ln.Excel(xlsFile)
+        mydata.exportCSV('Catalog', csvType=csvFormat, outFname=csvFileInput, rangeString=gv.ini.EXCEL.RangeToProcess, colNames=4)
+    else:
+        logger.debug('excel file is older than CSV file. No export will take place.')
+
+    RECs = gv.Prj.ReadCSVFile(gv, csvFileInput, csvFormat)
 
     if action == 'merge':
-        merge(gv)
+        merge(gv, csvFileMerged, csvFormat)
         sys.exit()
 
 

@@ -84,7 +84,8 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------
     Input           = Prj.ParseInput(gv, args=sys.argv[1:], columnsName=gv.song.attributeCols)
     gv.INPUT_PARAM  = gv.Ln.LnDict(Input)
-    # gv.INPUT_PARAM.printDict(gv)
+    # gv.PrintTree()
+    # gv.INPUT_PARAM.PrintDict(fEXIT=True)
     gv.fDEBUG        = gv.INPUT_PARAM.fDEBUG
 
 

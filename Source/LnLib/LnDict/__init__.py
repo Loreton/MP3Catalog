@@ -6,12 +6,16 @@ from inspect import ismethod
 
 try:
     from . import DictToList
+    from . PrintDictionaryTree import PrintDictionaryTree as PrintDict
     LORETO = True
-except:
+except (Exception) as why:
+    print ('.............', str(why))
     try:
         import DictToList
+        from   PrintDictionaryTree import PrintDictionaryTree as PrintDict
         LORETO = True
     except:
+        print ('.............', str(why))
         LORETO = False
         print ('LORETO:', LORETO)
 
@@ -154,8 +158,15 @@ class DotMap(OrderedDict):
         def PrintTree(self):
             DictToList.PrintTree(self, myDictTYPES=self._myDictTYPES)
 
-        def PrintValue(self, listOfQualifiers):
-            DictToList.PrintTree(self, listOfQualifiers=listOfQualifiers, myDictTYPES=self._myDictTYPES)
+        def PrintValue(self, listOfQualifiers=[], fPRINT=True):
+            DictToList.PrintValue(self, listOfQualifiers=listOfQualifiers, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
+
+        def GetValue(self, listOfQualifiers=[], fPRINT=False):
+            return DictToList.PrintValue(self, listOfQualifiers=listOfQualifiers, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
+
+        def PrintDict(self, header='', fEXIT=False, lTAB=' '*4, fCONSOLE=True):
+            PrintDict(self, dictTYPES=self._myDictTYPES, header=header, retCols='LTV', lTAB=lTAB, fEXIT=fEXIT, fCONSOLE=fCONSOLE, stackLevel=2)
+
 
 
     def empty(self):

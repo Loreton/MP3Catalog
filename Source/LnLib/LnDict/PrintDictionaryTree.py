@@ -39,12 +39,12 @@ from ..LnCommon.LnColor  import LnColor
 # #########################################################################################
 
 # ########################################################################
-def  printDictionaryTree(gv, dictID, extDict=[], header=None, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', listInLine=5, fEXIT=False, fCONSOLE=True, stackLevel=1):
-    color = gv.Ln.LnColor()
+color = LnColor()
+def  PrintDictionaryTree(dictID, dictTYPES, header=None, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', listInLine=5, fEXIT=False, fCONSOLE=True, stackLevel=1):
     global allDictTYPES, myDictTYPES
-    myDictTYPES = []
-    myDictTYPES.extend(extDict)
-    if 'myDictTYPES' in gv: myDictTYPES.extend(gv.myDictTYPES)
+    myDictTYPES = dictTYPES
+    # myDictTYPES.extend(extDict)
+    # if 'myDictTYPES' in gv: myDictTYPES.extend(gv.myDictTYPES)
 
     pyDictTYPES = [ dict,
                     configparser.ConfigParser,
@@ -203,8 +203,7 @@ def getDictionaryTree(dictID, MaxDeepLevel=999, level=0, retCols='LTV', listInLi
             # - la variabile 'gv.myDictTYPES' in quanto darebbe errore.
             # - Tale variabile è usata solo per contenere mie classi specifiche
             # ------------------------------------------------------------------
-        if key == 'myDictTYPES': continue
-        if key == '_dynamicDotMap': continue
+        if key in['_myDictTYPES', 'myDictTYPES', '_dynamic']: continue
 
         if type(val) in myDictTYPES:
             val = vars(val)
@@ -383,7 +382,6 @@ def prepareListValueLine(line, retCols, level):
 
 
 if __name__ == "__main__":
-    gv=''
     dictID={}
     fEXIT       = 'fEXIT'
     fEXIT       = True
@@ -396,4 +394,4 @@ if __name__ == "__main__":
     print("pippo        = {0}".format(pippo))
     print("header       = {0}".format(header))
     print()
-    printDictionaryTree(gv, dictID, header=header, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', listInLine=5, fEXIT=fEXIT)
+    PrintDictionaryTree( dictID, header=header, MaxDeepLevel=999, level=0, retCols='LTV', lTAB='', listInLine=5, fEXIT=fEXIT)
