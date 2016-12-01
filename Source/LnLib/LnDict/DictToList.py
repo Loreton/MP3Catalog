@@ -34,7 +34,7 @@ def KeyTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False):
             # assumiamo di aver raggiunto l'ultimo livello del dict
         else:
             ###   DEBUG LORETO
-            ggetValue(key, myDictTYPES, fPRINT=True)
+            ggetValue(val, myDictTYPES, fPRINT=True)
             pass
 
     if not level == 0:
@@ -42,6 +42,28 @@ def KeyTree(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False):
 
 
     return keyList
+
+# #######################################################
+# # Stampa i soli valori contenuti in un ramo, indicato
+# #  da dotQualifers, partendo dal dict myDictRoot
+# #######################################################
+def ggetValue(mainRootDict, myDictTYPES, fPRINT=True):
+
+    level = 0
+    myTAB=' '*4
+    baseStartValue = 52
+        # - dict forzato nell'ordine di immissione
+    retValue = collections.OrderedDict()
+    retValue[key] = val
+    if fPRINT:
+        thisTYPE = str(type(val)).split("'")[1]
+        line0 = '[{LVL:2}] - {TYPE:<8}- {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
+        line  = '{LINE:<{LUN}}: {VAL}'.format(LINE=line0, LUN=baseStartValue, VAL=val)
+        C.printGreenH(line, tab=4)
+
+
+    if fPRINT: print()
+    return retValue
 
 # #######################################################
 # # Ritorna una lista che contiene una lista di liste.
@@ -93,30 +115,7 @@ def KeyList(myDict, myDictTYPES=[]):
 
 
 
-# #######################################################
-# # Stampa i soli valori contenuti in un ramo, indicato
-# #  da dotQualifers, partendo dal dict myDictRoot
-# #######################################################
-def ggetValue(mainRootDict, myDictTYPES, fPRINT=True):
-    rootDict = mainRootDict
-    level = 0
-    myTAB=' '*4
-    baseStartValue = 52
-        # - dict forzato nell'ordine di immissione
-    retValue = collections.OrderedDict()
-    for key, val in rootDict.items():
-        if key == '_myDictTYPES': continue
-        if not type(val) in myDictTYPES:    # ignoriamo le entrate che sono dictionary
-            retValue[key] = val
-            if fPRINT:
-                thisTYPE = str(type(val)).split("'")[1]
-                line0 = '[{LVL:2}] - {TYPE:<8}- {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=thisTYPE, KEY=key)
-                line  = '{LINE:<{LUN}}: {VAL}'.format(LINE=line0, LUN=baseStartValue, VAL=val)
-                C.printGreenH(line, tab=4)
 
-
-    if fPRINT: print()
-    return retValue
 
 # #######################################################
 # # Stampa i soli valori contenuti in un ramo, indicato
