@@ -27,10 +27,8 @@
 
 
 
-from . Main.MP3Catalog              import  Main
-# from . Main.MP3CatalogSqlLite       import  Main
-
-
+from . Main.MainSqLite              import  Main as MainSqLite
+from . Main.MainExcel               import  Main as MainExcel
 
 
 from . import Setup     as setup

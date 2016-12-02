@@ -34,5 +34,7 @@ from . LnFile.ReadWriteTextFile         import readTextFile
 from . LnFile.ReadWriteTextFile         import writeTextFile
 
 
+from . SqLite.LnSqLite_Class                import LnSqLite
+
 from . Excel.LnExcel_Class              import Excel
 

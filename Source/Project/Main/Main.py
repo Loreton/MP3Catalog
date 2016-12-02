@@ -21,13 +21,27 @@ import ast
 def Main(gv, action):
     logger  = gv.Ln.SetLogger(package=__name__)
     C       = gv.Ln.LnColor()
-    gv.data = gv.Ln.LnDict()
+    # gv.data = gv.Ln.LnDict()
 
 
-        # ---------- E X C E L
-    xlsFile      = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.INPUT_PARAM.excelFile))
-    csvFileInput = gv.Prj.ReadExcelDB(gv, xlsFile, gv.ini.EXCEL.RangeToProcess)
-    csvFileMerged = xlsFile.rsplit('.', -1)[0] + '.merged.csv'
+    SQLLite = False; EXCEL  = not SQLLite
+
+    if EXCEL:
+            # ---------- E X C E L
+        xlsFile       = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.INPUT_PARAM.excelFile))
+        csvFileInput  = gv.Prj.ReadExcelDB(gv, xlsFile, gv.ini.EXCEL.RangeToProcess)
+        csvFileMerged = xlsFile.rsplit('.', -1)[0] + '.merged.csv'
+
+    elif SQLLite:
+            # ---------- S Q L i t e
+        ReadSqlLiteDB(gv, gv.ini.SQLite)
+        # gv.DB.IniSectID                 = gv.INI.configParser['DB_Data']
+        # gv.DB.IniSectID                 = gv.INI.dict['DB_Data']
+        sys.exit()
+
+
+    else:
+        sys.exit()
 
     requiredColNames = ';'.join(gv.song.colsName)
     RECs = gv.Prj.ReadCSVFile(gv, csvFileInput, requiredColNames)
@@ -35,17 +49,24 @@ def Main(gv, action):
     # gv.song.dict.PrintTree(fEXIT=True, MaxLevel=3)
 
     if action == 'merge':
+            # -----------------------------------------------------------------------
+            # - Merging del dictionary con la directory sorgente
+            # -----------------------------------------------------------------------
         mergedLIST = gv.Prj.Merge(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict)
             # -----------------------------------------------------------------------
             # - Salviamo il tutto in formato csv
             # -----------------------------------------------------------------------
-        # for line in mergedLIST: print (line)
-
         gv.Prj.WriteCSVFile(gv, csvFileMerged, mergedLIST)
         print ()
         C.printYellowH('file: {0} has been saved.'.format(csvFileMerged), tab=4)
-        # gv.song.PrintTree(MaxLevel=2)
+
+        # gv.Prj.SQL(gv, csvFileMerged, mergedLIST)
+        # gv.song.PrinclstTree(MaxLevel=2)
         sys.exit()
+
+
+    gv.Prj.songFilter(gv, RECs)
+
 
 
     fileScartate        = '{ROOT}/tmp/_Scartate.csv'.format(ROOT=gv.Prj.dataDIR)
@@ -64,7 +85,6 @@ def Main(gv, action):
     gv.songList.scartate    = [gv.song.colsName]  # init LIST con il nome delle colonne
     gv.songList.duplicate   = [gv.song.colsName]  # init LIST con il nome delle colonne
 
-    gv.Prj.songFilter(gv, RECs)
 
 
     # - Salvataggio dei dati solo per DEBUG

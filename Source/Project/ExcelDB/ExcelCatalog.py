@@ -33,7 +33,7 @@ def ReadExcelDB(gv, xlsFile, rangeToProcess):
         # - Se il csv è più vecchio dell'xls facciamo l'export
     if gv.Ln.Fmtime(xlsFile) > gv.Ln.Fmtime(csvFileInput):
         msg= 'range To process: {0}'.format(rangeToProcess)
-        logger.debug(); print(msg)
+        logger.debug(msg); print(msg)
         mydata  = gv.Ln.Excel(xlsFile)
         mydata.exportCSV('Catalog', outFname=csvFileInput, rangeString=rangeToProcess, colNames=4, fPRINT=True)
     else:

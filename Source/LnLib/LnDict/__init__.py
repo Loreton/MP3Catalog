@@ -24,11 +24,11 @@ class DotMap(OrderedDict):
 
     def __init__(self, *args, **kwargs):
         self._map = OrderedDict()
-        self._dynamic = False    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
+        self._dynamic = True    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
 
             # ===================================
         if LORETO:
-            self._dynamic = True    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
+            self._dynamic = False    # mettendo False non funzionano più i test di default. E' normale in quanto si aspettano la creazione dinamica dei figli
             self._myDictTYPES = [dict, DotMap] # by Loreto (DEFAULT)
             # ===================================
 
