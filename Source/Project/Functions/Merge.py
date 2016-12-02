@@ -14,23 +14,22 @@ import ast
 # - 1. Leggiamo la rootSourceDir
 # - 2. Inseriamo ogni file nel dictionary
 ##############################################################
-def Merge(gv, csvFile, csvFormat):
+def Merge(gv, sourceDir, songDict ):
     logger  = gv.Ln.SetLogger(package=__name__)
-    C = gv.Ln.LnColor()
 
         # ---------------------------------------
         # - lettura directory sorgente di MP3
         # ---------------------------------------
-    listaFile = gv.Ln.DirList(gv.ini.MAIN.MP3SourceDir, patternLIST=['*.mp3'], onlyDir=False, maxDeep=99)
+    listaFile = gv.Ln.DirList(sourceDir, patternLIST=['*.mp3'], onlyDir=False, maxDeep=99)
     if listaFile == []:
-        gv.Ln.Exit(43, 'non sono stati trovati file nella directory indicata: {0}'.format(gv.ini.MAIN.MP3SourceDir))
+        gv.Ln.Exit(43, 'non sono stati trovati file nella directory indicata: {0}'.format(sourceDir))
 
 
         # ---------------------------------------
         # - inserimento...nuove canzoni
         # ---------------------------------------
         # numero del qualificatore subito doto la sourceDir
-    firstRelField = len(gv.ini.MAIN.MP3SourceDir.split(os.path.sep))
+    firstRelField = len(sourceDir.split(os.path.sep))
     for absName in listaFile:
         line            = absName.rsplit('.', 1)[0]                       # elimina extension
         relativeName    = line.split(os.path.sep)[firstRelField:]    # elimina rootDir
@@ -40,7 +39,7 @@ def Merge(gv, csvFile, csvFormat):
             # ------------------------
             # - inserimento canzone
             # ------------------------
-        ptr = gv.song.dict.Ptr(relativeName, create=True)
+        ptr = songDict.Ptr(relativeName, create=True)
         if not 'SongSize' in ptr:
             print ('....new entry', relativeName)
                 # su ogni canzone mettiamo i vari attributi di default
@@ -49,7 +48,7 @@ def Merge(gv, csvFile, csvFormat):
             ptr.SongSize = 0
 
         # - print di tutto il dict
-    # gv.song.dict.PrintTree(fEXIT=True)
+    # songDict.PrintTree(fEXIT=True)
 
         # -----------------------------------------------------------------------
         # - otteniamo una lista della struttura del dict dove ogni entry
@@ -59,7 +58,7 @@ def Merge(gv, csvFile, csvFormat):
         #   ['Bambini', 'Cartoni', 'The best of', 'Arrivano I Superboys' ]
         #   ['Bambini', 'Cartoni', 'The best of', 'Astro Robot' ]
         # -----------------------------------------------------------------------
-    keyList = gv.song.dict.KeyList()
+    keyList = songDict.KeyList()
 
         # -----------------------------------------------------------------------
         # - Per ogni canzone verifichiamo se esiste il file.
@@ -73,7 +72,7 @@ def Merge(gv, csvFile, csvFormat):
         if songQualifiers == []: continue
 
         fileName = os.path.sep.join(songQualifiers)
-        fileName = '{0}{1}{2}.mp3'.format(gv.ini.MAIN.MP3SourceDir, os.path.sep, fileName)
+        fileName = '{0}{1}{2}.mp3'.format(sourceDir, os.path.sep, fileName)
 
         if os.path.isfile(fileName):
             size = os.stat(fileName).st_size
@@ -83,7 +82,7 @@ def Merge(gv, csvFile, csvFormat):
             print('     no more exists...', fileName)
 
         # - pointer alla canzone
-        ptrSong = gv.song.dict.Ptr(songQualifiers)
+        ptrSong = songDict.Ptr(songQualifiers)
         # - set size
         ptrSong.SongSize = size
         # - get song attributes values
@@ -99,13 +98,6 @@ def Merge(gv, csvFile, csvFormat):
 
         mergedLIST.append(newSong)
 
-    # -----------------------------------------------------------------------
-    # - Salviamo il tutto in formato csv
-    # -----------------------------------------------------------------------
-    # for line in mergedLIST: print (line)
-    gv.Prj.WriteCSVFile(gv, csvFile, mergedLIST, csvFormat)
-    print ()
-    C.printYellowH('file: {0} has been saved.'.format(csvFile), tab=4)
-    # gv.song.PrintTree(MaxLevel=2)
+    return mergedLIST
 
 

@@ -24,44 +24,27 @@ def Main(gv, action):
     gv.data = gv.Ln.LnDict()
 
 
-        # ritorna una lista di canzoni (lista a sua volta)
-        # SONGS[
-        #       song1[...]
-        #       song2[...]
-        #      ]
-
-        # -------------------------------------------
-        # - Export del file excel se richiesto
-        # -------------------------------------------
-
-        # - tipo di csv da usare
-    csvFormat = gv.ini.MAIN.csvFormat
-    logger.debug('CSV format type: {0}'.format(csvFormat))
-
-        # ========================================
-        # - Build Excel FileName
-        # ========================================
-    xlsFile = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.INPUT_PARAM.excelFile))
-    csvFileInput  = xlsFile.rsplit('.', -1)[0] + '.csv'
+        # ---------- E X C E L
+    xlsFile      = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.INPUT_PARAM.excelFile))
+    csvFileInput = gv.Prj.ReadExcelDB(gv, xlsFile, gv.ini.EXCEL.RangeToProcess)
     csvFileMerged = xlsFile.rsplit('.', -1)[0] + '.merged.csv'
 
-    logger.debug('XLS file name:    {0}'.format(xlsFile))
-    logger.debug('CSV file name:    {0}'.format(csvFileInput))
+    requiredColNames = ';'.join(gv.song.colsName)
+    RECs = gv.Prj.ReadCSVFile(gv, csvFileInput, requiredColNames)
 
-
-        # - Se il csv è più vecchio dell'xls facciamo l'export
-    if gv.Ln.Fmtime(xlsFile) > gv.Ln.Fmtime(csvFileInput):
-        logger.debug('range To process: {}'.format(gv.ini.EXCEL.RangeToProcess))
-        mydata  = gv.Ln.Excel(xlsFile)
-        mydata.exportCSV('Catalog', csvType=csvFormat, outFname=csvFileInput, rangeString=gv.ini.EXCEL.RangeToProcess, colNames=4)
-    else:
-        logger.debug('excel file is older than CSV file. No export will take place.')
-
-    RECs = gv.Prj.ReadCSVFile(gv, csvFileInput, csvFormat)
+    # gv.song.dict.PrintTree(fEXIT=True, MaxLevel=3)
 
     if action == 'merge':
-        # gv.song.dict.PrintTree(fEXIT=False, MaxLevel=3)
-        gv.Prj.Merge(gv, csvFileMerged, csvFormat)
+        mergedLIST = gv.Prj.Merge(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict)
+            # -----------------------------------------------------------------------
+            # - Salviamo il tutto in formato csv
+            # -----------------------------------------------------------------------
+        # for line in mergedLIST: print (line)
+
+        gv.Prj.WriteCSVFile(gv, csvFileMerged, mergedLIST)
+        print ()
+        C.printYellowH('file: {0} has been saved.'.format(csvFileMerged), tab=4)
+        # gv.song.PrintTree(MaxLevel=2)
         sys.exit()
 
 

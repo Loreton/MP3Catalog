@@ -12,7 +12,7 @@ import ast
 ########################################################
 # -
 ########################################################
-def ReadCSVFile(gv, csvFile, csvFormat):
+def ReadCSVFile(gv, csvFile, requiredColNames):
     logger = gv.Ln.SetLogger(package=__name__)
     C      = gv.Ln.LnColor()
 
@@ -22,29 +22,21 @@ def ReadCSVFile(gv, csvFile, csvFormat):
         # - La prima riga contiene il nome delle colonne
         # - Eliminiamo i blank nei nomi colonne
         # ------------------------------------------------------------
-    csvRowList      = gv.Ln.readTextFile(csvFile)
-    csvRowList[0]   = csvRowList[0].replace(' ', '')   # eliminiamo i BLANK nei nomi colonne
+    csvRowList    = gv.Ln.readTextFile(csvFile)
+    csvRowList[0] = csvRowList[0].replace(' ', '')   # eliminiamo i BLANK nei nomi colonne
 
-    if csvFormat == 'listtype':
-        try:
-            colNames = ast.literal_eval(csvRowList[0])    # converte una stringa formato LIST in una LIST
-        except Exception as why:
-            msg = [str(why), csvRowList[0]]
-            gv.Ln.Exit(2, msg, printStack=True)
-    else:
-        # colNames = [token.strip() for token in csvRowList[0].split(';') if token]
-        colNames = [token.strip() for token in csvRowList[0].split(';')]
+    colNames = [token.strip() for token in csvRowList[0].split(';')]
 
-    excelColsName    = ';'.join(colNames)
-    requiredColsName = ';'.join(gv.song.colsName)
-    logger.debug('excel  columns name: {0}'.format(excelColsName))
-    logger.debug('config columns name: {0}'.format(requiredColsName))
+    csvColNames    = ';'.join(colNames)
+    # requiredColNames = ';'.join(gv.song.colsName)
+    logger.debug('excel  columns name: {0}'.format(csvColNames))
+    logger.debug('config columns name: {0}'.format(requiredColNames))
 
-    if not excelColsName == requiredColsName:
+    if not csvColNames == requiredColNames:
         C.printYellowH('i nomi delle colonne non coincidono', tab=4)
         C.printYellowH('file     : {0}'.format(csvRowList[0]), tab=4)
-        C.printYellowH('expected : {0}'.format(requiredColsName), tab=4)
-        C.printYellowH('found    : {0}'.format(excelColsName), tab=4)
+        C.printYellowH('expected : {0}'.format(requiredColNames), tab=4)
+        C.printYellowH('found    : {0}'.format(csvColNames), tab=4)
         gv.Ln.Exit(1, 'I nomi delle colonne non coincidono')
 
 
@@ -52,34 +44,18 @@ def ReadCSVFile(gv, csvFile, csvFormat):
         # - RECs creazione di una lista di liste/canzoni [[],[],..]
         # ===========================================
     RECs = []
-    if csvFormat == 'listtype':
-        for row in csvRowList:
-            try:
-                column0 = ast.literal_eval(row)    # converte una stringa formato LIST in una LIST
-                column = []
-                for token in column0:
-                    if isinstance(token, str):
-                        column.append(token.strip())
-                    else:
-                        column.append(token)
+    for row in csvRowList:
+        column = [token.strip() for token in row.split(';') if isinstance(token, str)]
+        if len(column[gv.song.field.Type].strip()) > 3:
+            RECs.append(column)
 
-                if len(column[gv.song.field.Type].strip()) > 3:
-                    RECs.append(column)
-            except Exception as why:
-                gv.Ln.Exit(2, str(why), fullStack=True)
-    else:
-        for row in csvRowList:
-            column = [token.strip() for token in row.split(';') if isinstance(token, str)]
-            if len(column[gv.song.field.Type].strip()) > 3:
-                RECs.append(column)
-
-
-    gv.song.list = RECs
 
         # ===========================================
         #  - Creazione del dictionary del CSV
         # ===========================================
     gv.song.dict = gv.Ln.LnDict()
+
+    # gv.song.PrintTree(fEXIT=True)
     for song in RECs[1:]:   # skip line 0 with fields name
         ptr = gv.song.dict
         startAttributeCols = gv.song.field.SongName+1
@@ -100,6 +76,7 @@ def ReadCSVFile(gv, csvFile, csvFormat):
 
     if gv.fDEBUG: gv.song.dict.PrintTree()
     return RECs
+
     gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=True, stackLevel=9, console=True)
 
 
@@ -108,7 +85,7 @@ def ReadCSVFile(gv, csvFile, csvFormat):
 #######################################################
 # #
 #######################################################
-def WriteCSVFile(gv, csvFile, data=[], csvFormat=''):
+def WriteCSVFile(gv, csvFile, data=[]):
     logger = gv.Ln.SetLogger(package=__name__)
     logger.debug('writing file:             {0}'.format(csvFile))
     logger.debug('number of lines to write: {0}'.format(len(data)))

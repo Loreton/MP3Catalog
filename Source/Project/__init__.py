@@ -49,6 +49,7 @@ from . Functions.CopySongs          import  copySongs
 from . Functions.CheckSourceSongs   import  checkSourceSongs
 from . Functions.CSVFile            import  ReadCSVFile
 from . Functions.CSVFile            import  WriteCSVFile
+from . ExcelDB.ExcelCatalog         import  ReadExcelDB
 
 from . Functions.LnEnum             import  enumCols
 from . Functions.LnEnum             import  enumColsKeyVal

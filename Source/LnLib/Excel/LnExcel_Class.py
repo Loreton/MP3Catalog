@@ -94,12 +94,9 @@ class Excel(object):
     # - Export di un foglio excel to CSV format
     # - rangeString: range di celle su cui operare
     # - colNames   : numero di riga che contiene i nomi delle colonne
-    # - csvType     : simple    "a"; "b",...
-    # -             : listtype  ["a"; "b",...]
     ####################################################################
     def exportCSV(self, sheetName,
-                        csvType='simple',
-                        outFname=None,
+                        outFname,
                         rangeString=None,
                         colNames=0,
                         maxrows=99999999,
@@ -143,27 +140,23 @@ class Excel(object):
                     for indexCol, cell in enumerate(row):
                         if minCol <= indexCol <= maxCol:
                             val = cell.value if cell.value else ''
-                            if stripFields and isinstance(val, str): val=val.strip()
+                            # if stripFields and isinstance(val, str): val=val.strip()
                             line.append(val)
                 else:
                     continue
 
-                if csvType == 'listtype':
-                    dataList.append(line)
+                    # costruiamo la riga ... con i valori delle celle appena lette
+                lineStr = line[0]
+                for item in line[1:]:
+                    if isinstance(item, str) and stripFields:
+                        lineStr = '{0};{1}'.format(lineStr, item.strip())
+                    else:
+                        lineStr = '{0};{1}'.format(lineStr, item)
 
-                else:
-                        # costruiamo la riga ...
-                    lineStr = line[0]
-                    for item in line[1:]:
-                        if stripFields:
-                            lineStr = '{0};{1}'.format(lineStr, item.strip())
-                        else:
-                            lineStr = '{0};{1}'.format(lineStr, item)
+                    # ... per inserirla nell'array
+                dataList.append(lineStr)
 
-                        # ... per inserirla nell'array
-                    dataList.append(lineStr)
-
-        if fPRINT:
+        if self._fDEBUG:
             for index, line in enumerate(dataList):
                 print ('{0:5} - {1}'.format(index, line))
 
@@ -179,7 +172,7 @@ class Excel(object):
             if fPRINT:
                 print("..... file: {FILE} has been written".format(FILE=outFname))
 
-        if fPRINT:
+        if self._fDEBUG:
             print()
             print("     full Range: {0}".format(fullRange))
             print("     file {0} has been created".format(outFname))
