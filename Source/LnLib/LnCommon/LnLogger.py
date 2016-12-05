@@ -154,6 +154,20 @@ def SetLogger(package, stackNum=0):
 
         pkgName = package + '.' + funcName if funcName else package
 
+        packageHier = pkgName.split('.')
+
+        pkgName     = (packageHier[0] +'.'+packageHier[-1])  # se ho nomi servizi uguali in diversi moduli crea confusione
+        pkgName     = ('.'.join(packageHier[-gPackageQualifiers:]))
+        pkgName     = ('.'.join(packageHier[-2:])) # prende il modulo+Function
+
+            # ------------------------------------------------
+            # - del package prendiamo
+            # - solo gli ultimi n.. gPackageQualifiers.
+            # ------------------------------------------------
+        if _logCONSOLE:
+            pkgName = 'LnC.{0}'.format(package.split('.')[-1])
+
+
         # - tracciamo la singola funzione oppure modulo oppure libreria od altro
         LOG_LEVEL = None
         if _logMODULE:
@@ -169,22 +183,6 @@ def SetLogger(package, stackNum=0):
         return SetNullLogger()
 
 
-
-        # ------------------------------------------------
-        # - del package prendiamo
-        # - solo gli ultimi n.. gPackageQualifiers.
-        # ------------------------------------------------
-    if _logCONSOLE:
-        pkgName = 'LnC.{0}'.format(package.split('.')[-1])
-    else:
-        packageHier = pkgName.split('.')
-
-        pkgName     = (packageHier[0] +'.'+packageHier[-1])  # se ho nomi servizi uguali in diversi moduli crea confusione
-        pkgName     = ('.'.join(packageHier[-gPackageQualifiers:]))
-
-        pkgName     = ('.'.join(packageHier[-2:])) # prende il modulo+Function
-
-
     logger = logging.getLogger(pkgName)
 
     # -----------------------------------------------------------------------------------------
@@ -194,11 +192,13 @@ def SetLogger(package, stackNum=0):
     # - per poi ripristinarlo al default
     # -----------------------------------------------------------------------------------------
 
-    if LOG_LEVEL:
-        logger.setLevel(LOG_LEVEL)
-    else:
+    # print ('..........', LOG_LEVEL, pkgName)
+    if not LOG_LEVEL:
+        logger.disabled
+        return logger
+
+    logger.setLevel(LOG_LEVEL)
          # logger.setLevel(logging.NOTSET)  # oppure FATAL
-         logger.disabled
 
         # - creiamo il contextFilter
     LnFilter    = ContextFilter()

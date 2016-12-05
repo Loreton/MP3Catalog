@@ -23,31 +23,49 @@ def Main(gv, action):
     C       = gv.Ln.LnColor()
     # gv.data = gv.Ln.LnDict()
 
-    logger  = gv.Ln.SetLogger(package=__name__)
-    C       = gv.Ln.LnColor()
+        # -------------------------------------------
+        # creazione struttura DBdict
+        # prelievo filename e create flag ed altro
+        # -------------------------------------------
+    DBdict                  = gv.Ln.LnDict()
+    DBdict.filename         = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.ini.SqLite.DB_filename))
+    DBdict.filecreate       = True if gv.ini.SqLite.DB_filecreate.lower() == 'true' else False
+    DBdict.songTableName    = gv.ini.SqLite['songTable.name']
+    DBdict.songTableCreate  = True if gv.ini.SqLite['songTable.forcecreate'].lower() == 'true' else False
+    DBdict.songTableStruct  = gv.ini.SqLite['songTable.struct']
 
-    DBdict            = gv.Ln.LnDict()
-
-    DBdict.filename   = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.ini.SqLite.DB_filename))
-    DBdict.filecreate = True if gv.ini.SqLite.DB_filecreate.lower() == 'true' else False
-    DB         = gv.Ln.LnSqLite(DBdict.filename, DBdict.filecreate)
-    # gv.ini.SqLite.PrintTree()
-    # DBdict      = gv.ini.SqLite
-    # DBdict.songTable        = gv.Ln.LnDict()
-    DBdict.songTableName   = gv.ini.SqLite['songTable.name']
-    DBdict.songTableCreate = True if gv.ini.SqLite['songTable.forcecreate'].lower() == 'true' else False
-    DBdict.songTableStruct = gv.ini.SqLite['songTable.struct']
+        # --------------------------------------------
+        # - connessione al DB.
+        # - force creazione file in base al flag
+        # --------------------------------------------
+    DB = gv.Ln.LnSqLite(DBdict.filename, DBdict.filecreate, logger=gv.Ln.SetLogger)
 
 
-    DB.CreateTable(DBdict.songTableName, forceCreate=DBdict.songTableCreate, struct=DBdict.songTableStruct, script=None, fCOMMIT=False)
+        # --------------------------------------------
+        # - Apertura/creazione Table in base al flag
+        # --------------------------------------------
+    if DBdict.songTableCreate:
+        DB.CreateTable(DBdict.songTableName, forceCreate=DBdict.songTableCreate, struct=DBdict.songTableStruct, script=None, fCOMMIT=True)
+        DB.Describe()
 
-    DBdict.PrintTree(fEXIT=True)
-    DB.createTable = gv.Prj.sql.createTable(gv, gv.DB.File, create=True, TblName=tableName, script=val)
-    if midName == 'MP3':
-        cur = DB.cursor()
-        csvData = readExcelData(gv)
-        rCode = gv.Prj.sql.insertRow(gv, cur, TblName=tableName, record=csvData)
-        DB.commit()
-        DB.close()
+    # DBdict.PrintTree(fEXIT=True)
+
+
+        # ---------- E X C E L
+    # xlsFile       = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.INPUT_PARAM.excelFile))
+    # csvFileInput  = gv.Prj.ReadExcelDB(gv, xlsFile, gv.ini.EXCEL.RangeToProcess)
+    # csvFileMerged = xlsFile.rsplit('.', -1)[0] + '.merged.csv'
+
+
+    # gv.song.dict.PrintTree(fEXIT=True, MaxLevel=3)
+
+        # ---------- I M P O R T
+    if gv.INPUT_PARAM.csvInputFile: # già controllata la presenza da parseInput
+        csvData = gv.Prj.ReadCSVFile(gv, gv.INPUT_PARAM.csvInputFile, gv.song.colsName)
+        print (len(csvData))
+        rCode = DB.InsertRow(TblName=DBdict.songTableName, record=csvData, fCOMMIT=True)
+    elif gv.INPUT_PARAM.checkSource:
+        pass
+
 
 

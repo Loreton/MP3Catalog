@@ -21,7 +21,8 @@ class LnSqLite:
                     pass
                 def info(self, data):
                     self._print(data)
-                def debug(self, data):  pass
+                def debug(self, data):
+                    self._print(data)
                 def error(self, data):  pass
                 def warning(self, data):  pass
 
@@ -38,64 +39,72 @@ class LnSqLite:
         # ***********************************************
         # *
         # ***********************************************
-    def __init__(self, DBFile, create=False, logger=False):
+    def __init__(self, DBFile, createFile=False, logger=None):
         self._dbfile         = DBFile
-        self._create         = create
-        self.conn           = None
-        self.cursor         = None
+        # self._create         = create
+        self._conn           = None
+        # self._cursor         = None
         self.description    = "This shape has not been described yet"
         self.author         = "Nobody has claimed to make this shape yet"
         self.myLogger = None
 
         if logger:
-            self._logger = logger
+            # self._logger = logger(package=__name__)
+            self._setLogger = logger
+            # self._setLogger = logger
         else:
-            self._logger = self._internaLogger()
-        if self._create or not os.path.isfile(self._dbfile):
-            self._CreateDB()
+            self._setLogger = self._internaLogger
 
+        # self._mainLogger = self._setLogger(package=__name__)
+
+        # if createFile or not os.path.isfile(self._dbfile):
+        self._OpenDB(createFile)
+        # else:
+            # self._conn   = sqlite3.connect(self._dbfile)
 
         # ***********************************************
-        # *
+        # * OpenDBase
         # ***********************************************
-    def _CreateDB(self):
-        # print (self._dbfile)
-
+    def _OpenDB(self, createFile=False):
+        logger = self._setLogger(package=__name__)
         if os.path.isfile(self._dbfile):
-            self._logger.info("DBFile already exists: {DBFILE}".format(DBFILE=self._dbfile) )
-            msg = """
-                DBFile already exists: {DBFILE}
-                Press 'd' to destroy current file
-                Press 'c' to continue with current DB file
-                Press 'xq' to exit : """.format(DBFILE=self._dbfile)
+            logger.info("DBFile already exists: {DBFILE}".format(DBFILE=self._dbfile) )
+            if createFile:
+                msg = """
+                    DBFile already exists: {DBFILE}
+                    Press 'd' to destroy current file
+                    Press 'c' to continue with current DB file
+                    Press 'xq' to exit : """.format(DBFILE=self._dbfile)
 
-            choice = self._getInput(msg, validKey='dDcC', exitKey='qQxX')
-            if choice == 'd':
-                self._logger.info("deleting DBFILE: {0}".format(self._dbfile) )
-                os.remove(self._dbfile)
+                choice = self._getInput(msg, validKey='dDcC', exitKey='qQxX')
+                if choice == 'd':
+                    logger.info("deleting DBFILE: {0}".format(self._dbfile) )
+                    os.remove(self._dbfile)
 
         # -----------------------------------
         # - Connecting to the database file
         # - Il file viene creato se non esiste
         # -----------------------------------
-        self._logger.info("creating DBFILE: {0}".format(self._dbfile) )
-        self.conn   = sqlite3.connect(self._dbfile)
-        self.cursor = self.conn.cursor()
+        logger.info("connecting to DBFILE: {0}".format(self._dbfile) )
+        self._conn   = sqlite3.connect(self._dbfile)
+        # self._cursor = self._conn.cursor()
+        # print (self._cursor)
 
 
         # ***********************************************
         # *
         # ***********************************************
-    def Cursor(self):
-        return self.conn.cursor()
+    def _getCursor(self):
+        return self._conn.cursor()
 
         # ***********************************************
         # *
         # ***********************************************
     def nRows(self, tblName):
-        cur = self.conn.cursor()
+        logger = self._setLogger(package=__name__)
+        cur = self._conn.cursor()
         comando="SELECT Count(*) FROM {TABLE}".format(TABLE=tblName)
-        self._logger.info(comando)
+        logger.info(comando)
         cur.execute(comando)
         nRows=cur.fetchone()[0]
         return nRows
@@ -106,14 +115,15 @@ class LnSqLite:
         # ***********************************************
     def Close(self):
         self.Commit()
-        self.conn.close()
+        self._conn.close()
 
         # ***********************************************
         # *
         # ***********************************************
     def Commit(self):
-        self._logger.info('Committing...')
-        self.conn.commit()
+        logger = self._setLogger(package=__name__)
+        logger.info('Committing...')
+        self._conn.commit()
 
         # ***********************************************
         # *
@@ -136,10 +146,11 @@ class LnSqLite:
         # *
         # ***********************************************
     def _SQL_execute(self, command, fCOMMIT=False):
-        self._logger.info(command)
-        cur = self.Cursor()
+        logger = self._setLogger(package=__name__)
+        logger.info(command)
+        cur = self._getCursor()
         cur.execute(command)
-        rCode = self.conn.total_changes
+        rCode = self._conn.total_changes
         if fCOMMIT:
             self.Commit()
 
@@ -151,13 +162,14 @@ class LnSqLite:
         # *
         # ***********************************************
     def Version(self, fPRINT=False):
-        cur = self.Cursor()
+        cur = self._getCursor()
         cur.execute('SELECT SQLITE_VERSION()')
         version = cur.fetchone()
         if fPRINT:
             print ("SQLite version: {VERSION}".format(VERSION=version))
 
         return version
+
 
 
         # ***********************************************
@@ -168,37 +180,38 @@ class LnSqLite:
         # *                )
         # ***********************************************
     def CreateTable(self, TblName, forceCreate=False, struct=None, script=None, fCOMMIT=False):
-        cur = self.Cursor()
+        logger = self._setLogger(package=__name__)
+        cur = self._getCursor()
 
         if forceCreate:
             comando = 'DROP TABLE if exists     {TABLE}'.format(TABLE=TblName)
-            self._logger.info(comando)
+            logger.info(comando)
             cur.execute(comando)
             rcode = cur.fetchone()
 
         if script:
             comando = script
-            self._logger.info(comando)
+            logger.info(comando)
             cur.executescript(comando)
 
         else:
             comando = 'CREATE TABLE if not exists {TABLE} {STRUCT}'.format(TABLE=TblName, STRUCT=struct)
-            self._logger.info(comando)
+            logger.info(comando)
             cur.execute(comando)
 
         if fCOMMIT:
-            self._logger.info('committing...')
             self.Commit()
 
         # ***********************************************
-        # * return LIST qith all records
+        # * return LIST with all records
         # ***********************************************
     def ReadTable(self, TblName):
-        cur = self.Cursor()
+        logger = self._setLogger(package=__name__)
+        cur = self._getCursor()
 
             # get structure
         comando = 'PRAGMA TABLE_INFO({TABLE})'.format(TABLE=TblName)
-        self._logger.info(comando)
+        logger.info(comando)
         cur.execute(comando)
 
         colsName = [tup[1] for tup in cur.fetchall()]
@@ -223,24 +236,25 @@ class LnSqLite:
 
         # ***********************************************
         # - Inserisce una riga in una tabella.
-        # - Se record==LIST di LIST allora fa una massInsert/executeMany
+        # - Se record==[LIST di [LIST]] allora fa una massInsert/executeMany
         # - INSERT into LOGTABLE (ts, level, message)   VALUES (111, "autoinc test", "autoinc test");
         # - INSERT into LOGTABLE                        VALUES (111, "autoinc test", "autoinc test");
         # ***********************************************
     def InsertRow(self, TblName, colName='', record="", fCOMMIT=False):
-        cur = self.Cursor()
+        logger = self._setLogger(package=__name__)
+        cur = self._getCursor()
 
         EXECUTE_MANY = False
         if isinstance(record, list):
             if isinstance(record[0], list):
-                nFields = len(record[0])
                 EXECUTE_MANY = True
-                self._logger.info('Massive insertions')
+                nFields = len(record[0])
+                logger.info('Massive insertions')
             else:
                 nFields = len(record)   # TESTED OK
         else:
-            msg = "\n\nInsertRow: Attesa LIST per i campi\n\n"
-            self._logger.info(msg)
+            msg = "\n\nInsertRow: LIST type is required as row data\n\n"
+            logger.info(msg)
             sys.exit()
 
         fields = '?'
@@ -248,7 +262,7 @@ class LnSqLite:
             fields += ',?'
 
         InsertCommand = 'INSERT or IGNORE into {TABLE} {COLS} VALUES ({FIELDS})'.format(TABLE=TblName, FIELDS=fields, COLS=colName)
-        self._logger.info(InsertCommand)
+        logger.info(InsertCommand)
 
         if EXECUTE_MANY:
             cur.executemany(InsertCommand, record)
@@ -257,6 +271,8 @@ class LnSqLite:
 
         if fCOMMIT:
             self.Commit()
+
+
 
     def DeleteRow(self, TblName, colName, value, fCOMMIT=False):
         comando = 'DELETE from {TABLE} where "{COL}"="{VAL}"'.format(TABLE=TblName, COL=colName, VAL=value)
@@ -267,7 +283,7 @@ class LnSqLite:
 
 
     def Describe(self):
-        cursor = self.conn.cursor()
+        cursor = self._conn.cursor()
         tablesToIgnore = ["sqlite_sequence"]
         TAB = ' '*5
 
@@ -289,8 +305,8 @@ class LnSqLite:
             if (table in tablesToIgnore):
                 continue
 
-            print ('\n'*5)
-            self._Print(TAB + "{TABLE:<23}{NCOLS:<10}{NROWS:<10}{CELLS:<10}".format(TABLE='TableName', NCOLS='Columns', NROWS='Rows', CELLS='Cells'))
+            print ('\n'*2)
+            # self._Print(TAB + "{TABLE:<23}{NCOLS:<10}{NROWS:<10}{CELLS:<10}".format(TABLE='TableName', NCOLS='Columns', NROWS='Rows', CELLS='Cells'))
             columnsQuery = "PRAGMA table_info(%s)" % table
             cursor.execute(columnsQuery)
             numberOfColumns = len(cursor.fetchall())
@@ -302,12 +318,20 @@ class LnSqLite:
             numberOfCells = numberOfColumns*numberOfRows
 
             # self._Print("%s\t%d\t%d\t%d" % (table, numberOfColumns, numberOfRows, numberOfCells))
-            self._Print(TAB + "{TABLE:<15}{NCOLS:10}{NROWS:10}{CELLS:10}".format(TABLE=table, NCOLS=numberOfColumns, NROWS=numberOfRows, CELLS=numberOfCells))
+            self._Print("""
+                TableName:  {TABLE}
+                nColumns:   {NCOLS}
+                nRows:      {NROWS}
+                nCells:     {CELLS}
+                """.format( TABLE=table,
+                            NCOLS=numberOfColumns,
+                            NROWS=numberOfRows,
+                            CELLS=numberOfCells))
 
-            totalTables += 1
-            totalColumns += numberOfColumns
-            totalRows += numberOfRows
-            totalCells += numberOfCells
+            totalTables     += 1
+            totalColumns    += numberOfColumns
+            totalRows       += numberOfRows
+            totalCells      += numberOfCells
 
             Recs = self.ReadTable(table)
             for row in Recs:
@@ -316,10 +340,10 @@ class LnSqLite:
 
 
         self._Print(TAB +  "" )
-        self._Print(TAB +  "Number of Tables:         {0:>10}".format(totalTables ))
-        self._Print(TAB +  "Total Number of Columns:  {0:>10}".format(totalColumns ))
-        self._Print(TAB +  "Total Number of Rows:     {0:>10}".format(totalRows ))
-        self._Print(TAB +  "Total Number of Cells:    {0:>10}".format(totalCells ))
+        self._Print(TAB +  "Number of Tables:   {0:>10}".format(totalTables ))
+        self._Print(TAB +  "Number of Columns:  {0:>10}".format(totalColumns ))
+        self._Print(TAB +  "Number of Rows:     {0:>10}".format(totalRows ))
+        self._Print(TAB +  "Number of Cells:    {0:>10}".format(totalCells ))
 
         for tbl in tables:
             table = tbl[0]

@@ -23,20 +23,14 @@ def ReadCSVFile(gv, csvFile, requiredColNames):
         # - Eliminiamo i blank nei nomi colonne
         # ------------------------------------------------------------
     csvRowList    = gv.Ln.readTextFile(csvFile)
-    csvRowList[0] = csvRowList[0].replace(' ', '')   # eliminiamo i BLANK nei nomi colonne
+    print (csvRowList[0])
+    colNames = [token.replace(' ', '').strip() for token in csvRowList[0].split(';')]
 
-    colNames = [token.strip() for token in csvRowList[0].split(';')]
 
-    csvColNames    = ';'.join(colNames)
-    # requiredColNames = ';'.join(gv.song.colsName)
-    logger.debug('excel  columns name: {0}'.format(csvColNames))
-    logger.debug('config columns name: {0}'.format(requiredColNames))
-
-    if not csvColNames == requiredColNames:
+    if not colNames == requiredColNames:
         C.printYellowH('i nomi delle colonne non coincidono', tab=4)
-        C.printYellowH('file     : {0}'.format(csvRowList[0]), tab=4)
+        C.printYellowH('file     : {0}'.format(colNames), tab=4)
         C.printYellowH('expected : {0}'.format(requiredColNames), tab=4)
-        C.printYellowH('found    : {0}'.format(csvColNames), tab=4)
         gv.Ln.Exit(1, 'I nomi delle colonne non coincidono')
 
 

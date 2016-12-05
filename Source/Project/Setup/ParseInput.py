@@ -22,7 +22,8 @@ def ParseInput(gVars, args, columnsName, programVersion=None):
             # extract     = "filtra le canzoni e crea i file con le selezioni...",
             copySongs   = "copia le canzoni risultate dalla selezione nella directory di destinazione",
             ExcelExport = "esporta il file excel, definito nel file di conf,  in formato CSV",
-            merge       = "legge la directory ed inserisce/modifica le canzoni esistenti"
+            merge       = "legge la directory ed inserisce/modifica le canzoni esistenti",
+            sqlite         = "opera con il DB SQLite",
         )
 
 
@@ -37,6 +38,11 @@ def ParseInput(gVars, args, columnsName, programVersion=None):
 
     if InputPARAM.LogCONSOLE:
         InputPARAM.LogACTIVE = True
+
+    if InputPARAM.verifyWithSource and not InputPARAM.MP3SourceDir:
+        LnColor.printCyan('Anche sourceDir deve essere dichiarata.', tab = 8)
+        sys.exit()
+
 
         # aggiungiamo manualmente valori alla struttura
     InputPARAM.songAction       = mainArgs.songAction
@@ -195,6 +201,32 @@ def MERGE(myParser):
     _songDirs(myParser)
     _debugOptions(myParser)
 
+# ---------------------------
+# - A C T I O N s
+# ---------------------------
+def SQLITE(myParser):
+    from . import SQLite_ParseInput as sqlite
+    # from . SQLite_ParseInput import setGlobals
+    # from . SQLite_ParseInput import sqlite_executeOptions as executeOptions
+    # from . SQLite_ParseInput import sqlite_importCSV as importCSV
+    sqlite.SetGlobals(LnColor)
+
+    if len(sys.argv[1:]) == 1: sys.argv.append('-h')
+    sqlite.ImportCSV(myParser)
+    sqlite.VerifyWithSource(myParser)
+    sqlite.SourceDir(myParser)
+    _debugOptions(myParser)
+
+
+
+    '''
+        se aspetta  parametri obbligatori...
+    '''
+    # _excelFile(myParser)
+    # _songDirs(myParser)
+    # executeOptions(myParser)
+
+
 
 
 
@@ -234,7 +266,6 @@ def _debugOptions(myParser):
     """))
 
 
-
     myParser.add_argument( "-D", "--debug",
                             required=False,
                             action="store_true",
@@ -250,15 +281,6 @@ def _debugOptions(myParser):
                             dest="fELAPSED",
                             default=False,
                             help=LnColor.getYellow("""display del tempo necessario al processo..
-    [DEFAULT: False]
-    """))
-
-
-    myParser.add_argument( "--check-source",
-                            action="store_true",
-                            dest="fCHECK_SOURCE",
-                            default=False,
-                            help=LnColor.getYellow("""Verify that all the sources song are present.
     [DEFAULT: False]
     """))
 

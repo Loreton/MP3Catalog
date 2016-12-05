@@ -93,8 +93,7 @@ if __name__ == "__main__":
         # ---------------------------------------------------------
     logger = Prj.SetupLog(gv)
 
-    SQLLite = True;
-    EXCEL   = not SQLLite
+    SQLLite = True; EXCEL = not SQLLite
 
     if EXCEL:       Prj.MainExcel(gv, gv.INPUT_PARAM.songAction)
     elif SQLLite:   Prj.MainSqLite(gv, gv.INPUT_PARAM.songAction)
