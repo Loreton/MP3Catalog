@@ -4,6 +4,7 @@
 import sys
 import os
 import argparse
+import collections
 # mi serve per poi cercare i metodi dentro
 this_mod = sys.modules[__name__]
 
@@ -18,20 +19,29 @@ def ParseInput(gVars, args, columnsName, programVersion=None):
     LnColor = gv.Ln.LnColor()
     if not programVersion: programVersion = 'unknown'
 
-    positionalActionsDict  =  dict (
-            # extract     = "filtra le canzoni e crea i file con le selezioni...",
-            copySongs   = "copia le canzoni risultate dalla selezione nella directory di destinazione",
-            ExcelExport = "esporta il file excel, definito nel file di conf,  in formato CSV",
-            merge       = "legge la directory ed inserisce/modifica le canzoni esistenti",
-            sqlite         = "opera con il DB SQLite",
-        )
 
+    # definizioni per mantenere insalterato l'ordine
+    myActions  =  (
+            ('excel'              , "opera con il file di Excel"),
+            ('   |.___ export'     , "esporta il file excel, definito nel file di conf,  in formato CSV"),
+            ('   |.___ copySongs'  , "copia le canzoni risultate dalla selezione nella directory di destinazione"),
+            ('', ''),
+            ('sqlite'            , "opera con il DB SQLite"),
+            ('   |____ import'     , "import del file csv passatogli come parametro"),
+            ('   |____ merge'      , "legge la directory ed inserisce/modifica le canzoni esistenti"),
+            ('   |____ verify'      , "legge la directory ed inserisce/modifica le canzoni esistenti"),
+            ('   |____ copySongs'  , "copia le canzoni risultate dalla selezione nella directory di destinazione"),
+        )
+    positionalActionsDict  =  collections.OrderedDict(myActions)
+    # print(positionalActionsDict)
 
 
         # se non ci sono parametri... forziamo l'help
     if len(sys.argv) == 1: sys.argv.append('-h')
+    '''
     mainArgs   = prepareArgParse(positionalActionsDict, programVersion)
     InputPARAM = commonParsing(mainArgs.songAction)
+    InputPARAM.songAction       = mainArgs.songAction
 
     if InputPARAM.LogMODULE:
         InputPARAM.LogACTIVE = True
@@ -39,13 +49,23 @@ def ParseInput(gVars, args, columnsName, programVersion=None):
     if InputPARAM.LogCONSOLE:
         InputPARAM.LogACTIVE = True
 
-    if InputPARAM.verifyWithSource and not InputPARAM.MP3SourceDir:
-        LnColor.printCyan('Anche sourceDir deve essere dichiarata.', tab = 8)
-        sys.exit()
+    if InputPARAM.songAction == 'sqlite':
+        if InputPARAM.compareWithSource and not InputPARAM.MP3SourceDir:
+            LnColor.printCyan('Anche sourceDir deve essere dichiarata.', tab = 8)
+            sys.exit()
 
+    '''
+    mainArgs   = prepareArgParse(positionalActionsDict, programVersion)
+    InputPARAM = commonParsing(mainArgs.songAction)
 
-        # aggiungiamo manualmente valori alla struttura
-    InputPARAM.songAction       = mainArgs.songAction
+    InputPARAM.songAction    = mainArgs.songAction
+    InputPARAM.actionCommand = '.'.join(mainArgs.songAction)
+
+    if InputPARAM.LogMODULE:
+        InputPARAM.LogACTIVE = True
+
+    if InputPARAM.LogCONSOLE:
+        InputPARAM.LogACTIVE = True
 
     print ()
 
@@ -89,8 +109,10 @@ def prepareArgParse(positionalActionsDict, programVersion):
 
     # if len(positionalActionsDict) > 0:
     totalCMDLIST = '\n'
-    for key, val in sorted(positionalActionsDict.items()):
-        totalCMDLIST += '          * {0:<12} : {1}\n'.format(key, val)
+    # for key, val in sorted(positionalActionsDict.items()):
+        # totalCMDLIST += '          * {0:<12} : {1}\n'.format(key, val)
+    for key, val in positionalActionsDict.items():
+        totalCMDLIST += '          * {0:<20} : {1}\n'.format(key, val)
     totalCMDLIST += '\n '
 
     mainHelp="""
@@ -113,16 +135,25 @@ def prepareArgParse(positionalActionsDict, programVersion):
                             # version='%(prog)s {VER}'.format(VER=programVersion))
 
 
+        # -------------------------------------------------------
+        # - con nargs viene tornata una lista con nArgs
+        # - deve prendere il comando primario e poi il sottocomando
+        # -------------------------------------------------------
+    nARGS = 2
+    myParser.add_argument('songAction',  metavar='actionCommand', type=str, nargs=nARGS, help='valore di actionCommand')
 
-    myParser.add_argument('songAction', help='JBoss Version directory')
+        # ----------------------------------------------------------
+        # - lanciamo il parse dei parametri subito dopo nARGS
+        # ----------------------------------------------------------
+    mainArgs = myParser.parse_args(sys.argv[1:nARGS+1])
+    mainCommand, actionCommand = mainArgs.songAction
+
+    # print (type(mainArgs.songAction), mainArgs.songAction)
 
 
-
-    mainArgs = myParser.parse_args(sys.argv[1:2])
-
-    if not (mainArgs.songAction in positionalActionsDict.keys()):
+    if not (mainCommand in positionalActionsDict.keys()):
         myParser.print_help()
-        LnColor.printYellow(".... Unrecognized value [{0}]. Valid values are:".format(mainArgs.songAction), tab=8)
+        LnColor.printYellow(".... Unrecognized value [{0}]. Valid values are:".format(mainCommand), tab=8)
         for positionalParm in positionalActionsDict.keys():
             LnColor.printYellow (positionalParm, tab=16)
         exit(1)
@@ -134,8 +165,9 @@ def prepareArgParse(positionalActionsDict, programVersion):
 # - commonParsing
 ###################################################
 def commonParsing(positionalParm, DESCR='CIAO DESCR'):
-    usageMsg = "\n          {COLOR}   {ACTION} {COLRESET}[options]".format(COLOR=LnColor.YEL, ACTION=positionalParm, COLRESET=LnColor.RESET)
-    myParser = argparse.ArgumentParser( description=positionalParm + ' Command',
+    mainCommand, actionCommand = positionalParm
+    usageMsg = "\n          {COLOR}   {ACTION} {COLRESET}[options]".format(COLOR=LnColor.YEL, ACTION=mainCommand, COLRESET=LnColor.RESET)
+    myParser = argparse.ArgumentParser( description='{0} Command'.format(mainCommand),
                                         add_help=True, usage=usageMsg,
                                         # formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                                         formatter_class=argparse.RawTextHelpFormatter,
@@ -146,17 +178,19 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
 
         # use dispatch pattern to invoke method with same name
         # ritorna un nameSpace
-    if hasattr(this_mod, positionalParm.upper()):
-        getattr(this_mod, positionalParm.upper())(myParser)
+    funcToCall = '_'.join(positionalParm)  # non so se conviene
+    if hasattr(this_mod,  mainCommand.upper()):
+        getattr(this_mod, mainCommand.upper())(myParser, actionCommand)
     else:
-        LnColor.printCyan ('[{0}] - Command not yet implemented!'.format(positionalParm))
+        LnColor.printCyan ('[{0}] - Command not yet implemented!'.format(mainCommand))
         sys.exit(1)
 
 
         # ------------------------------------------------
         # - skip first/action parameter
         # ------------------------------------------------
-    args = myParser.parse_args(sys.argv[2:])
+    args = myParser.parse_args(sys.argv[len(positionalParm)+1:])
+    # print (args.compareWithSource)
 
     return args
 
@@ -204,27 +238,32 @@ def MERGE(myParser):
 # ---------------------------
 # - A C T I O N s
 # ---------------------------
-def SQLITE(myParser):
+def SQLITE(myParser, action):
+    if len(sys.argv[2:]) == 1: sys.argv.append('-h')
     from . import SQLite_ParseInput as sqlite
-    # from . SQLite_ParseInput import setGlobals
-    # from . SQLite_ParseInput import sqlite_executeOptions as executeOptions
-    # from . SQLite_ParseInput import sqlite_importCSV as importCSV
+
     sqlite.SetGlobals(LnColor)
 
-    if len(sys.argv[1:]) == 1: sys.argv.append('-h')
-    sqlite.ImportCSV(myParser)
-    sqlite.VerifyWithSource(myParser)
-    sqlite.SourceDir(myParser)
+    if action == 'import':
+        sqlite.ImportCSV(myParser)
+
+    elif action == 'merge':
+        sqlite.SourceDir(myParser)
+
+    elif action == 'verify':
+        sqlite.SourceDir(myParser)
+
+    else:
+        print('''
+            Action: {0} per sqlite non prevista.
+            valori previsti sono:
+            '''.format(action)
+            )
+        sys.exit()
+
     _debugOptions(myParser)
 
 
-
-    '''
-        se aspetta  parametri obbligatori...
-    '''
-    # _excelFile(myParser)
-    # _songDirs(myParser)
-    # executeOptions(myParser)
 
 
 
@@ -497,3 +536,10 @@ def checkExclude(value):
         sys.exit()
 
     return value
+
+
+###################################################
+# - JBNameCheck
+###################################################
+def JBNameCheck(JBossName):
+    return JBossName

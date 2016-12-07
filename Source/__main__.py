@@ -57,6 +57,9 @@ if __name__ == "__main__":
 
     primaryCols   = ''.join(gv.ini.MAIN.NomiColonnePrimarie.split('\n'))
     attributeCols = ''.join(gv.ini.MAIN.NomiAttributi.split('\n'))
+    # MODE          = gv.ini.MAIN.MODE.upper()
+    # if not MODE in ['EXCEL', 'SQLITE']:
+        # gv.Ln.Exit(1, "MODE: {0} non previsto".format(MODE), printStack=True, stackLevel=9, console=True)
 
         # rimuovi i BLANK all'interno dei nomi ei campi
     primaryCols   = primaryCols.replace(' ', '')
@@ -93,10 +96,15 @@ if __name__ == "__main__":
         # ---------------------------------------------------------
     logger = Prj.SetupLog(gv)
 
-    SQLLite = True; EXCEL = not SQLLite
 
-    if EXCEL:       Prj.MainExcel(gv, gv.INPUT_PARAM.songAction)
-    elif SQLLite:   Prj.MainSqLite(gv, gv.INPUT_PARAM.songAction)
+    if gv.INPUT_PARAM.actionCommand.startswith('excel.'):
+        Prj.MainExcel(gv, gv.INPUT_PARAM.songAction)
+
+
+    elif gv.INPUT_PARAM.actionCommand.startswith('sqlite.'):
+        Prj.MainSqLite(gv, gv.INPUT_PARAM.songAction)
+
+
 
     gv.Ln.Exit(0, "completed", printStack=False, stackLevel=9, console=True)
     gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)

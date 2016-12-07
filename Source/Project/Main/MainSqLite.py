@@ -21,6 +21,7 @@ import ast
 def Main(gv, action):
     logger  = gv.Ln.SetLogger(package=__name__)
     C       = gv.Ln.LnColor()
+
     # gv.data = gv.Ln.LnDict()
 
         # -------------------------------------------
@@ -50,22 +51,24 @@ def Main(gv, action):
 
     # DBdict.PrintTree(fEXIT=True)
 
-
-        # ---------- E X C E L
-    # xlsFile       = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.INPUT_PARAM.excelFile))
-    # csvFileInput  = gv.Prj.ReadExcelDB(gv, xlsFile, gv.ini.EXCEL.RangeToProcess)
-    # csvFileMerged = xlsFile.rsplit('.', -1)[0] + '.merged.csv'
-
-
     # gv.song.dict.PrintTree(fEXIT=True, MaxLevel=3)
 
         # ---------- I M P O R T
-    if gv.INPUT_PARAM.csvInputFile: # già controllata la presenza da parseInput
+    if gv.INPUT_PARAM.actionCommand == 'sqlite.import':
         csvData = gv.Prj.ReadCSVFile(gv, gv.INPUT_PARAM.csvInputFile, gv.song.colsName)
         print (len(csvData))
         rCode = DB.InsertRow(TblName=DBdict.songTableName, record=csvData, fCOMMIT=True)
-    elif gv.INPUT_PARAM.checkSource:
-        pass
+
+    elif gv.INPUT_PARAM.actionCommand == 'sqlite.verify':
+        # ---------------------------------------
+        # - lettura directory sorgente di MP3
+        # ---------------------------------------
+        sourceDir = gv.INPUT_PARAM.MP3SourceDir
+        listaFile = gv.Ln.DirList(sourceDir, patternLIST=['*.mp3'], onlyDir=False, maxDeep=99)
+        if listaFile == []:
+            gv.Ln.Exit(43, 'non sono stati trovati file nella directory indicata: {0}'.format(sourceDir))
+        print (len(listaFile))
+
 
 
 

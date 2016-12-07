@@ -29,41 +29,29 @@ def ExecuteOptions(myParser):
 ####################################
 def ImportCSV(myParser):
     mandatory = ''
-    myParser.add_argument( "-i", "--import-file",
+    myParser.add_argument( "-if", "--import-file",
                             type=_fileCheck,
                             required=False,
                             dest="csvInputFile",
-                            metavar="CSV_input_filename",
+                            metavar="CSV-input-filename",
                             default=None,
                             help=mandatory + LnColor.getYellow( """ - Nome del file CSV di cui fare l'import.
     DEFAULT: None
     """))
 
 
-####################################
-# - verifyWithSource()
-####################################
-def VerifyWithSource(myParser):
-    mandatory = ''
-    myParser.add_argument( "--verify-with-source",
-                            required=False,
-                            dest="verifyWithSource",
-                            action="store_true",
-                            default=False,
-                            help=mandatory + LnColor.getYellow( """ - Confronta il DB con i file sorgenti per verificarne l'esistenza.
-    DEFAULT: False
-    """))
+
 
 ####################################
 # - SourceDir()
 ####################################
 def SourceDir(myParser):
-    myParser.add_argument( "--source-dir",
-                            type=str,
+    myParser.add_argument( "-s", "--source-dir",
+                            type=_dirCheck,
                             required=False,
                             default=None,
                             dest="MP3SourceDir",
-                            # metavar="directory sorgente",
+                            metavar="MP3SourceDir",
                             help=LnColor.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
     [DEFAULT: {0}]
     """.format(None)))
@@ -76,8 +64,22 @@ def SourceDir(myParser):
 def _fileCheck(fileName):
     if not os.path.isfile(fileName):
         print ()
-        LnColor.printYellow ('  {FILE} is not a valid filename...'.format(FILE=fileName) + LnColor.RESET)
+        LnColor.printYellow ('  {FILE} is not a valid directory...'.format(FILE=fileName) + LnColor.RESET)
         print ()
         sys.exit(1)
 
     return fileName
+
+
+
+####################################
+# # _fileCheck()
+####################################
+def _dirCheck(dirName):
+    if not os.path.isdir(dirName):
+        print ()
+        LnColor.printYellow ('  {DIR} is not a valid directory...'.format(DIR=dirName) + LnColor.RESET)
+        print ()
+        sys.exit(1)
+
+    return dirName
