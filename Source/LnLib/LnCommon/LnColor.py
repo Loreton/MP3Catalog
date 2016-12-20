@@ -116,6 +116,9 @@ class LnColor:
     def getCyan(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         return self._print ( ' '*tab + self.CYAN, msg, end, reset)
 
+    def getCyanH(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
+        return self._print ( ' '*tab + self.CYANH, msg, end, reset)
+
     def getWhite(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         return self._print ( ' '*tab + self.WHITE, msg, end, reset)
 

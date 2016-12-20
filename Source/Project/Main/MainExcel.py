@@ -26,16 +26,17 @@ def Main(gv, action):
 
 
         # ---------- E X C E L
-    xlsFile       = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.INPUT_PARAM.excelFile))
-    csvFileInput  = gv.Prj.ReadExcelDB(gv, xlsFile, gv.ini.EXCEL.RangeToProcess)
-    csvFileMerged = xlsFile.rsplit('.', -1)[0] + '.merged.csv'
+    if gv.INPUT_PARAM.actionCommand == 'excel.export':
+        xlsFile       = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.INPUT_PARAM.excelFile))
+        csvFileInput  = gv.Prj.ReadExcelDB(gv, xlsFile, gv.ini.EXCEL.RangeToProcess)
+        csvFileMerged = xlsFile.rsplit('.', -1)[0] + '.merged.csv'
 
-    requiredColNames = ';'.join(gv.song.colsName)
-    RECs = gv.Prj.ReadCSVFile(gv, csvFileInput, requiredColNames)
+        # requiredColNames = ';'.join(gv.song.colsName)
+        # RECs = gv.Prj.ReadCSVFile(gv, csvFileInput, requiredColNames)
 
     # gv.song.dict.PrintTree(fEXIT=True, MaxLevel=3)
-
-    if action == 'merge':
+    if gv.INPUT_PARAM.actionCommand == 'excel.merge':
+    # if action == 'merge':
             # -----------------------------------------------------------------------
             # - Merging del dictionary con la directory sorgente
             # -----------------------------------------------------------------------

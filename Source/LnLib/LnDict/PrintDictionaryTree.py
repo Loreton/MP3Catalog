@@ -13,19 +13,25 @@ C=LnColor()
 
 # colori delle righe
 DICT_LINE   = C.printCyanH
-VALUE_LINE  = C.printYellow
+# VALUE_LINE  = C.printYellow
 VALUE_LINE  = C.printCyan
 VALUE_DATA  = C.printGreenH
 
+getDICT_LINE   = C.getCyanH
+getVALUE_LINE  = C.printCyan
+getVALUE_DATA  = C.printGreenH
+
+# LINEDATA_LIST=[]
 # #######################################################
 # #  ''' RECURSIVE '''
 # # Ritorna una lista che contiene
 # # l'alberatura delle key di un dictionary
 # #    [level - keyName ]
 # #######################################################
-def PrintDictionary(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False, fEXIT=False, MaxLevel=10, header=None, stackLevel=2):
+def PrintDictionary(myDict, myDictTYPES=[], keyList=[], level=0, printTYPE='LTKV', fPRINT=False, fEXIT=False, MaxLevel=10, header=None, stackLevel=2):
     if level == 0:
         PrintHeader(header, stackLevel=stackLevel+1)
+        # LINEDATA_LIST = []
 
     if level > MaxLevel: return
 
@@ -39,13 +45,19 @@ def PrintDictionary(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False, f
         if type(val) in myDictTYPES:
             thisTYPE = str(type(val)).split("'")[1][-6:]
             if "DotMap" in thisTYPE: thisTYPE = 'LnDict'
-            line0 = '[{LVL:2}] {TYPE:<8} {TAB}{KEY}'.format(LVL=level, TAB=myTAB, TYPE=thisTYPE, KEY=key)
+            # line0 = '[{LVL:2}] {TYPE:<8} {TAB}{KEY}'.format(LVL=level, TAB=myTAB, TYPE=thisTYPE, KEY=key)
+
+            line0 = ''
+            if 'L' in printTYPE: line0 = '[{LVL:2}]'.format(LVL=level)
+            if 'T' in printTYPE: line0 = '{LINE0} {TYPE:<8}'.format(LINE0=line0, TYPE=thisTYPE)
+            if 'K' in printTYPE: line0 = '{LINE0} {TAB}{KEY}'.format(LINE0=line0, TAB=myTAB, KEY=key)
             DICT_LINE(line0, tab=4)
+            # LINEDATA_LIST.append(line0)
             # ---- recursive iteration
-            PrintDictionary(val, myDictTYPES=myDictTYPES, keyList=keyList, level=level+1, fPRINT=fPRINT, MaxLevel=MaxLevel)    # in questo caso il return value non mi interessa
+            PrintDictionary(val, myDictTYPES=myDictTYPES, keyList=keyList, level=level+1, printTYPE=printTYPE, fPRINT=fPRINT, MaxLevel=MaxLevel)    # in questo caso il return value non mi interessa
 
         else:
-            getDictValue(key, val, level, myDictTYPES, fPRINT=True)
+            getDictValue(key, val, level, myDictTYPES, printTYPE=printTYPE, fPRINT=True)
 
 
     if level == 0:
@@ -53,6 +65,7 @@ def PrintDictionary(myDict, myDictTYPES=[], keyList=[], level=0, fPRINT=False, f
             PrintHeader(header, stackLevel=stackLevel+1)
             sys.exit()
         else:
+            # return LINEDATA_LIST
             return keyList
     else:
         print()
@@ -91,7 +104,7 @@ def PrintHeader(header, stackLevel=3):
 # # Stampa i soli valori contenuti in un ramo, indicato
 # #  da dotQualifers, partendo dal dict myDictRoot
 # #######################################################
-def getDictValue(key, value, level, myDictTYPES, fPRINT=True):
+def getDictValue(key, value, level, myDictTYPES, printTYPE='LT', fPRINT=True):
 
     # level = 0
     myTAB=' '*4
@@ -105,6 +118,7 @@ def getDictValue(key, value, level, myDictTYPES, fPRINT=True):
     # - valutazione del valore
     # ------------------------------
 
+    print (valueTYPE, value)
     if valueTYPE == 'str':
         s = value
         if s.find('\n') >= 0:
@@ -141,23 +155,42 @@ def getDictValue(key, value, level, myDictTYPES, fPRINT=True):
         # - print della riga con la key a lunghezza fissa baseStartValue
     baseStartValue = 52
     line0 = '[{LVL:2}] {TYPE:<8} {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=valueTYPE, KEY=key)
+    line0 = ''
+    if 'L' in printTYPE: line0 = '[{LVL:2}]'.format(LVL=level)
+    if 'T' in printTYPE: line0 = '{LINE0} {TYPE:<8}'.format(LINE0=line0, TYPE=valueTYPE)
+    if 'K' in printTYPE: line0 = '{LINE0} {TAB}{KEY}'.format(LINE0=line0, TAB=myTAB, KEY=key)
+
     line0 = line0.ljust(baseStartValue)
-    # C.printYellowH(line0, tab=4, end='')
+    if not 'V' in printTYPE:
+        VALUE_LINE(line0, tab=4)
+        # LINEDATA_LIST.append(line0)
+        return
+
+    # myLine = line0
     VALUE_LINE(line0, tab=4, end='')
 
+    # myLine += ': '
         # - aggiungiamo i ':' prima del valore
     VALUE_DATA (': ', end='')
 
-        # - print del valore della prima entry della lista
-    line  = '{VAL}'.format(VAL=listOfValue[0])
-    VALUE_DATA(line)
 
-        # - print delle altre righe se presenti
-    for line in listOfValue[1:]:
-        line  = '{LINE:<{LUN}}  {VAL}'.format(LINE=' ', LUN=baseStartValue, VAL=line)
-        VALUE_DATA(line, tab=4)
+        # - print del valore della prima entry della lista
+    if len(listOfValue) == 0:
+        line  = ''
+        VALUE_DATA(line)
+        # LINEDATA_LIST.append(line)
+
     else:
-        retValue[key] = value
+        line  = '{VAL}'.format(VAL=listOfValue[0])
+        VALUE_DATA(line)
+        # LINEDATA_LIST.append(line)
+
+            # - print delle altre righe se presenti
+        for line in listOfValue[1:]:
+            line  = '{LINE:<{LUN}}  {VAL}'.format(LINE=' ', LUN=baseStartValue, VAL=line)
+            VALUE_DATA(line, tab=4)
+        else:
+            retValue[key] = value
 
 
 

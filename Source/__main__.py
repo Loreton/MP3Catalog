@@ -98,11 +98,11 @@ if __name__ == "__main__":
 
 
     if gv.INPUT_PARAM.actionCommand.startswith('excel.'):
-        Prj.MainExcel(gv, gv.INPUT_PARAM.songAction)
+        Prj.MainExcel(gv, gv.INPUT_PARAM.mainCommand)
 
 
     elif gv.INPUT_PARAM.actionCommand.startswith('sqlite.'):
-        Prj.MainSqLite(gv, gv.INPUT_PARAM.songAction)
+        Prj.MainSqLite(gv, gv.INPUT_PARAM.mainCommand)
 
 
 

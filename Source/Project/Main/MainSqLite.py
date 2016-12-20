@@ -29,37 +29,68 @@ def Main(gv, action):
         # prelievo filename e create flag ed altro
         # -------------------------------------------
     DBdict                  = gv.Ln.LnDict()
-    DBdict.filename         = os.path.abspath(os.path.join(gv.Prj.dataDIR, gv.ini.SqLite.DB_filename))
-    DBdict.filecreate       = True if gv.ini.SqLite.DB_filecreate.lower() == 'true' else False
-    DBdict.songTableName    = gv.ini.SqLite['songTable.name']
-    DBdict.songTableCreate  = True if gv.ini.SqLite['songTable.forcecreate'].lower() == 'true' else False
+
+    filename, create        = gv.ini.SqLite.DB_filename.split(',')
+    DBdict.filename         = os.path.abspath(os.path.join(gv.Prj.dataDIR, filename.strip()))
+    DBdict.filecreate       = True if create.strip().lower() == 'create' else False
+
+    songTable, create       = gv.ini.SqLite['songTable.name'].split(',')
+    DBdict.songTableName    = songTable.strip()
+    DBdict.songTableCreate  = True if create.strip().lower() == 'create' else False
+
     DBdict.songTableStruct  = gv.ini.SqLite['songTable.struct']
 
         # --------------------------------------------
         # - connessione al DB.
-        # - force creazione file in base al flag
+        # - creazione file in base al flag.filecreate
         # --------------------------------------------
     DB = gv.Ln.LnSqLite(DBdict.filename, DBdict.filecreate, logger=gv.Ln.SetLogger)
-
 
         # --------------------------------------------
         # - Apertura/creazione Table in base al flag
         # --------------------------------------------
     if DBdict.songTableCreate:
-        DB.CreateTable(DBdict.songTableName, forceCreate=DBdict.songTableCreate, struct=DBdict.songTableStruct, script=None, fCOMMIT=True)
+        DB.CreateTable(DBdict.songTableName, forceCreate=DBdict.songTableCreate, struct=DBdict.songTableStruct, script=None)
         DB.Describe()
 
-    # DBdict.PrintTree(fEXIT=True)
 
-    # gv.song.dict.PrintTree(fEXIT=True, MaxLevel=3)
+    # RECs = DB.TableToList(DBdict.songTableName)
+    # sys.exit()
+
+
 
         # ---------- I M P O R T
     if gv.INPUT_PARAM.actionCommand == 'sqlite.import':
         csvData = gv.Prj.ReadCSVFile(gv, gv.INPUT_PARAM.csvInputFile, gv.song.colsName)
-        print (len(csvData))
-        rCode = DB.InsertRow(TblName=DBdict.songTableName, record=csvData, fCOMMIT=True)
+        rCode   = DB.InsertRow(tblName=DBdict.songTableName, record=csvData[1:], fCOMMIT=True)
 
-    elif gv.INPUT_PARAM.actionCommand == 'sqlite.verify':
+
+
+        # ---------- M E R G E
+    elif gv.INPUT_PARAM.actionCommand == 'sqlite.merge':
+            # -----------------------------------------------------------------------
+            # - Leggiamo il DB
+            # -----------------------------------------------------------------------
+        # print(DB.nRows(DBdict.songTableName))
+        RECs = DB.TableToList(DBdict.songTableName)
+        for index, record in enumerate(RECs):
+            if index > 2: break
+            print (record)
+        RECs = DB.TableToDict(DBdict.songTableName, startAttributesField=gv.song.field.SongName+1, myDict=gv.Ln.LnDict)
+
+        sys.exit()
+
+            # -----------------------------------------------------------------------
+            # - Merging del dictionary con la directory sorgente
+            # -----------------------------------------------------------------------
+        mergedLIST = gv.Prj.Merge(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict)
+            # -----------------------------------------------------------------------
+            # - Salviamo il tutto in formato csv
+            # -----------------------------------------------------------------------
+        gv.Prj.WriteCSVFile(gv, csvFileMerged, mergedLIST)
+        print ()
+        C.printYellowH('file: {0} has been saved.'.format(csvFileMerged), tab=4)
+        '''
         # ---------------------------------------
         # - lettura directory sorgente di MP3
         # ---------------------------------------
@@ -68,6 +99,7 @@ def Main(gv, action):
         if listaFile == []:
             gv.Ln.Exit(43, 'non sono stati trovati file nella directory indicata: {0}'.format(sourceDir))
         print (len(listaFile))
+        '''
 
 
 

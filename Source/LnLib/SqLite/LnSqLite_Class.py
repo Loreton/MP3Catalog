@@ -72,12 +72,12 @@ class LnSqLite:
             if createFile:
                 msg = """
                     DBFile already exists: {DBFILE}
-                    Press 'd' to destroy current file
-                    Press 'c' to continue with current DB file
-                    Press 'xq' to exit : """.format(DBFILE=self._dbfile)
+                    Press 'y' to replace current file
+                    Press 'i' ignore and continue using current DB file
+                    Press 'x' to exit : """.format(DBFILE=self._dbfile)
 
-                choice = self._getInput(msg, validKey='dDcC', exitKey='qQxX')
-                if choice == 'd':
+                choice = self._getInput(msg, validKey='yi', exitKey='xX')
+                if choice.lower() == 'y':
                     logger.info("deleting DBFILE: {0}".format(self._dbfile) )
                     os.remove(self._dbfile)
 
@@ -179,15 +179,16 @@ class LnSqLite:
         # *                    "Author Name"       STRING  NOT NULL
         # *                )
         # ***********************************************
-    def CreateTable(self, TblName, forceCreate=False, struct=None, script=None, fCOMMIT=False):
+    def CreateTable(self, tblName, forceCreate=False, struct=None, script=None):
         logger = self._setLogger(package=__name__)
         cur = self._getCursor()
 
         if forceCreate:
-            comando = 'DROP TABLE if exists     {TABLE}'.format(TABLE=TblName)
+            comando = 'DROP TABLE if exists     {TABLE}'.format(TABLE=tblName)
             logger.info(comando)
             cur.execute(comando)
             rcode = cur.fetchone()
+            self.Commit()
 
         if script:
             comando = script
@@ -195,54 +196,135 @@ class LnSqLite:
             cur.executescript(comando)
 
         else:
-            comando = 'CREATE TABLE if not exists {TABLE} {STRUCT}'.format(TABLE=TblName, STRUCT=struct)
+            comando = 'CREATE TABLE if not exists {TABLE} {STRUCT}'.format(TABLE=tblName, STRUCT=struct)
             logger.info(comando)
             cur.execute(comando)
 
-        if fCOMMIT:
-            self.Commit()
+        self.Commit()
 
         # ***********************************************
         # * return LIST with all records
         # ***********************************************
-    def ReadTable(self, TblName):
+    def TableToList(self, tblName):
         logger = self._setLogger(package=__name__)
         cur = self._getCursor()
 
-            # get structure
-        comando = 'PRAGMA TABLE_INFO({TABLE})'.format(TABLE=TblName)
+
+        '''
+            # --------------------------
+            # - get structure
+            # --------------------------
+        comando = 'PRAGMA TABLE_INFO({TABLE})'.format(TABLE=tblName)
         logger.info(comando)
-        cur.execute(comando)
+        struct = cur.execute(comando)
 
-        colsName = [tup[1] for tup in cur.fetchall()]
+        filedName = []
+        fieldType = []
+            # - (fieldNumber, fieldName, fieldType, 1, None, 0)
+        for field in struct:
+            logger.debug(field)
+            seq, NAME, TYPE, *rest = field
+            filedName.append(NAME)
+            fieldType.append(TYPE)
 
-        if False:
-            cur.execute('PRAGMA TABLE_INFO({TABLE})'.format(TABLE=TblName))
-            print ('................ Table:', TblName)
-            # cur.fetchall() = (FieldNO, fieldName, fieldType, NOT_NULL, DEF_VALUE, PRI_KEY)
-            for tup in cur.fetchall():
-                print (tup)
+        logger.info('filedName: {0}'.format(filedName))
+        logger.info('fieldType: {0}'.format(fieldType))
 
-            # (0, 'recNO', 'INTEGER PRIMARY_KEY', 0, None, 0)
-
-            # get Records
+            # --------------------------
+            # - get Records
+            # --------------------------
         RECs  = []
-        RECs.append(tuple(colsName))
-        for row in cur.execute('SELECT * FROM {TABLE};'.format(TABLE=TblName)):
-            # RECs.append(list(row)) # LIST
-            RECs.append(row) # tuple
+        RECs.append(tuple(filedName))
+        tableData = cur.execute('SELECT * FROM {TABLE};'.format(TABLE=tblName))
+        for row in tableData:
+            myRow = []
+            for inx, field in enumerate(row):
+                if fieldType[inx] == 'INTEGER':
+                    val = int(field) if field else 0
+                    myRow.append(val)
+                else:
+                    myRow.append(field)
+
+            RECs.append(myRow)
+        for line in RECs:
+            print (line)
+        gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
+        '''
+        # RECs = self._Validate(tblName)
+        # for inx, record in enumerate(RECs):
+        #     if inx<10: print (record)
+        '''
+        TUPLE = False
+        if TUPLE:
+            RECs.append(tuple(filedName))
+            for row in cur.execute('SELECT * FROM {TABLE};'.format(TABLE=tblName)):
+                RECs.append(tuple(row))
+        else:
+            RECs.append(list(filedName))
+            for row in cur.execute('SELECT * FROM {TABLE};'.format(TABLE=tblName)):
+                RECs.append(list(row))
+        '''
 
         return RECs
 
-        # ***********************************************
+        # ===========================================
+        # - Creazione del dictionary
+        # - startAttributesField : indica il numero di campo da cui iniziano
+        # -                        i valori e saranno inseriti come val del
+        # -                        tree delle key
+        # ===========================================
+    def TableToDict(self, tblName, startAttributesField, myDict):
+        mainDict            = myDict()
+        mainDict[tblName]   = myDict()
+        tblDict             = mainDict[tblName]
+
+
+
+        RECs = self.TableToList(tblName)
+
+        columnsName = RECs[0]
+
+        for index, record in enumerate(RECs[1:]):   # skip line 0 with fields name
+            if index > 10: break
+            print(record)
+            continue
+            ptr = tblDict
+
+
+                # --------------------------------------------------
+                # - creazione dictionary tree con tutti i field
+                # - identificati come key-dict.
+                # - (Es. per mp3:  type.author.album.songName)
+                # --------------------------------------------------
+            for key in record[:startAttributesField]:
+                print ('key...', key)
+                if not key in ptr:
+                    ptr[key] = myDict()
+                ptr = ptr[key]
+
+                # su ogni tree mettiamo i vari attributi
+            for index, value in enumerate(record[startAttributesField:]):
+                attrName  = columnsName[index+startAttributesField]
+                ptr[attrName] = value
+
+
+        # logger.debug('FOUND {0} records... in the required range {1}'.format(len(RECs), gv.ini.EXCEL.RangeToProcess))
+
+        mainDict.PrintTree()
+        return mainDict
+
+
+
+
+        # ###################################################################
         # - Inserisce una riga in una tabella.
         # - Se record==[LIST di [LIST]] allora fa una massInsert/executeMany
         # - INSERT into LOGTABLE (ts, level, message)   VALUES (111, "autoinc test", "autoinc test");
         # - INSERT into LOGTABLE                        VALUES (111, "autoinc test", "autoinc test");
-        # ***********************************************
-    def InsertRow(self, TblName, colName='', record="", fCOMMIT=False):
-        logger = self._setLogger(package=__name__)
-        cur = self._getCursor()
+        # ###################################################################
+    def InsertRow(self, tblName, colName='', record="", fCOMMIT=False):
+        logger  = self._setLogger(package=__name__)
+        cur     = self._getCursor()
 
         EXECUTE_MANY = False
         if isinstance(record, list):
@@ -261,21 +343,25 @@ class LnSqLite:
         for inx in range(1, nFields):
             fields += ',?'
 
-        InsertCommand = 'INSERT or IGNORE into {TABLE} {COLS} VALUES ({FIELDS})'.format(TABLE=TblName, FIELDS=fields, COLS=colName)
+        RECs = self._Validate(tblName, record)
+
+        InsertCommand = 'INSERT or IGNORE into {TABLE} {COLS} VALUES ({FIELDS})'.format(TABLE=tblName, FIELDS=fields, COLS=colName)
         logger.info(InsertCommand)
+        logger.info('inserting {0} records'.format(len(RECs)))
 
         if EXECUTE_MANY:
-            cur.executemany(InsertCommand, record)
+            cur.executemany(InsertCommand, RECs)
         else:
-            cur.execute(InsertCommand, record)
+            cur.execute(InsertCommand, RECs)
 
         if fCOMMIT:
             self.Commit()
 
 
 
-    def DeleteRow(self, TblName, colName, value, fCOMMIT=False):
-        comando = 'DELETE from {TABLE} where "{COL}"="{VAL}"'.format(TABLE=TblName, COL=colName, VAL=value)
+
+    def DeleteRow(self, tblName, colName, value, fCOMMIT=False):
+        comando = 'DELETE from {TABLE} where "{COL}"="{VAL}"'.format(TABLE=tblName, COL=colName, VAL=value)
         changes = self._SQL_execute(comando, fCOMMIT=fCOMMIT)
         print ('changes:', changes)
 
@@ -333,9 +419,9 @@ class LnSqLite:
             totalRows       += numberOfRows
             totalCells      += numberOfCells
 
-            Recs = self.ReadTable(table)
-            for row in Recs:
-                print (TAB, row)
+            # Recs = self.TableToList(table)
+            # for row in Recs:
+            #     print (TAB, row)
 
 
 
@@ -350,6 +436,95 @@ class LnSqLite:
 
             if (table in tablesToIgnore):
                 continue
+
+    ##############################################################
+    # #
+    ##############################################################
+    def _Validate(self, tblName, tableData=None):
+        logger  = self._setLogger(package=__name__)
+        cur     = self._getCursor()
+
+            # --------------------------
+            # - get structure
+            #    = (FieldNO, fieldName, fieldType, NOT_NULL, DEF_VALUE, PRI_KEY)
+            # --------------------------
+        comando = 'PRAGMA TABLE_INFO({TABLE})'.format(TABLE=tblName)
+        logger.info(comando)
+        struct = cur.execute(comando)
+
+        filedName    = []
+        fieldType    = []
+        fieldNotNULL = []
+        defaultVAL   = []
+
+        for field in struct:
+            logger.debug(field)
+            seq, NAME, TYPE, NOT_NULL, DEFAULT, PRI_KEY = field
+            filedName.append(NAME)
+            fieldType.append(TYPE)
+            fieldNotNULL.append(NOT_NULL)
+            defaultVAL.append(DEFAULT)
+
+        logger.info('filedName: {0}'.format(filedName))
+        logger.info('fieldType: {0}'.format(fieldType))
+        logger.info('defaultVAL: {0}'.format(defaultVAL))
+        logger.info('fieldNotNULL: {0}'.format(fieldNotNULL))
+
+
+        if not tableData: # leggiamo dalla corrente tabella
+            cur     = self._getCursor()
+            tableData = cur.execute('SELECT * FROM {TABLE};'.format(TABLE=tblName))
+
+
+        RECs  = []
+        for row in tableData:
+            myRow = []
+            for inx, field in enumerate(row):
+
+                    # --------------------------------------------
+                    # - se il campo ha valore prendiamo quello,
+                    # - altrimenti se è impostato NOT_NULL
+                    # - prendiamo il DEFAULT se c'è altrimenti 0
+                    # --------------------------------------------
+                if fieldType[inx] == 'INTEGER':
+                    if field:
+                        val = int(field)
+                    else:
+                        if fieldNotNULL[inx]:
+                            if defaultVAL[inx]:
+                                val = defaultVAL[inx]
+                            else:
+                                val = 0
+                    # val = int(field) if field else defaultVAL[inx]
+                    myRow.append(val)
+
+                elif fieldType[inx] == 'TEXT':
+                    if field:
+                        val = field
+                    else:
+                        if fieldNotNULL[inx]:
+                            if defaultVAL[inx]:
+                                val = defaultVAL[inx]
+                            else:
+                                val = '_'
+
+                    if val == '.': val = defaultVAL[inx]
+
+                    # val = field if field else defaultVAL[inx]
+                    # if fieldNotNULL[inx]: val = defaultVAL[inx]
+                    myRow.append(val)
+
+                else:
+                    myRow.append(field)
+
+            RECs.append(myRow)
+
+            # DEBUG
+        for record in RECs[0:10]:
+            print (record)
+
+
+        return RECs
 
 
 
@@ -392,7 +567,7 @@ if __name__ == '__main__':
 
 
     myDB.CreateTable(TableName, forceCreate=False,  struct=TableStruct, script=None, fCOMMIT=True)
-    Recs = (myDB.ReadTable(TableName))
+    Recs = (myDB.TableToList(TableName))
     nRows = myDB.nRows(TableName)
     print ("TableName1 Records:", len(Recs), "nRows:", nRows)
     # print (Recs)
@@ -446,7 +621,7 @@ if __name__ == '__main__':
     myDB.InsertRow(TableName, record=record, fCOMMIT=False)
     myDB.Commit()
 
-    Recs = (myDB.ReadTable(TableName))
+    Recs = (myDB.TableToList(TableName))
     print ("TableName1 Records:", len(Recs), "nRows:", nRows)
     # print (Recs)
 
@@ -462,7 +637,7 @@ if __name__ == '__main__':
     record.append('subnet3')
 
     myDB.InsertRow(TableName, colName=Recs[0], record=record, fCOMMIT=False)
-    Recs = (myDB.ReadTable(TableName))
+    Recs = (myDB.TableToList(TableName))
     nRows = myDB.nRows(TableName)
     print ("TableName1 Records:", len(Recs), "nRows:", nRows)
     # print (Recs)
@@ -488,7 +663,7 @@ if __name__ == '__main__':
             '''
 
     myDB.CreateTable(TableName2, forceCreate=False, struct=TableStruct2, script=None, fCOMMIT=True)
-    Recs = (myDB.ReadTable(TableName2))
+    Recs = (myDB.TableToList(TableName2))
     nRows = myDB.nRows(TableName2)
     print ("TableName2 Records:", len(Recs), "nRows:", nRows)
     # print (Recs)
@@ -544,16 +719,16 @@ if __name__ == '__main__':
 
 
     # ---- DELETE -----
-    Recs = myDB.ReadTable(TableName2)
+    Recs = myDB.TableToList(TableName2)
     print ("TableName2 Records:", len(Recs), "nRows:", myDB.nRows(TableName2))
 
     # myDB.DeleteRow(TableName2, 'recNO', '5', fCOMMIT=True)
     myDB.DeleteRow(TableName2, 'Family', 'family1', fCOMMIT=False)
-    Recs = myDB.ReadTable(TableName2)
+    Recs = myDB.TableToList(TableName2)
     print ("TableName2 Records:", len(Recs), "nRows:", myDB.nRows(TableName2))
 
     myDB.DeleteRow(TableName, 'Interface Name', 'eth0', fCOMMIT=True)
-    Recs = myDB.ReadTable(TableName)
+    Recs = myDB.TableToList(TableName)
     print ("TableName1 Records:", len(Recs), "nRows:", myDB.nRows(TableName))
 
     # SELECT rowid,Family FROM ProvaTable

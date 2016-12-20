@@ -3,12 +3,22 @@
   <component name="ChangeListManager">
     <list default="true" id="cd3bb645-1066-47da-aed3-45fa9a049867" name="Default" comment="Riscritto la parte di PrintDictionary (PrintTree)">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/LnMP3DBase4.db" afterPath="$PROJECT_DIR$/data/LnMP3DBase4.db" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MP3_Master_2016-11-29.xlsm" afterPath="$PROJECT_DIR$/data/MP3_Master_2016-11-29.xlsm" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/Excel/LnExcel_Class.py" afterPath="$PROJECT_DIR$/Source/LnLib/Excel/LnExcel_Class.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/LnCommon/LnColor.py" afterPath="$PROJECT_DIR$/Source/LnLib/LnCommon/LnColor.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/LnDict/PrintDictionaryTree.py" afterPath="$PROJECT_DIR$/Source/LnLib/LnDict/PrintDictionaryTree.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/LnDict/__init__.py" afterPath="$PROJECT_DIR$/Source/LnLib/LnDict/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py" afterPath="$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/ExcelDB/ExcelCatalog.py" afterPath="$PROJECT_DIR$/Source/Project/ExcelDB/ExcelCatalog.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Main/MainExcel.py" afterPath="$PROJECT_DIR$/Source/Project/Main/MainExcel.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Main/MainSqLite.py" afterPath="$PROJECT_DIR$/Source/Project/Main/MainSqLite.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Setup/ParseInput.py" afterPath="$PROJECT_DIR$/Source/Project/Setup/ParseInput.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py" afterPath="$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Setup/SetupLog.py" afterPath="$PROJECT_DIR$/Source/Project/Setup/SetupLog.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/__main__.py" afterPath="$PROJECT_DIR$/Source/__main__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/MP3Catalog_V01.ini" afterPath="$PROJECT_DIR$/conf/MP3Catalog_V01.ini" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MP3_Master_2016-11-29.csv" afterPath="$PROJECT_DIR$/data/MP3_Master_2016-11-29.csv" />
     </list>
     <ignored path="MP3Catalog.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,41 +39,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="__main__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Source/__main__.py">
+      <file leaf-file-name="LnSqLite_Class.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="93" column="14" selection-start-line="93" selection-start-column="14" selection-end-line="93" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainSqLite.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Source/Project/Main/MainSqLite.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="32" column="19" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SQLite_ParseInput.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ParseInput.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Source/Project/Setup/ParseInput.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.67333335">
-              <caret line="218" column="0" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
+            <state vertical-scroll-proportion="2.6444445">
+              <caret line="354" column="0" selection-start-line="354" selection-start-column="0" selection-end-line="354" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -87,6 +67,7 @@
         <option value="$PROJECT_DIR$/Source/Project/Main/MP3Catalog.py" />
         <option value="$PROJECT_DIR$/Source/LnLib/LnDict/DictToList.py" />
         <option value="$PROJECT_DIR$/Source/Project/Setup/ParseInput.py" />
+        <option value="$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py" />
       </list>
     </option>
   </component>
@@ -121,7 +102,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -274,6 +254,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="SqLite" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MP3Catalog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MP3Catalog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Source" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LnLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="LnDict" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -303,6 +305,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -508,7 +511,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="MP3Catalog" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Source/__main__.py" />
-      <option name="PARAMETERS" value="sqlite --verify --source d:\LnFolders" />
+      <option name="PARAMETERS" value="sqlite merge -s d:\LnFolders\myData\MP3" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
@@ -590,13 +593,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py</url>
-          <line>90</line>
+          <line>78</line>
           <option name="timeStamp" value="72" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py</url>
-          <line>60</line>
+          <line>48</line>
           <option name="timeStamp" value="73" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py</url>
+          <line>310</line>
+          <option name="timeStamp" value="76" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -609,20 +617,39 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="74" />
+      <option name="time" value="77" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="keyList" />
-        <watch expression="retLIST" />
-        <watch expression="key" />
-        <watch expression="val" />
-        <watch expression="valType" />
-        <watch expression="myDict" />
+        <watch expression="mainDict" />
       </configuration>
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Source/Project/Main/MainSqLite.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="19" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/Project/Setup/ParseInput.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Source/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -651,7 +678,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1731" column="0" selection-start-line="1731" selection-start-column="0" selection-end-line="1731" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -938,7 +964,7 @@
     <entry file="file://$PROJECT_DIR$/Source/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="93" column="14" selection-start-line="93" selection-start-column="14" selection-end-line="93" selection-end-column="14" />
+          <caret line="94" column="14" selection-start-line="94" selection-start-column="14" selection-end-line="94" selection-end-column="14" />
           <folding />
         </state>
       </provider>
@@ -955,22 +981,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1731" column="0" selection-start-line="1731" selection-start-column="0" selection-end-line="1731" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Source/Project/Setup/ParseInput.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67333335">
-          <caret line="218" column="0" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
+        <state vertical-scroll-proportion="-0.6244444">
+          <caret line="126" column="63" selection-start-line="126" selection-start-column="63" selection-end-line="126" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.6444445">
+          <caret line="354" column="0" selection-start-line="354" selection-start-column="0" selection-end-line="354" selection-end-column="0" />
           <folding />
         </state>
       </provider>

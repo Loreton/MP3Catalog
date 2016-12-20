@@ -10,6 +10,8 @@ def SetGlobals(color):
     global LnColor
     LnColor = color
 
+
+
 ####################################
 # - executeOptions
 ####################################
@@ -28,14 +30,13 @@ def ExecuteOptions(myParser):
 # - sqlite_importCSV
 ####################################
 def ImportCSV(myParser):
-    mandatory = ''
     myParser.add_argument( "-if", "--import-file",
                             type=_fileCheck,
                             required=True,
                             dest="csvInputFile",
                             metavar="CSV-input-filename",
                             default=None,
-                            help=mandatory + LnColor.getYellow( """ - Nome del file CSV di cui fare l'import.
+                            help='MANDATORY' + LnColor.getYellow( """ - Nome del file CSV di cui fare l'import.
     DEFAULT: None
     """))
 
@@ -46,13 +47,14 @@ def ImportCSV(myParser):
 # - SourceDir()
 ####################################
 def SourceDir(myParser):
+    mandatory = LnColor.getYellowH('MANDATORY')
     myParser.add_argument( "-s", "--source-dir",
                             type=_dirCheck,
-                            required=False,
+                            required=True,
                             default=None,
                             dest="MP3SourceDir",
                             metavar="MP3SourceDir",
-                            help=LnColor.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
+                            help=mandatory + LnColor.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
     [DEFAULT: {0}]
     """.format(None)))
 

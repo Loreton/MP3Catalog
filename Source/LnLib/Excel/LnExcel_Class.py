@@ -71,7 +71,7 @@ class Excel(object):
             self._wb = openpyxl.load_workbook(  self._filename,
                                                 read_only=True,
                                                 keep_vba=False,
-                                                data_only=True
+                                                data_only=True   # False: include le formule
                                             )
                                                 # use_iterators=False,
             self.sheetNames = self._wb.get_sheet_names()

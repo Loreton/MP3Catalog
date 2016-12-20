@@ -16,7 +16,7 @@ def SetupLog(gv):
 
         if gv.fDEBUG:
             C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
-            C.printCyan('logFileName       {0}'.format(logFileName), tab=8)
+            C.printCyan('logFileName       {0}'.format(os.path.abspath(logFileName)), tab=8)
             C.printCyan('logConfigFileName {0}'.format(logConfigFileName), tab=8)
             C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
             print ()

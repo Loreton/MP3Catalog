@@ -22,8 +22,6 @@ def ReadExcelDB(gv, xlsFile, rangeToProcess):
     logger  = gv.Ln.SetLogger(package=__name__)
     C       = gv.Ln.LnColor()
 
-
-
     csvFileInput  = xlsFile.rsplit('.', -1)[0] + '.csv'
 
     logger.debug('XLS file name:    {0}'.format(xlsFile))

@@ -19,47 +19,29 @@ def ParseInput(gVars, args, columnsName, programVersion=None):
     LnColor = gv.Ln.LnColor()
     if not programVersion: programVersion = 'unknown'
 
+     # definizioni per mantenere insalterato l'ordine
+    positionalActionsDict  =  {
+        'excel': {
+            'export'    : "esporta il file excel, definito nel file di conf,  in formato CSV"
+            },
+        'sqlite': {
+            'export'    : "esporta il DB, in formato CSV",
+            'import'    : "import del file csv passato come parametro",
+            'merge'     : "legge la directory ed inserisce/modifica le canzoni esistenti",
+            'copySongs' : "copia le canzoni risultate dalla selezione nella directory di destinazione",
+            }
+    }
 
-    # definizioni per mantenere insalterato l'ordine
-    myActions  =  (
-            ('excel'              , "opera con il file di Excel"),
-            ('   |.___ export'     , "esporta il file excel, definito nel file di conf,  in formato CSV"),
-            ('   |.___ copySongs'  , "copia le canzoni risultate dalla selezione nella directory di destinazione"),
-            ('', ''),
-            ('sqlite'            , "opera con il DB SQLite"),
-            ('   |____ import'     , "import del file csv passatogli come parametro"),
-            ('   |____ merge'      , "legge la directory ed inserisce/modifica le canzoni esistenti"),
-            ('   |____ verify'      , "legge la directory ed inserisce/modifica le canzoni esistenti"),
-            ('   |____ copySongs'  , "copia le canzoni risultate dalla selezione nella directory di destinazione"),
-        )
-    positionalActionsDict  =  collections.OrderedDict(myActions)
-    # print(positionalActionsDict)
 
 
         # se non ci sono parametri... forziamo l'help
     if len(sys.argv) == 1: sys.argv.append('-h')
-    '''
+
     mainArgs   = prepareArgParse(positionalActionsDict, programVersion)
-    InputPARAM = commonParsing(mainArgs.songAction)
-    InputPARAM.songAction       = mainArgs.songAction
+    InputPARAM = commonParsing(mainArgs.mainCommand)
 
-    if InputPARAM.LogMODULE:
-        InputPARAM.LogACTIVE = True
-
-    if InputPARAM.LogCONSOLE:
-        InputPARAM.LogACTIVE = True
-
-    if InputPARAM.songAction == 'sqlite':
-        if InputPARAM.compareWithSource and not InputPARAM.MP3SourceDir:
-            LnColor.printCyan('Anche sourceDir deve essere dichiarata.', tab = 8)
-            sys.exit()
-
-    '''
-    mainArgs   = prepareArgParse(positionalActionsDict, programVersion)
-    InputPARAM = commonParsing(mainArgs.songAction)
-
-    InputPARAM.songAction    = mainArgs.songAction
-    InputPARAM.actionCommand = '.'.join(mainArgs.songAction)
+    InputPARAM.mainCommand    = mainArgs.mainCommand
+    InputPARAM.actionCommand = '.'.join(mainArgs.mainCommand)
 
     if InputPARAM.LogMODULE:
         InputPARAM.LogACTIVE = True
@@ -104,21 +86,19 @@ def prepareArgParse(positionalActionsDict, programVersion):
     mainHelp    = "default help"
     description = "MP3Catalog"
 
-    # print (len(positionalActionsDict))
-    # print (positionalActionsDict.keys())
-
-    # if len(positionalActionsDict) > 0:
-    totalCMDLIST = '\n'
-    # for key, val in sorted(positionalActionsDict.items()):
-        # totalCMDLIST += '          * {0:<12} : {1}\n'.format(key, val)
+    totalCMDLIST = []
     for key, val in positionalActionsDict.items():
-        totalCMDLIST += '          * {0:<20} : {1}\n'.format(key, val)
-    totalCMDLIST += '\n '
+        totalCMDLIST.append('\n')
+        totalCMDLIST.append('      * {0}'.format(key))
+        if isinstance(val, dict):
+            for key1, val1 in val.items():
+                totalCMDLIST.append('          {0:<30} : {1}'.format(key1, val1))
+    cmdLIST = '\n'.join(totalCMDLIST)
 
     mainHelp="""
         Immettere uno dei seguenti valori/comandi/action:
         (con il parametro -h se si desidera lo specifico help)
-                {CMDLIST}\n""".format(CMDLIST=totalCMDLIST)
+                {CMDLIST}\n""".format(CMDLIST=cmdLIST)
 
     myParser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter,     # indicates that description and epilog are already correctly formatted and should not be line-wrapped:
@@ -139,17 +119,25 @@ def prepareArgParse(positionalActionsDict, programVersion):
         # - con nargs viene tornata una lista con nArgs
         # - deve prendere il comando primario e poi il sottocomando
         # -------------------------------------------------------
-    nARGS = 2
-    myParser.add_argument('songAction',  metavar='actionCommand', type=str, nargs=nARGS, help='valore di actionCommand')
+    # -- mantenimao separati
+    # myParser.add_argument('mainCommand',   metavar='mainCommand',   type=str, nargs=1)
+    # myParser.add_argument('actionCommand', metavar='actionCommand', type=str, nargs=1)
+
+    # .... oppure uniti.
+    # myParser.add_argument('mainCommand',   metavar='mainCommand',   type=checkMainCommand, nargs=1)
+    myParser.add_argument('mainCommand', metavar='mainCommand', type=str, nargs=2)
 
         # ----------------------------------------------------------
-        # - lanciamo il parse dei parametri subito dopo nARGS
+        # - lanciamo il parse dei parametri subito dopo quelli posizionali
         # ----------------------------------------------------------
-    mainArgs = myParser.parse_args(sys.argv[1:nARGS+1])
-    mainCommand, actionCommand = mainArgs.songAction
+    posizARGS = 2
+    mainArgs = myParser.parse_args(sys.argv[1:posizARGS+1])
+    mainCommand  = mainArgs.mainCommand[0]
+    songsCommand = mainArgs.mainCommand[1]
+    # print (type(mainArgs.mainCommand), mainArgs.mainCommand)
 
-    # print (type(mainArgs.songAction), mainArgs.songAction)
-
+    # checkMainCommand(myParser, mainArgs.mainCommand[0], positionalActionsDict)
+    # checkActionCommand(myParser, mainArgs.mainCommand[0], positionalActionsDict)
 
     if not (mainCommand in positionalActionsDict.keys()):
         myParser.print_help()
@@ -165,7 +153,7 @@ def prepareArgParse(positionalActionsDict, programVersion):
 # - commonParsing
 ###################################################
 def commonParsing(positionalParm, DESCR='CIAO DESCR'):
-    mainCommand, actionCommand = positionalParm
+    mainCommand, songsCommand = positionalParm
     usageMsg = "\n          {COLOR}   {ACTION} {COLRESET}[options]".format(COLOR=LnColor.YEL, ACTION=mainCommand, COLRESET=LnColor.RESET)
     myParser = argparse.ArgumentParser( description='{0} Command'.format(mainCommand),
                                         add_help=True, usage=usageMsg,
@@ -180,7 +168,7 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
         # ritorna un nameSpace
     funcToCall = '_'.join(positionalParm)  # non so se conviene
     if hasattr(this_mod,  mainCommand.upper()):
-        getattr(this_mod, mainCommand.upper())(myParser, actionCommand)
+        getattr(this_mod, mainCommand.upper())(myParser, songsCommand)
     else:
         LnColor.printCyan ('[{0}] - Command not yet implemented!'.format(mainCommand))
         sys.exit(1)
@@ -196,43 +184,19 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
 
 
 
-# ---------------------------
-# - A C T I O N s
-# ---------------------------
-def COPYSONGS(myParser):
-    '''
-        se aspetta  parametri obbligatori...
-        ... if len(sys.argv[1:]) == 1: sys.argv.append('-h')
-    '''
-    _executeOptions(myParser)
-    _debugOptions(myParser)
-    _commonOptions(myParser)
-    _copySongsOptions(myParser)
-    _songDirs(myParser)
-    _excelFile(myParser)
 
 # ---------------------------
 # - A C T I O N s
 # ---------------------------
-def EXCELEXPORT(myParser):
-    '''
-        se aspetta  parametri obbligatori...
-        ... if len(sys.argv[1:]) == 1: sys.argv.append('-h')
-    '''
-    _excelFile(myParser)
-    _debugOptions(myParser)
+def EXCEL(myParser, action):
+    if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+    from . import ParseInput_Excel as excel
 
+    excel.SetGlobals(LnColor)
 
-# ---------------------------
-# - A C T I O N s
-# ---------------------------
-def MERGE(myParser):
-    '''
-        se aspetta  parametri obbligatori...
-        ... if len(sys.argv[1:]) == 1: sys.argv.append('-h')
-    '''
-    _excelFile(myParser)
-    _songDirs(myParser)
+    if action == 'export':
+        excel.ExportToCSV(myParser)
+
     _debugOptions(myParser)
 
 # ---------------------------
@@ -240,7 +204,7 @@ def MERGE(myParser):
 # ---------------------------
 def SQLITE(myParser, action):
     if len(sys.argv[2:]) == 1: sys.argv.append('-h')
-    from . import SQLite_ParseInput as sqlite
+    from . import ParseInput_SQLite as sqlite
 
     sqlite.SetGlobals(LnColor)
 
@@ -250,8 +214,8 @@ def SQLITE(myParser, action):
     elif action == 'merge':
         sqlite.SourceDir(myParser)
 
-    elif action == 'verify':
-        sqlite.SourceDir(myParser)
+    # elif action == 'verify':
+    #     sqlite.SourceDir(myParser)
 
     else:
         print('''
@@ -262,10 +226,6 @@ def SQLITE(myParser, action):
         sys.exit()
 
     _debugOptions(myParser)
-
-
-
-
 
 
 
@@ -325,221 +285,3 @@ def _debugOptions(myParser):
 
 
 
-# ---------------------------
-# - _copySongsOptions
-# ---------------------------
-def _copySongsOptions(myParser):
-    myParser.add_argument( "--max-output-bytes",
-                            type=calculateBytes,
-                            default='0',
-                            required=False,
-                            dest="maxBytes",
-                            help=LnColor.getYellow("""Numero massimo di bytes che deve avere l'output
-    Es.: 10m | 10G | 10K | 2549878
-    [DEFAULT: 0 (no limits)]
-    """))
-
-
-    myParser.add_argument( "--num-out-dirs",
-                            type=int,
-                            default=1,
-                            required=False,
-                            dest="numDirs",
-                            help=LnColor.getYellow("""Numero di directory da creare.
-    Verranno create tante subDirs sotto la dest-dir con un size <= --max-output-bytes.
-    [DEFAULT: 1]
-    """))
-
-
-# ---------------------------
-# - _executeOptions
-# ---------------------------
-def _executeOptions(myParser):
-    myParser.add_argument( "--go",
-                            action="store_true",
-                            dest="fEXECUTE",
-                            default=False,
-                            help=LnColor.getYellow("""Execute commands.
-    [DEFAULT: False, run in DRY-RUN mode]
-    """))
-
-# ---------------------------
-# - _songDirs
-# ---------------------------
-def _songDirs(myParser):
-    mandatory = LnColor.getYellowH('MANDATORY')
-    mandatory = ''
-    myParser.add_argument( "-s", "--source-dir",
-                            type=str,
-                            required=False,
-                            default=gv.ini.INPUT_DEFAULT.MP3SourceDir,
-                            dest="MP3SourceDir",
-                            metavar="directory sorgente",
-                            help=mandatory + LnColor.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
-    [DEFAULT: {0}]
-    """.format(gv.ini.INPUT_DEFAULT.MP3SourceDir)))
-
-    myParser.add_argument( "-d", "--dest-dir",
-                            type=str,
-                            required=False,
-                            default=gv.ini.INPUT_DEFAULT.destDIR,
-                            dest="destDIR",
-                            metavar="directory di destinazione",
-                            help=mandatory + LnColor.getYellow(""" - Nome della directory dove copiare le canzoni selezionate ...
-    [DEFAULT: {0}]
-    """.format(gv.ini.INPUT_DEFAULT.destDIR)))
-
-
-
-# ---------------------------
-# - _excelFile
-# ---------------------------
-def _excelFile(myParser):
-    mandatory = ''
-    # mandatory = LnColor.getYellowH('MANDATORY')
-
-    myParser.add_argument( "-f", "--input-file",
-                            type=str,
-                            required=False,
-                            dest="excelFile",
-                            metavar="Excel filename",
-                            default=gv.ini.INPUT_DEFAULT.EXCEL_File,
-                            help=mandatory + LnColor.getYellow( """ - Nome del file Excel di cui fare l'export.
-    Il file di output avrà lo stesso fullPath ma con estenzione .csv
-    DEFAULT: come definito nel file config.ini [EXCEL]-->EXCEL_File
-    """))
-
-
-
-
-# ---------------------------
-# - _commonOptions
-# ---------------------------
-def _commonOptions(myParser):
-    # split della lista in gruppi da x elementi
-    nElem = 5
-    opts = ''
-    # - per ragioni di display delle colonne,
-    # - creiamo una lista di liste dove ognuna è una riga
-    composite_list = [songColumsName[x:x+nElem] for x in range(0, len(songColumsName),nElem)]
-    for item in composite_list:
-        opts += LnColor.getYellowH(','.join(item) + ',\n        ')
-
-    defaultInclude = ['Analizzata']
-    defaultInclude = [x.strip() for x in gv.ini.INPUT_DEFAULT.include.split(',')]
-    myParser.add_argument( "--include",
-                            type=checkInclude,
-
-                            # dest="multipleFlags",  # se omesso viene preso il nome lungo del parametro.
-
-                            # ------------------------------------------------------------
-                            # - il parametro choice mi visualizza le possibili scelte
-                            # - ma visto che sono troppe le visualizzo nella
-                            # - variabile opts ed elimino il parametro.
-                            # - Il controllo lo faccio io manualmente con il type=.
-                            # ------------------------------------------------------------
-                            # choices=songColumsName,
-
-                            default=defaultInclude,
-                            required=False,
-
-                            nargs='*',
-                            help=LnColor.getYellow("""inserire uno o piu argomenti della lista:
-
-        {OPT}
-
-        gli elementi vanno in AND. Ttutti i flag devono essere presenti per accettare la canzone.
-    [DEFAULT: {DEFAULT}]
-
-    La sintassi dell'include:
-        --include Loreto Lenta   --> CORRETTA
-        --include=Loreto,Lenta   --> ERRATA
-    """.format(DEFAULT=defaultInclude, OPT=opts)))
-
-
-
-
-    defaultExclude = ['Undefined' ,'Avoidit','Confusionaria']
-    defaultExclude = [x.strip() for x in gv.ini.INPUT_DEFAULT.exclude.split(',')]
-    myParser.add_argument( "--exclude",
-                            type=checkExclude,
-                            # ------------------------------------------------------------
-                            # - il parametro choice mi visualizza le possibili scelte
-                            # - ma visto che sono troppe le visualizzo nella
-                            # - variabile opts ed elimino il parametro.
-                            # - Il controllo lo faccio io manualmente con il type=.
-                            # ------------------------------------------------------------
-                            # choices=songColumsName,
-
-                            # dest="multipleFlags",  # se omesso viene preso il nome lungo del parametro.
-                            default=defaultExclude,
-                            required=False,
-                            nargs='+',
-                            help=LnColor.getYellow("""inserire uno o piu argomenti della lista:
-
-        {OPT}
-
-        gli elementi vanno in OR. Basta che uno sia presente che la canzone viene scartata
-    [DEFAULT: {DEFAULT}]
-
-    La sintassi dell'exclude:
-        --exclude Loreto Lenta   --> CORRETTA
-        --exclude=Loreto,Lenta   --> ERRATA
-
-    """.format(DEFAULT=defaultExclude, OPT=opts)))
-
-
-    myParser.add_argument( "--max-songs",
-                            type=int,
-                            default=0,
-                            required=False,
-                            dest="maxSongs",
-                            help=LnColor.getYellow("""Numero massimo di canzoni da processare... comodo per DEBUG
-    [DEFAULT: 0 (all songs)]
-    """))
-
-
-
-###############################################
-# - calculateBytes
-###############################################
-def calculateBytes(value):
-    lastChar = value.strip().lower()[-1]
-
-    if lastChar == 'm':
-        bytes = int(value[:-1]) * 1000000
-    elif lastChar == 'g':
-        bytes = int(value[:-1]) * 1000000000
-    elif lastChar == 'k':
-        bytes = int(value[:-1]) * 1000
-    else:
-        bytes = int(value)
-
-    return bytes
-
-###############################################
-# - checkInclude
-###############################################
-def checkInclude(value):
-    if not value in songColumsName:
-        LnColor.printRedH ('{0} - is not an INCLUDE valid argument'.format(value), tab=4)
-        sys.exit()
-
-    return value
-
-###############################################
-# - checkExclude
-###############################################
-def checkExclude(value):
-    if not value in songColumsName:
-        LnColor.printCyanH ('{0} - is not an EXCLUDE valid argument'.format(value), tab=4)
-        sys.exit()
-
-    return value
-
-
-###################################################
-# - JBNameCheck
-###################################################
-def JBNameCheck(JBossName):
-    return JBossName
