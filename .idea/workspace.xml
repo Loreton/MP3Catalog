@@ -2,23 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd3bb645-1066-47da-aed3-45fa9a049867" name="Default" comment="Riscritto la parte di PrintDictionary (PrintTree)">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/LnMP3DBase4.db" afterPath="$PROJECT_DIR$/data/LnMP3DBase4.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MP3_Master_2016-11-29.xlsm" afterPath="$PROJECT_DIR$/data/MP3_Master_2016-11-29.xlsm" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/Excel/LnExcel_Class.py" afterPath="$PROJECT_DIR$/Source/LnLib/Excel/LnExcel_Class.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/LnCommon/LnColor.py" afterPath="$PROJECT_DIR$/Source/LnLib/LnCommon/LnColor.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/LnDict/PrintDictionaryTree.py" afterPath="$PROJECT_DIR$/Source/LnLib/LnDict/PrintDictionaryTree.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/LnDict/__init__.py" afterPath="$PROJECT_DIR$/Source/LnLib/LnDict/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py" afterPath="$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/ExcelDB/ExcelCatalog.py" afterPath="$PROJECT_DIR$/Source/Project/ExcelDB/ExcelCatalog.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Main/MainExcel.py" afterPath="$PROJECT_DIR$/Source/Project/Main/MainExcel.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Functions/Merge.py" afterPath="$PROJECT_DIR$/Source/Project/Functions/Merge.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Main/MainSqLite.py" afterPath="$PROJECT_DIR$/Source/Project/Main/MainSqLite.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Setup/ParseInput.py" afterPath="$PROJECT_DIR$/Source/Project/Setup/ParseInput.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py" afterPath="$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/Setup/SetupLog.py" afterPath="$PROJECT_DIR$/Source/Project/Setup/SetupLog.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/__main__.py" afterPath="$PROJECT_DIR$/Source/__main__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Source/Project/__init__.py" afterPath="$PROJECT_DIR$/Source/Project/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/MP3Catalog_V01.ini" afterPath="$PROJECT_DIR$/conf/MP3Catalog_V01.ini" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/MP3_Master_2016-11-29.csv" afterPath="$PROJECT_DIR$/data/MP3_Master_2016-11-29.csv" />
     </list>
     <ignored path="MP3Catalog.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="LnSqLite_Class.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py">
+      <file leaf-file-name="Merge.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Source/Project/Functions/Merge.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.6444445">
-              <caret line="354" column="0" selection-start-line="354" selection-start-column="0" selection-end-line="354" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.4957627">
+              <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -68,14 +58,15 @@
         <option value="$PROJECT_DIR$/Source/LnLib/LnDict/DictToList.py" />
         <option value="$PROJECT_DIR$/Source/Project/Setup/ParseInput.py" />
         <option value="$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py" />
+        <option value="$PROJECT_DIR$/Source/Project/Functions/Merge.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="74" />
-    <option name="y" value="40" />
-    <option name="width" value="1155" />
-    <option name="height" value="905" />
+    <option name="x" value="13" />
+    <option name="y" value="5" />
+    <option name="width" value="1250" />
+    <option name="height" value="941" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -102,6 +93,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -304,8 +297,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -321,7 +312,7 @@
       </console-settings>
     </option>
   </component>
-  <component name="RunManager" selected="Python.sqlite">
+  <component name="RunManager" selected="Python.merge">
     <configuration default="false" name="__main__" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -494,7 +485,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="MP3Catalog" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Source/__main__.py" />
-      <option name="PARAMETERS" value="merge" />
+      <option name="PARAMETERS" value="sqlite merge -s d:\LnFolders\MyData\MP3" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
@@ -541,10 +532,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="74" y="40" width="1155" height="905" extended-state="0" />
-    <editor active="false" />
+    <frame x="13" y="5" width="1250" height="941" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2045654" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18881686" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914573" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914573" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -553,7 +544,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39949748" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39903846" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -581,30 +572,35 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
+        <line-breakpoint type="python-line">
           <url>file://$PROJECT_DIR$/Source/LnLib/LnDict/DictToList.py</url>
           <line>58</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
+        <line-breakpoint type="python-line">
           <url>file://$PROJECT_DIR$/Source/LnLib/LnDict/DictToList.py</url>
           <line>164</line>
           <option name="timeStamp" value="70" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
+        <line-breakpoint type="python-line">
           <url>file://$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py</url>
           <line>78</line>
           <option name="timeStamp" value="72" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
+        <line-breakpoint type="python-line">
           <url>file://$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py</url>
           <line>48</line>
           <option name="timeStamp" value="73" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
+        <line-breakpoint type="python-line">
           <url>file://$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py</url>
-          <line>310</line>
+          <line>299</line>
           <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Source/Project/Functions/Merge.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="78" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -617,23 +613,18 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="77" />
+      <option name="time" value="79" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="mainDict" />
+        <watch expression="ptrSong" />
+        <watch expression="songAttr" />
+        <watch expression="newSong" />
       </configuration>
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Source/Project/Main/MainSqLite.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="19" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Source/Project/Setup/SQLite_ParseInput.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -646,7 +637,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -685,7 +675,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -996,14 +985,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.6244444">
           <caret line="126" column="63" selection-start-line="126" selection-start-column="63" selection-end-line="126" selection-end-column="63" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Source/LnLib/SqLite/LnSqLite_Class.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.6444445">
-          <caret line="354" column="0" selection-start-line="354" selection-start-column="0" selection-end-line="354" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.6131841">
+          <caret line="155" column="0" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Source/Project/Functions/Merge.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4957627">
+          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
           <folding />
         </state>
       </provider>

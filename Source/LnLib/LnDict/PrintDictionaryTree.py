@@ -117,8 +117,6 @@ def getDictValue(key, value, level, myDictTYPES, printTYPE='LT', fPRINT=True):
     # ------------------------------
     # - valutazione del valore
     # ------------------------------
-
-    print (valueTYPE, value)
     if valueTYPE == 'str':
         s = value
         if s.find('\n') >= 0:

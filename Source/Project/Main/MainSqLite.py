@@ -53,54 +53,79 @@ def Main(gv, action):
         DB.CreateTable(DBdict.songTableName, forceCreate=DBdict.songTableCreate, struct=DBdict.songTableStruct, script=None)
         DB.Describe()
 
-
-    # RECs = DB.TableToList(DBdict.songTableName)
-    # sys.exit()
-
-
-
         # ---------- I M P O R T
     if gv.INPUT_PARAM.actionCommand == 'sqlite.import':
         csvData = gv.Prj.ReadCSVFile(gv, gv.INPUT_PARAM.csvInputFile, gv.song.colsName)
         rCode   = DB.InsertRow(tblName=DBdict.songTableName, record=csvData[1:], fCOMMIT=True)
 
 
-
         # ---------- M E R G E
     elif gv.INPUT_PARAM.actionCommand == 'sqlite.merge':
-            # -----------------------------------------------------------------------
-            # - Leggiamo il DB
-            # -----------------------------------------------------------------------
-        # print(DB.nRows(DBdict.songTableName))
-        RECs = DB.TableToList(DBdict.songTableName)
-        for index, record in enumerate(RECs):
-            if index > 2: break
-            print (record)
-        RECs = DB.TableToDict(DBdict.songTableName, startAttributesField=gv.song.field.SongName+1, myDict=gv.Ln.LnDict)
-
-        sys.exit()
+            # ---- lettura DBase
+        # RECs         = DB.TableToList(DBdict.songTableName)
+        gv.song.dict = DB.TableToDict(DBdict.songTableName, startAttributesField=gv.song.field.SongName+1, myDict=gv.Ln.LnDict)
 
             # -----------------------------------------------------------------------
-            # - Merging del dictionary con la directory sorgente
+            # - Merging del dictionary con la directory sorgente e ...
+            # - ... validazione con i file
             # -----------------------------------------------------------------------
-        mergedLIST = gv.Prj.Merge(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict)
-            # -----------------------------------------------------------------------
-            # - Salviamo il tutto in formato csv
-            # -----------------------------------------------------------------------
-        gv.Prj.WriteCSVFile(gv, csvFileMerged, mergedLIST)
-        print ()
-        C.printYellowH('file: {0} has been saved.'.format(csvFileMerged), tab=4)
-        '''
-        # ---------------------------------------
-        # - lettura directory sorgente di MP3
-        # ---------------------------------------
-        sourceDir = gv.INPUT_PARAM.MP3SourceDir
-        listaFile = gv.Ln.DirList(sourceDir, patternLIST=['*.mp3'], onlyDir=False, maxDeep=99)
-        if listaFile == []:
-            gv.Ln.Exit(43, 'non sono stati trovati file nella directory indicata: {0}'.format(sourceDir))
-        print (len(listaFile))
-        '''
+        fieldsName, *rest = DB.GetStruct(DBdict.songTableName)
+        attributeNames = fieldsName[4:]
+        gv.Prj.Merge(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict, attributeNames)
+        songList = gv.Prj.Validate(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict)
+
+        # update della tabella
+        print ("Aggiornamento DBase... nRecords: {0}".format(len(songList)))
+        rCode   = DB.InsertRow(tblName=DBdict.songTableName, record=songList, fCOMMIT=True)
 
 
 
+        # ---------- R E O R D E R --- columns
+    elif gv.INPUT_PARAM.actionCommand == 'sqlite.reorder':
+        songDict = DB.TableToDict(DBdict.songTableName, startAttributesField=gv.song.field.SongName+1, myDict=gv.Ln.LnDict)
 
+        keyList = songDict.KeyList()
+        logger.info('andiamo a validare {0} records'.format(len(keyList)))
+
+
+        songLIST = []  # conterrà le canzoni in formato listOfList
+        for songQualifiers in keyList:
+            if songQualifiers == []: continue
+
+                # - otteniamo il pointer alla canzone
+            ptrSong = songDict.Ptr(songQualifiers)
+
+            # ================================================
+            # - Convertiamo il dict-record in una LIST
+            # ================================================
+                # - prepare newSongEntry
+            mySong = songQualifiers[:]
+
+                # - get song attributes values
+            songAttr = ptrSong.GetValue(fPRINT=False)
+            mySong.append(songAttr['ToBeDeleted'])
+            # mySong.append(songAttr['Punteggio']) # remove
+            mySong.append(songAttr['Analizzata'])
+            mySong.append(songAttr['Recomended'])
+            mySong.append(songAttr['Loreto'])
+            mySong.append(songAttr['Buona'])
+            mySong.append(songAttr['Soft'])
+            mySong.append(songAttr['Vivace'])
+            mySong.append(songAttr['Molto Viv'])
+            mySong.append(songAttr['Camera'])
+            mySong.append(songAttr['Car'])
+            mySong.append(songAttr['Lenta'])
+            mySong.append(songAttr['Country'])
+            mySong.append(songAttr['Strumentale'])
+            mySong.append(songAttr['Classica'])
+            mySong.append(songAttr['Lirica'])
+            mySong.append(songAttr['Live'])
+            mySong.append(songAttr['Discreta'])
+            mySong.append(songAttr['Undefined'])
+            mySong.append(songAttr['Avoid it'])
+            mySong.append(songAttr['Confusionaria'])
+            mySong.append(songAttr['Song Size'])
+            songLIST.append(mySong)
+
+    for record in songLIST[:10]:
+        print (record)
