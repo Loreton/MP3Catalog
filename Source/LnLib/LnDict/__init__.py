@@ -155,6 +155,9 @@ class DotMap(OrderedDict):
         def KeyTree(self, fPRINT=False):
             return DictToList.KeyTree(self, myDictTYPES=self._myDictTYPES, fPRINT=fPRINT)
 
+        def ToList(self):
+            return DictToList.DictToList(self)
+
         def KeyList(self):
             return DictToList.KeyList(self, myDictTYPES=self._myDictTYPES)
 

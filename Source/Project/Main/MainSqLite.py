@@ -53,13 +53,17 @@ def Main(gv, action):
         DB.CreateTable(DBdict.songTableName, forceCreate=DBdict.songTableCreate, struct=DBdict.songTableStruct, script=None)
         DB.Describe()
 
+        # =======================================
         # ---------- I M P O R T
+        # =======================================
     if gv.INPUT_PARAM.actionCommand == 'sqlite.import':
         csvData = gv.Prj.ReadCSVFile(gv, gv.INPUT_PARAM.csvInputFile, gv.song.colsName)
         rCode   = DB.InsertRow(tblName=DBdict.songTableName, record=csvData[1:], fCOMMIT=True)
 
 
-        # ---------- M E R G E
+        # =======================================
+        # -  M E R G E
+        # =======================================
     elif gv.INPUT_PARAM.actionCommand == 'sqlite.merge':
 
             # ---- lettura DBase
@@ -85,3 +89,15 @@ def Main(gv, action):
             rCode = DB.InsertRow(tblName=DBdict.songTableName, record=songList, fCOMMIT=True)
 
 
+        # =======================================
+        # - E X P O R T
+        # =======================================
+    elif gv.INPUT_PARAM.actionCommand == 'sqlite.export':
+            # ---- lettura DBase
+        gv.song.dict = DB.TableToDict(DBdict.songTableName, startAttributesField=gv.song.field.SongName+1, myDict=gv.Ln.LnDict)
+        songLIST = gv.song.dict.ToList()
+        fieldsName = DB.GetStruct(DBdict.songTableName)[0]
+        songLIST = sorted(songLIST)
+        songLIST.insert(0, ';'.join(fieldsName))
+        # for record in songLIST[:20]: print(record)
+        gv.Prj.WriteCSVFile(gv, gv.INPUT_PARAM.csvOutputFile, data=songLIST)

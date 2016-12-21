@@ -129,24 +129,41 @@ def getValue(mainRootDict, listOfQualifiers, myDictTYPES, fPRINT=True):
     return retValue
 
 
+##############################################################
+# - VALIDATE che tutte le entrate corrispondano ad un file
+##############################################################
+def DictToList(myDict):
+        # -----------------------------------------------------------------------
+        # - otteniamo una lista della struttura del dict dove ogni entry
+        # - è una lista che contiene i token delle keys
+        # -----------------------------------------------------------------------
+    keyList = myDict.KeyList()
+    """
+        ['Bambini', 'Cartoni', 'The best of', 'Anna Dai Capelli Rossi']
+        ['Bambini', 'Cartoni', 'The best of', 'Arale Avventura']
+        ['Bambini', 'Cartoni', 'The best of', 'Arrivano I Superboys' ]
+        ['Bambini', 'Cartoni', 'The best of', 'Astro Robot' ]
+    """
 
-'''
-# #######################################################
-# # Stampa l'alberatura di un dict: mainDictRoot
-# #######################################################
-def PrintTree(mainRootDict, myDictTYPES):
-    keyList = KeyList(mainRootDict, myDictTYPES=myDictTYPES)
+    outLIST = []                        # conterrà il tutto in formato listOfList
+    for qualifiers in keyList:
+        if qualifiers == []: continue
 
-    for listOfQualifiers in keyList:
-        PrintValue(mainRootDict, listOfQualifiers, myDictTYPES)
-'''
+            # - otteniamo il pointer al record
+        ptr = myDict.Ptr(qualifiers)
 
+            # - prepare newRecEntry
+        newRecEntry = qualifiers[:]
 
+        # - copiamo gli attributes values
+        recAttr = ptr.GetValue(fPRINT=False)
 
+        for attributeName, val in recAttr.items():
+            newRecEntry.append(val)
 
+        outLIST.append(newRecEntry)
 
-
-
+    return outLIST
 
 
 

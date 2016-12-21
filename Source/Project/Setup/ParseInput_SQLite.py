@@ -30,13 +30,31 @@ def ExecuteOptions(myParser):
 # - sqlite_importCSV
 ####################################
 def ImportCSV(myParser):
-    myParser.add_argument( "-if", "--import-file",
+    myParser.add_argument( "-f", "--import-file",
                             type=_fileCheck,
                             required=True,
                             dest="csvInputFile",
                             metavar="CSV-input-filename",
                             default=None,
                             help='MANDATORY' + LnColor.getYellow( """ - Nome del file CSV di cui fare l'import.
+    DEFAULT: None
+    """))
+
+
+
+
+####################################
+# - sqlite_importCSV
+####################################
+def ExportCSV(myParser):
+    mandatory = LnColor.getYellowH('MANDATORY')
+    myParser.add_argument( "-f", "--export-file",
+                            type=_outFileCheck,
+                            required=True,
+                            dest="csvOutputFile",
+                            metavar="CSV-output-filename",
+                            default=None,
+                            help=mandatory + LnColor.getYellow( """ - Nome del file CSV su cui fare l'export.
     DEFAULT: None
     """))
 
@@ -73,6 +91,19 @@ def _fileCheck(fileName):
     return fileName
 
 
+
+####################################
+# # _fileCheck()
+####################################
+def _outFileCheck(fileName):
+    dirName = os.path.dirname(fileName)
+    if not os.path.isdir(dirName):
+        print ()
+        LnColor.printYellow ('  {DIR} is not a valid directory...'.format(DIR=dirName) + LnColor.RESET)
+        print ()
+        sys.exit(1)
+
+    return fileName
 
 ####################################
 # # _fileCheck()

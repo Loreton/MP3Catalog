@@ -29,7 +29,6 @@ def ParseInput(gVars, args, columnsName, programVersion=None):
             'import'    : "import del file csv passato come parametro",
             'merge'     : "legge la directory ed inserisce/modifica le canzoni esistenti",
             'copySongs' : "copia le canzoni risultate dalla selezione nella directory di destinazione",
-            'reorder'   : "Riordina le colonne oppure le cancella. Essendo operazione delicata, va configurato nel codice.",
             }
     }
 
@@ -212,15 +211,13 @@ def SQLITE(myParser, action):
         if len(sys.argv[2:]) == 1: sys.argv.append('-h')
         sqlite.ImportCSV(myParser)
 
+    elif action == 'export':
+        if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+        sqlite.ExportCSV(myParser)
+
     elif action == 'merge':
         if len(sys.argv[2:]) == 1: sys.argv.append('-h')
         sqlite.SourceDir(myParser)
-
-    elif action == 'reorder':
-        pass
-
-    # elif action == 'verify':
-    #     sqlite.SourceDir(myParser)
 
     else:
         print('''

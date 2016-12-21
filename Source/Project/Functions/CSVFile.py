@@ -87,7 +87,8 @@ def WriteCSVFile(gv, csvFile, data=[]):
         # -----------------------------------------------------------------------
         # - Per ogni canzone prendiamo gli attributi e salviamola.
         # -----------------------------------------------------------------------
-    f = open(csvFile, "w", encoding='utf-8')
+    f = open(csvFile, "w", encoding='utf-8', newline='\n')
+    NL = '\n'
     for line in data:
         if isinstance(line, list):
             # converte all items to string perché...
@@ -96,6 +97,6 @@ def WriteCSVFile(gv, csvFile, data=[]):
             f.write(';'.join(lineStr))
         else:
             f.write(line)
-        f.write('\n')
+        f.write(NL)
     f.close()
 

@@ -43,7 +43,6 @@ def Validate(gv, sourceDir, songDict ):
         ptrSong = songDict.Ptr(songQualifiers)
         # - prepare newSongEntry
         mySong = songQualifiers[:]
-        SONGNAME_FLD = 3
 
         fileName = os.path.sep.join(songQualifiers)
         fileName = '{0}{1}{2}.mp3'.format(sourceDir, os.path.sep, fileName)
@@ -54,18 +53,11 @@ def Validate(gv, sourceDir, songDict ):
             ptrSong['Song Size'] = size
 
         else:
-            # suffix = '_TO_BE_DELETED'
-            # if not songQualifiers[SONGNAME_FLD].endswith(suffix):
-            #     mySong[SONGNAME_FLD] = songQualifiers[SONGNAME_FLD] + suffix
             filesToDelete += 1
             # in modo che posso copiare gli attributi e poi cancellarle.
             msg = '     no more exists...{0}'.format(fileName)
             logger.debug(msg)
             print(msg)
-
-            # msg = '     renamed to...{0}'.format(mySong)
-            # logger.debug(msg)
-            # print(msg)
 
 
         # ================================================
