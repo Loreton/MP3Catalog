@@ -51,8 +51,7 @@ def Merge(gv, sourceDir, songDict, attributeNames ):
             for attributeName in attributeNames:
                 ptr[attributeName] = '_'
                 # - campi integer
-            ptr['Song Size'] = 0
-            ptr['Punteggio'] = 0
+            # ptr['Song Size'] = 0
 
 
     logger.info('sono stati individuati {0} new entry'.format(newEntryCount))

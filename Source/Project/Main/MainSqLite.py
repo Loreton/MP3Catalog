@@ -61,8 +61,8 @@ def Main(gv, action):
 
         # ---------- M E R G E
     elif gv.INPUT_PARAM.actionCommand == 'sqlite.merge':
+
             # ---- lettura DBase
-        # RECs         = DB.TableToList(DBdict.songTableName)
         gv.song.dict = DB.TableToDict(DBdict.songTableName, startAttributesField=gv.song.field.SongName+1, myDict=gv.Ln.LnDict)
 
             # -----------------------------------------------------------------------
@@ -74,58 +74,14 @@ def Main(gv, action):
         gv.Prj.Merge(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict, attributeNames)
         songList = gv.Prj.Validate(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict)
 
-        # update della tabella
+            # - update della tabella
         print ("Aggiornamento DBase... nRecords: {0}".format(len(songList)))
-        rCode   = DB.InsertRow(tblName=DBdict.songTableName, record=songList, fCOMMIT=True)
+        # for record in songList[:20]: print(record)
+
+        # ----- AGGIORNAMENTO DBase
+        choice = gv.Ln.getKeyboardInput("    Vuoi aggiornare il DBase?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
+        if choice.lower() in ['yes']:
+            msg = 'writing data to table: {0}'.format(DBdict.songTableName)
+            rCode = DB.InsertRow(tblName=DBdict.songTableName, record=songList, fCOMMIT=True)
 
 
-
-        # ---------- R E O R D E R --- columns
-    elif gv.INPUT_PARAM.actionCommand == 'sqlite.reorder':
-        songDict = DB.TableToDict(DBdict.songTableName, startAttributesField=gv.song.field.SongName+1, myDict=gv.Ln.LnDict)
-
-        keyList = songDict.KeyList()
-        logger.info('andiamo a validare {0} records'.format(len(keyList)))
-
-
-        songLIST = []  # conterrà le canzoni in formato listOfList
-        for songQualifiers in keyList:
-            if songQualifiers == []: continue
-
-                # - otteniamo il pointer alla canzone
-            ptrSong = songDict.Ptr(songQualifiers)
-
-            # ================================================
-            # - Convertiamo il dict-record in una LIST
-            # ================================================
-                # - prepare newSongEntry
-            mySong = songQualifiers[:]
-
-                # - get song attributes values
-            songAttr = ptrSong.GetValue(fPRINT=False)
-            mySong.append(songAttr['ToBeDeleted'])
-            # mySong.append(songAttr['Punteggio']) # remove
-            mySong.append(songAttr['Analizzata'])
-            mySong.append(songAttr['Recomended'])
-            mySong.append(songAttr['Loreto'])
-            mySong.append(songAttr['Buona'])
-            mySong.append(songAttr['Soft'])
-            mySong.append(songAttr['Vivace'])
-            mySong.append(songAttr['Molto Viv'])
-            mySong.append(songAttr['Camera'])
-            mySong.append(songAttr['Car'])
-            mySong.append(songAttr['Lenta'])
-            mySong.append(songAttr['Country'])
-            mySong.append(songAttr['Strumentale'])
-            mySong.append(songAttr['Classica'])
-            mySong.append(songAttr['Lirica'])
-            mySong.append(songAttr['Live'])
-            mySong.append(songAttr['Discreta'])
-            mySong.append(songAttr['Undefined'])
-            mySong.append(songAttr['Avoid it'])
-            mySong.append(songAttr['Confusionaria'])
-            mySong.append(songAttr['Song Size'])
-            songLIST.append(mySong)
-
-    for record in songLIST[:10]:
-        print (record)

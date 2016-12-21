@@ -41,27 +41,36 @@ def Validate(gv, sourceDir, songDict ):
         if songQualifiers == []: continue
         # - otteniamo il pointer alla canzone
         ptrSong = songDict.Ptr(songQualifiers)
+        # - prepare newSongEntry
+        mySong = songQualifiers[:]
+        SONGNAME_FLD = 3
 
         fileName = os.path.sep.join(songQualifiers)
         fileName = '{0}{1}{2}.mp3'.format(sourceDir, os.path.sep, fileName)
 
+
         if os.path.isfile(fileName):
             size = os.stat(fileName).st_size
             ptrSong['Song Size'] = size
+
         else:
+            # suffix = '_TO_BE_DELETED'
+            # if not songQualifiers[SONGNAME_FLD].endswith(suffix):
+            #     mySong[SONGNAME_FLD] = songQualifiers[SONGNAME_FLD] + suffix
             filesToDelete += 1
             # in modo che posso copiare gli attributi e poi cancellarle.
-            msg = '     no more exists...{0}'.format( fileName)
+            msg = '     no more exists...{0}'.format(fileName)
             logger.debug(msg)
             print(msg)
-            ptrSong['Song Size'] = 0
-            ptrSong.ToBeDeleted = 'Y'
+
+            # msg = '     renamed to...{0}'.format(mySong)
+            # logger.debug(msg)
+            # print(msg)
+
 
         # ================================================
         # - Convertiamo il dict-record in una LIST
         # ================================================
-            # - prepare newSongEntry
-        mySong = songQualifiers[:]
 
             # - get song attributes values
         songAttr = ptrSong.GetValue(fPRINT=False)
