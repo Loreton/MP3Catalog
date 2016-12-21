@@ -21,6 +21,7 @@ import ast
 def Main(gv, action):
     logger  = gv.Ln.SetLogger(package=__name__)
     C       = gv.Ln.LnColor()
+    gv.song = gv.Ln.LnDict()
 
     # gv.data = gv.Ln.LnDict()
 
@@ -33,6 +34,9 @@ def Main(gv, action):
     filename, create        = gv.ini.SqLite.DB_filename.split(',')
     DBdict.filename         = os.path.abspath(os.path.join(gv.Prj.dataDIR, filename.strip()))
     DBdict.filecreate       = True if create.strip().lower() == 'create' else False
+    print (DBdict.filename)
+    csvFileInput            = os.path.splitext(DBdict.filename)[0] + '.csv'
+    print (csvFileInput)
 
     songTable, create       = gv.ini.SqLite['songTable.name'].split(',')
     DBdict.songTableName    = songTable.strip()
@@ -67,7 +71,7 @@ def Main(gv, action):
     elif gv.INPUT_PARAM.actionCommand == 'sqlite.merge':
 
             # ---- lettura DBase
-        gv.song.dict = DB.TableToDict(DBdict.songTableName, startAttributesField=gv.song.field.SongName+1, myDict=gv.Ln.LnDict)
+        gv.song.dict = DB.TableToDict(DBdict.songTableName, startAttributesField=4, myDict=gv.Ln.LnDict)
 
             # -----------------------------------------------------------------------
             # - Merging del dictionary con la directory sorgente e ...
@@ -94,10 +98,17 @@ def Main(gv, action):
         # =======================================
     elif gv.INPUT_PARAM.actionCommand == 'sqlite.export':
             # ---- lettura DBase
-        gv.song.dict = DB.TableToDict(DBdict.songTableName, startAttributesField=gv.song.field.SongName+1, myDict=gv.Ln.LnDict)
-        songLIST = gv.song.dict.ToList()
+        # songDict = DB.TableToDict(DBdict.songTableName, startAttributesField=4, myDict=gv.Ln.LnDict)
+        # songLIST = songDict.ToList()
+
+        songLIST = DB.TableToList(DBdict.songTableName)
+
+
+
         fieldsName = DB.GetStruct(DBdict.songTableName)[0]
         songLIST = sorted(songLIST)
         songLIST.insert(0, ';'.join(fieldsName))
         # for record in songLIST[:20]: print(record)
-        gv.Prj.WriteCSVFile(gv, gv.INPUT_PARAM.csvOutputFile, data=songLIST)
+        csvOutputFile = gv.INPUT_PARAM.csvOutputFile
+        if not csvOutputFile: csvOutputFile = os.path.splitext(DBdict.filename)[0] + '.out.csv'
+        gv.Prj.WriteCSVFile(gv, csvOutputFile, data=songLIST)

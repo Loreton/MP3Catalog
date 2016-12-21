@@ -12,10 +12,10 @@ this_mod = sys.modules[__name__]
 #############################################################
 # - parseInput()
 #############################################################
-def ParseInput(gVars, args, columnsName, programVersion=None):
-    global LnColor, songColumsName, gv
+def ParseInput(gVars, args, programVersion=None):
+    global LnColor, gv
     gv = gVars
-    songColumsName = columnsName
+
     LnColor = gv.Ln.LnColor()
     if not programVersion: programVersion = 'unknown'
 
@@ -212,7 +212,7 @@ def SQLITE(myParser, action):
         sqlite.ImportCSV(myParser)
 
     elif action == 'export':
-        if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+        # if len(sys.argv[2:]) == 1: sys.argv.append('-h')
         sqlite.ExportCSV(myParser)
 
     elif action == 'merge':

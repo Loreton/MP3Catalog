@@ -47,10 +47,10 @@ def ImportCSV(myParser):
 # - sqlite_importCSV
 ####################################
 def ExportCSV(myParser):
-    mandatory = LnColor.getYellowH('MANDATORY')
+    mandatory = LnColor.getYellowH('OPTIONAL')
     myParser.add_argument( "-f", "--export-file",
                             type=_outFileCheck,
-                            required=True,
+                            required=False,
                             dest="csvOutputFile",
                             metavar="CSV-output-filename",
                             default=None,

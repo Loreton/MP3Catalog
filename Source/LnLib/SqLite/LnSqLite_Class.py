@@ -223,7 +223,10 @@ class LnSqLite:
 
         tableData = cur.execute('SELECT * FROM {TABLE};'.format(TABLE=tblName))
         RECs = []
-        for record in tableData: RECs.append(record)
+        for record in tableData:
+            # converte all items to string
+            xx = [str(item) for item in record] # potrebbe dare errore se qualce item non è stringa
+            RECs.append(';'.join(xx))
 
         return RECs
 
