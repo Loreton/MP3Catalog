@@ -8,7 +8,7 @@
 
 import os, sys
 
-def checkSourceSongs(gv, RECs):
+def checkSourceSongs__(gv, RECs):
     logger = gv.Ln.SetLogger(package=__name__)
     color  = gv.Ln.LnColor()
 

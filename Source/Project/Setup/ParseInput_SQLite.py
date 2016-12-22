@@ -15,12 +15,13 @@ def SetGlobals(color):
 ####################################
 # - executeOptions
 ####################################
-def ExecuteOptions(myParser):
+def ExecuteOptions(myParser, required=False):
+    mandatory = LnColor.getYellowH('MANDATORY') if required else 'OPTIONAL'
     myParser.add_argument( "--go",
                             action="store_true",
                             dest="fEXECUTE",
                             default=False,
-                            help=LnColor.getYellow("""Execute commands.
+                            help=mandatory + LnColor.getYellow("""Execute commands.
     [DEFAULT: False, run in DRY-RUN mode]
     """))
 
@@ -29,14 +30,15 @@ def ExecuteOptions(myParser):
 ####################################
 # - sqlite_importCSV
 ####################################
-def ImportCSV(myParser):
+def ImportCSV(myParser, required=False):
+    mandatory = LnColor.getYellowH('MANDATORY') if required else 'OPTIONAL'
     myParser.add_argument( "-f", "--import-file",
                             type=_fileCheck,
-                            required=True,
+                            required=required,
                             dest="csvInputFile",
                             metavar="CSV-input-filename",
                             default=None,
-                            help='MANDATORY' + LnColor.getYellow( """ - Nome del file CSV di cui fare l'import.
+                            help=mandatory + LnColor.getYellow( """ - Nome del file CSV di cui fare l'import.
     DEFAULT: None
     """))
 
@@ -46,11 +48,11 @@ def ImportCSV(myParser):
 ####################################
 # - sqlite_importCSV
 ####################################
-def ExportCSV(myParser):
-    mandatory = LnColor.getYellowH('OPTIONAL')
+def ExportCSV(myParser, required=False):
+    mandatory = LnColor.getYellowH('MANDATORY') if required else 'OPTIONAL'
     myParser.add_argument( "-f", "--export-file",
                             type=_outFileCheck,
-                            required=False,
+                            required=required,
                             dest="csvOutputFile",
                             metavar="CSV-output-filename",
                             default=None,
@@ -64,17 +66,64 @@ def ExportCSV(myParser):
 ####################################
 # - SourceDir()
 ####################################
-def SourceDir(myParser):
-    mandatory = LnColor.getYellowH('MANDATORY')
+def SourceDir(myParser, required=False):
+    mandatory = LnColor.getYellowH('MANDATORY') if required else 'OPTIONAL'
     myParser.add_argument( "-s", "--source-dir",
                             type=_dirCheck,
-                            required=True,
+                            required=required,
                             default=None,
                             dest="MP3SourceDir",
                             metavar="MP3SourceDir",
                             help=mandatory + LnColor.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
     [DEFAULT: {0}]
     """.format(None)))
+
+
+
+####################################
+# - SourceDir()
+####################################
+def DestDir(myParser, required=False):
+    mandatory = LnColor.getYellowH('MANDATORY') if required else 'OPTIONAL'
+    myParser.add_argument( "-d", "--dest-dir",
+                            type=_dirCheck,
+                            required=required,
+                            default=None,
+                            dest="MP3DestDir",
+                            metavar="MP3DestDir",
+                            help=mandatory + LnColor.getYellow( """ - Nome della directory di destinazione ...
+    [DEFAULT: {0}]
+    """.format(None)))
+
+
+
+####################################
+# - CopySongs()
+####################################
+def CopySongs(myParser, required=False):
+    mandatory = LnColor.getYellowH('MANDATORY')
+    myParser.add_argument( "-s", "--source-dir",
+                            type=_dirCheck,
+                            required=required,
+                            default=None,
+                            dest="MP3SourceDir",
+                            metavar="MP3SourceDir",
+                            help=mandatory + LnColor.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
+    [DEFAULT: {0}]
+    """.format(None)))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

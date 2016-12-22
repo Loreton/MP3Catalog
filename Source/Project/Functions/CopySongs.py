@@ -9,48 +9,55 @@
 import os, sys
 import shutil
 
-def copySongs(gv, RECs):
+def copySongs(gv, RECs, fldNames):
     global c, copiedSongs
     logger = gv.Ln.SetLogger(package=__name__)
     c = gv.Ln.LnColor()
 
-    col = gv.Prj.enumCols(gv, RECs[0])
-    nCols = len(col)
+    FLD     = gv.Ln.LnEnum(fldNames, myDict=gv.Ln.LnDict)
+    WEIGHT  = gv.Ln.LnEnum(fldNames, myDict=gv.Ln.LnDict, weighted=True)
+    nCols = len(FLD)
+
+
+    # includeAttr      = [token.strip() for token in gv.ini.MAIN.includeAttr.split(',')]
+    # excludeAttr      = [token.strip() for token in gv.ini.MAIN.excludeAttr.split(',')]
+    maxSongs        = int(gv.ini.MAIN.maxSongs)
+    numOutDirs      = int(gv.ini.MAIN.numOutDirs)
+    # maxBytesPerDir  = gv.ini.MAIN.maxBytesPerDir
+    # excludeType     = gv.ini.MAIN.excludeType
+    # excludeAuthor   = gv.ini.MAIN.excludeAuthor
+    # empyField       = ['.', '_']
+
+    gv.songList= gv.Ln.LnDict()
+    gv.songList.duplicate = []
 
     copySong                 = gv.Ln.LnDict()
-    copySong.currDirNo       = 0
-    copySong.nAvailDirs      = gv.INPUT_PARAM.numDirs    # counter per tenere conto delle dir non ancora riempite
-    copySong.dirLIMIT        = gv.INPUT_PARAM.maxBytes
-    copySong.totalSongs      = len(RECs[1:])
-    copySong.remainingSongs  = copySong.totalSongs
+    currDirNo       = 0
+    nAvailDirs      = int(gv.ini.MAIN.numOutDirs)    # counter per tenere conto delle dir non ancora riempite
+    dirLIMIT        = int(gv.ini.MAIN.maxBytesPerDir)
+    totalSongs      = len(RECs)
+    remainingSongs  = totalSongs
 
     NOTFOUND    = []; copySong.NOTFOUND = NOTFOUND
     copiedSongs = []
 
 
     DISPLAY_LEN=55
-    for index, song in enumerate(RECs[1:]):
-        if copySong.nAvailDirs < 1:
+    for index, song in enumerate(RECs):
+        if nAvailDirs < 1:
             print ('Abbiamo raggiunto il limite per tutte le directories.')
             break
 
-        if len(song) != nCols: continue
-        if gv.INPUT_PARAM.maxSongs and index > gv.INPUT_PARAM.maxSongs: break
-        type(song[col.SongSize])
-
-        if isinstance(song[col.SongSize], int):
-            recSongSize = song[col.SongSize]
-        elif isinstance(song[col.SongSize], str):
-            recSongSize = int(song[col.SongSize].replace('bytes', '').replace('.', ''))
+        if index > maxSongs: break
 
         sourceSongName = os.path.join(
                                     gv.INPUT_PARAM.MP3SourceDir,
-                                    song[col.Type],
-                                    song[col.AuthorName],
-                                    song[col.AlbumName],
-                                    song[col.SongName].strip() + '.mp3')
+                                    song[FLD.Type],
+                                    song[FLD.AuthorName],
+                                    song[FLD.AlbumName],
+                                    song[FLD.SongName].strip() + '.mp3')
 
-        sourceRootDirLen=len(gv.INPUT_PARAM.MP3SourceDir + song[col.Type]) +1
+        sourceRootDirLen=len(gv.INPUT_PARAM.MP3SourceDir + song[FLD.Type]) +1
         c.printGreen ('{FILE:<{LEN}}'.format(FILE=sourceSongName[sourceRootDirLen:sourceRootDirLen+DISPLAY_LEN:], LEN=DISPLAY_LEN), end='', tab=4)
 
             # ---------------------------------
@@ -58,12 +65,12 @@ def copySongs(gv, RECs):
             # ---------------------------------
         if os.path.isfile(sourceSongName):
             realSongSize = os.path.getsize(sourceSongName)      # in bytes
-            copySong.currDirNo += 1
-            if copySong.currDirNo > gv.INPUT_PARAM.numDirs:
-                    copySong.currDirNo = 1
+            currDirNo += 1
+            if currDirNo > numOutDirs:
+                    currDirNo = 1
 
                 # - identifichiamo il numero della dir di dest....
-            DirTree = 'dir-{0:02}'.format(copySong.currDirNo)
+            DirTree = 'dir-{0:02}'.format(currDirNo)
             if not DirTree in copySong:
                 copySong[DirTree] = gv.Ln.LnDict()
                 copySong[DirTree].nSongs  = 0
@@ -75,28 +82,28 @@ def copySongs(gv, RECs):
 
 
                 # - se MAXBYTES > LIMIT lock directory
-            destDir = gv.INPUT_PARAM.destDIR + '-{0:02}'.format(copySong.currDirNo)
-            if copySong.dirLIMIT > 0:
-                if copySong[DirTree].totSize + realSongSize > copySong.dirLIMIT:
+            destDir = gv.INPUT_PARAM.MP3DestDir + '-{0:02}'.format(currDirNo)
+            if dirLIMIT > 0:
+                if copySong[DirTree].totSize + realSongSize > dirLIMIT:
 
                     c.printCyanH("""--> {DIR} - maxByte limit reached: {CURSIZE:,} of {LIMIT:,}""".format(
-                                    LIMIT=copySong.dirLIMIT,
+                                    LIMIT=dirLIMIT,
                                     CURSIZE=copySong[DirTree].totSize,
                                     DIR=destDir),
                                     tab=4)
 
                     c.printYellow('...skipped, songSize: {0:,}'.format(realSongSize), tab=60)
                     copySong[DirTree].full = True
-                    copySong.nAvailDirs      -= 1
+                    nAvailDirs      -= 1
                     continue
 
                 # - prepariamo il nome del file di dest.
-            destSongName = os.path.join(  gv.INPUT_PARAM.destDIR, '{0:02}'.format(copySong.currDirNo),
-                                          song[col.AuthorName],
-                                          song[col.SongName].strip() + '.mp3')
+            destSongName = os.path.join(  gv.INPUT_PARAM.MP3DestDir, '{0:02}'.format(currDirNo),
+                                          song[FLD.AuthorName],
+                                          song[FLD.SongName].strip() + '.mp3')
 
 
-            destRootDirLen=len(gv.INPUT_PARAM.destDIR)
+            destRootDirLen=len(gv.INPUT_PARAM.MP3DestDir)
             c.printCyan('--> {FILE:<{LEN}}'.format(FILE=destSongName[destRootDirLen:destRootDirLen+DISPLAY_LEN], LEN=DISPLAY_LEN), end=' ', tab=4)
 
                 # - copiamo la canzone... se non esiste
@@ -106,7 +113,7 @@ def copySongs(gv, RECs):
                 # - aggiorniamo i contatori
             if isCopied:
                 copySong[DirTree].nSongs  += 1
-                copySong.remainingSongs   -= 1
+                remainingSongs   -= 1
                 copySong[DirTree].totSize += realSongSize
 
 

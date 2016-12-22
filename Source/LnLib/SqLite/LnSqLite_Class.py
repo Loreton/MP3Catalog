@@ -216,7 +216,7 @@ class LnSqLite:
         # ***********************************************
         # * return LIST with all records
         # ***********************************************
-    def TableToList(self, tblName):
+    def TableToList(self, tblName, LoL=False):
         logger = self._setLogger(package=__name__)
         cur = self._getCursor()
 
@@ -224,9 +224,12 @@ class LnSqLite:
         tableData = cur.execute('SELECT * FROM {TABLE};'.format(TABLE=tblName))
         RECs = []
         for record in tableData:
-            # converte all items to string
-            xx = [str(item) for item in record] # potrebbe dare errore se qualce item non è stringa
-            RECs.append(';'.join(xx))
+            if LoL:
+                RECs.append(record)
+            else:
+                # converte all items to string
+                xx = [str(item) for item in record] # potrebbe dare errore se qualce item non è stringa
+                RECs.append(';'.join(xx))
 
         return RECs
 
@@ -239,11 +242,12 @@ class LnSqLite:
     def TableToDict(self, tblName, startAttributesField, myDict):
         logger = self._setLogger(package=__name__)
         mainDict            = myDict()
-        RECs = self.TableToList(tblName)
+        RECs = self.TableToList(tblName, LoL=True)
 
         fieldsName, *rest = self.GetStruct(tblName)
 
         for record in RECs:
+            # print(len(record), record)
             ptr = mainDict
 
                 # --------------------------------------------------
@@ -258,6 +262,7 @@ class LnSqLite:
 
                 # su ogni tree mettiamo i vari attributi
             for index, value in enumerate(record[startAttributesField:]):
+                # print(index, startAttributesField)
                 attrName  = fieldsName[index+startAttributesField]
                 ptr[attrName] = value
 

@@ -62,7 +62,7 @@ if __name__ == "__main__":
     # songColumns   = primaryCols + ','+ attributeCols
 
 
-    gv.song = gv.Ln.LnDict()
+    # gv.song = gv.Ln.LnDict()
     # gv.song.primaryCols   = [x.strip() for x in primaryCols.split(',')]
     # gv.song.attributeCols = [x.strip() for x in attributeCols.split(',')]
     # gv.song.colsName      = gv.song.primaryCols[:]

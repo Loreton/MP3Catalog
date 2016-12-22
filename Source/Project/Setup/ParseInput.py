@@ -13,14 +13,17 @@ this_mod = sys.modules[__name__]
 # - parseInput()
 #############################################################
 def ParseInput(gVars, args, programVersion=None):
-    global LnColor, gv
+    global C,  gv
     gv = gVars
 
-    LnColor = gv.Ln.LnColor()
+    C = gv.Ln.LnColor()
     if not programVersion: programVersion = 'unknown'
 
      # definizioni per mantenere insalterato l'ordine
     positionalActionsDict  =  {
+        'edit': {
+            'conf'    : "edit configuration file"
+            },
         'excel': {
             'export'    : "esporta il file excel, definito nel file di conf,  in formato CSV"
             },
@@ -64,14 +67,14 @@ def ParseInput(gVars, args, programVersion=None):
             # - Controlli
             # -----------------------------------------
     if InputPARAM.fDEBUG:
-        LnColor.printYellow('.'*10 + __name__ + '.'*10, tab=4)
+        C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
         dictID = vars(InputPARAM)
         for key, val in sorted(dictID.items()):
             TYPE = '(' + str(type(val)).split("'")[1] + ')'
-            LnColor.printCyan('{0:<20} : {1:<6} - {2}'.format(key, TYPE, val), tab = 8)
+            C.printCyan('{0:<20} : {1:<6} - {2}'.format(key, TYPE, val), tab = 8)
 
 
-        LnColor.printYellow('.'*10 + __name__ + '.'*10, tab=4)
+        C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
         print ()
 
 
@@ -102,9 +105,9 @@ def prepareArgParse(positionalActionsDict, programVersion):
 
     myParser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter,     # indicates that description and epilog are already correctly formatted and should not be line-wrapped:
-        description=LnColor.getYellow(description),
-        usage='',                                               # non voglio lo usage
-        epilog=LnColor.getYellow(mainHelp),
+        description=C.getYellow(description),
+        usage='',                                          # non voglio lo usage
+        epilog=C.getYellow(mainHelp),
         conflict_handler='resolve',
     )
 
@@ -125,26 +128,41 @@ def prepareArgParse(positionalActionsDict, programVersion):
 
     # .... oppure uniti.
     # myParser.add_argument('mainCommand',   metavar='mainCommand',   type=checkMainCommand, nargs=1)
-    myParser.add_argument('mainCommand', metavar='mainCommand', type=str, nargs=2)
+    myParser.add_argument('mainCommand',
+                metavar=C.getCyanH('primaryCommand & secondarycommand'),
+                type=str,
+                nargs=2,
+                help='comando e sottocomando come elencato di seguito.'
+                )
+
 
         # ----------------------------------------------------------
         # - lanciamo il parse dei parametri subito dopo quelli posizionali
         # ----------------------------------------------------------
     posizARGS = 2
     mainArgs = myParser.parse_args(sys.argv[1:posizARGS+1])
-    mainCommand  = mainArgs.mainCommand[0]
-    songsCommand = mainArgs.mainCommand[1]
+    primaryCommand   = mainArgs.mainCommand[0]
+    secondaryCommand = mainArgs.mainCommand[1]
     # print (type(mainArgs.mainCommand), mainArgs.mainCommand)
 
-    # checkMainCommand(myParser, mainArgs.mainCommand[0], positionalActionsDict)
-    # checkActionCommand(myParser, mainArgs.mainCommand[0], positionalActionsDict)
-
-    if not (mainCommand in positionalActionsDict.keys()):
+        # print dell'HELP per il primaryCommand errato
+    if not (primaryCommand in positionalActionsDict.keys()):
         myParser.print_help()
-        LnColor.printYellow(".... Unrecognized value [{0}]. Valid values are:".format(mainCommand), tab=8)
+        C.printYellow(".... Unrecognized command [{0}]. Valid values are:".format(primaryCommand), tab=8)
         for positionalParm in positionalActionsDict.keys():
-            LnColor.printYellow (positionalParm, tab=16)
+            C.printYellow (positionalParm, tab=16)
         exit(1)
+
+        # print dell'HELP in base al primaryComand passato
+    ptr = positionalActionsDict[primaryCommand]
+    if not secondaryCommand in ptr.keys():
+        print()
+        C.printCyan(".... Unrecognized subcommand [{0}]. Valid values for [{1}] command are:".format(secondaryCommand, primaryCommand), tab=8)
+        for key, val in ptr.items():
+            C.printCyanH ('{0:<20}    : {1}'.format(key, val), tab=16)
+        exit(1)
+
+    # print (subCommand)
 
     return mainArgs
 
@@ -153,8 +171,8 @@ def prepareArgParse(positionalActionsDict, programVersion):
 # - commonParsing
 ###################################################
 def commonParsing(positionalParm, DESCR='CIAO DESCR'):
-    mainCommand, songsCommand = positionalParm
-    usageMsg = "\n          {COLOR}   {ACTION} {COLRESET}[options]".format(COLOR=LnColor.YEL, ACTION=mainCommand, COLRESET=LnColor.RESET)
+    mainCommand, secondaryCommand = positionalParm
+    usageMsg = "\n          {COLOR}   {ACTION} {COLRESET}[options]".format(COLOR=C.YEL, ACTION=mainCommand, COLRESET=C.RESET)
     myParser = argparse.ArgumentParser( description='{0} Command'.format(mainCommand),
                                         add_help=True, usage=usageMsg,
                                         # formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -168,9 +186,9 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
         # ritorna un nameSpace
     funcToCall = '_'.join(positionalParm)  # non so se conviene
     if hasattr(this_mod,  mainCommand.upper()):
-        getattr(this_mod, mainCommand.upper())(myParser, songsCommand)
+        getattr(this_mod, mainCommand.upper())(myParser, secondaryCommand)
     else:
-        LnColor.printCyan ('[{0}] - Command not yet implemented!'.format(mainCommand))
+        C.printCyan ('[{0}] - Command not yet implemented!'.format(mainCommand))
         sys.exit(1)
 
 
@@ -188,11 +206,31 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
 # ---------------------------
 # - A C T I O N s
 # ---------------------------
+def EDIT(myParser, action):
+    _debugOptions(myParser)
+
+    if action == 'conf':
+        command = [
+                    gv.ini.MAIN.editor,
+                    gv.Prj.iniFileName
+                    ]
+        rCode = gv.Ln.ExecRcode(command, timeout=5, EXECUTE=True, shell=False)
+        C.printCyan('configuration file can be edited [RCODE: {}]'.format(rCode), tab=4)
+        sys.exit()
+
+    else:
+        C.printCyan('Action [{0}] non prevista per il comando di edit...'.format(action), tab=4)
+
+    myParser.print_help()
+
+# ---------------------------
+# - A C T I O N s
+# ---------------------------
 def EXCEL(myParser, action):
     if len(sys.argv[2:]) == 1: sys.argv.append('-h')
     from . import ParseInput_Excel as excel
 
-    excel.SetGlobals(LnColor)
+    excel.SetGlobals(C)
 
     if action == 'export':
         excel.ExportToCSV(myParser)
@@ -205,19 +243,28 @@ def EXCEL(myParser, action):
 def SQLITE(myParser, action):
     from . import ParseInput_SQLite as sqlite
 
-    sqlite.SetGlobals(LnColor)
+    sqlite.SetGlobals(C)
 
     if action == 'import':
         if len(sys.argv[2:]) == 1: sys.argv.append('-h')
-        sqlite.ImportCSV(myParser)
+        sqlite.ImportCSV(myParser, required=True)
 
     elif action == 'export':
         # if len(sys.argv[2:]) == 1: sys.argv.append('-h')
-        sqlite.ExportCSV(myParser)
+        sqlite.ExportCSV(myParser, required=False)
 
     elif action == 'merge':
         if len(sys.argv[2:]) == 1: sys.argv.append('-h')
-        sqlite.SourceDir(myParser)
+        sqlite.SourceDir(myParser, required=True)
+
+    elif action == 'copySongs':
+        if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+        sqlite.SourceDir(myParser, required=True)
+        sqlite.DestDir(myParser, required=True)
+        sqlite.ExecuteOptions(myParser, required=False)
+
+    elif action == 'edit':
+        pass
 
     else:
         print('''
@@ -243,7 +290,7 @@ def _debugOptions(myParser):
                             action="store_true",
                             dest="LogACTIVE",
                             default=False,
-                            help=LnColor.getYellow("""attivazione del logger.
+                            help=C.getYellow("""attivazione del logger.
     [DEFAULT: False]
     """))
 
@@ -254,7 +301,7 @@ def _debugOptions(myParser):
                             action="store_true",
                             # choices=['info', 'debug'],
                             default=False,
-                            help=LnColor.getYellow("""attivazione log sulla console.
+                            help=C.getYellow("""attivazione log sulla console.
     """))
 
         # log debug su specifica funzione
@@ -262,7 +309,7 @@ def _debugOptions(myParser):
                             required=False,
                             dest="LogMODULE",
                             default=False,
-                            help=LnColor.getYellow("""attivazione log sul una singola funcName o stringa di essa.
+                            help=C.getYellow("""attivazione log sul una singola funcName o stringa di essa.
     Possono essere anche porzioni di funcName separate da ',' Es: pippo,uto,ciao
     """))
 
@@ -272,7 +319,7 @@ def _debugOptions(myParser):
                             action="store_true",
                             dest="fDEBUG",
                             default=False,
-                            help=LnColor.getYellow("""enter in DEBUG mode..
+                            help=C.getYellow("""enter in DEBUG mode..
     [DEFAULT: None]
     """))
 
@@ -281,7 +328,7 @@ def _debugOptions(myParser):
                             action="store_true",
                             dest="fELAPSED",
                             default=False,
-                            help=LnColor.getYellow("""display del tempo necessario al processo..
+                            help=C.getYellow("""display del tempo necessario al processo..
     [DEFAULT: False]
     """))
 

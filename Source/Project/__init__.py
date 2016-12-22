@@ -45,7 +45,7 @@ from . Functions.Merge              import  Merge
 from . Functions.Validate              import  Validate
 
 from . Functions.CopySongs          import  copySongs
-from . Functions.CheckSourceSongs   import  checkSourceSongs
+# from . Functions.CheckSourceSongs   import  checkSourceSongs
 from . Functions.CSVFile            import  ReadCSVFile
 from . Functions.CSVFile            import  WriteCSVFile
 from . ExcelDB.ExcelCatalog         import  ReadExcelDB

@@ -34,9 +34,6 @@ def Main(gv, action):
     filename, create        = gv.ini.SqLite.DB_filename.split(',')
     DBdict.filename         = os.path.abspath(os.path.join(gv.Prj.dataDIR, filename.strip()))
     DBdict.filecreate       = True if create.strip().lower() == 'create' else False
-    print (DBdict.filename)
-    csvFileInput            = os.path.splitext(DBdict.filename)[0] + '.csv'
-    print (csvFileInput)
 
     songTable, create       = gv.ini.SqLite['songTable.name'].split(',')
     DBdict.songTableName    = songTable.strip()
@@ -44,10 +41,10 @@ def Main(gv, action):
 
     DBdict.songTableStruct  = gv.ini.SqLite['songTable.struct']
 
-        # --------------------------------------------
+        # =======================================
         # - connessione al DB.
-        # - creazione file in base al flag.filecreate
-        # --------------------------------------------
+        # - creazione se flag.filecreate
+        # =======================================
     DB = gv.Ln.LnSqLite(DBdict.filename, DBdict.filecreate, logger=gv.Ln.SetLogger)
 
         # --------------------------------------------
@@ -56,6 +53,11 @@ def Main(gv, action):
     if DBdict.songTableCreate:
         DB.CreateTable(DBdict.songTableName, forceCreate=DBdict.songTableCreate, struct=DBdict.songTableStruct, script=None)
         DB.Describe()
+
+    fieldsName = DB.GetStruct(DBdict.songTableName)[0]
+    fieldsName, *rest = DB.GetStruct(DBdict.songTableName)
+    # gv.song.FIELD           = gv.Ln.LnEnum(fieldsName, myDict=gv.Ln.LnDict)
+    # gv.song.FIELD_WEIGHTED  = gv.Ln.LnEnum(fieldsName, myDict=gv.Ln.LnDict, weighted=True)
 
         # =======================================
         # ---------- I M P O R T
@@ -77,7 +79,6 @@ def Main(gv, action):
             # - Merging del dictionary con la directory sorgente e ...
             # - ... validazione con i file
             # -----------------------------------------------------------------------
-        fieldsName, *rest = DB.GetStruct(DBdict.songTableName)
         attributeNames = fieldsName[4:]
         gv.Prj.Merge(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict, attributeNames)
         songList = gv.Prj.Validate(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict)
@@ -105,10 +106,24 @@ def Main(gv, action):
 
 
 
-        fieldsName = DB.GetStruct(DBdict.songTableName)[0]
         songLIST = sorted(songLIST)
         songLIST.insert(0, ';'.join(fieldsName))
         # for record in songLIST[:20]: print(record)
         csvOutputFile = gv.INPUT_PARAM.csvOutputFile
         if not csvOutputFile: csvOutputFile = os.path.splitext(DBdict.filename)[0] + '.out.csv'
         gv.Prj.WriteCSVFile(gv, csvOutputFile, data=songLIST)
+
+
+
+        # =======================================
+        # - C O P Y S O N G S
+        # =======================================
+    elif gv.INPUT_PARAM.actionCommand == 'sqlite.copySongs':
+        songLIST = DB.TableToList(DBdict.songTableName, LoL=True)
+        validSONGS = gv.Prj.songFilter(gv, songLIST, fieldsName)
+
+        choice = gv.Ln.getKeyboardInput("    Vuoi procedere con la copia delle canzoni sulla DEST?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
+        if choice.lower() in ['yes']:
+            gv.Prj.copySongs(gv, validSONGS, fieldsName)
+            # songList    = gv.songList
+

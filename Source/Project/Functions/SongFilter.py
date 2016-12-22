@@ -8,36 +8,57 @@ import sys
 
 class BreakIt(Exception): pass
 
-def songFilter(gv, RECs):
+def songFilter(gv, RECs, fldNames):
     logger  = gv.Ln.SetLogger(package=__name__)
     C       = gv.Ln.LnColor()
-    col     = gv.Prj.enumCols(gv, gv.song.colsName)
+    FLD     = gv.Ln.LnEnum(fldNames, myDict=gv.Ln.LnDict)
+    WEIGHT   = gv.Ln.LnEnum(fldNames, myDict=gv.Ln.LnDict, weighted=True)
 
-        # Assegnamo un peso binario ad ogni colonna che ci interessa filtrare.
-    colVal = gv.Prj.enumColsBase2(gv, gv.INPUT_PARAM.include)
+
+    includeAttr      = [token.strip() for token in gv.ini.MAIN.includeAttr.split(',')]
+    excludeAttr      = [token.strip() for token in gv.ini.MAIN.excludeAttr.split(',')]
+    maxSongs        = int(gv.ini.MAIN.maxSongs)
+    numOutDirs      = int(gv.ini.MAIN.numOutDirs)
+    maxBytesPerDir  = gv.ini.MAIN.maxBytesPerDir
+    excludeType     = gv.ini.MAIN.excludeType
+    excludeAuthor   = gv.ini.MAIN.excludeAuthor
+    empyField       = ['.', '_']
+
+
+    gv.songList = gv.Ln.LnDict()
+    gv.songList.analizzate = []
+    gv.songList.scartate   = []
+    gv.songList.validSongs = []
+
+
+        # Visualizzazione pesi binari.
     reqScore = 0
     C.printCyan ('---  Attribute weight ----', tab=4)
-    for item in colVal:
-        C.printCyan ("{ITEM:<14} -->  {WEIGHT:>6}".format(
+    for item in WEIGHT:
+        if item.startswith('_'): continue
+        # print (item)
+        # continue
+        C.printCyan ("{ITEM:<14} -->  {WEIGHT:>8}".format(
                 ITEM=item,
-                WEIGHT=colVal[item]),
+                WEIGHT=WEIGHT[item]),
                 tab=4
             )
 
-        reqScore  +=  colVal[item]
+        reqScore  +=  WEIGHT[item]
     print ()
     C.printCyan ('requested Score: {0}'.format(reqScore), tab=4)
+
 
     print ()
     print ()
     C.printCyan ('---  Summary   ----', tab=4)
-    C.printCyan ("num of output directory : {0}".format(gv.INPUT_PARAM.numDirs), tab=4)
+    C.printCyan ("num of output directory : {0}".format(numOutDirs), tab=4)
 
-    comment = ' - no limit' if gv.INPUT_PARAM.maxBytes == 0 else ''
-    C.printCyan ("Max Byte per directory  : {0}{1}".format(gv.INPUT_PARAM.maxBytes, comment), tab=4)
+    comment = ' - no limit' if maxBytesPerDir == 0 else ''
+    C.printCyan ("Max Byte per directory  : {0}{1}".format(maxBytesPerDir, comment), tab=4)
 
-    comment = ' - no limit' if gv.INPUT_PARAM.maxSongs == 0 else ''
-    C.printCyan ("Max Songs to extract    : {0}{1}".format(gv.INPUT_PARAM.maxSongs, comment), tab=4)
+    comment = ' - no limit' if maxSongs == 0 else ''
+    C.printCyan ("Max Songs to extract    : {0}{1}".format(maxSongs, comment), tab=4)
 
     print ()
     print ()
@@ -49,107 +70,100 @@ def songFilter(gv, RECs):
     analizzateTotSize   = 0
     toBeAanalysed       = 0
     toBeAanalysedSize   = 0
-    invalidLines        = 0
-    nCols               = len(gv.song.colsName)
+    nCols               = len(FLD)
 
-    excludeType     = [
-                            'Bambini', 'Natale', 'Popolari', 'Themes',
-                    ]
 
-    excludeAuthor   = ['xxx', 'cccc', 'xxx']
-
-    includeCol  = gv.INPUT_PARAM.include
-    excludeCol  = gv.INPUT_PARAM.exclude
-    maxSongs    = gv.INPUT_PARAM.maxSongs
-
-    RECs = RECs[1:]  # skip column name row
     for index, song in enumerate(RECs):
         # print (song)
-        if len(song) != nCols:
-            invalidLines += 1
-            continue
 
         if maxSongs and index > maxSongs:
             C.printRedH('numero massimo di canzoni raggiunto', tab=4)
             break
 
-        if isinstance(song[col.SongSize], int):
-            size = song[col.SongSize]
-        elif isinstance(song[col.SongSize], str):
-            size = int(song[col.SongSize].replace('bytes', '').replace('.', ''))
-
-
-        # se la canzone NON ha il flag 'Analizzata'... ignorala
-        if song[col['Analizzata']] in ['.']:  # deve avere un carattere diverso da '.'
+             #  'Analizzata'...
+        if song[FLD.Analizzata] in empyField:  # deve avere un carattere diverso da '.' o '_'
             toBeAanalysed += 1
-            toBeAanalysedSize += size
+            toBeAanalysedSize += song[FLD.SongSize]
             continue
         else:
             gv.songList.analizzate.append(song)
-            analizzateTotSize += size
+            analizzateTotSize += song[FLD.SongSize]
 
-        if song[col.Type] in excludeType or song[col.AuthorName] in excludeAuthor:
+            #  'EXCLUDE'...
+        if song[FLD.Type] in excludeType or song[FLD.AuthorName] in excludeAuthor:
             gv.songList.scartate.append(song)
-            scartateTotSize += size
+            scartateTotSize += song[FLD.SongSize]
             scartate        += 1
             continue
 
 
-        isValidSong = True
 
             # ---------------------------------------
             # - verifichiamo le colonne da includere.
             # - deve contentere un valore == '.'
             # ---------------------------------------
-        for colName in includeCol:
-            if song[col[colName]] in ['.']:
+        isValidSong = True
+        for colName in includeAttr:
+            FIELD = FLD[colName]
+            if song[FIELD] in empyField:
                 isValidSong = False
                 break
-        logger.debug('INCLUDE: {0} isValidSong:{1}'.format(song[col[colName]], isValidSong))
 
-            # ---------------------------------------
+        logger.debug('INCLUDE: {0} isValidSong:{1}'.format(song[FIELD], isValidSong))
+
+            # -------------------------------------------
             # - verifichiamo le colonne da escludere.
-            # - deve contentere un valore diverso da '.'
-            # ---------------------------------------
-        for colName in excludeCol:
-            if not song[col[colName]] in ['.']:
+            # - deve contentere un valore diverso da '._'
+            # --------------------------------------------
+        for colName in excludeAttr:
+            FIELD = FLD[colName]
+            if not song[FIELD] in empyField:
                 isValidSong = False
                 break
-        logger.debug('EXCLUDE: {0} isValidSong:{1}'.format(song[col[colName]], isValidSong))
+
+        logger.debug('EXCLUDE: {0} isValidSong:{1}'.format(song[FIELD], isValidSong))
 
 
         if isValidSong:
             gv.songList.validSongs.append(song)
-            validTotSize   += size
+            validTotSize   += song[FLD.SongSize]
         else:
             gv.songList.scartate.append(song)
-            scartateTotSize += size
+            scartateTotSize += song[FLD.SongSize]
             scartate        += 1
 
 
 
 
     C.printYellow('Record TOTALI                    : {0:>6}'.format(len(RECs)), tab=4)
-    msg = 'Invalid Lines                    : {0:>6}'.format(invalidLines)
-    if invalidLines > 0:
-        C.printRedH(msg, tab=4)
-    else:
-        C.printYellow(msg, tab=4)
 
-    C.printYellow('Canzoni con flag   ANALIZZATA    : {0:>6} - bytes: {1:,}'.format(len(gv.songList.analizzate)-1, analizzateTotSize), tab=4)
+    C.printYellow('Canzoni con flag   ANALIZZATA    : {0:>6} - bytes: {1:,}'.format(len(gv.songList.analizzate), analizzateTotSize), tab=4)
     C.printYellow('Canzoni senza flag ANALIZZATA    : {0:>6} - bytes: {1:,}'.format(toBeAanalysed, toBeAanalysedSize), tab=4)
-    C.printYellow('Canzoni TOTALI                   : {0:>6}'.format(len(RECs) - invalidLines), tab=4)
+    # C.printYellow('Canzoni TOTALI                   : {0:>6}'.format(len(RECs) - invalidLines), tab=4)
+    C.printYellow('Canzoni TOTALI  (for checking)   : {0:>6} - == Totali'.format(len(gv.songList.analizzate) + toBeAanalysed), tab=4)
 
     print ()
     C.printCyan('Risultati dalla ricerca...', tab=4)
-    C.printCyan('include cols: {0}'.format(includeCol), tab=8)
-    C.printCyan('exclude cols: {0}'.format(excludeCol), tab=8)
+    C.printCyan('include cols: {0}'.format(includeAttr), tab=8)
+    C.printCyan('exclude cols: {0}'.format(excludeAttr), tab=8)
     print ()
-    C.printYellow('risultate VALIDE dalla ricerca   : {0:>6} - bytes: {1:,}'.format(len(gv.songList.validSongs)-1, validTotSize), tab=4)
-    C.printYellow('tisultate SCARTATE dalla ricerca : {0:>6} - bytes: {1:,}'.format(len(gv.songList.scartate)-1, scartateTotSize), tab=4)
+    C.printYellow('VALIDE dalla ricerca             : {0:>6} - bytes: {1:,}'.format(len(gv.songList.validSongs), validTotSize), tab=4)
+    C.printYellow('SCARTATE dalla ricerca           : {0:>6} - bytes: {1:,}'.format(scartate, scartateTotSize), tab=4)
+    C.printYellow('Canzoni TOTALI  (for checking)   : {0:>6} - == flag ANALIZZATA'.format(scartate + len(gv.songList.validSongs)), tab=4)
 
     print()
 
-    return
+        # msg = 'writing file: {0}'.format(fileScartate)
+            # C.printYellow(msg, tab=4); logger.info(msg)
+            # gv.Ln.writeTextFile(fileScartate,   data=gv.songList.scartate)
 
+            # C.printYellow('writing file: {0}'.format(fileValidSongs), tab=4)
+            # gv.Ln.writeTextFile(fileValidSongs,   data=gv.songList.validSongs)
+
+            # C.printYellow('writing file: {0}'.format(fileAnalizzate), tab=4)
+            # gv.Ln.writeTextFile(fileAnalizzate, data=gv.songList.analizzate)
+
+
+
+    return gv.songList.validSongs
 
