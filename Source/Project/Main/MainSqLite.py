@@ -41,6 +41,11 @@ def Main(gv, action):
 
     DBdict.songTableStruct  = gv.ini.SqLite['songTable.struct']
 
+    if not os.path.isfile(DBdict.filename):
+        DBdict.songTableCreate = True
+    else:
+        if os.stat(DBdict.filename).st_size == 0:
+            DBdict.songTableCreate = True
 
     C.printYellow("working on DBase: {0}".format(DBdict.filename))
     C.printYellow("working on Table: {0}".format(DBdict.songTableName))
@@ -68,7 +73,7 @@ def Main(gv, action):
         # =======================================
     if gv.INPUT_PARAM.actionCommand == 'sqlite.import':
         csvData = gv.Prj.ReadCSVFile(gv, gv.INPUT_PARAM.csvInputFile, fieldsName)
-        rCode   = DB.InsertRow(tblName=DBdict.songTableName, record=csvData[1:], fCOMMIT=True)
+        rCode   = DB.InsertRow(tblName=DBdict.songTableName, record=sorted(csvData[1:]), fCOMMIT=True)
 
 
         # =======================================
@@ -98,7 +103,7 @@ def Main(gv, action):
         choice = gv.Ln.getKeyboardInput("    Vuoi aggiornare il DBase?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
         if choice.lower() in ['yes']:
             msg = 'writing data to table: {0}'.format(DBdict.songTableName)
-            rCode = DB.InsertRow(tblName=DBdict.songTableName, record=songList, fCOMMIT=True)
+            rCode = DB.InsertRow(tblName=DBdict.songTableName, record=sorted(songList), fCOMMIT=True)
 
 
         # =======================================

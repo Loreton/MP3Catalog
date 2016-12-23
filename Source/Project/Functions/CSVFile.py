@@ -23,12 +23,12 @@ def ReadCSVFile(gv, csvFile, requiredColNames):
         # - Eliminiamo i blank nei nomi colonne
         # ------------------------------------------------------------
     csvRowList    = gv.Ln.readTextFile(csvFile)
-    print ()
-    print (csvRowList[0])
-    print (csvRowList[1])
-    print (FLD)
-    print (FLD.Type)
-    print ()
+    # print ()
+    # print (csvRowList[0])
+    # print (csvRowList[1])
+    # FLD.printDict()
+    # print (FLD.Type)
+    # print ()
 
     colNames = [token.replace(' ', '').strip() for token in csvRowList[0].split(';')]
 
