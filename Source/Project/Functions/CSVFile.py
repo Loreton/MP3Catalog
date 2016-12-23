@@ -16,14 +16,20 @@ def ReadCSVFile(gv, csvFile, requiredColNames):
     logger = gv.Ln.SetLogger(package=__name__)
     C      = gv.Ln.LnColor()
 
-
+    FLD     = gv.Ln.LnEnum(requiredColNames, myDict=gv.Ln.LnDict)
         # ------------------------------------------------------------
         # - Lettura del file.csv
         # - La prima riga contiene il nome delle colonne
         # - Eliminiamo i blank nei nomi colonne
         # ------------------------------------------------------------
     csvRowList    = gv.Ln.readTextFile(csvFile)
+    print ()
     print (csvRowList[0])
+    print (csvRowList[1])
+    print (FLD)
+    print (FLD.Type)
+    print ()
+
     colNames = [token.replace(' ', '').strip() for token in csvRowList[0].split(';')]
 
 
@@ -40,7 +46,7 @@ def ReadCSVFile(gv, csvFile, requiredColNames):
     RECs = []
     for row in csvRowList:
         column = [token.strip() for token in row.split(';') if isinstance(token, str)]
-        if len(column[gv.song.field.Type].strip()) > 3:
+        if len(column[FLD.Type].strip()) > 3:
             RECs.append(column)
 
 
@@ -52,7 +58,7 @@ def ReadCSVFile(gv, csvFile, requiredColNames):
     # gv.song.PrintTree(fEXIT=True)
     for song in RECs[1:]:   # skip line 0 with fields name
         ptr = gv.song.dict
-        startAttributeCols = gv.song.field.SongName+1
+        startAttributeCols = FLD.SongName+1
 
             # -creazione dictionary per type.author.album.songName
         for field in song[:startAttributeCols]:
@@ -62,7 +68,7 @@ def ReadCSVFile(gv, csvFile, requiredColNames):
 
             # su ogni canzone mettiamo i vari attributi
         for index, value in enumerate(song[startAttributeCols:]):
-            attrName  = gv.song.attributeCols[index]
+            attrName  = requiredColNames[index]
             ptr[attrName] = value
 
 

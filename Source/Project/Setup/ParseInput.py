@@ -129,12 +129,12 @@ def prepareArgParse(positionalActionsDict, programVersion):
     # .... oppure uniti.
     # myParser.add_argument('mainCommand',   metavar='mainCommand',   type=checkMainCommand, nargs=1)
     myParser.add_argument('mainCommand',
-                metavar=C.getCyanH('primaryCommand & secondarycommand'),
+                metavar=C.getCyanH('primaryCommand & secondaryCommand') + C.getYellow(mainHelp),
                 type=str,
                 nargs=2,
                 help='comando e sottocomando come elencato di seguito.'
+                # help='comando e sottocomando come elencato di seguito.' + C.getYellow(mainHelp)
                 )
-
 
         # ----------------------------------------------------------
         # - lanciamo il parse dei parametri subito dopo quelli posizionali

@@ -216,12 +216,18 @@ class LnSqLite:
         # ***********************************************
         # * return LIST with all records
         # ***********************************************
-    def TableToList(self, tblName, LoL=False):
+    def TableToList(self, tblName, LoL=False, query=None):
         logger = self._setLogger(package=__name__)
         cur = self._getCursor()
 
+        if query:
+            # QUERY = 'select * from "LoretoMP3" where AuthorName is "John Denver" AND AlbumName is "Greatest Hits"'
+            QUERY = query
+            # select * from "LoretoMP3" where AuthorName is "John Denver" AND AlbumName is "Greatest Hits"
+        else:
+            QUERY = 'SELECT * FROM {TABLE};'.format(TABLE=tblName)
 
-        tableData = cur.execute('SELECT * FROM {TABLE};'.format(TABLE=tblName))
+        tableData = cur.execute(QUERY)
         RECs = []
         for record in tableData:
             if LoL:
@@ -307,9 +313,12 @@ class LnSqLite:
         logger.info('inserting {0} records'.format(len(RECs)))
 
         if EXECUTE_MANY:
-            cur.executemany(InsertCommand, RECs)
+            x = cur.executemany(InsertCommand, RECs)
         else:
-            cur.execute(InsertCommand, RECs)
+            x = cur.execute(InsertCommand, RECs)
+
+        for a in x:
+            print (a)
 
         if fCOMMIT:
             self.Commit()
@@ -409,7 +418,7 @@ class LnSqLite:
         logger.info(comando)
         struct = cur.execute(comando)
 
-        filedName    = []
+        fieldName    = []
         fieldType    = []
         fieldNotNULL = []
         defaultVAL   = []
@@ -417,17 +426,17 @@ class LnSqLite:
         for field in struct:
             logger.debug(field)
             seq, NAME, TYPE, NOT_NULL, DEFAULT, PRI_KEY = field
-            filedName.append(NAME)
+            fieldName.append(NAME)
             fieldType.append(TYPE)
             fieldNotNULL.append(NOT_NULL)
             defaultVAL.append(DEFAULT)
 
-        logger.info('filedName: {0}'.format(filedName))
+        logger.info('fieldName: {0}'.format(fieldName))
         logger.info('fieldType: {0}'.format(fieldType))
         logger.info('defaultVAL: {0}'.format(defaultVAL))
         logger.info('fieldNotNULL: {0}'.format(fieldNotNULL))
 
-        return filedName, fieldType, fieldNotNULL, defaultVAL
+        return fieldName, fieldType, fieldNotNULL, defaultVAL
 
 
 
@@ -438,7 +447,9 @@ class LnSqLite:
         logger  = self._setLogger(package=__name__)
         cur     = self._getCursor()
 
-        filedName, fieldType, fieldNotNULL, defaultVAL = self.GetStruct(tblName)
+
+        fieldName, fieldType, fieldNotNULL, defaultVAL, *rest = self.GetStruct(tblName)
+        nFLD = len(fieldName)
         '''
         if not tableData: # leggiamo la tabella
             cur       = self._getCursor()
@@ -447,6 +458,19 @@ class LnSqLite:
 
         RECs  = []
         for row in tableData:
+            if not len(row) == nFLD:
+                print( )
+                print('errore nella lunghezza del record di input')
+                print( )
+                print( len(row), row)
+                print( )
+                print( len(fieldName), fieldName)
+                print( len(fieldType), fieldType)
+                print( len(fieldNotNULL), fieldNotNULL)
+                print( len(defaultVAL), defaultVAL)
+                print( )
+                sys.exit()
+
             myRow = []
             for inx, field in enumerate(row):
 

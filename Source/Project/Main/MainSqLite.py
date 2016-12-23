@@ -41,6 +41,10 @@ def Main(gv, action):
 
     DBdict.songTableStruct  = gv.ini.SqLite['songTable.struct']
 
+
+    C.printYellow("working on DBase: {0}".format(DBdict.filename))
+    C.printYellow("working on Table: {0}".format(DBdict.songTableName))
+
         # =======================================
         # - connessione al DB.
         # - creazione se flag.filecreate
@@ -63,7 +67,7 @@ def Main(gv, action):
         # ---------- I M P O R T
         # =======================================
     if gv.INPUT_PARAM.actionCommand == 'sqlite.import':
-        csvData = gv.Prj.ReadCSVFile(gv, gv.INPUT_PARAM.csvInputFile, gv.song.colsName)
+        csvData = gv.Prj.ReadCSVFile(gv, gv.INPUT_PARAM.csvInputFile, fieldsName)
         rCode   = DB.InsertRow(tblName=DBdict.songTableName, record=csvData[1:], fCOMMIT=True)
 
 
@@ -79,12 +83,15 @@ def Main(gv, action):
             # - Merging del dictionary con la directory sorgente e ...
             # - ... validazione con i file
             # -----------------------------------------------------------------------
-        attributeNames = fieldsName[4:]
-        gv.Prj.Merge(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict, attributeNames)
-        songList = gv.Prj.Validate(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict)
+        attributeNames              = fieldsName[4:]
+        mergeChanges                = gv.Prj.Merge(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict, attributeNames)
+        songList, validateChanges   = gv.Prj.Validate(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict, fieldsName)
+        # print(len(songList[1]))
 
             # - update della tabella
-        print ("Aggiornamento DBase... nRecords: {0}".format(len(songList)))
+        print ("Aggiornamento DBase... nRecords : {0}".format(len(songList)))
+        print ("merge    changes                : {0}".format(mergeChanges))
+        print ("validate changes                : {0}".format(validateChanges))
         # for record in songList[:20]: print(record)
 
         # ----- AGGIORNAMENTO DBase
@@ -102,7 +109,12 @@ def Main(gv, action):
         # songDict = DB.TableToDict(DBdict.songTableName, startAttributesField=4, myDict=gv.Ln.LnDict)
         # songLIST = songDict.ToList()
 
-        songLIST = DB.TableToList(DBdict.songTableName)
+        if gv.ini.SqLite.exportString:
+           queryStr = gv.ini.SqLite.exportString
+        else:
+           queryStr = 'SELECT * FROM {TABLE};'.format(TABLE=DBdict.songTableName)
+
+        songLIST = DB.TableToList(DBdict.songTableName, query=queryStr)
 
 
 
@@ -110,7 +122,12 @@ def Main(gv, action):
         songLIST.insert(0, ';'.join(fieldsName))
         # for record in songLIST[:20]: print(record)
         csvOutputFile = gv.INPUT_PARAM.csvOutputFile
-        if not csvOutputFile: csvOutputFile = os.path.splitext(DBdict.filename)[0] + '.out.csv'
+
+        if not csvOutputFile:
+            csvOutputFile = os.path.splitext(DBdict.filename)[0] + '.csv'
+
+        gv.Ln.CreateBackupFile(csvOutputFile)
+
         gv.Prj.WriteCSVFile(gv, csvOutputFile, data=songLIST)
 
 
@@ -126,4 +143,9 @@ def Main(gv, action):
         if choice.lower() in ['yes']:
             gv.Prj.copySongs(gv, validSONGS, fieldsName)
             # songList    = gv.songList
+
+
+
+
+
 

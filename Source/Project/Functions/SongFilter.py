@@ -15,13 +15,15 @@ def songFilter(gv, RECs, fldNames):
     WEIGHT   = gv.Ln.LnEnum(fldNames, myDict=gv.Ln.LnDict, weighted=True)
 
 
-    includeAttr      = [token.strip() for token in gv.ini.MAIN.includeAttr.split(',')]
-    excludeAttr      = [token.strip() for token in gv.ini.MAIN.excludeAttr.split(',')]
+    includeAttr     = [token.strip() for token in gv.ini.MAIN.includeAttr.split(',')]
+    excludeAttr     = [token.strip() for token in gv.ini.MAIN.excludeAttr.split(',')]
+    excludeAuthor   = [token.strip() for token in gv.ini.MAIN.excludeAuthor.split(',')]
+    excludeAlbums   = [token.strip() for token in gv.ini.MAIN.excludeAlbums.split(',')]
+    excludeType     = [token.strip() for token in gv.ini.MAIN.excludeType.split(',')]
+
     maxSongs        = int(gv.ini.MAIN.maxSongs)
     numOutDirs      = int(gv.ini.MAIN.numOutDirs)
     maxBytesPerDir  = gv.ini.MAIN.maxBytesPerDir
-    excludeType     = gv.ini.MAIN.excludeType
-    excludeAuthor   = gv.ini.MAIN.excludeAuthor
     empyField       = ['.', '_']
 
 
@@ -90,7 +92,9 @@ def songFilter(gv, RECs, fldNames):
             analizzateTotSize += song[FLD.SongSize]
 
             #  'EXCLUDE'...
-        if song[FLD.Type] in excludeType or song[FLD.AuthorName] in excludeAuthor:
+        if      song[FLD.Type]       in excludeType \
+             or song[FLD.AuthorName] in excludeAuthor \
+             or song[FLD.AlbumName]  in excludeAlbums:
             gv.songList.scartate.append(song)
             scartateTotSize += song[FLD.SongSize]
             scartate        += 1

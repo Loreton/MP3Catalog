@@ -13,7 +13,7 @@ import ast
 ##############################################################
 # - VALIDATE che tutte le entrate corrispondano ad un file
 ##############################################################
-def Validate(gv, sourceDir, songDict ):
+def Validate(gv, sourceDir, songDict, fldNames):
     logger  = gv.Ln.SetLogger(package=__name__)
 
         # -----------------------------------------------------------------------
@@ -22,13 +22,14 @@ def Validate(gv, sourceDir, songDict ):
         # -----------------------------------------------------------------------
     keyList = songDict.KeyList()
     logger.info('andiamo a validare {0} records'.format(len(keyList)))
-
     """
         ['Bambini', 'Cartoni', 'The best of', 'Anna Dai Capelli Rossi']
         ['Bambini', 'Cartoni', 'The best of', 'Arale Avventura']
         ['Bambini', 'Cartoni', 'The best of', 'Arrivano I Superboys' ]
         ['Bambini', 'Cartoni', 'The best of', 'Astro Robot' ]
     """
+
+    FLD = gv.Ln.LnEnum(fldNames, myDict=gv.Ln.LnDict)
 
         # -----------------------------------------------------------------------
         # - 1. verifichiamo che per la canzone esista il file.
@@ -37,6 +38,8 @@ def Validate(gv, sourceDir, songDict ):
         # -----------------------------------------------------------------------
     songLIST = []  # conterrà le canzoni in formato listOfList
     filesToDelete = 0
+    changes = 0
+    SONGFLD = fldNames[FLD.SongSize]
     for songQualifiers in keyList:
         if songQualifiers == []: continue
         # - otteniamo il pointer alla canzone
@@ -47,10 +50,11 @@ def Validate(gv, sourceDir, songDict ):
         fileName = os.path.sep.join(songQualifiers)
         fileName = '{0}{1}{2}.mp3'.format(sourceDir, os.path.sep, fileName)
 
-
         if os.path.isfile(fileName):
             size = os.stat(fileName).st_size
-            ptrSong['Song Size'] = size
+            if not ptrSong[SONGFLD] == size:
+                ptrSong[SONGFLD] = size
+                changes += 1
 
         else:
             filesToDelete += 1
@@ -66,11 +70,13 @@ def Validate(gv, sourceDir, songDict ):
 
             # - get song attributes values
         songAttr = ptrSong.GetValue(fPRINT=False)
+        # print (songAttr)
 
         for attributeName, val in songAttr.items():
             mySong.append(val)
+        # print (len(mySong), mySong)
 
         songLIST.append(mySong)
 
     logger.info('dovranno essere eliminati {0} records'.format(filesToDelete))
-    return songLIST
+    return songLIST, changes

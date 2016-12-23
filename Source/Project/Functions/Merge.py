@@ -17,6 +17,7 @@ import ast
 def Merge(gv, sourceDir, songDict, attributeNames ):
     logger  = gv.Ln.SetLogger(package=__name__)
 
+    changes = 0
         # ---------------------------------------
         # - lettura directory sorgente di MP3
         # ---------------------------------------
@@ -50,8 +51,10 @@ def Merge(gv, sourceDir, songDict, attributeNames ):
                 # su ogni canzone mettiamo i vari attributi di default
             for attributeName in attributeNames:
                 ptr[attributeName] = '_'
+            changes += 1
                 # - campi integer
             # ptr['Song Size'] = 0
 
 
     logger.info('sono stati individuati {0} new entry'.format(newEntryCount))
+    return changes
