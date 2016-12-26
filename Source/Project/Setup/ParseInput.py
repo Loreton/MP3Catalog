@@ -28,7 +28,9 @@ def ParseInput(gVars, args, programVersion=None):
             'export'    : "esporta il file excel, definito nel file di conf,  in formato CSV"
             },
         'sqlite': {
-            'export'    : "esporta il DB, in formato CSV",
+            'export'    : "export in base alla stringa passata oppure inserita nel file di conigurazione, in formato CSV",
+            'fullexport': "export dell'intera tabella, in formato CSV",
+            'backup'    : "export dell'intera tabella, in formato CSV e backap del .db e.csv",
             'import'    : "import del file csv passato come parametro",
             'merge'     : "legge la directory ed inserisce/modifica le canzoni esistenti",
             'copySongs' : "copia le canzoni risultate dalla selezione nella directory di destinazione",
@@ -203,79 +205,6 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
 
 
 
-# ---------------------------
-# - A C T I O N s
-# ---------------------------
-def EDIT(myParser, action):
-    _debugOptions(myParser)
-
-    if action == 'conf':
-        command = [
-                    gv.ini.MAIN.editor,
-                    gv.Prj.iniFileName
-                    ]
-        rCode = gv.Ln.ExecRcode(command, timeout=5, EXECUTE=True, shell=False)
-        C.printCyan('configuration file can be edited [RCODE: {}]'.format(rCode), tab=4)
-        sys.exit()
-
-    else:
-        C.printCyan('Action [{0}] non prevista per il comando di edit...'.format(action), tab=4)
-
-    myParser.print_help()
-
-# ---------------------------
-# - A C T I O N s
-# ---------------------------
-def EXCEL(myParser, action):
-    if len(sys.argv[2:]) == 1: sys.argv.append('-h')
-    from . import ParseInput_Excel as excel
-
-    excel.SetGlobals(C)
-
-    if action == 'export':
-        excel.ExportToCSV(myParser)
-
-    _debugOptions(myParser)
-
-# ---------------------------
-# - A C T I O N s
-# ---------------------------
-def SQLITE(myParser, action):
-    from . import ParseInput_SQLite as sqlite
-
-    sqlite.SetGlobals(C)
-
-    if action == 'import':
-        if len(sys.argv[2:]) == 1: sys.argv.append('-h')
-        sqlite.ImportCSV(myParser, required=True)
-
-    elif action == 'export':
-        # if len(sys.argv[2:]) == 1: sys.argv.append('-h')
-        sqlite.ExportCSV(myParser, required=False)
-
-    elif action == 'merge':
-        if len(sys.argv[2:]) == 1: sys.argv.append('-h')
-        sqlite.SourceDir(myParser, required=True)
-
-    elif action == 'copySongs':
-        if len(sys.argv[2:]) == 1: sys.argv.append('-h')
-        sqlite.SourceDir(myParser, required=True)
-        sqlite.DestDir(myParser, required=True)
-        sqlite.ExecuteOptions(myParser, required=False)
-
-    elif action == 'edit':
-        pass
-
-    else:
-        print('''
-            Action: {0} per sqlite non prevista.
-            valori previsti sono:
-            '''.format(action)
-            )
-        sys.exit()
-
-    _debugOptions(myParser)
-
 
 
 
@@ -331,6 +260,95 @@ def _debugOptions(myParser):
                             help=C.getYellow("""display del tempo necessario al processo..
     [DEFAULT: False]
     """))
+
+
+
+
+
+
+# ---------------------------
+# - A C T I O N s
+# ---------------------------
+def EDIT(myParser, action):
+    _debugOptions(myParser)
+
+    if action == 'conf':
+        command = [
+                    gv.ini.MAIN.editor,
+                    gv.Prj.iniFileName
+                    ]
+        rCode = gv.Ln.ExecRcode(command, timeout=5, EXECUTE=True, shell=False)
+        C.printCyan('configuration file can be edited [RCODE: {}]'.format(rCode), tab=4)
+        sys.exit()
+
+    else:
+        C.printCyan('Action [{0}] non prevista per il comando di edit...'.format(action), tab=4)
+
+    myParser.print_help()
+
+# ---------------------------
+# - A C T I O N s
+# ---------------------------
+def EXCEL(myParser, action):
+    if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+    from . import ParseInput_Excel as excel
+
+    excel.SetGlobals(C)
+
+    if action == 'export':
+        excel.ExportToCSV(myParser)
+
+    _debugOptions(myParser)
+
+# ---------------------------
+# - A C T I O N s
+# ---------------------------
+def SQLITE(myParser, action):
+    from . import ParseInput_SQLite as sqlite
+
+    sqlite.SetGlobals(C)
+
+    if action == 'import':
+        if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+        sqlite.ImportCSV(myParser, required=True)
+
+    elif action == 'export':
+        # if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+        sqlite.ExportCSV(myParser, required=False)
+        sqlite.ExportQuery(myParser, required=False)
+
+    elif action == 'fullexport':
+        pass
+        # if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+        # sqlite.ExportCSV(myParser, required=False)
+
+    elif action == 'backup':
+        pass
+        # if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+        # sqlite.ExportCSV(myParser, required=False)
+
+    elif action == 'merge':
+        if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+        sqlite.SourceDir(myParser, required=True)
+
+    elif action == 'copySongs':
+        if len(sys.argv[2:]) == 1: sys.argv.append('-h')
+        sqlite.SourceDir(myParser, required=True)
+        sqlite.DestDir(myParser, required=True)
+        sqlite.ExecuteOptions(myParser, required=False)
+
+    elif action == 'edit':
+        pass
+
+    else:
+        print('''
+            Action: {0} per sqlite non prevista.
+            valori previsti sono:
+            '''.format(action)
+            )
+        sys.exit()
+
+    _debugOptions(myParser)
 
 
 

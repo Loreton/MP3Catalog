@@ -50,15 +50,35 @@ def ImportCSV(myParser, required=False):
 ####################################
 def ExportCSV(myParser, required=False):
     mandatory = LnColor.getYellowH('MANDATORY') if required else 'OPTIONAL'
-    myParser.add_argument( "-f", "--export-file",
+    myParser.add_argument( "-of", "--output-file",
                             type=_outFileCheck,
                             required=required,
                             dest="csvOutputFile",
                             metavar="CSV-output-filename",
                             default=None,
                             help=mandatory + LnColor.getYellow( """ - Nome del file CSV su cui fare l'export.
-    DEFAULT: None
-    """))
+    DEFAULT: {0}
+    """.format(LnColor.getCyan(None))))
+
+
+####################################
+# - sqlite_importCSV
+####################################
+def ExportQuery(myParser, required=False):
+    mandatory = LnColor.getYellowH('MANDATORY') if required else 'OPTIONAL'
+    defaultSTR=['SELECT', '*', 'FROM', 'LoretoMP3', ';']
+    sampleSTR='select * from "LoretoMP3" where AuthorName is "John Denver" AND AlbumName is "Greatest Hits"'
+    myParser.add_argument( "-e", "--export-string",
+                            type=str,
+                            required=required,
+                            dest="exportQuery",
+                            metavar="export query string",
+                            default=defaultSTR,
+                            nargs='+',
+                            help=mandatory + LnColor.getYellow( """ - Stringa di query da usare per l'export.
+    DEFAULT: {0}
+    Esempio: {1}
+    """.format(LnColor.getCyan("'" + ' '.join(defaultSTR) + "'"), LnColor.getCyan("'" + sampleSTR + "'"))))
 
 
 
@@ -76,7 +96,7 @@ def SourceDir(myParser, required=False):
                             metavar="MP3SourceDir",
                             help=mandatory + LnColor.getYellow( """ - Nome della directory da cui prelevare le canzoni ...
     [DEFAULT: {0}]
-    """.format(None)))
+    """.format(LnColor.getCyan(None))))
 
 
 

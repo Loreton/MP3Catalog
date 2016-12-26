@@ -35,7 +35,7 @@ nosetests.xml
 .project
 .pydevproject
 
-# Excel data
-_*.csv
+# data
+*.csv
 *.sublime-*
 *.zip

@@ -40,13 +40,21 @@ class LnSqLite:
         # *
         # ***********************************************
     def __init__(self, DBFile, createFile=False, logger=None):
-        self._dbfile         = DBFile
+        self._dbfile         = os.path.abspath(DBFile)
         # self._create         = create
         self._conn           = None
         # self._cursor         = None
         self.description    = "This shape has not been described yet"
         self.author         = "Nobody has claimed to make this shape yet"
         self.myLogger = None
+
+            # creazione attributi per nome db
+        # basedir                     = os.path.basedir(fileName)
+        # fname, ext                  = os.path.splitext(fileName)
+        self._dbdir, appofname      = os.path.split(DBFile)
+        self._dbfname, self._dbext  = os.path.splitext(appofname)
+
+
 
         if logger:
             # self._logger = logger(package=__name__)
@@ -87,8 +95,6 @@ class LnSqLite:
         # -----------------------------------
         logger.info("connecting to DBFILE: {0}".format(self._dbfile) )
         self._conn   = sqlite3.connect(self._dbfile)
-        # self._cursor = self._conn.cursor()
-        # print (self._cursor)
 
 
         # ***********************************************
@@ -100,7 +106,7 @@ class LnSqLite:
         # ***********************************************
         # *
         # ***********************************************
-    def nRows(self, tblName):
+    def _nRows(self, tblName):
         logger = self._setLogger(package=__name__)
         cur = self._conn.cursor()
         comando="SELECT Count(*) FROM {TABLE}".format(TABLE=tblName)
@@ -109,21 +115,6 @@ class LnSqLite:
         nRows=cur.fetchone()[0]
         return nRows
 
-
-        # ***********************************************
-        # *
-        # ***********************************************
-    def Close(self):
-        self.Commit()
-        self._conn.close()
-
-        # ***********************************************
-        # *
-        # ***********************************************
-    def Commit(self):
-        logger = self._setLogger(package=__name__)
-        logger.info('Committing...')
-        self._conn.commit()
 
         # ***********************************************
         # *
@@ -140,6 +131,21 @@ class LnSqLite:
             else:
                 msg = "     Try again...: "
 
+
+        # ***********************************************
+        # *
+        # ***********************************************
+    def Close(self):
+        self.Commit()
+        self._conn.close()
+
+        # ***********************************************
+        # *
+        # ***********************************************
+    def Commit(self):
+        logger = self._setLogger(package=__name__)
+        logger.info('Committing...')
+        self._conn.commit()
 
         # ***********************************************
         # * Fa ENUM dei FIELDS, rimuovendo i BLANK nei nomi
@@ -212,6 +218,93 @@ class LnSqLite:
             cur.execute(comando)
 
         self.Commit()
+
+        # ***********************************************
+        # * export all table records
+        # ***********************************************
+    def TableExport(self, tblName, queryStr=None):
+        logger = self._setLogger(package=__name__)
+        cur = self._getCursor()
+        if not queryStr:
+            queryStr = 'SELECT * FROM {TABLE};'.format(TABLE=tblName)
+        # tableData = cur.execute(queryStr)
+
+            # - export data
+        data = self.TableToList(tblName, LoL=False, query=queryStr)
+
+            # - save to CSV file
+        csvFile = os.path.join(self._dbdir, self._dbfname) + '.csv'
+        NL = '\n'
+        f = open(csvFile, "w", encoding='utf-8', newline=NL)
+        for line in sorted(data):
+            f.write(line + NL)
+        f.close()
+        return csvFile
+
+
+        # ***********************************************
+        # * export all table records
+        # ***********************************************
+    def TableBackup(self, tblName):
+        import zipfile, zlib
+
+        archiveName = self._getBackupFileName(self._dbfile, ext='zip')
+        csvFile     = self.TableExport(tblName)
+
+        fileList = [self._dbfile, csvFile ]
+            # - create zip archive file
+        compression = zipfile.ZIP_DEFLATED
+        modes = {   zipfile.ZIP_DEFLATED: 'deflated',
+                    zipfile.ZIP_STORED:   'stored',
+                }
+
+        savedDir = os.getcwd()
+        os.chdir(self._dbdir)
+        print ('creating archive', archiveName)
+        myzip = zipfile.ZipFile(archiveName, mode='w', compression=compression)
+        try:
+            for filename in fileList:
+                print ('adding {0} with compression mode: {1}'.format(filename, modes[compression]))
+                myzip.write(os.path.relpath(filename), compress_type=compression)
+        finally:
+            print ('closing')
+            myzip.close()
+            os.chdir(savedDir)
+
+        xx = myzip.infolist()
+        for item in xx:
+            print ('filename        ', item.filename)
+            print ('date_time       ', item.date_time)
+            # print ('compress_type   ', item.compress_type)
+            print ('file_size       ', item.file_size)
+            print ('compress_size   ', item.compress_size)
+            print ()
+
+        return archiveName
+
+        # *****************************************************************
+        # * crea il nome di backup utilizzando lastAccessTime del file
+        # *****************************************************************
+    def _getBackupFileName(self, fileName, ext=None):
+        import time
+        mtime = 0
+        if os.path.isfile(fileName):
+            # mtime = os.path.getmtime(fileName)
+            mtime = os.stat(fileName).st_mtime      # GMT time
+        else:
+            return None
+        Tuple = time.gmtime(mtime)
+
+        # print (Tuple)
+        outputFormat="%Y%m%d_%H%M%S"
+        lastModifiedTime = time.strftime(outputFormat, Tuple)
+        fname, extension  = os.path.splitext(fileName)
+        if ext:
+            extension = ext
+        backupFileName = '{FNAME}_{DATE}.{EXT}'.format(FNAME=fname, DATE=lastModifiedTime, EXT=extension)
+
+        return backupFileName
+
 
         # ***********************************************
         # * return LIST with all records

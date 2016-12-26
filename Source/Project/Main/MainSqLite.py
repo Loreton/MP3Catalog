@@ -25,6 +25,12 @@ def Main(gv, action):
 
     # gv.data = gv.Ln.LnDict()
 
+
+
+    # file = 'j:\\GIT-REPO\\Python3\\MP3Catalog\\data\\LnMP3DBase_201612.csv'
+    # LnZip('d:\\zTemp\\pippo.zip', 'j:\\GIT-REPO\\Python3', file)
+    # sys.exit()
+
         # -------------------------------------------
         # creazione struttura DBdict
         # prelievo filename e create flag ed altro
@@ -109,12 +115,62 @@ def Main(gv, action):
         # =======================================
         # - E X P O R T
         # =======================================
+    elif gv.INPUT_PARAM.actionCommand == 'sqlite.fullexport':
+        csvFile = DB.TableExport(tblName=DBdict.songTableName)
+        print ()
+        C.printYellowH("il file {0} e' stato correttamente creato".format(csvFile), tab=4)
+        print ()
+
+        # =======================================
+        # - B A C K U P
+        # =======================================
+    elif gv.INPUT_PARAM.actionCommand == 'sqlite.backup':
+        zipFile = DB.TableBackup(tblName=DBdict.songTableName)
+        print ()
+        C.printYellowH("il file {0} e' stato correttamente creato".format(zipFile), tab=4)
+        print ()
+
+       # =======================================
+        # - E X P O R T
+        # =======================================
     elif gv.INPUT_PARAM.actionCommand == 'sqlite.export':
+        if gv.INPUT_PARAM.exportQuery:
+           print (gv.INPUT_PARAM.exportQuery)
+           queryStr = ''
+           for item in gv.INPUT_PARAM.exportQuery:
+                if ' ' in item:
+                    item = '"{0}"'.format(item)
+                queryStr += ' ' + item
+           print (queryStr)
+
+        elif gv.ini.SqLite.exportString:
+           queryStr = gv.ini.SqLite.exportString
+        else:
+           queryStr = 'SELECT * FROM {TABLE};'.format(TABLE=DBdict.songTableName)
+
+        DB.TableExport(tblName, queryStr=queryStr)
+
+
+
+
+       # =======================================
+        # - E X P O R T
+        # =======================================
+    elif gv.INPUT_PARAM.actionCommand == 'sqlite.export_OLD':
             # ---- lettura DBase
         # songDict = DB.TableToDict(DBdict.songTableName, startAttributesField=4, myDict=gv.Ln.LnDict)
         # songLIST = songDict.ToList()
 
-        if gv.ini.SqLite.exportString:
+        if gv.INPUT_PARAM.exportQuery:
+           print (gv.INPUT_PARAM.exportQuery)
+           queryStr = ''
+           for item in gv.INPUT_PARAM.exportQuery:
+                if ' ' in item:
+                    item = '"{0}"'.format(item)
+                queryStr += ' ' + item
+           print (queryStr)
+
+        elif gv.ini.SqLite.exportString:
            queryStr = gv.ini.SqLite.exportString
         else:
            queryStr = 'SELECT * FROM {TABLE};'.format(TABLE=DBdict.songTableName)
@@ -128,12 +184,18 @@ def Main(gv, action):
         # for record in songLIST[:20]: print(record)
         csvOutputFile = gv.INPUT_PARAM.csvOutputFile
 
+        basedir, dbfname = os.path.split(DBdict.filename)
+        fname, ext = os.path.split(dbfname)
         if not csvOutputFile:
             csvOutputFile = os.path.splitext(DBdict.filename)[0] + '.csv'
 
-        gv.Ln.CreateBackupFile(csvOutputFile)
+        fileList = [dbfname, csvOutputFile ]
+
+        zipFileName = os.path.join(gv.Prj.dataDIR, dbfname) + '.zip'
+        gv.Ln.CreateZipBackupFile(zipFileName, basedir=gv.Prj.dataDIR, fileList=fileList)
 
         gv.Prj.WriteCSVFile(gv, csvOutputFile, data=songLIST)
+
 
 
 
@@ -148,9 +210,6 @@ def Main(gv, action):
         if choice.lower() in ['yes']:
             gv.Prj.copySongs(gv, validSONGS, fieldsName)
             # songList    = gv.songList
-
-
-
 
 
 
