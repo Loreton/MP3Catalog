@@ -274,10 +274,13 @@ def EDIT(myParser, action):
 
     if action == 'conf':
         command = [
-                    gv.ini.MAIN.editor,
+                    os.environ.get('EDITOR', gv.ini.MAIN.editor),
                     gv.Prj.iniFileName
                     ]
-        rCode = gv.Ln.ExecRcode(command, timeout=5, EXECUTE=True, shell=False)
+
+        # rCode = gv.Ln.ExecRcode(command, timeout=None, EXECUTE=True, shell=True)
+        rCode = os.system(' '.join(command))
+
         C.printCyan('configuration file can be edited [RCODE: {}]'.format(rCode), tab=4)
         sys.exit()
 
