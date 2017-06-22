@@ -97,19 +97,17 @@ def Main(gv, action):
         attributeNames              = fieldsName[4:]
         mergeChanges                = gv.Prj.Merge(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict, attributeNames)
         songList, validateChanges   = gv.Prj.Validate(gv, gv.ini.MAIN.MP3SourceDir, gv.song.dict, fieldsName)
-        # print(len(songList[1]))
 
             # - update della tabella
-        print ("Aggiornamento DBase... nRecords : {0}".format(len(songList)))
-        print ("merge    changes                : {0}".format(mergeChanges))
-        print ("validate changes                : {0}".format(validateChanges))
-        # for record in songList[:20]: print(record)
-
         # ----- AGGIORNAMENTO DBase
-        choice = gv.Ln.getKeyboardInput("    Vuoi aggiornare il DBase?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
-        if choice.lower() in ['yes']:
-            msg = 'writing data to table: {0}'.format(DBdict.songTableName)
-            rCode = DB.InsertRow(tblName=DBdict.songTableName, record=sorted(songList), fCOMMIT=True)
+        if mergeChanges > 0:
+            print ("Aggiornamento DBase... nRecords : {0}".format(len(songList)))
+            print ("merge    changes                : {0}".format(mergeChanges))
+            print ("validate changes                : {0}".format(validateChanges))
+            choice = gv.Ln.getKeyboardInput("    Vuoi aggiornare il DBase?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
+            if choice.lower() in ['yes']:
+                msg = 'writing data to table: {0}'.format(DBdict.songTableName)
+                rCode = DB.InsertRow(tblName=DBdict.songTableName, record=sorted(songList), fCOMMIT=True)
 
 
         # =======================================

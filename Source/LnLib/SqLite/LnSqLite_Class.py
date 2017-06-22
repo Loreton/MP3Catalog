@@ -7,9 +7,9 @@ import sys
 import os
 import sqlite3
 import inspect
-
 from ..LnCommon.LnColor  import LnColor
 C=LnColor()
+
 
 # https://en.wikibooks.org/wiki/A_Beginner's_Python_Tutorial/Classes
 INFO = 1
@@ -43,21 +43,13 @@ class LnSqLite:
         # *
         # ***********************************************
     def __init__(self, DBFile, createFile=False, logger=None):
-        self._dbfile         = os.path.abspath(DBFile)
+        self._dbfile         = DBFile
         # self._create         = create
         self._conn           = None
         # self._cursor         = None
         self.description    = "This shape has not been described yet"
         self.author         = "Nobody has claimed to make this shape yet"
         self.myLogger = None
-
-            # creazione attributi per nome db
-        # basedir                     = os.path.basedir(fileName)
-        # fname, ext                  = os.path.splitext(fileName)
-        self._dbdir, appofname      = os.path.split(DBFile)
-        self._dbfname, self._dbext  = os.path.splitext(appofname)
-
-
 
         if logger:
             # self._logger = logger(package=__name__)
@@ -98,6 +90,8 @@ class LnSqLite:
         # -----------------------------------
         logger.info("connecting to DBFILE: {0}".format(self._dbfile) )
         self._conn   = sqlite3.connect(self._dbfile)
+        # self._cursor = self._conn.cursor()
+        # print (self._cursor)
 
 
         # ***********************************************
@@ -109,7 +103,7 @@ class LnSqLite:
         # ***********************************************
         # *
         # ***********************************************
-    def _nRows(self, tblName):
+    def nRows(self, tblName):
         logger = self._setLogger(package=__name__)
         cur = self._conn.cursor()
         comando="SELECT Count(*) FROM {TABLE}".format(TABLE=tblName)
@@ -117,22 +111,6 @@ class LnSqLite:
         cur.execute(comando)
         nRows=cur.fetchone()[0]
         return nRows
-
-
-        # ***********************************************
-        # *
-        # ***********************************************
-    def _getInput(self, msg, validKey='\n', exitKey='xXqQ'):
-        while True:
-            choice = input(msg).strip()
-            if choice == '':
-                msg = "     Pleae enter something...: "
-            elif choice in exitKey:
-                sys.exit()
-            elif choice in validKey:
-                return choice.lower()
-            else:
-                msg = "     Try again...: "
 
 
         # ***********************************************
@@ -149,6 +127,22 @@ class LnSqLite:
         logger = self._setLogger(package=__name__)
         logger.info('Committing...')
         self._conn.commit()
+
+        # ***********************************************
+        # *
+        # ***********************************************
+    def _getInput(self, msg, validKey='\n', exitKey='xXqQ'):
+        while True:
+            choice = input(msg).strip()
+            if choice == '':
+                msg = "     Pleae enter something...: "
+            elif choice in exitKey:
+                sys.exit()
+            elif choice in validKey:
+                return choice.lower()
+            else:
+                msg = "     Try again...: "
+
 
         # ***********************************************
         # * Fa ENUM dei FIELDS, rimuovendo i BLANK nei nomi
@@ -223,107 +217,14 @@ class LnSqLite:
         self.Commit()
 
         # ***********************************************
-        # * export all table records
-        # ***********************************************
-    def TableExport(self, tblName, queryStr=None):
-        logger = self._setLogger(package=__name__)
-        cur = self._getCursor()
-        if not queryStr:
-            queryStr = 'SELECT * FROM {TABLE};'.format(TABLE=tblName)
-        # tableData = cur.execute(queryStr)
-
-            # - export data
-        data = self.TableToList(tblName, LoL=False, query=queryStr)
-
-            # - save to CSV file
-        csvFile = os.path.join(self._dbdir, self._dbfname) + '.csv'
-        NL = '\n'
-        f = open(csvFile, "w", encoding='utf-8', newline=NL)
-        for line in sorted(data):
-            f.write(line + NL)
-        f.close()
-        return csvFile
-
-
-        # ***********************************************
-        # * export all table records
-        # ***********************************************
-    def TableBackup(self, tblName):
-        import zipfile, zlib
-
-        archiveName = self._getBackupFileName(self._dbfile, ext='zip')
-        csvFile     = self.TableExport(tblName)
-
-        fileList = [self._dbfile, csvFile ]
-            # - create zip archive file
-        compression = zipfile.ZIP_DEFLATED
-        modes = {   zipfile.ZIP_DEFLATED: 'deflated',
-                    zipfile.ZIP_STORED:   'stored',
-                }
-
-        savedDir = os.getcwd()
-        os.chdir(self._dbdir)
-        print ('creating archive', archiveName)
-        myzip = zipfile.ZipFile(archiveName, mode='w', compression=compression)
-        try:
-            for filename in fileList:
-                print ('adding {0} with compression mode: {1}'.format(filename, modes[compression]))
-                myzip.write(os.path.relpath(filename), compress_type=compression)
-        finally:
-            print ('closing')
-            myzip.close()
-            os.chdir(savedDir)
-
-        xx = myzip.infolist()
-        for item in xx:
-            print ('filename        ', item.filename)
-            print ('date_time       ', item.date_time)
-            # print ('compress_type   ', item.compress_type)
-            print ('file_size       ', item.file_size)
-            print ('compress_size   ', item.compress_size)
-            print ()
-
-        return archiveName
-
-        # *****************************************************************
-        # * crea il nome di backup utilizzando lastAccessTime del file
-        # *****************************************************************
-    def _getBackupFileName(self, fileName, ext=None):
-        import time
-        mtime = 0
-        if os.path.isfile(fileName):
-            # mtime = os.path.getmtime(fileName)
-            mtime = os.stat(fileName).st_mtime      # GMT time
-        else:
-            return None
-        Tuple = time.gmtime(mtime)
-
-        # print (Tuple)
-        outputFormat="%Y%m%d_%H%M%S"
-        lastModifiedTime = time.strftime(outputFormat, Tuple)
-        fname, extension  = os.path.splitext(fileName)
-        if ext:
-            extension = ext
-        backupFileName = '{FNAME}_{DATE}.{EXT}'.format(FNAME=fname, DATE=lastModifiedTime, EXT=extension)
-
-        return backupFileName
-
-
-        # ***********************************************
         # * return LIST with all records
         # ***********************************************
-    def TableToList(self, tblName, LoL=False, query=None):
+    def TableToList(self, tblName, LoL=False):
         logger = self._setLogger(package=__name__)
         cur = self._getCursor()
 
-        if query:
-            # QUERY = 'select * from "LoretoMP3" where AuthorName is "John Denver" AND AlbumName is "Greatest Hits"'
-            QUERY = query
-            # select * from "LoretoMP3" where AuthorName is "John Denver" AND AlbumName is "Greatest Hits"
-        else:
-            QUERY = 'SELECT * FROM {TABLE};'.format(TABLE=tblName)
 
-        tableData = cur.execute(QUERY)
+        tableData = cur.execute('SELECT * FROM {TABLE};'.format(TABLE=tblName))
         RECs = []
         for record in tableData:
             if LoL:
@@ -409,12 +310,9 @@ class LnSqLite:
         logger.info('inserting {0} records'.format(len(RECs)))
 
         if EXECUTE_MANY:
-            x = cur.executemany(InsertCommand, RECs)
+            cur.executemany(InsertCommand, RECs)
         else:
-            x = cur.execute(InsertCommand, RECs)
-
-        for a in x:
-            print (a)
+            cur.execute(InsertCommand, RECs)
 
         if fCOMMIT:
             self.Commit()
@@ -543,8 +441,7 @@ class LnSqLite:
         logger  = self._setLogger(package=__name__)
         cur     = self._getCursor()
 
-
-        fieldName, fieldType, fieldNotNULL, defaultVAL, *rest = self.GetStruct(tblName)
+        fieldName, fieldType, fieldNotNULL, defaultVAL = self.GetStruct(tblName)
         nFLD = len(fieldName)
         '''
         if not tableData: # leggiamo la tabella
@@ -565,18 +462,19 @@ class LnSqLite:
                 C.printYellow( "len:{0:02} - {1}".format(len(fieldNotNULL), fieldNotNULL), tab=4)
                 C.printYellow( "len:{0:02} - {1}".format(len(defaultVAL), defaultVAL), tab=4)
                 print()
-                '''
                 import traceback
                 traceback.print_stack()
+                '''
                 print ('--------------')
                 traceback.print_exc()
-                '''
                 import inspect
                 for item in reversed(inspect.stack()):
                     print (item[1:])
                 print ('--------------')
                 for item in inspect.trace():
                     print (item[1:])
+                '''
+                sys.exc_info()[2]
                 sys.exit()
 
             myRow = []

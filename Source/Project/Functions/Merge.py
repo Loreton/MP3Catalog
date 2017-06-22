@@ -16,6 +16,7 @@ import ast
 ##############################################################
 def Merge(gv, sourceDir, songDict, attributeNames ):
     logger  = gv.Ln.SetLogger(package=__name__)
+    C      = gv.Ln.LnColor()
 
     changes = 0
         # ---------------------------------------
@@ -31,6 +32,7 @@ def Merge(gv, sourceDir, songDict, attributeNames ):
         # ============================================
     firstRelField = len(sourceDir.split(os.path.sep)) # numero del qualificatore subito dopo la sourceDir
     newEntryCount = 0
+    ERRORS = 0
     for absName in listaFile:
         line            = absName.rsplit('.', 1)[0]                       # elimina extension
         relativeName    = line.split(os.path.sep)[firstRelField:]    # elimina rootDir
@@ -45,9 +47,26 @@ def Merge(gv, sourceDir, songDict, attributeNames ):
         ptr = songDict.Ptr(relativeName, create=True)
         if not attributeNames[0] in ptr:
             newEntryCount += 1
-            msg = '     new entry...: {0}'.format( relativeName)
+            msg = '     new entry...: flds:[{0:02}] - {1}'.format( len(relativeName), relativeName)
             logger.debug(msg)
-            print(msg)
+            # display dei primi campi della canzone con
+            # evidenza di eventuali errori
+            C.printYellow('new entry...:', tab=12, end='')
+            if not len(relativeName) == firstRelField:
+                C.printYellowH(' flds:[{0:02} of {1:02}]'.format(len(relativeName),firstRelField ), end='')
+                ERRORS = 1
+            else:
+                C.printYellow(' flds:[{0:02} of {1:02}]'.format(len(relativeName),firstRelField ), end='')
+            C.printYellow(' - {0}'.format(relativeName))
+
+
+            # msg = " numero campi diversi???? - Verifica..."
+
+            # if not len(relativeName) == firstRelField:
+            #     msg = " numero campi diversi???? - Verifica..."
+            #     C.printMagentaH(msg, tab=12)
+            #     ERRORS = 1
+
                 # su ogni canzone mettiamo i vari attributi di default
             for attributeName in attributeNames:
                 ptr[attributeName] = '_'
@@ -55,6 +74,10 @@ def Merge(gv, sourceDir, songDict, attributeNames ):
                 # - campi integer
             # ptr['Song Size'] = 0
 
+    if ERRORS:
+        changes = 0
+        msg = " correggere prima gli errori..."
+        C.printRedH(msg, tab=12)
 
     logger.info('sono stati individuati {0} new entry'.format(newEntryCount))
     return changes

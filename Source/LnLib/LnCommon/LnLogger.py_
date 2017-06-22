@@ -2,13 +2,8 @@
 # -*- coding: iso-8859-15 -*-
 # -O Optimize e non scrive il __debug__
 #
-# -----------------------------------------------
-__author__  = 'Loreto Notarantonio'
-__version__ = 'LnVer_2017-03-30_09.38.23'
-# -----------------------------------------------
-
+# Version 0.01 08/04/2010:  Starting
 # ####################################################################################################################
-
 # http://stackoverflow.com/questions/13649664/how-to-use-logging-with-pythons-fileconfig-and-configure-the-logfile-filename
 import sys, os
 import logging
@@ -20,7 +15,7 @@ isLoggerActive = False   # variabile globale accessibile anche dall'esterno
 
 _logMODULE  = False
 _logCONSOLE = False
-_LOGGER     = False
+_logACTIVE  = False
 
 
 # http://stackoverflow.com/questions/16203908/how-to-input-variables-in-logger-formatter
@@ -54,7 +49,7 @@ class ContextFilter(logging.Filter):
 ###############################################
 #
 ###############################################
-def _GetCaller(deepLevel=0, funcName=None):
+def GetCaller(deepLevel=0, funcName=None):
     try:
         caller  = inspect.stack()[deepLevel]
     except Exception as why:
@@ -79,34 +74,13 @@ def _GetCaller(deepLevel=0, funcName=None):
     # ========================================================
     # - INIT del log. Chiamato solo dal MAIN program
     # ========================================================
-def InitLogger(iniLogFile, logFileName, package, LOGGER=False, logCONSOLE=False, logMODULE=False, packageQualifiers=2):
+def InitLogger(iniLogFile, logFileName, package, logCONSOLE=False, logMODULE=False, logACTIVE=False, packageQualifiers=2):
     global gPackageQualifiers
-    global _logMODULE, _logCONSOLE, _LOGGER
-
-    '''
-    if logCONSOLE:
-        _LOGGER     = True
-        _logCONSOLE = True
-        _logMODULE  = logCONSOLE[:]
-
-    elif LogMODULE:
-        _LOGGER     = True
-        _logCONSOLE = False
-        _logMODULE  = LogMODULE[:]
-
-    else:
-        _logMODULE  = False
-        _logCONSOLE = False
-        _LOGGER     = False
-    '''
+    global _logMODULE, _logCONSOLE, _logACTIVE
 
     _logMODULE  = logMODULE
     _logCONSOLE = logCONSOLE
-    _LOGGER     = LOGGER
-
-
-    # print( _LOGGER)
-
+    _logACTIVE  = logACTIVE
 
     gPackageQualifiers = packageQualifiers
 
@@ -141,50 +115,11 @@ def SetNullLogger(package=None):
 
     class nullLogger():
             def __init__(self, package=None, stackNum=1):
-                '''
-                TAB = 0
-                self._loggerStackNum = stackNum
-
-                # caller che imposta il logger (inizio funzione)
-                caller = inspect.stack()[2]
-                dummy, programFile, lineNumber, funcName, lineCode, rest = caller
-                modName = os.path.splitext(os.path.basename(programFile))[0]
-                func = modName+'.'+funcName
-                func = 'self.'+funcName
-                data = TAB*' ' + '[called by: {FUNC}:{LINENO}]'.format(FUNC=func, LINENO=lineNumber)
-
-                # caller che ha chiamato la funzione()
-                caller = inspect.stack()[1]
-                dummy, programFile, lineNumber, funcName, lineCode, rest = caller
-                if funcName == '<module>': funcName = '__main__'
-                str = "[{FUNC:<20}:{LINENO}] - {DATA}".format(FUNC=funcName, LINENO=lineNumber, DATA=data)
-                print (str)
-                '''
                 pass
-
-
-            def info(self, data):
-                pass
-                # self._print(data)
-
-            def debug(self, data):
-                pass
-                # self._print(data)
-
+            def info(self, data):   pass
+            def debug(self, data):  pass
             def error(self, data):  pass
             def warning(self, data):  pass
-
-
-            def _print(self, data, stackNum=2):
-                TAB = 4
-                data = '{0}{1}'.format(TAB*' ',data)
-                caller = inspect.stack()[stackNum]
-                dummy, programFile, lineNumber, funcName, lineCode, rest = caller
-                if funcName == '<module>': funcName = '__main__'
-                str = "[{FUNC:<20}:{LINENO}] - {DATA}".format(FUNC=funcName, LINENO=lineNumber, DATA=data)
-                print (str)
-
-
 
     isLoggerActive = False
     return nullLogger()
@@ -209,7 +144,7 @@ def SetNullLogger(package=None):
 def SetLogger(package, stackNum=0):
     # global isLoggerActive
 
-    if _LOGGER:
+    if _logMODULE or _logACTIVE:
         stackLevel = 1                          # stackLevel di base
         stackLevel += stackNum                  # aggiungiamo quello richiesto dal caller
 
@@ -237,11 +172,11 @@ def SetLogger(package, stackNum=0):
         LOG_LEVEL = None
         if _logMODULE:
             fullPkg = (package + funcName).lower()
-            for stringa in _logMODULE:
+            for stringa in _logMODULE.split(','):
                 if stringa.lower() in fullPkg:
                     LOG_LEVEL = logging.DEBUG
 
-        else:
+        elif _logACTIVE:
             LOG_LEVEL = logging.DEBUG
 
     else:
@@ -279,7 +214,7 @@ def SetLogger(package, stackNum=0):
         # - nel "...called by" inseriamo il caller-1
         # ----------------------------------------------------------------------------------
     # logger.debug('')
-    logger.debug('......called by:{CALLER}'.format(CALLER=_GetCaller(stackLevel+2)))
+    logger.debug('......called by:{CALLER}'.format(CALLER=GetCaller(stackLevel+2)))
 
         # --------------------------------------------------------------------------
         # - azzeriamo il lineNO in modo che le prossime chiamate al logger, che

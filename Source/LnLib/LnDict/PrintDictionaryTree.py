@@ -30,7 +30,7 @@ getVALUE_DATA  = C.printGreenH
 # #######################################################
 def PrintDictionary(myDict, myDictTYPES=[], keyList=[], level=0, printTYPE='LTKV', fPRINT=False, fEXIT=False, MaxLevel=10, header=None, stackLevel=2):
     if level == 0:
-        PrintHeader(header, stackLevel=stackLevel+1)
+        PrintHeader('START - ', header, stackLevel=stackLevel+1)
         # LINEDATA_LIST = []
 
     if level > MaxLevel: return
@@ -38,13 +38,18 @@ def PrintDictionary(myDict, myDictTYPES=[], keyList=[], level=0, printTYPE='LTKV
     # per evitare LOOP
     if level > 100: sys.exit()
 
-    myTAB=' '*4*level
-    for key, val in sorted(myDict.items()):                  # per tutte le chiavi del dict2
-        if key == '_myDictTYPES': continue
+    myTAB=' '*4*level   # Indent del dictionary
+    for key, val in sorted(myDict.items()):                  # per tutte le chiavi del dict
+        # if key in ['_myDictTYPES']: continue
             # - Se è un DICT iteriamo
         if type(val) in myDictTYPES:
-            thisTYPE = str(type(val)).split("'")[1][-6:]
-            if "DotMap" in thisTYPE: thisTYPE = 'LnDict'
+            thisTYPE = str(type(val)).split("'")[1]
+            if "DotMap" in thisTYPE:
+                thisTYPE = 'LnDict'
+            elif "OrderedDict" in thisTYPE:
+                thisTYPE = 'oDict'
+            else:
+                thisTYPE = thisTYPE[-6:]
             # line0 = '[{LVL:2}] {TYPE:<8} {TAB}{KEY}'.format(LVL=level, TAB=myTAB, TYPE=thisTYPE, KEY=key)
 
             line0 = ''
@@ -62,7 +67,7 @@ def PrintDictionary(myDict, myDictTYPES=[], keyList=[], level=0, printTYPE='LTKV
 
     if level == 0:
         if fEXIT:
-            PrintHeader(header, stackLevel=stackLevel+1)
+            PrintHeader('END - ', header, stackLevel=stackLevel+1)
             sys.exit()
         else:
             # return LINEDATA_LIST
@@ -75,26 +80,44 @@ def PrintDictionary(myDict, myDictTYPES=[], keyList=[], level=0, printTYPE='LTKV
 # #######################################################
 # #
 # #######################################################
-def PrintHeader(header, stackLevel=3):
-    caller = inspect.stack()[stackLevel]
-    dummy, fileName, funcLineNO, funcName, lineCode, rest = caller
-    fName       = os.path.basename( fileName.split('.')[0])
-    if funcName == '<module>': funcName = '__main__'
-    caller = "Called by: [{FNAME}.{FUNC}:{LINEO}]".format(FNAME=fName, FUNC=funcName, LINEO=funcLineNO)
+def PrintHeader(prefix, header, stackLevel=3):
+    # from inspect import currentframe, getframeinfo
+    # import traceback
+    # message='ciao'
+    # print (getframeinfo(currentframe()).filename + ':' + str(getframeinfo(currentframe()).lineno) + ' - ', message)
+    # traceback.print_exc()
+    try:
+        # caller = inspect.trace()[stackLevel]
+        caller = inspect.stack()[stackLevel]
+        dummy, fileName, funcLineNO, funcName, lineCode, rest = caller
+
+        # da errore su window anche se non sempre
+    except:
+        fileName    = sys._getframe(stackLevel).f_code.co_filename
+        funcLineNO  = sys._getframe(stackLevel).f_lineno
+        funcName    = sys._getframe(stackLevel).f_code.co_name
+        lineCode    = ['dummy line. real line was not detected']
+
+    finally:
+        fName       = os.path.basename( fileName.split('.')[0])
+        if funcName == '<module>': funcName = '__main__'
+        caller = "Called by: [{FNAME}.{FUNC}:{LINEO}]".format(FNAME=fName, FUNC=funcName, LINEO=funcLineNO)
+
 
         # ---- Cerchiamo di catturare il dictionary richiamato
         # ---- da verificare con attenzione
-    if '.PrintTree' in lineCode[0]:
-        dictionaryName = (lineCode[0].split('.PrintTree')[0].split()[-1])
-        header2 = "dictionary: {0}".format(dictionaryName)
-    else:
-        header2 = "lineCode: {0}...".format(lineCode[0].strip()[:40])
+    if not header:
+        if '.PrintTreez' in lineCode[0]:
+            dictionaryName = (lineCode[0].split('.PrintTree')[0].split()[-1])
+            header = "dictionary: {0}".format(dictionaryName)
+        else:
+            header = "lineCode: {0}...".format(lineCode[0].strip()[:40])
 
-    header = caller
+
     print()
     C.printCyan("*"*60, tab=8)
-    C.printCyan("*     {0}".format(header), tab=8)
-    if header2: C.printCyan("*     {0}".format(header2), tab=8)
+    C.printCyan("*     {0}".format(caller), tab=8)
+    if header: C.printCyan("*     {0}{1}".format(prefix, header), tab=8)
     C.printCyan("*"*60, tab=8)
 
 
@@ -107,9 +130,9 @@ def PrintHeader(header, stackLevel=3):
 def getDictValue(key, value, level, myDictTYPES, printTYPE='LT', fPRINT=True):
 
     # level = 0
-    myTAB=' '*4
-        # - dict forzato nell'ordine di immissione
+    myTAB=' '*4*level
 
+        # - dict forzato nell'ordine di immissione
     retValue  = collections.OrderedDict()
     valueTYPE = str(type(value)).split("'")[1]
     listOfValue = []
@@ -132,7 +155,7 @@ def getDictValue(key, value, level, myDictTYPES, printTYPE='LT', fPRINT=True):
     elif valueTYPE == 'list':
         listOfValue.append('[')
         """
-            quanto segue NON va bene in quanto potrebbe esserci una lista di liste...
+            quanto segue NON va sempre bene in quanto potrebbe esserci una lista di liste...
             x = ['  ' + item for item in value]
             listOfValue.extend(x)
         """
@@ -152,7 +175,7 @@ def getDictValue(key, value, level, myDictTYPES, printTYPE='LT', fPRINT=True):
     # =========================================
         # - print della riga con la key a lunghezza fissa baseStartValue
     baseStartValue = 52
-    line0 = '[{LVL:2}] {TYPE:<8} {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=valueTYPE, KEY=key)
+    # line0 = '[{LVL:2}] {TYPE:<8} {TAB}{KEY}'.format(LVL=level, TAB=myTAB*level, TYPE=valueTYPE, KEY=key)
     line0 = ''
     if 'L' in printTYPE: line0 = '[{LVL:2}]'.format(LVL=level)
     if 'T' in printTYPE: line0 = '{LINE0} {TYPE:<8}'.format(LINE0=line0, TYPE=valueTYPE)
@@ -161,14 +184,10 @@ def getDictValue(key, value, level, myDictTYPES, printTYPE='LT', fPRINT=True):
     line0 = line0.ljust(baseStartValue)
     if not 'V' in printTYPE:
         VALUE_LINE(line0, tab=4)
-        # LINEDATA_LIST.append(line0)
         return
 
-    # myLine = line0
     VALUE_LINE(line0, tab=4, end='')
 
-    # myLine += ': '
-        # - aggiungiamo i ':' prima del valore
     VALUE_DATA (': ', end='')
 
 
@@ -176,12 +195,10 @@ def getDictValue(key, value, level, myDictTYPES, printTYPE='LT', fPRINT=True):
     if len(listOfValue) == 0:
         line  = ''
         VALUE_DATA(line)
-        # LINEDATA_LIST.append(line)
 
     else:
         line  = '{VAL}'.format(VAL=listOfValue[0])
         VALUE_DATA(line)
-        # LINEDATA_LIST.append(line)
 
             # - print delle altre righe se presenti
         for line in listOfValue[1:]:

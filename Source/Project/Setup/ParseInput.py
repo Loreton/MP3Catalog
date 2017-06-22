@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
+__author__  = 'Loreto Notarantonio'
+__version__ = 'LnVer_2017-03-30_09.18.21'
+
 import sys
 import os
 import argparse
@@ -48,11 +51,23 @@ def ParseInput(gVars, args, programVersion=None):
     InputPARAM.mainCommand    = mainArgs.mainCommand
     InputPARAM.actionCommand = '.'.join(mainArgs.mainCommand)
 
-    if InputPARAM.LogMODULE:
-        InputPARAM.LogACTIVE = True
+        # ---------------------------------
+        # setting della parte di logging
+        # logMODULE  contiene la lista dei moduli da tracciare
+        # logCONSOLE True/False
+        # LOGGER     True/False
+        # ---------------------------------
+    InputPARAM.LOGGER  = False
+        # - copiamo i moduli in logMODULE
+    if not InputPARAM.logCONSOLE == False: # potrebbe essere [] oppure ['xxx', 'yyyy']
+        InputPARAM.logMODULE    = InputPARAM.logCONSOLE[:]
+        InputPARAM.LOGGER       = True
+        InputPARAM.logCONSOLE   = True
 
-    if InputPARAM.LogCONSOLE:
-        InputPARAM.LogACTIVE = True
+    elif not InputPARAM.logMODULE == False: # potrebbe essere [] oppure ['xxx', 'yyyy']
+        InputPARAM.LOGGER       = True
+        InputPARAM.logCONSOLE   = False
+
 
     print ()
 
@@ -68,7 +83,7 @@ def ParseInput(gVars, args, programVersion=None):
             # -----------------------------------------
             # - Controlli
             # -----------------------------------------
-    if InputPARAM.fDEBUG:
+    if InputPARAM.fDisplayParam:
         C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
         dictID = vars(InputPARAM)
         for key, val in sorted(dictID.items()):
@@ -91,6 +106,7 @@ def prepareArgParse(positionalActionsDict, programVersion):
     mainHelp    = "default help"
     description = "MP3Catalog"
 
+    # - preparazione lista per il display
     totalCMDLIST = []
     for key, val in positionalActionsDict.items():
         totalCMDLIST.append('\n')
@@ -190,7 +206,7 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
     if hasattr(this_mod,  mainCommand.upper()):
         getattr(this_mod, mainCommand.upper())(myParser, secondaryCommand)
     else:
-        C.printCyan ('[{0}] - Command not yet implemented!'.format(mainCommand))
+        C.printCyan ("[{MOD} - {CMD}] - Command not yet implemented!".format(MOD=__name__, CMD=mainCommand))
         sys.exit(1)
 
 
@@ -211,55 +227,77 @@ def commonParsing(positionalParm, DESCR='CIAO DESCR'):
 # ---------------------------
 # - _debugOptions
 # ---------------------------
-def _debugOptions(myParser):
+def _debugOptions(myParser, required=False):
+    '''
+        parser.add_argument('--three',          nargs=3)
+        parser.add_argument('--optional',       nargs='?')
+        parser.add_argument('--all',            nargs='*')
+        parser.add_argument('--one-or-more',    nargs='+')
+    '''
+    mandatory = C.getMagentaH('is MANDATORY - ') if required else C.getCyanH('is OPTIONAL - ')
 
     logGroup = myParser.add_mutually_exclusive_group(required=False)  # True indica obbligatorietà di uno del gruppo
+
+        # log debug su file
+    DEFAULT = False
     logGroup.add_argument( "--log",
-                            required=False,
-                            action="store_true",
-                            dest="LogACTIVE",
-                            default=False,
-                            help=C.getYellow("""attivazione del logger.
-    [DEFAULT: False]
-    """))
+                            required=required,
+                            # action="store_true",
+                            dest="logMODULE",
+                            default=DEFAULT,
+                            nargs='*',
+                            help=mandatory + C.getYellow("""attivazione log.
+            E' possibile indicare una o più stringhe
+            per identificare le funzioni che si vogliono inserire nel log.
+            Possono essere anche porzioni di funcName separate da ' ' Es: pippo uto ciao
+            DEFAULT = {DEF}
+    """.format(DEF=DEFAULT)))
 
         # log debug su console
     logGroup.add_argument( "--log-console",
-                            required=False,
-                            dest="LogCONSOLE",
-                            action="store_true",
+                            required=required,
+                            dest="logCONSOLE",
+                            # action="store_true",
                             # choices=['info', 'debug'],
-                            default=False,
-                            help=C.getYellow("""attivazione log sulla console.
-    """))
+                            default=DEFAULT,
+                            nargs='*',
+                            help=mandatory + C.getYellow("""attivazione log sulla console.
+            E' possibile indicare una o più stringhe
+            per identificare le funzioni che si vogliono inserire nel log.
+            Possono essere anche porzioni di funcName separate da ' ' Es: pippo uto ciao
+            DEFAULT = {DEF}
+    """.format(DEF=DEFAULT)))
 
-        # log debug su specifica funzione
-    myParser.add_argument( "--log-function",
-                            required=False,
-                            dest="LogMODULE",
-                            default=False,
-                            help=C.getYellow("""attivazione log sul una singola funcName o stringa di essa.
-    Possono essere anche porzioni di funcName separate da ',' Es: pippo,uto,ciao
-    """))
 
 
     myParser.add_argument( "-D", "--debug",
-                            required=False,
+                            required=required,
                             action="store_true",
                             dest="fDEBUG",
-                            default=False,
-                            help=C.getYellow("""enter in DEBUG mode..
-    [DEFAULT: None]
-    """))
+                            default=DEFAULT,
+                            help=mandatory + C.getYellow("""enter in DEBUG mode..
+    [DEFAULT: {DEF}]
+    """.format(DEF=DEFAULT)))
 
     myParser.add_argument( "--elapsed",
-                            required=False,
+                            required=required,
                             action="store_true",
                             dest="fELAPSED",
-                            default=False,
-                            help=C.getYellow("""display del tempo necessario al processo..
-    [DEFAULT: False]
-    """))
+                            default=DEFAULT,
+                            help=mandatory + C.getYellow("""display del tempo necessario al processo..
+    [DEFAULT: {DEF}]
+    """.format(DEF=DEFAULT)))
+
+
+    myParser.add_argument( "--parameters",
+                            required=required,
+                            action="store_true",
+                            dest="fDisplayParam",
+                            default=DEFAULT,
+                            help=mandatory + C.getYellow("""display del tempo necessario al processo..
+    [DEFAULT: {DEF}]
+    """.format(DEF=DEFAULT)))
+
 
 
 
@@ -272,20 +310,27 @@ def _debugOptions(myParser):
 def EDIT(myParser, action):
     _debugOptions(myParser)
 
+    myEditor = (os.environ.get('EDITOR'))
+    if not myEditor:
+        if 'editor' in gv.ini.MAIN:
+            myEditor = gv.ini.MAIN.editor
+        else:
+            myEditor = 'wordpad.exe'
+
     if action == 'conf':
         command = [
-                    os.environ.get('EDITOR', gv.ini.MAIN.editor),
+                    myEditor,
                     gv.Prj.iniFileName
                     ]
 
-        # rCode = gv.Ln.ExecRcode(command, timeout=None, EXECUTE=True, shell=True)
+        print ('running command:', command)
         rCode = os.system(' '.join(command))
 
-        C.printCyan('configuration file can be edited [RCODE: {}]'.format(rCode), tab=4)
+        C.printCyan('[{MOD} - configuration file can be edited [RCODE: {RCODE}]'.format(MOD=__name__, RCODE=rCode), tab=4)
         sys.exit()
 
     else:
-        C.printCyan('Action [{0}] non prevista per il comando di edit...'.format(action), tab=4)
+        C.printCyan('[{MOD} - Action [{ACTION}] non prevista per il comando di edit...'.format(MOD=__name__, ACTION=action), tab=4)
 
     myParser.print_help()
 

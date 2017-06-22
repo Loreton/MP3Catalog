@@ -101,9 +101,9 @@ if __name__ == "__main__":
 
 
 
+    sys.exit()
     gv.Ln.Exit(0, "completed", printStack=False, stackLevel=9, console=True)
     gv.Ln.Exit(0, "--------------- debugging exit ----------------", printStack=False, stackLevel=9, console=True)
-    sys.exit()
 
 
 

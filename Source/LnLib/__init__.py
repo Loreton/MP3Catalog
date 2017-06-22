@@ -20,8 +20,8 @@ from . System.ExecRcode                 import ExecRcode
 
 from . System.GetKeyboardInput          import getKeyboardInput
 
-
-from . LnDict                           import DotMap  as LnDict
+from . LnDict.LnDict_DotMap             import DotMap  as LnDict
+# from . LnDict                           import DotMap  as LnDict
 from . LnString.LnEnum                  import LnEnum
 
 # from . LnDict.PrintDictionaryTree       import printDictionaryTree as printDict

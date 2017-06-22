@@ -34,14 +34,16 @@ class LnColor:
     YELLOW     = FG.YELLOW
     BLUE       = FG.BLUE
     MAGENTA    = FG.MAGENTA
-    FUCSIA     = FG.MAGENTA + HI.BRIGHT
+    # FUCSIA     = FG.MAGENTA + HI.BRIGHT
     CYAN       = FG.CYAN
     WHITE      = FG.WHITE
 
-    REDH       = FG.RED    + HI.BRIGHT
-    GREENH     = FG.GREEN  + HI.BRIGHT
-    YELLOWH    = FG.YELLOW + HI.BRIGHT
-    CYANH      = FG.CYAN   + HI.BRIGHT
+    REDH       = FG.RED     + HI.BRIGHT
+    GREENH     = FG.GREEN   + HI.BRIGHT
+    YELLOWH    = FG.YELLOW  + HI.BRIGHT
+    CYANH      = FG.CYAN    + HI.BRIGHT
+    MAGENTAH   = FG.MAGENTA + HI.BRIGHT
+    # FUCSIAH    = FG.FUCSIA  + HI.BRIGHT
 
     RESET      = HI.RESET_ALL
 
@@ -50,6 +52,7 @@ class LnColor:
     YelloOnBlack        = FG.BLACK + BG.YELLOW
 
 
+    callerFunc = sys._getframe(1).f_code.co_name
 
 
     def yellowRev(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
@@ -61,20 +64,26 @@ class LnColor:
     def printYellowH(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         self._print ( ' '*tab + self.YELLOWH, msg, end, reset)
 
+
+
     def printGreen(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         self._print ( ' '*tab + self.GREEN, msg, end, reset)
 
     def printGreenH(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         self._print ( ' '*tab + self.GREENH, msg, end, reset)
 
+
+
     def printBlue(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         self._print ( ' '*tab + self.BLUE, msg, end, reset)
+
+
 
     def printMagenta(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         self._print ( ' '*tab + self.MAGENTA, msg, end, reset)
 
-    def printFucsia(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
-        self._print ( ' '*tab + self.FUCSIA, msg, end, reset)
+    def printMagentaH(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
+        self._print ( ' '*tab + self.MAGENTAH, msg, end, reset)
 
     def printCyan(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         self._print ( ' '*tab + self.CYAN, msg, end, reset)
@@ -110,8 +119,8 @@ class LnColor:
     def getMagenta(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         return self._print ( ' '*tab + self.MAGENTA, msg, end, reset)
 
-    def getFucsia(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
-        return self._print ( ' '*tab + self.FUCSIA, msg, end, reset)
+    def getMagentaH(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
+        return self._print ( ' '*tab + self.MAGENTAH, msg, end, reset)
 
     def getCyan(self, msg, tab=0, end='\n', reset=True, string_encode='latin-1'):
         return self._print ( ' '*tab + self.CYAN, msg, end, reset)
@@ -145,13 +154,14 @@ class LnColor:
 
 
         # common
+
     def _print(self, color, msg, end, reset=True, string_encode='latin-1'):
         endColor = self.RESET if reset else ''
 
         outText = '{0}{1}{2}'.format(color, msg, endColor)
 
         callerFunc = sys._getframe(1).f_code.co_name
-
+        # print ('....2', callerFunc)
         if callerFunc.startswith('get'):
             return outText
 

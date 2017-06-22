@@ -3,6 +3,11 @@
 import sys, os
 import time
 
+__author__  = 'Loreto Notarantonio'
+__version__ = 'LnVer_2017-03-30_08.23.12'
+
+class LnClass(): pass
+
 def SetupEnv(gv, fDEBUG=False):
     # print (gv.Ln.pyVer)
     if gv.Ln.pyVer >= '340':
@@ -32,7 +37,7 @@ def setupEnv300(gv, fDEBUG=False):
         # ---------------------------------------------------------
         # - file di configurazione
         # ---------------------------------------------------------
-    iniFileName = os.path.abspath(os.path.join(configDIR, gv.Prj.name + '_' + gv.Prj.Version + '.ini'))
+    iniFileName = os.path.abspath(os.path.join(configDIR, gv.Prj.name + '_config.ini'))
 
 
 
@@ -63,6 +68,7 @@ def setupEnv300(gv, fDEBUG=False):
         C.printYellow('.'*10 + __name__ + '.'*10, tab=4)
         print ()
 
+    gv.Prj.LnDict = LnClass
 
 
 
@@ -97,6 +103,7 @@ def setupEnv340(gv):
 
 
     now     = time.localtime()
+    now      = str(datetime.datetime.now()).split('.')[0]
     gv.Prj.now     = now
     gv.Prj.today   = '{YY:04}.{MM:02}.{DD:02}'.format(YY=now.tm_year, MM=now.tm_mon, DD=now.tm_mday)
     gv.Prj.DATE    = '{YY:04}{MM:02}{DD:02}'.format(YY=now.tm_year, MM=now.tm_mon, DD=now.tm_mday)
