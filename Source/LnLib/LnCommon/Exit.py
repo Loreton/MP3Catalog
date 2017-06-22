@@ -3,9 +3,9 @@
 # -O Optimize e non scrive il __debug__
 #
 # Version 0.01 08/04/2010:  Starting
-# ####################################################################################################################
+# ############################################################
 
-import types, os, inspect, sys
+import os, inspect, sys
 
 from ..LnCommon.LnLogger import SetLogger       # OK funziona dalla upperDir del package
 from ..LnCommon.LnColor  import LnColor
@@ -13,7 +13,7 @@ from ..LnCommon.LnColor  import LnColor
 
 EXIT_KEYB   = -30
 PAUSE_KEYB   = -31
-EXIT_STACK  = -32
+EXIT_STACK = -32
 
 # =======================================================================
 # - 13 Maggio 2010  : Aggiunto il parametro stackLevel
@@ -29,7 +29,6 @@ def Exit(rcode, text, printStack=False, stackLevel=9, console=True):
         textList = ['No error message passed']
     elif isinstance(text, list):
         textList = text
-        pass
     else:
         textList = text.split('\n')
 
@@ -92,9 +91,9 @@ def _calledBy(deepLevel=0):
     lineCode    = caller[4]
 
     fname       = os.path.basename(programFile).split('.')[0]
-    str = "[{0}-{1}:{2}]".format(fname, caller[3], int (caller[2]) )
+    string = "[{0}-{1}:{2}]".format(fname, caller[3], int (caller[2]) )
     if funcName == '<module>':
-        str = "[{0}:{1}]".format(fname, lineNumber)
+        string = "[{0}:{1}]".format(fname, lineNumber)
     else:
-        str = "[{0}.{1}:{2}]".format(fname, funcName, lineNumber)
-    return str
+        string = "[{0}.{1}:{2}]".format(fname, funcName, lineNumber)
+    return string

@@ -8,6 +8,9 @@ import os
 import sqlite3
 import inspect
 
+from ..LnCommon.LnColor  import LnColor
+C=LnColor()
+
 # https://en.wikibooks.org/wiki/A_Beginner's_Python_Tutorial/Classes
 INFO = 1
 class LnSqLite:
@@ -552,16 +555,28 @@ class LnSqLite:
         RECs  = []
         for row in tableData:
             if not len(row) == nFLD:
-                print( )
-                print('errore nella lunghezza del record di input')
-                print( )
-                print( len(row), row)
-                print( )
-                print( len(fieldName), fieldName)
-                print( len(fieldType), fieldType)
-                print( len(fieldNotNULL), fieldNotNULL)
-                print( len(defaultVAL), defaultVAL)
-                print( )
+                print()
+                C.printYellow('errore nella lunghezza del record di input', tab=4)
+                print()
+                C.printYellow( "len:{0:02} - {1}".format(len(row), row), tab=4)
+                print()
+                C.printYellow( "len:{0:02} - {1}".format(len(fieldName), fieldName), tab=4)
+                C.printYellow( "len:{0:02} - {1}".format(len(fieldType), fieldType), tab=4)
+                C.printYellow( "len:{0:02} - {1}".format(len(fieldNotNULL), fieldNotNULL), tab=4)
+                C.printYellow( "len:{0:02} - {1}".format(len(defaultVAL), defaultVAL), tab=4)
+                print()
+                '''
+                import traceback
+                traceback.print_stack()
+                print ('--------------')
+                traceback.print_exc()
+                '''
+                import inspect
+                for item in reversed(inspect.stack()):
+                    print (item[1:])
+                print ('--------------')
+                for item in inspect.trace():
+                    print (item[1:])
                 sys.exit()
 
             myRow = []

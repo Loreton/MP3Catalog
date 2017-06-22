@@ -6,12 +6,12 @@
     @set "SOURCE_DIR=%SCRIPT_PATH%..\SOURCE"
 
     rem 'without rowid' richiede almeno la versione sqlite3  3.8.2 or later. Presente a partire da python 3.4
-    @call %Ln.FreeDir%\PythonPATH.cmd 344
+    :: @call %Ln.FreeDir%\PythonPATH.cmd 344
     @setlocal
-
+::
     cd /D %SCRIPT_PATH%
     set "mainProgram=%SOURCE_DIR%\%SCRIPT_NAME%.zip"
-    set "mainProgram=..\__main__.py"
+    set "mainProgram=..\Source\__main__.py"
 
     @set "extPARAMS=%*"
 
@@ -26,10 +26,8 @@
     :: goto :EOF
 
 :COPYSONGS
-    set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3  --max-output-bytes=4G --num-out-dirs=6"
-    set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3  --max-output-bytes=8G --num-out-dirs=2 --include Soft Loreto --exclude Strumentale Classica Lirica Live Discreta Undefined Avoidit Confusionaria"
-    set "params=copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\MP3 --check-source"
-    python.exe %mainProgram% %params% %extPARAMS%
+    set "params=sqlite copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\tmp\MP3"
+    %Ln.PythonExe% %mainProgram% %params% %extPARAMS%
     goto :EOF
 
 

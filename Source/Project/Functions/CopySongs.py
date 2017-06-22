@@ -131,27 +131,32 @@ def copia(gv, sourceSongName, destSongName):
         destdir = os.path.dirname(destSongName)
         if not os.path.exists(destdir): os.makedirs(destdir)
 
-        action = c.getYellow('...copyied', tab=4)
+        action = c.getYellow('...copied', tab=4)
 
+        # - se lil file esiste di già rinominiamolo oppure saltiamo
         if os.path.isfile(destSongName):
             gv.songList.duplicate.append(sourceSongName)
-            sourceSongSize = os.path.getsize(sourceSongName)
-            destSongSize = os.path.getsize(destSongName)
+            sourceSongSize  = os.path.getsize(sourceSongName)
+            destSongSize    = os.path.getsize(destSongName)
             # - check songSize
             if sourceSongSize == destSongSize:
                 c.printRedH('...skipped - same size', tab=4)
                 return isCopied
 
-            # - proviamo a fare il rename
-            fname = destSongName.split('.mp3')[0]
-            FOUND = True
-            counter = 0
-            while FOUND==True:
-                counter += 1
-                destSongName = '{FNAME}-{COUNTER:03}.mp3'.format(FNAME=fname, COUNTER=counter)
-                FOUND = os.path.isfile(destSongName)
-            action = c.getRedH('...renamed - {COUNTER:03}'.format(COUNTER=counter), tab=4)
+            if gv.ini.MAIN.renameDuplicated.lower() in ['true']:
+                    # - proviamo a fare il rename
+                fname = destSongName.split('.mp3')[0]
+                FOUND = True
+                counter = 0
+                while FOUND==True:
+                    counter += 1
+                    destSongName = '{FNAME}-{COUNTER:03}.mp3'.format(FNAME=fname, COUNTER=counter)
+                    FOUND = os.path.isfile(destSongName)
+                action = c.getRedH('...renamed - {COUNTER:03}'.format(COUNTER=counter), tab=4)
 
+            else:
+                c.printRedH('...skipped - already exists', tab=4)
+                return isCopied
 
         try:
             shutil.copyfile(sourceSongName, destSongName)
