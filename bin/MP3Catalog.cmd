@@ -27,6 +27,7 @@
 
 :COPYSONGS
     set "params=sqlite copySongs --source-dir=d:\LnFolders\MyData\MP3 --dest-dir=E:\tmp\MP3"
+    set "params=sqlite copySongs --source-dir=e:\LnED\Toshiba1T\Filu\MyData\MP3 --dest-dir=E:\tmp\MP3"
     %Ln.PythonExe% %mainProgram% %params% %extPARAMS%
     goto :EOF
 

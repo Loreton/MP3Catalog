@@ -326,6 +326,13 @@ class LnSqLite:
         print ('changes:', changes)
 
 
+    def ExecuteSQL(self, comando, fCOMMIT=False):
+        # comando = 'DELETE from {TABLE} where "{COL}"="{VAL}"'.format(TABLE=tblName, COL=colName, VAL=value)
+        changes = self._SQL_execute(comando, fCOMMIT=fCOMMIT)
+        # print ('changes:', changes)
+        return changes
+
+
 
 
     def Describe(self):

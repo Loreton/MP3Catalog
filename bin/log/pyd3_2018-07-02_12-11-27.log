@@ -1,0 +1,45 @@
+12:11:27 [DEBUG] 00 - analyzing dir: e:\tmp\MP3\01\Carlos Fanelli & CO
+12:11:27 [INFO ] 
+12:11:27 [INFO ] analyzing song: e:\tmp\MP3\01\Carlos Fanelli & CO\Fluffies Bunnies 01.mp3
+12:11:27 [INFO ] artist              : ['Carlos Fanelli & CO']
+12:11:27 [INFO ] length              : ['224000']
+12:11:27 [INFO ] date                : ['2011']
+12:11:27 [INFO ] title               : ['Fluffies Bunnies 01']
+12:11:27 [INFO ] tracknumber         : ['01/04']
+12:11:27 [INFO ] encodedby           : ['by Loreto']
+12:11:27 [INFO ] album               : ['Fluffies Bunnies']
+12:11:27 [INFO ] genre               : ['Sconosciuto']
+12:11:27 [INFO ] replacing album with titolo
+12:11:27 [INFO ] 
+12:11:27 [INFO ] analyzing song: e:\tmp\MP3\01\Carlos Fanelli & CO\Fluffies Bunnies 02.mp3
+12:11:27 [INFO ] artist              : ['Carlos Fanelli & CO']
+12:11:27 [INFO ] length              : ['213000']
+12:11:27 [INFO ] date                : ['2011']
+12:11:27 [INFO ] title               : ['Fluffies Bunnies 02']
+12:11:27 [INFO ] tracknumber         : ['02/04']
+12:11:27 [INFO ] encodedby           : ['by Loreto']
+12:11:27 [INFO ] album               : ['Fluffies Bunnies']
+12:11:27 [INFO ] genre               : ['Sconosciuto']
+12:11:27 [INFO ] replacing album with titolo
+12:11:27 [INFO ] 
+12:11:27 [INFO ] analyzing song: e:\tmp\MP3\01\Carlos Fanelli & CO\Fluffies Bunnies 03.mp3
+12:11:27 [INFO ] artist              : ['Carlos Fanelli & CO']
+12:11:27 [INFO ] length              : ['195000']
+12:11:27 [INFO ] date                : ['2011']
+12:11:27 [INFO ] title               : ['Fluffies Bunnies 03']
+12:11:27 [INFO ] tracknumber         : ['03/04']
+12:11:27 [INFO ] encodedby           : ['by Loreto']
+12:11:27 [INFO ] album               : ['Fluffies Bunnies']
+12:11:27 [INFO ] genre               : ['Sconosciuto']
+12:11:27 [INFO ] replacing album with titolo
+12:11:27 [INFO ] 
+12:11:27 [INFO ] analyzing song: e:\tmp\MP3\01\Carlos Fanelli & CO\Fluffies Bunnies 04.mp3
+12:11:27 [INFO ] artist              : ['Carlos Fanelli & CO']
+12:11:27 [INFO ] length              : ['276000']
+12:11:27 [INFO ] date                : ['2011']
+12:11:27 [INFO ] title               : ['Fluffies Bunnies 04']
+12:11:27 [INFO ] tracknumber         : ['04/04']
+12:11:27 [INFO ] encodedby           : ['by Loreto']
+12:11:27 [INFO ] album               : ['Fluffies Bunnies']
+12:11:27 [INFO ] genre               : ['Sconosciuto']
+12:11:27 [INFO ] replacing album with titolo

@@ -40,7 +40,7 @@ from . Setup.ParseInput              import  ParseInput
 
 
 from . Functions.SongFilter         import  songFilter
-from . Functions.SongFilter         import  songFilter
+# from . Functions.SqlSongFilter         import  SqlSongFilter # NON completata perché forse più complessa della songsFilter
 from . Functions.Merge              import  Merge
 from . Functions.Validate              import  Validate
 

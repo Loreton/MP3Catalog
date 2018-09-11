@@ -2,7 +2,7 @@
 # -*- coding: iso-8859-1 -*-
 
 __author__  = 'Loreto Notarantonio'
-__version__ = 'LnVer_2017-03-30_09.18.21'
+__version__ = 'LnVer_2017-06-26_14.33.42'
 
 import sys
 import os
@@ -37,6 +37,7 @@ def ParseInput(gVars, args, programVersion=None):
             'import'    : "import del file csv passato come parametro",
             'merge'     : "legge la directory ed inserisce/modifica le canzoni esistenti",
             'copySongs' : "copia le canzoni risultate dalla selezione nella directory di destinazione",
+            'executeSQL': "MGMT - esegue il comando SQL previsto all'interno del codice.",
             }
     }
 
@@ -384,6 +385,11 @@ def SQLITE(myParser, action):
         sqlite.SourceDir(myParser, required=True)
         sqlite.DestDir(myParser, required=True)
         sqlite.ExecuteOptions(myParser, required=False)
+
+    elif action == 'executeSQL':
+        sqlite.ExecuteOptions(myParser, required=False)
+        pass
+        # if len(sys.argv[2:]) == 1: sys.argv.append('-h')
 
     elif action == 'edit':
         pass

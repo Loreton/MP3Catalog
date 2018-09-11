@@ -69,7 +69,7 @@ def Merge(gv, sourceDir, songDict, attributeNames ):
 
                 # su ogni canzone mettiamo i vari attributi di default
             for attributeName in attributeNames:
-                ptr[attributeName] = '_'
+                ptr[attributeName] = '.'
             changes += 1
                 # - campi integer
             # ptr['Song Size'] = 0

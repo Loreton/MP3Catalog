@@ -161,7 +161,7 @@ def copia(gv, sourceSongName, destSongName):
         try:
             shutil.copyfile(sourceSongName, destSongName)
 
-        except (IOError, os.error) as why:
+        except (IOError, os.error, OSError) as why:
             msg = "Can't COPY [{0}] to [{1}]: {3}".format(sourceSongName, destSongName, str(why))
             print (msg)
             sys.exit()

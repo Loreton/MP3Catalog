@@ -61,6 +61,7 @@ def Main(gv, action):
         # - creazione se flag.filecreate
         # =======================================
     DB = gv.Ln.LnSqLite(DBdict.filename, DBdict.filecreate, logger=gv.Ln.SetLogger)
+    # DBdict.DB = DB
 
         # --------------------------------------------
         # - Apertura/creazione Table in base al flag
@@ -71,6 +72,7 @@ def Main(gv, action):
 
     fieldsName = DB.GetStruct(DBdict.songTableName)[0]
     fieldsName, *rest = DB.GetStruct(DBdict.songTableName)
+
     # gv.song.FIELD           = gv.Ln.LnEnum(fieldsName, myDict=gv.Ln.LnDict)
     # gv.song.FIELD_WEIGHTED  = gv.Ln.LnEnum(fieldsName, myDict=gv.Ln.LnDict, weighted=True)
 
@@ -109,6 +111,11 @@ def Main(gv, action):
                 msg = 'writing data to table: {0}'.format(DBdict.songTableName)
                 rCode = DB.InsertRow(tblName=DBdict.songTableName, record=sorted(songList), fCOMMIT=True)
 
+                    # modifichiamo il default char '_' in punto '.'
+                for colName in attributeNames:
+                    comando = "UPDATE {TBL} SET {COL1}='.' WHERE {COL1}='_'".format(TBL=DBdict.songTableName, COL1=colName)
+                    changes = DB.ExecuteSQL(comando, fCOMMIT=False)
+                DB.Commit()
 
         # =======================================
         # - E X P O R T
@@ -203,11 +210,189 @@ def Main(gv, action):
     elif gv.INPUT_PARAM.actionCommand == 'sqlite.copySongs':
         songLIST = DB.TableToList(DBdict.songTableName, LoL=True)
         validSONGS = gv.Prj.songFilter(gv, songLIST, fieldsName)
+        # validSONGS = gv.Prj.SqlSongFilter(gv, DBdict)
 
         choice = gv.Ln.getKeyboardInput("    Vuoi procedere con la copia delle canzoni sulla DEST?" , keySep=",", validKeys='yes,no', exitKey='X', deepLevel=2)
         if choice.lower() in ['yes']:
             gv.Prj.copySongs(gv, validSONGS, fieldsName)
             # songList    = gv.songList
 
+
+
+
+        # =======================================
+        # - E X E C U T E    S Q L
+        # - mettere il comando di comodo
+        # - Es.:
+        # -     UPDATE LoretoMP3 SET Lenta='.' WHERE Lenta='_'
+        # =======================================
+    elif gv.INPUT_PARAM.actionCommand == 'sqlite.executeSQL':
+        attributeName = fieldsName[4:-1] # elimina type, author, album, songName,...., songSize
+
+        '''
+        for colName in attributeName:
+            comando = "UPDATE {TBL} SET {COL1}='x' WHERE NOT {COL2} IN ('_', '.')".format(TBL=DBdict.songTableName, COL1=colName, COL2=colName)
+            changes = DB.ExecuteSQL(comando, fCOMMIT=False)
+            print ("[{0:9}] - {1}".format(changes, comando))
+
+        print()
+
+        for colName in attributeName:
+            comando = "UPDATE {TBL} SET {COL1}='.' WHERE {COL2}='_'".format(TBL=DBdict.songTableName, COL1=colName, COL2=colName)
+            changes = DB.ExecuteSQL(comando, fCOMMIT=False)
+            print ("[{0:9}] - {1}".format(changes, comando))
+        '''
+
+        EXCLUDE_DATA = """
+                       Avoid='x'
+                    OR Confusionaria='x'
+                    OR Discreta='x'
+                    OR MoltoVivace='x'
+                    OR Classica='x'
+                    OR Lirica='x'
+                    OR Live='x'
+                    OR Undefined='x'
+                    """
+
+            # set Car if ...
+        myCommand = """
+            UPDATE {TBL}
+             SET Car='x'
+                WHERE (
+                    Soft='x'
+                    )
+                AND NOT (
+                    Car='x'
+                    OR Avoid='x'
+                    OR Confusionaria='x'
+                    OR Discreta='x'
+                    OR MoltoVivace='x'
+                    OR Classica='x'
+                    OR Lirica='x'
+                    OR Live='x'
+                    OR Undefined='x'
+                )
+            """.format(TBL=DBdict.songTableName)
+
+
+            # set Car if ...
+        myCommand = """
+            UPDATE {TBL}
+                SET Car='.'
+                    WHERE (
+                           Avoid='x'
+                        OR Confusionaria='x'
+                        OR Discreta='x'
+                        OR MoltoVivace='x'
+                        OR Classica='x'
+                        OR Lirica='x'
+                        OR Live='x'
+                        OR Undefined='x'
+                    )
+                    AND NOT (
+                        Car='.'
+                    )
+            """.format(TBL=DBdict.songTableName)
+
+
+            # set Loreto if ...
+        myCommand = """
+            UPDATE {TBL}
+                SET Loreto='x'
+                    WHERE (
+                        Recomended='x'
+                    )
+                    AND NOT (
+                        Loreto='x'
+                    )
+            """.format(TBL=DBdict.songTableName)
+
+
+            # set Loreto if ...
+        myCommand = """
+            SELECT Type, AuthorName, AlbumName, SongName
+                FROM {TBL}
+                WHERE (
+                    Loreto='x'
+                AND NOT (
+                    {EXCLUDE}
+                )
+            """.format(TBL=DBdict.songTableName, EXCLUDE=EXCLUDE_DATA)
+
+            # set Car if ...
+        myCommand = """
+            UPDATE {TBL}
+                SET Camera='.'
+                    WHERE (
+                        Soft='x'
+                        AND Vivace='.'
+                        AND NOT Camera='x'
+                    )
+                    AND NOT (
+                        {EXCLUDE}
+                    )
+            """.format(TBL=DBdict.songTableName, EXCLUDE=EXCLUDE_DATA)
+
+
+
+            # set Car if ...
+        myCommand = """
+            SELECT Type, AuthorName, AlbumName, SongName
+                FROM {TBL}
+                WHERE (
+                    Soft='x'
+                    AND Vivace='.'
+                    AND NOT Camera='x'
+                )
+                AND NOT (
+                    {EXCLUDE}
+                )
+            """.format(TBL=DBdict.songTableName, EXCLUDE=EXCLUDE_DATA)
+
+                    # AND Loreto='x'
+        WhereClause = """
+                WHERE (
+                    Soft='x'
+                    AND Loreto='x'
+                    AND Vivace='.'
+                    AND NOT Camera='x'
+                )
+                AND NOT (
+                    {EXCLUDE}
+                )
+            """.format(EXCLUDE=EXCLUDE_DATA)
+
+
+
+
+        myCommandUpdate =  '''
+                UPDATE {TBL}
+                    SET Camera='x'
+                    {WHERE_CLAUSE}
+                '''.format(TBL=DBdict.songTableName, EXCLUDE=EXCLUDE_DATA, WHERE_CLAUSE=WhereClause)
+
+        myCommandSelect =  '''
+                SELECT Type, AuthorName, AlbumName, SongName FROM {TBL}
+                    {WHERE_CLAUSE}
+                '''.format(TBL=DBdict.songTableName, EXCLUDE=EXCLUDE_DATA, WHERE_CLAUSE=WhereClause)
+
+
+
+        updateCommand = (x.strip() for x in myCommandUpdate.split())
+        updateCommand = ' '.join(updateCommand)
+        selectCommand = (x.strip() for x in myCommandSelect.split())
+        selectCommand = ' '.join(selectCommand)
+        print ()
+        print(selectCommand)
+        print ()
+        print(updateCommand)
+        print ()
+        changes = DB.ExecuteSQL(updateCommand, fCOMMIT=False)
+        print ("[{0:9}] - {1}".format(changes, updateCommand))
+
+
+
+        if gv.INPUT_PARAM.fEXECUTE:
+            DB.Commit()
 
 

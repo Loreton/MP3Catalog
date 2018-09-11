@@ -8,11 +8,11 @@ import sys
 
 class BreakIt(Exception): pass
 
-def songFilter(gv, RECs, fldNames):
+def SqlSongFilter(gv, DBdict):
     logger  = gv.Ln.SetLogger(package=__name__)
     C       = gv.Ln.LnColor()
-    FLD     = gv.Ln.LnEnum(fldNames, myDict=gv.Ln.LnDict)
-    WEIGHT   = gv.Ln.LnEnum(fldNames, myDict=gv.Ln.LnDict, weighted=True)
+    # FLD     = gv.Ln.LnEnum(fldNames, myDict=gv.Ln.LnDict)
+    # WEIGHT   = gv.Ln.LnEnum(fldNames, myDict=gv.Ln.LnDict, weighted=True)
 
 
     includeAttr     = [token.strip() for token in gv.ini.MAIN.includeAttr.split(',')]
@@ -33,22 +33,7 @@ def songFilter(gv, RECs, fldNames):
     gv.songList.validSongs = []
 
 
-        # Visualizzazione pesi binari.
-    reqScore = 0
-    C.printCyan ('---  Attribute weight ----', tab=4)
-    for item in WEIGHT:
-        if item.startswith('_'): continue
-        # print (item)
-        # continue
-        C.printCyan ("{ITEM:<14} -->  {WEIGHT:>8}".format(
-                ITEM=item,
-                WEIGHT=WEIGHT[item]),
-                tab=4
-            )
 
-        reqScore  +=  WEIGHT[item]
-    print ()
-    C.printCyan ('requested Score: {0}'.format(reqScore), tab=4)
 
 
     print ()
@@ -72,9 +57,63 @@ def songFilter(gv, RECs, fldNames):
     analizzateTotSize   = 0
     toBeAanalysed       = 0
     toBeAanalysedSize   = 0
-    nCols               = len(FLD)
+    # nCols               = len(FLD)
 
 
+
+
+    # ---------------------
+    # - Setting SQL query
+    # ---------------------
+    # EXCLUDE = []
+    # EXCLUDE = extend(excludeAttr)
+    # EXCLUDE = extend(excludeAttr)
+    # EXCLUDE = extend(excludeAuthor)
+    # EXCLUDE = extend(excludeAlbums)
+    # EXCLUDE = extend(excludeType)
+    # print (EXCLUDE)
+
+
+    EXCLUDE_COLS = []
+    for colName in excludeAttr:
+        EXCLUDE_COLS.append("{0}='x'".format(colName))
+
+    '''
+    EXCLUDE_COLS = []
+    for colName in excludeAttr:
+        EXCLUDE_COLS.append("{0}='x'".format(colName))
+    '''
+
+    INCLUDE_COLS = []
+    for colName in includeAttr:
+        INCLUDE_COLS.append("{0}='x'".format(colName))
+
+    # NON completata perché forse più complessa della songsFilter
+    # NON completata perché forse più complessa della songsFilter
+    # NON completata perché forse più complessa della songsFilter
+    # NON completata perché forse più complessa della songsFilter
+    # NON completata perché forse più complessa della songsFilter
+    # NON completata perché forse più complessa della songsFilter
+    # bisognerebbe iserire i filri per athors, album , type etc....
+    myCommand = []
+    myCommand.append('SELECT Type, AuthorName, AlbumName, SongName')
+    myCommand.append('FROM {TBL}'.format(TBL=DBdict.songTableName))
+    myCommand.append('WHERE (')
+    myCommand.append(' AND '.join(INCLUDE_COLS))
+    myCommand.append(')')
+    myCommand.append('AND NOT (')
+    myCommand.append(' OR '.join(EXCLUDE_COLS))
+    myCommand.append(')')
+
+    # comandoList = (x.strip() for x in myCommand.split())
+    comando = ' '.join(myCommand)
+    print(comando)
+    print()
+    records = DBdict.DB.ExecuteSQL(comando, fCOMMIT=False)
+    print(records)
+    sys.exit()
+
+    '''
     for index, song in enumerate(RECs):
 
         if maxSongs and index > maxSongs:
@@ -151,6 +190,7 @@ def songFilter(gv, RECs, fldNames):
     C.printYellow('SCARTATE dalla ricerca           : {0:>6} - bytes: {1:,}'.format(scartate, scartateTotSize), tab=4)
     C.printYellow('Canzoni TOTALI  (for checking)   : {0:>6} - == flag ANALIZZATA'.format(scartate + len(gv.songList.validSongs)), tab=4)
 
+    '''
     print()
 
         # msg = 'writing file: {0}'.format(fileScartate)
@@ -173,5 +213,5 @@ def songFilter(gv, RECs, fldNames):
     #     print ()
     # sys.exit()
 
-    return gv.songList.validSongs
+    # return gv.songList.validSongs
 
